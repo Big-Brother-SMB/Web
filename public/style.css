@@ -5,16 +5,18 @@ body {
 button{
   background-color: #8533ff;
   color: rgb(0, 0, 0);
-  padding: 15px 15px;
+  padding: 50px 50px;
   text-align: center;
-  min-width: 300px;
+  min-width: 500px;
   margin: 0px 0px;
+  font-size: 20px;
+  font-family: DejaVu Sans Mono, monospace; 
 }
 
 .jours{
   display: inline;
   background-color: #8533ff;
-  min-width: 100px;
+  min-width: 200px;
 }
 
 .heure11{
