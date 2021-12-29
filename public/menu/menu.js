@@ -65,46 +65,46 @@ for(let j = 0; j < 4; j++){
 
 
 let nbFois = 0;
-for(let j = 0; j < 4; j++){
-  for(let h = 0; h < 2; h++){
-    database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
-        total[j][h] = snapshot.val();
-        update(j, h);
-    });
-
-    database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
-        ouvert[j][h] = snapshot.val()
-        update(j, h);
-    });
-   
-        demandes[j][h] = 0
-
-        database.ref(path(j,h)).once('child_added').then(function(snapshot) {
-        if(snapshot.numChildren() >= 0){
-            demandes[j][h] = snapshot.numChildren();
-            update(j, h);
-        }
-        
-          
-        });
-
-        database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
-            snapshot.forEach(function(child) {
-                if(child.key == user){
-                    nbFois++;
-                    console.log("nb fois : " + nbFois)
-                    inscrit[j][h] = true;
-                }else{
-                    console.log(jour[j] + " à " + (11 + h) + "h, -> " + child.key);
-                }
-              
+refreshDatabase();
+function refreshDatabase(){
+    for(let j = 0; j < 4; j++){
+        for(let h = 0; h < 2; h++){
+            database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
+                total[j][h] = snapshot.val();
+                update(j, h);
             });
-        });
-
-
+      
+            database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
+                ouvert[j][h] = snapshot.val()
+                update(j, h);
+            });
+         
+            demandes[j][h] = 0
+      
+            database.ref(path(j,h)).once('child_added').then(function(snapshot) {
+                if(snapshot.numChildren() >= 0){
+                    demandes[j][h] = snapshot.numChildren();
+                    update(j, h);
+                }
+            });
+      
+            database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    if(child.key == user){
+                        nbFois++;
+                        console.log("nb fois : " + nbFois)
+                        inscrit[j][h] = true;
+                    }else{
+                        console.log(jour[j] + " à " + (11 + h) + "h, -> " + child.key);
+                    }
+                    
+                });
+            });
         
+        }
     }
 }
+
 
 function update(j,h){
     places[j][h] = total[j][h] - demandes[j][h];
@@ -146,7 +146,10 @@ function update(j,h){
 }
 
 function select(j,h){
-    let inscription = false;
+    refreshDatabase();
+    setTimeout(function() {
+        console.log(places[j][h])
+        let inscription = false;
     let desinscription = false;
     switch (ouvert[j][h]){
         case 1:
@@ -165,6 +168,8 @@ function select(j,h){
         database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         reload();
     }  
+      }, 1000);
+    
     
 }
 
