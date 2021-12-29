@@ -17,6 +17,10 @@ button{
   min-width: 100px;
 }
 
+.heure11{
+  margin: -4px -4px;
+}
+
 .ferme{
   background-color: #888888;
 }
