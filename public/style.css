@@ -4,6 +4,14 @@ body {
 
 button{
   background-color: #8533ff;
-  color: white;
-  padding: 14px 25px;
+  color: rgb(0, 0, 0);
+  padding: 15px 15px;
   text-align: center;
+  min-width: 300px;
+}
+
+.jours{
+  display: inline;
+  background-color: #4bff33;
+  min-width: 100px;
+}

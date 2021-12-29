@@ -40,7 +40,8 @@ let ouvert = []
 
 for(let j = 0; j < 4; j++){
     let div = document.createElement("div")
-    let text = document.createElement("div")
+    let text = document.createElement("button")
+    text.className = "jours";
     text.innerHTML = jour[j]
     div.appendChild(text);
     
