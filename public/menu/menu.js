@@ -55,7 +55,7 @@ for(let j = 0; j < 4; j++){
         bouton[j][h] = document.createElement("button")
         bouton[j][h].id = "" + j + h;
         bouton[j][h].onclick = function(){select(j,h)};
-        bouton[j][h].style.background='#FFFFFF';
+        bouton[j][h].className="places"
         div.appendChild(bouton[j][h]);
       
     }
@@ -93,7 +93,6 @@ for(let j = 0; j < 4; j++){
                 if(child.key == user){
                     nbFois++;
                     console.log("nb fois : " + nbFois)
-                    bouton[j][h].style.background='#00FF00';
                     inscrit[j][h] = true;
                 }else{
                     console.log(jour[j] + " à " + (11 + h) + "h, -> " + child.key);
@@ -113,22 +112,25 @@ function update(j,h){
     switch (ouvert[j][h]){
         case 0:
             text = "horaire non planifié"
-            bouton[j][h].style.background='#555555';
+            bouton[j][h].className="ferme"
         case 1:
             if(places[j][h] <= 0){
-                bouton[j][h].style.background='#FF0000';
+                bouton[j][h].className="zero"
+                text = "plein";
+            }else if(places[j][h] == 1){
+                text = "il reste une place";
             }
             break;
         case 2:
             text = "Foyer fermé"
-            bouton[j][h].style.background='#555555';
+            bouton[j][h].className="ferme"
             break;
         case 3:
             text = text + "(pas de désinscriptions possible)";
             break;
         case 4:
             text = text + "(pas d'inscriptions possible)";
-            bouton[j][h].style.background='#555555';
+            bouton[j][h].className="ferme"
             break;
         case 5:
             text = "ouvert mais plus d'inscriptions/désinscriptions possibles";
@@ -138,7 +140,7 @@ function update(j,h){
 
     }
     if(inscrit[j][h]){
-        bouton[j][h].style.background='#00FF00';
+        bouton[j][h].className="inscrit"
     }
     bouton[j][h].innerHTML = text;
 }

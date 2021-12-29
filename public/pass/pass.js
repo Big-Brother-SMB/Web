@@ -18,8 +18,8 @@ const d = new Date();
 
 const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
 let user = sessionStorage.getItem("user");
-let j = jour[d.getDay() - 1];
-let h = d.getHours();
+let j = "4vendredi"//jour[d.getDay() - 1];
+let h = 11//d.getHours();
 console.log("test");
 console.log(j);
 console.log(h);
@@ -34,7 +34,7 @@ database.ref("foyer_midi").child("semaine51").child(j).child(h + "h").child("dem
         }
       
     });
-});
+}); 
 
 
 

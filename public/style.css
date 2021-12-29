@@ -8,10 +8,27 @@ button{
   padding: 15px 15px;
   text-align: center;
   min-width: 300px;
+  margin: 0px 0px;
 }
 
 .jours{
   display: inline;
-  background-color: #4bff33;
+  background-color: #8533ff;
   min-width: 100px;
+}
+
+.ferme{
+  background-color: #888888;
+}
+
+
+.zero{
+  background-color: #ff0000;
+}
+
+.inscrit{
+  background-color: #4bff33;
+}
+.places{
+  background-color: #dfff6a;
 }
