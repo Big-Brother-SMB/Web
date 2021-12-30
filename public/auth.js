@@ -29,6 +29,8 @@ getRedirectResult(auth)
     const credential = GoogleAuthProvider.credentialFromResult(result)
     const token = credential.accessToken
 
+    const user = result.user
+
     if(user.email.split("@")[1] == "stemariebeaucamps.fr"){
        
       signInWithCredential(auth, credential).catch((error) => {
@@ -47,6 +49,7 @@ getRedirectResult(auth)
       window.location.href = "menu/menu.html";
     }else{
       document.getElementById("infos").innerHTML = "veuillez prendre une adresse mail beaucamps"
+      console.log("Merci de prendre une adresse mail beaucamps")
     }
   })
   .catch(error => {
