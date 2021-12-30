@@ -22,44 +22,61 @@ let user = sessionStorage.getItem("user");
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
 console.log(path(j,h));
-database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
-    suite1(snapshot.val());
+
+database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
+    if(snapshot.val() == 1 || snapshot.val() == 3){
+        suite1();
+    }else{
+        window.location.href = menu;
+        
+    }
 });
 
 
-function suite1(placesDisp){
-    console.log("suite1");
-    console.log(placesDisp);
-    database.ref(path(j,h)).once('child_added').then(function(snapshot) {
-        if(snapshot.numChildren() >= 0){
-            suite2(placesDisp - snapshot.numChildren());
-        }else{
-            suite2(placesDisp);
-        }
+function suite1(){
+    database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
+        suite2(snapshot.val());
     });
 }
 
 
-function suite2(places){
+
+
+
+function suite2(placesDisp){
+    console.log("suite1");
+    console.log(placesDisp);
+    database.ref(path(j,h)).once('child_added').then(function(snapshot) {
+        if(snapshot.numChildren() >= 0){
+            suite3(placesDisp - snapshot.numChildren());
+        }else{
+            suite3(placesDisp);
+        }
+    });
+}
+
+const menu = "../../menu/menu.html"
+
+function suite3(places){
     console.log("suite2");
     if(places <= 0){
-        window.location.href = "../menu/menu.html";
+        window.location.href = menu;
     }else{
         database.ref(path(j,h) + "/demandes/" + user).set("temporaire");
         document.getElementById("info").innerHTML = "il reste " + places + " places<br>Vous êtes temporairement inscrit pendant 10sec<br>Voulez vous vous inscrire ?"
         document.getElementById("oui").addEventListener("click", function() {
             database.ref(path(j,h) + "/demandes/" + user).remove();
             database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
-            window.location.href = "../menu/menu.html";
+            window.location.href = menu;
         });
         document.getElementById("non").addEventListener("click", function() {
             database.ref(path(j,h) + "/demandes/" + user).remove();
-            window.location.href = "../menu/menu.html";
+            window.location.href = menu;
         });
         setTimeout(function() {
             console.log("remove");
             database.ref(path(j,h) + "/demandes/" + user).remove();
-            window.location.href = "../menu/menu.html";
+            window.location.href = menu;
         },10000);
     }
 }

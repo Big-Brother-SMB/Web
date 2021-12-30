@@ -64,9 +64,10 @@ for(let j = 0; j < 4; j++){
 }
 
 
-let nbFois = 0;
+let nbFois;
 //refreshDatabase();
 function refreshDatabase(){
+    nbFois = 0;
     for(let j = 0; j < 4; j++){
         for(let h = 0; h < 2; h++){
             total[j][h] = 0
@@ -99,6 +100,9 @@ function refreshDatabase(){
                     update(j, h);
                 });
             });
+
+            inscrit[j][h] = false;
+            
       
             database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
@@ -185,14 +189,17 @@ function select(j,h){
             desinscription = true;     
     }
     if(inscrit[j][h] && desinscription){
-        database.ref(path(j,h) + "/demandes/" + user).remove();
-        reload();
+        //database.ref(path(j,h) + "/demandes/" + user).remove();
+        //reload();
+        sessionStorage.setItem("j", j);
+        sessionStorage.setItem("h", h);
+        window.location.href = "../confirmation/desinscription/desinscription.html";
     }else if(nbFois < 1 && places[j][h] > 0 && inscription){
         //database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         //reload();
         sessionStorage.setItem("j", j);
         sessionStorage.setItem("h", h);
-        window.location.href = "../confirmation/confirmation.html";
+        window.location.href = "../confirmation/inscription/inscription.html";
     }
      
 }
