@@ -69,13 +69,19 @@ let nbFois = 0;
 function refreshDatabase(){
     for(let j = 0; j < 4; j++){
         for(let h = 0; h < 2; h++){
+            total[j][h] = 0
             database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
                 total[j][h] = snapshot.val();
                 update(j, h);
             });
       
+            ouvert[j][h] = 0
             database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
-                ouvert[j][h] = snapshot.val()
+                if(snapshot.val() == null){
+                    ouvert[j][h] = 0
+                }else{
+                    ouvert[j][h] = snapshot.val()
+                }
                 update(j, h);
             });
          
@@ -119,10 +125,12 @@ function update(j,h){
 
 function updateAffichage(j,h){
     let text = "il reste " + places[j][h] + " places";
+    console.log(jour[j] + h + "h -> " + ouvert[j][h])
     switch (ouvert[j][h]){
         case 0:
             text = "horaire non planifié"
             bouton[j][h].className="ferme"
+            break;
         case 1:
             if(places[j][h] <= 0){
                 bouton[j][h].className="zero"
@@ -150,6 +158,7 @@ function updateAffichage(j,h){
             break;
         case 6:
             text = "vacances"
+            break;
 
     }
     if(inscrit[j][h]){
@@ -170,6 +179,9 @@ function select(j,h){
     switch(ouvert[j][h]){
         case 1:
         case 4:
+        case 0:
+        case 6:
+        case 2:
             desinscription = true;     
     }
     if(inscrit[j][h] && desinscription){
