@@ -151,17 +151,20 @@ function updateAffichage(j,h){
             bouton[j][h].className="ferme"
             break;
         case 3:
-            text = text + "(pas de désinscriptions possible)";
+            text = text + "(/!\\desinscription impossible)";
+            bouton[j][h].className="bloque"
             break;
         case 4:
-            text = text + "(pas d'inscriptions possible)";
+            text = "pas d'inscriptions possible";
             bouton[j][h].className="ferme"
             break;
         case 5:
-            text = "ouvert mais plus d'inscriptions/désinscriptions possibles";
+            text = "ouvert (plus de changements)";
+            bouton[j][h].className="bloque"
             break;
         case 6:
             text = "vacances"
+            bouton[j][h].className="ferme"
             break;
 
     }
