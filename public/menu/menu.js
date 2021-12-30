@@ -146,10 +146,8 @@ function update(j,h){
 }
 
 function select(j,h){
-    refreshDatabase();
-    setTimeout(function() {
-        console.log(places[j][h])
-        let inscription = false;
+    console.log(places[j][h])
+    let inscription = false;
     let desinscription = false;
     switch (ouvert[j][h]){
         case 1:
@@ -165,12 +163,13 @@ function select(j,h){
         database.ref(path(j,h) + "/demandes/" + user).remove();
         reload();
     }else if(nbFois < 1 && places[j][h] > 0 && inscription){
-        database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
-        reload();
-    }  
-      }, 1000);
-    
-    
+        //database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
+        //reload();
+        sessionStorage.setItem("j", j);
+        sessionStorage.setItem("h", h);
+        window.location.href = "../confirmation/confirmation.html";
+    }
+     
 }
 
 function reload(){
