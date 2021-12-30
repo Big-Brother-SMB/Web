@@ -20,7 +20,7 @@ function path(j,h){
 
 let user = sessionStorage.getItem("user");
 let j = sessionStorage.getItem("j");
-let h = int(sessionStorage.getItem("h"));
+let h = parseInt(sessionStorage.getItem("h"));
 console.log(path(j,h));
 database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
     suite1(snapshot.val());
