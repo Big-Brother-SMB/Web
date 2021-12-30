@@ -13,7 +13,7 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database()
 
-const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
+const jour = ["1lundi", "2mardi","3jeudi","4vendredi"];
 function path(j,h){
     return "foyer_midi/semaine51/" + jour[j] + "/" + (11 + h) + "h"
 }

@@ -65,7 +65,7 @@ for(let j = 0; j < 4; j++){
 
 
 let nbFois = 0;
-refreshDatabase();
+//refreshDatabase();
 function refreshDatabase(){
     for(let j = 0; j < 4; j++){
         for(let h = 0; h < 2; h++){
@@ -81,11 +81,17 @@ function refreshDatabase(){
          
             demandes[j][h] = 0
       
-            database.ref(path(j,h)).once('child_added').then(function(snapshot) {
+            /*database.ref(path(j,h)).once('child_added').then(function(snapshot) {
                 if(snapshot.numChildren() >= 0){
                     demandes[j][h] = snapshot.numChildren();
                     update(j, h);
                 }
+            });*/
+            database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    demandes[j][h] = demandes[j][h] + 1
+                    update(j, h);
+                });
             });
       
             database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
@@ -108,6 +114,10 @@ function refreshDatabase(){
 
 function update(j,h){
     places[j][h] = total[j][h] - demandes[j][h];
+    setTimeout(updateAffichage(j,h),1000);
+}
+
+function updateAffichage(j,h){
     let text = "il reste " + places[j][h] + " places";
     switch (ouvert[j][h]){
         case 0:
@@ -117,8 +127,11 @@ function update(j,h){
             if(places[j][h] <= 0){
                 bouton[j][h].className="zero"
                 text = "plein";
-            }else if(places[j][h] == 1){
-                text = "il reste une place";
+            }else{
+                bouton[j][h].className="places"
+                if(places[j][h] == 1){
+                    text = "il reste une place";
+                }
             }
             break;
         case 2:
@@ -179,3 +192,10 @@ function reload(){
 function path(j,h){
     return "foyer_midi/semaine51/" + (j+1) + jour[j] + "/" + (11 + h) + "h"
 }
+
+function loop(){
+    refreshDatabase();
+
+    setTimeout(loop,10000);
+}
+loop();
