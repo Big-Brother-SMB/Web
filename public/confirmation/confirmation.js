@@ -15,13 +15,13 @@ var database = firebase.database()
 
 const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
 function path(j,h){
-    return "foyer_midi/semaine51/" + (j+1) + jour[j] + "/" + (11 + h) + "h"
+    return "foyer_midi/semaine51/" + jour[j] + "/" + (11 + h) + "h"
 }
 
 let user = sessionStorage.getItem("user");
 let j = sessionStorage.getItem("j");
-let h = sessionStorage.getItem("h");
-
+let h = int(sessionStorage.getItem("h"));
+console.log(path(j,h));
 database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
     suite1(snapshot.val());
 });
