@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential, getRedirectResult} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
 
 if(sessionStorage.getItem("logged") == 1){
   window.location.href ="menu/menu.html";
@@ -17,40 +17,38 @@ const firebaseApp = initializeApp({
   })
 
 const provider = new GoogleAuthProvider();
-const auth = getAuth
+const auth = getAuth()
 
 
 document.getElementById("popup").onclick = () => {
-    const auth = getAuth();
-    signInWithPopup(auth, provider)
-    .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const user = result.user;
-        console.log(user.email.split("@")[1]);
-
-        if(user.email.split("@")[1] == "stemariebeaucamps.fr"){
-       
-          signInWithCredential(auth, credential).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            // ...
-          });
-
-          sessionStorage.setItem("logged", 1);
-          sessionStorage.setItem("user", user.displayName);
-
-          window.location.href = "menu/menu.html";
-        }else{
-          document.getElementById("infos").innerHTML = "veuillez prendre une adresse mail beaucamps"
-        }
-        
-
-    }).catch((error) => {
-        document.getElementById("infos").innerHTML = error
-    });
+  signInWithRedirect(auth, provider)
 }
+
+getRedirectResult(auth)
+  .then(result => {
+    const credential = GoogleAuthProvider.credentialFromResult(result)
+    const token = credential.accessToken
+
+    if(user.email.split("@")[1] == "stemariebeaucamps.fr"){
+       
+      signInWithCredential(auth, credential).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+
+      sessionStorage.setItem("logged", 1);
+      sessionStorage.setItem("user", user.displayName);
+
+      window.location.href = "menu/menu.html";
+    }else{
+      document.getElementById("infos").innerHTML = "veuillez prendre une adresse mail beaucamps"
+    }
+  })
+  .catch(error => {
+    const err = error
+  })
