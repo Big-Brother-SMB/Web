@@ -5,11 +5,11 @@ body {
 button{
   background-color: #8533ff;
   color: rgb(0, 0, 0);
-  padding: 50px 50px;
+  padding: 30px 30px;
   text-align: center;
-  min-width: 500px;
+  min-width: 300px;
   margin: 0px 0px;
-  font-size: 20px;
+  font-size: 15px;
   font-family: DejaVu Sans Mono, monospace; 
 }
 
