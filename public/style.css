@@ -5,24 +5,30 @@ body {
 button{
   background-color: #8533ff;
   color: rgb(0, 0, 0);
-  padding: 20px 20px;
-  text-align: center;
-  width: 500px;
+  padding: 10px 10px;
+  width: 300px;
   height: 150px;
   margin: 0px 0px;
-  font-size: 15px;
+  font-size: 25px;
   font-family: DejaVu Sans Mono, monospace; 
-  
+  text-align: center;
+  vertical-align: text-top;
 }
+
+p{
+  font-size: 40px;
+}
+
+
 
 .jours{
   display: inline;
   background-color: #8533ff;
-  width: 200px;
+  width: 150px;
 }
 
 .heure11{
-  margin: -4px -4px;
+  margin: 0px -4px;
 }
 
 .ferme{

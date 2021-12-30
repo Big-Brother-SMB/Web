@@ -128,7 +128,15 @@ function update(j,h){
 }
 
 function updateAffichage(j,h){
-    let text = "il reste " + places[j][h] + " places";
+    let text;
+    if(places[j][h] <= 0){
+        text = "plein";
+    }else if(places[j][h] == 1){
+        text = "il reste une place";
+    }else{
+        text = "il reste " + places[j][h] + " places";
+    }
+              
     console.log(jour[j] + h + "h -> " + ouvert[j][h])
     switch (ouvert[j][h]){
         case 0:
@@ -151,15 +159,15 @@ function updateAffichage(j,h){
             bouton[j][h].className="ferme"
             break;
         case 3:
-            text = text + "(/!\\desinscription impossible)";
+            text = text + "<br>(pas de désinscriptions possible)";
             bouton[j][h].className="bloque"
             break;
         case 4:
-            text = "pas d'inscriptions possible";
+            text = text + "<br>(pas d'inscriptions possible)";
             bouton[j][h].className="ferme"
             break;
         case 5:
-            text = "ouvert (plus de changements)";
+            text = "ouvert mais plus d'inscriptions / désinscriptions possibles";
             bouton[j][h].className="bloque"
             break;
         case 6:
