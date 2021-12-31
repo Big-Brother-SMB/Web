@@ -168,7 +168,7 @@ function updateAffichage(j,h){
             break;
         case 5:
             text = "ouvert mais plus d'inscriptions / désinscriptions possibles";
-            bouton[j][h].className="bloque"
+            bouton[j][h].className="ferme"
             break;
         case 6:
             text = "vacances"
