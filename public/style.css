@@ -19,7 +19,9 @@ p{
   font-size: 40px;
 }
 
-
+h2{
+  color: rgb(255, 0, 0);
+}
 
 .jours{
   display: inline;
