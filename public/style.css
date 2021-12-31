@@ -6,7 +6,7 @@ button{
   background-color: #8533ff;
   color: rgb(0, 0, 0);
   padding: 10px 10px;
-  width: 300px;
+  width: 400px;
   height: 150px;
   margin: 0px 0px;
   font-size: 25px;
@@ -16,7 +16,16 @@ button{
 }
 
 p{
+  text-align: center;
   font-size: 40px;
+}
+
+#heure{
+  font-size: 100px;
+}
+
+#divPass{
+  width: 1000px;
 }
 
 h2{
@@ -29,7 +38,17 @@ h2{
   width: 150px;
 }
 
-.heure11{
+.action{
+  background-color: #8533ff;
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  width: 500px;
+  height: 150px;
+  margin: 30px 200px;
+  font-size: 25px;
+}
+
+#heure11{
   margin: 0px -4px;
 }
 

@@ -108,12 +108,8 @@ function refreshDatabase(){
                 snapshot.forEach(function(child) {
                     if(child.key == user){
                         nbFois++;
-                        console.log("nb fois : " + nbFois)
                         inscrit[j][h] = true;
-                    }else{
-                        console.log(jour[j] + " à " + (11 + h) + "h, -> " + child.key);
-                    }
-                    
+                    }    
                 });
             });
         
@@ -137,7 +133,6 @@ function updateAffichage(j,h){
         text = "il reste " + places[j][h] + " places";
     }
               
-    console.log(jour[j] + h + "h -> " + ouvert[j][h])
     switch (ouvert[j][h]){
         case 0:
             text = "horaire non planifié"
