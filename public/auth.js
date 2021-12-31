@@ -48,7 +48,7 @@ getRedirectResult(auth)
 
       window.location.href = "menu/menu.html";
     }else{
-      document.getElementById("infos").innerHTML = "veuillez prendre une adresse mail beaucamps"
+      document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
       console.log("Merci de prendre une adresse mail beaucamps")
     }
   })

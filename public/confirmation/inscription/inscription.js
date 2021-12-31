@@ -63,7 +63,11 @@ function suite3(places){
         window.location.href = menu;
     }else{
         database.ref(path(j,h) + "/demandes/" + user).set("temporaire");
-        document.getElementById("info").innerHTML = "il reste " + places + " places<br>Vous êtes temporairement inscrit pendant 10sec<br>Voulez vous vous inscrire ?"
+        let text = places + " places"
+        if(places==1){
+            text = "une place"
+        }
+        document.getElementById("info").innerHTML = "il reste " + text +" <br>Vous êtes temporairement inscrit pendant 10sec<br>Voulez vous vous inscrire ?"
         document.getElementById("oui").addEventListener("click", function() {
             database.ref(path(j,h) + "/demandes/" + user).remove();
             database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
