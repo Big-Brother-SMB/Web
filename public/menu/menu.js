@@ -31,8 +31,42 @@ document.getElementById("groupe").addEventListener("click", function() {
 });
 
 
+
+let actualWeek = 1//(new Date()).getWeek();
+let week = parseInt(sessionStorage.getItem("week"))
+console.log(actualWeek)
+
+document.getElementById("semainePrecedente").addEventListener("click", function() {
+    sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) - 1);
+    week = week - 1
+    refreshDatabase()
+});
+
+document.getElementById("semaineActuelle").addEventListener("click", function() {
+    sessionStorage.setItem("week", actualWeek);
+    week = actualWeek
+    refreshDatabase()
+});
+
+
+document.getElementById("semaineSuivante").addEventListener("click", function() {
+    sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) + 1);
+    week = week + 1
+    refreshDatabase()
+});
+
+
 const body = document.getElementById("body");
 const jour = ["lundi", "mardi","jeudi","vendredi"];
+Date.prototype.getWeek = function() {
+    console.log(this)
+    var onejan = new Date(this.getFullYear(), 0, 1);
+    return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 0) / 7);
+}
+
+
+
+
 
 let bouton = [];
 let total = [];
@@ -71,6 +105,38 @@ for(let j = 0; j < 4; j++){
 let nbFois;
 //refreshDatabase();
 function refreshDatabase(){
+
+    database.ref("groupes").once("value", function(snapshot) {
+        snapshot.forEach(function(child) {
+            database.ref("groupes/"+ child.key + "/members").once("value", function(snapshot) {
+                let number = snapshot.numChildren();
+                snapshot.forEach(function(child2) {
+                    if(child2.key == user){
+                        database.ref("groupes/"+ child.key + "/members/" + user).once('value').then(function(snapshot) {
+                            let text = "faites parti"
+                            let chef = false
+                            let groupe = child.key
+                            if(snapshot.val() == 1){
+                                chef = true
+                                text = "êtes le chef"
+                            }
+                            sessionStorage.setItem("chef", chef);
+                            sessionStorage.setItem("groupe", groupe);
+                            document.getElementById("infoGroupe").innerHTML = "vous " + text + " du groupe : " + groupe + ", qui comporte " + number + " personne(s)"
+   
+                        });
+                    }
+                });
+            });
+        });
+    
+    });
+    let text = "numero " + week
+    if(week == actualWeek){
+        text = "actuelle"
+    }
+    document.getElementById("semaine").innerHTML = "semaine " + text
+
     nbFois = 0;
     for(let j = 0; j < 4; j++){
         for(let h = 0; h < 2; h++){
@@ -219,7 +285,7 @@ function reload(){
 }
 
 function path(j,h){
-    return "foyer_midi/semaine51/" + (j+1) + jour[j] + "/" + (11 + h) + "h"
+    return "foyer_midi/semaine"+ week + "/" + (j+1) + jour[j] + "/" + (11 + h) + "h"
 }
 
 function loop(){

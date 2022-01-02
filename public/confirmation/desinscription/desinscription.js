@@ -16,12 +16,13 @@ var database = firebase.database()
 const menu = "../../menu/menu.html"
 const jour = ["1lundi", "2mardi","3jeudi","4vendredi"];
 function path(j,h){
-    return "foyer_midi/semaine51/" + jour[j] + "/" + (11 + h) + "h"
+    return "foyer_midi/semaine"+ parseInt(sessionStorage.getItem("week")) + "/" + jour[j] + "/" + (11 + h) + "h"
 }
+
 let user = sessionStorage.getItem("user");
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
-
+console.log(path(j,h))
 
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
     if(snapshot.val() == 3 || snapshot.val() == 5){
