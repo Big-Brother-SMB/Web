@@ -9,7 +9,7 @@ const firebaseConfig = {
     measurementId: "G-J5N38BGN7R"
 };
 
-    firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 
 var database = firebase.database()
@@ -24,6 +24,10 @@ document.getElementById("deco").addEventListener("click", function() {
 
 document.getElementById("pass").addEventListener("click", function() {
     window.location.href = "../pass/pass.html";
+});
+
+document.getElementById("groupe").addEventListener("click", function() {
+    window.location.href = "../groupe/groupe.html";
 });
 
 

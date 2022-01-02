@@ -17,6 +17,7 @@ const jour = ["1lundi", "2mardi","3jeudi","4vendredi"];
 function path(j,h){
     return "foyer_midi/semaine51/" + jour[j] + "/" + (11 + h) + "h"
 }
+const menu = "../../menu/menu.html"
 
 let user = sessionStorage.getItem("user");
 let j = sessionStorage.getItem("j");
@@ -55,14 +56,14 @@ function suite2(placesDisp){
     });
 }
 
-const menu = "../../menu/menu.html"
+
 
 function suite3(places){
     console.log("suite2");
     if(places <= 0){
         window.location.href = menu;
     }else{
-        database.ref(path(j,h) + "/demandes/" + user).set("temporaire");
+        database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         let text = places + " places"
         if(places==1){
             text = "une place"
