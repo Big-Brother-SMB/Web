@@ -26,7 +26,9 @@ console.log(path(j,h));
 
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
     if(snapshot.val() == 1 || snapshot.val() == 3){
-        suite1();
+        suite1(false);
+    }else if(snapshot.val() == 7){
+        suite1(true);
     }else{
         window.location.href = menu;
         
@@ -34,9 +36,9 @@ database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
 });
 
 
-function suite1(){
+function suite1(rob){
     database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
-        suite2(snapshot.val());
+        suite2(snapshot.val(),rob);
     });
 }
 
@@ -44,14 +46,23 @@ function suite1(){
 
 
 
-function suite2(placesDisp){
+function suite2(placesDisp,rob){
     console.log("suite1");
     console.log(placesDisp);
     database.ref(path(j,h)).once('child_added').then(function(snapshot) {
+        let nbChild = 0
         if(snapshot.numChildren() >= 0){
-            suite3(placesDisp - snapshot.numChildren());
+            nbChild = snapshot.numChildren()
+        }
+        /*    suite3(placesDisp - snapshot.numChildren());
         }else{
             suite3(placesDisp);
+        }*/
+
+        if(rob){
+            robi(nbChild, placesDisp)
+        }else{
+            suite3(placesDisp - nbChild);
         }
     });
 }
@@ -84,5 +95,16 @@ function suite3(places){
             window.location.href = menu;
         },10000);
     }
+}
+
+function robi(pers, places){
+    document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a déjà " + pers + " personnes inscrites pour " + places + " places<br>Voulez vous vous inscrire ?"
+    document.getElementById("oui").addEventListener("click", function() {
+        database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
+        window.location.href = menu;
+    });
+    document.getElementById("non").addEventListener("click", function() {
+        window.location.href = menu;
+    });
 }
 

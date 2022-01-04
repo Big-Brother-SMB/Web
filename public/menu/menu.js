@@ -15,11 +15,24 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database()
 
 let user = sessionStorage.getItem("user");
+function deco(){
+    sessionStorage.setItem("logged", 0);
+    window.location.href = "../index.html";
+}
+if(user == null){
+    deco()
+}
+database.ref("users/" + user + "/score").once("value", function(snapshot) {
+    if(snapshot.val() == null){
+        deco()
+    }
+})
+
+
 console.log(user);
 
 document.getElementById("deco").addEventListener("click", function() {
-    sessionStorage.setItem("logged", 0);
-    window.location.href = "../index.html";
+    deco()
 });
 
 document.getElementById("pass").addEventListener("click", function() {
@@ -239,6 +252,14 @@ function updateAffichage(j,h){
             text = "vacances"
             bouton[j][h].className="ferme"
             break;
+        case 7:
+            if(places[j][h] <= 0){
+                
+            }else{
+                bouton[j][h].className="places"
+            }
+            text = demandes[j][h] + "/" + total[j][h]
+            break;
 
     }
     if(inscrit[j][h]){
@@ -251,9 +272,14 @@ function select(j,h){
     console.log(places[j][h])
     let inscription = false;
     let desinscription = false;
+    let placesRestantes = places[j][h] > 0;
+    if(ouvert[j][h] ==7){
+        placesRestantes = true;
+    }
     switch (ouvert[j][h]){
         case 1:
         case 3:
+        case 7:
             inscription = true;
     }
     switch(ouvert[j][h]){
@@ -262,6 +288,7 @@ function select(j,h){
         case 0:
         case 6:
         case 2:
+        case 7:
             desinscription = true;     
     }
     if(inscrit[j][h] && desinscription){
@@ -270,7 +297,7 @@ function select(j,h){
         sessionStorage.setItem("j", j);
         sessionStorage.setItem("h", h);
         window.location.href = "../confirmation/desinscription/desinscription.html";
-    }else if(nbFois < 1 && places[j][h] > 0 && inscription){
+    }else if(nbFois < 1 && placesRestantes > 0 && inscription){
         //database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         //reload();
         sessionStorage.setItem("j", j);

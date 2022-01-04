@@ -3,7 +3,7 @@ body {
 }
 
 button{
-  background-color: #8533ff;
+  background-color: #ff7be9;
   color: rgb(0, 0, 0);
   padding: 10px 10px;
   width: 400px;
@@ -40,12 +40,15 @@ h2{
 
 .jours{
   display: inline;
-  background-color: #8533ff;
   width: 150px;
 }
 
+.semaine{
+  width: 300px;
+}
+
 .action{
-  background-color: #8533ff;
+  background-color: #6b6dd4;
   color: rgb(0, 0, 0);
   padding: 10px 10px;
   width: 500px;

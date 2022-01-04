@@ -47,7 +47,7 @@ getRedirectResult(auth)
       sessionStorage.setItem("week", 0);
       sessionStorage.setItem("user", user.displayName);
 
-      window.location.href = "menu/menu.html";
+      window.location.href = "fin.html";
     }else{
       document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
       console.log("Merci de prendre une adresse mail beaucamps")
