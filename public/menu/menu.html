@@ -5,21 +5,34 @@
     <title>Foyer</title>
     <link rel="stylesheet" href="../style.css">
   </head>
+  
   <body>
+    <header>
+      <div class="divheader">
+        <figure>
+        <img 
+          srcset="../Images/logo.png 2050w"
+          sizes="(max-width: 1000px) 500px,
+            800px"
+          src="../Images/logo.png" alt="logo Lycée" >
+        </figure>
+        <p class="textheader">Foyer SMB</p>
+        <button id="deco" class="deconnexion">Déconnexion</button>
+      </div>
+    </header>
+    
+    <p id="infoGroupe"></p>
+    <div>
+      <button id="groupe" class="action">Groupes</button>
+    </div>
 
-<button id="deco" class="action">deconnexion</button>
-<p id="infoGroupe"></p>
-<div>
-  <button id="groupe" class="action">Groupes</button>
-</div>
-
-<div>
-  <button id="semainePrecedente" class="semaine">Semaine précédente</button>
-  <button id="semaineActuelle" class="semaine">Retour à la semaine actuelle</button>
-  <button id="semaineSuivante" class="semaine">Semaine suivante</button>
-</div>
-<p id="semaine"></p>
- 
+    <div>
+      <button id="semainePrecedente" class="semaine">Semaine précédente</button>
+      <button id="semaineActuelle" class="semaine">Retour à la semaine actuelle</button>
+      <button id="semaineSuivante" class="semaine">Semaine suivante</button>
+    </div>
+    <p id="semaine"></p>
+    
     <div>
       <button class="jours">jours:</button>
       <button id="heure11">11h</button>
@@ -32,7 +45,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-  <script src="menu.js"></script>
+    <script src="menu.js"></script>
 
   </body>
 
