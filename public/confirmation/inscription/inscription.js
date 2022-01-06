@@ -60,7 +60,7 @@ function suite2(placesDisp,rob){
         }*/
 
         if(rob){
-            robi(nbChild, placesDisp)
+            score(nbChild, placesDisp)
         }else{
             suite3(placesDisp - nbChild);
         }
@@ -97,10 +97,17 @@ function suite3(places){
     }
 }
 
-function robi(pers, places){
+function score(nbChild, placesDisp){
+    database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
+        robi(nbChild, placesDisp, snapshot.val())
+    });
+}
+
+function robi(pers, places, score){
     document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a déjà " + pers + " personnes inscrites pour " + places + " places<br>Voulez vous vous inscrire ?"
     document.getElementById("oui").addEventListener("click", function() {
         database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
+        database.ref(path(j,h) + "/demandes/" + user + "/score").set(score);
         window.location.href = menu;
     });
     document.getElementById("non").addEventListener("click", function() {
