@@ -43,6 +43,10 @@ document.getElementById("groupe").addEventListener("click", function() {
     window.location.href = "../groupe/groupe.html";
 });
 
+document.getElementById("amis").addEventListener("click", function() {
+    window.location.href = "../amis/amis.html";
+});
+
 
 
 let actualWeek = 1//(new Date()).getWeek();

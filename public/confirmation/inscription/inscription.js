@@ -104,14 +104,33 @@ function score(nbChild, placesDisp){
 }
 
 function robi(pers, places, score){
+    let amis = []
     document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a déjà " + pers + " personnes inscrites pour " + places + " places<br>Voulez vous vous inscrire ?"
     document.getElementById("oui").addEventListener("click", function() {
         database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         database.ref(path(j,h) + "/demandes/" + user + "/score").set(score);
+        for(let a in amis){
+            database.ref(path(j,h) + "/demandes/" + user + "/amis/" + amis[a]).set(0);
+        }
         window.location.href = menu;
     });
     document.getElementById("non").addEventListener("click", function() {
         window.location.href = menu;
     });
+
+    let divAmis = document.getElementById("amis")
+    database.ref("users/" + user + "/amis").once("value", function(snapshot) {
+        snapshot.forEach(function(child) {
+            let ami = document.createElement("button")
+            let name = child.key
+            ami.innerHTML = name
+            ami.addEventListener("click", function() {
+                console.log("add")
+                ami.innerHTML = name + " (ajouté)"
+                amis.push(name)
+            })
+            divAmis.appendChild(ami);
+        })
+    })
 }
 

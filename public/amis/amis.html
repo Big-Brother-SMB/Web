@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Foyer</title>
+    <link rel="stylesheet" href="amis.css">
+  </head>
+  <body>
+    <p>liste d'amis : </p>
+    <div style="height:500px;width:1000px;border:solid 2px orange;overflow:scroll;overflow-x:hidden;overflow-y:scroll;" id="amis">Recherche d'amis en cours</div>
+    
+  
+  <form autocomplete="off" action="/action_page.php">
+  <div class="autocomplete" style="width:500px;">
+    <input id="addAmi" type="text" name="myCountry" placeholder="ajouter">
+  </div>
+  </form>
+<button id="ajout">Ajouter</button>
+<div>
+  <button id="retour">Retour</button>
+</div>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="amis.js"></script>
+
+  </body>
+
+</html>
