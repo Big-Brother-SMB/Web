@@ -44,6 +44,19 @@ button{
   vertical-align: text-top;
 }
 
+button_blue{
+  background-color: #6b6dd4;
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  width: 400px;
+  height: 150px;
+  margin: 0px 0px;
+  font-size: 25px;
+  font-family: DejaVu Sans Mono, monospace; 
+  text-align: center;
+  vertical-align: text-top;
+
+}
 
 p{
   font-size: 40px;

@@ -1,0 +1,18 @@
+question{
+    background-color: #6b6dd4;
+    color: rgb(0, 0, 0);
+    padding: 10px 10px;
+    width: 400px;
+    height: 150px;
+    margin: 0px 0px;
+    font-size: 30px;
+    font-family: DejaVu Sans Mono, monospace; 
+    text-align: center;
+    vertical-align: text-top;
+  
+  }
+
+reponse{
+    white-space: pre;
+    font-size: 25px;
+}
