@@ -35,6 +35,8 @@ document.getElementById("deco").addEventListener("click", function() {
     deco()
 });
 
+
+
 document.getElementById("pass").addEventListener("click", function() {
     window.location.href = "../pass/pass.html";
 });

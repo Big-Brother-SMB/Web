@@ -20,6 +20,14 @@ figure {
   color: white;
 
 }
+
+#aide{
+  padding: 1px;
+  background-color: #486381;
+  border: 0px;
+  color: white;
+
+}
 .divheader{
   background-color: #486381;
 }
@@ -36,8 +44,16 @@ button{
   vertical-align: text-top;
 }
 
+
 p{
+  font-size: 40px;
+}
+
+.info{
   text-align: center;
+}
+
+h1{
   font-size: 40px;
 }
 
