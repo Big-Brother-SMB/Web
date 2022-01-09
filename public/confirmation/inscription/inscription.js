@@ -104,6 +104,8 @@ function score(nbChild, placesDisp){
 }
 
 function robi(pers, places, score){
+    let divAmis = document.getElementById("amis")
+    divAmis.innerHTML = "recherche d'amis en cours"
     let amis = []
     document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a déjà " + pers + " personnes inscrites pour " + places + " places<br>Voulez vous vous inscrire ?"
     document.getElementById("oui").addEventListener("click", function() {
@@ -118,8 +120,9 @@ function robi(pers, places, score){
         window.location.href = menu;
     });
 
-    let divAmis = document.getElementById("amis")
+    
     database.ref("users/" + user + "/amis").once("value", function(snapshot) {
+        divAmis.innerHTML = "<p>mes amis : </p>"
         snapshot.forEach(function(child) {
             let ami = document.createElement("button")
             let name = child.key

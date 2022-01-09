@@ -12,9 +12,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database()
 let user = sessionStorage.getItem("user");
-function path(j,h){
-    return "foyer_midi/semaine51/" + (j+1) + jour[j] + "/" + (11 + h) + "h"
-}
 function reload(){
     window.location.reload(true)
 }
