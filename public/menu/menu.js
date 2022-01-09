@@ -39,9 +39,9 @@ document.getElementById("pass").addEventListener("click", function() {
     window.location.href = "../pass/pass.html";
 });
 
-document.getElementById("groupe").addEventListener("click", function() {
+/*document.getElementById("groupe").addEventListener("click", function() {
     window.location.href = "../groupe/groupe.html";
-});
+});*/
 
 document.getElementById("amis").addEventListener("click", function() {
     window.location.href = "../amis/amis.html";
@@ -123,7 +123,7 @@ let nbFois;
 //refreshDatabase();
 function refreshDatabase(){
 
-    database.ref("groupes").once("value", function(snapshot) {
+    /*database.ref("groupes").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
             database.ref("groupes/"+ child.key + "/members").once("value", function(snapshot) {
                 let number = snapshot.numChildren();
@@ -147,7 +147,7 @@ function refreshDatabase(){
             });
         });
     
-    });
+    });*/
     let text = "numero " + week
     if(week == actualWeek){
         text = "actuelle"
