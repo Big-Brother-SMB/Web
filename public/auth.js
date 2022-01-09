@@ -44,7 +44,7 @@ getRedirectResult(auth)
       });
 
       sessionStorage.setItem("logged", 1);
-      sessionStorage.setItem("week", 0);
+      sessionStorage.setItem("week", 2);
       sessionStorage.setItem("user", user.displayName);
 
       window.location.href = "fin.html";
