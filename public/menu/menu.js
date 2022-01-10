@@ -150,6 +150,13 @@ function refreshDatabase(){
         });
     
     });*/
+
+    /*database.ref("users").once('value').then(function(snapshot) {
+        total[j][h] = snapshot.val();
+        update(j, h);
+    });*/
+
+
     let text = "numero " + week
     if(week == actualWeek){
         text = "actuelle"
@@ -265,6 +272,10 @@ function updateAffichage(j,h){
                 bouton[j][h].className="places"
             }
             text = demandes[j][h] + "/" + total[j][h]
+            break;
+        case 8:
+            text = "calcul en cours"
+            bouton[j][h].className="ferme"
             break;
 
     }
