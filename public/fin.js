@@ -16,14 +16,22 @@ var database = firebase.database()
 
 let user = sessionStorage.getItem("user");
 
-database.ref("users/" + user + "/score").set(0);
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
-    console.log(snapshot.val())
-    if(snapshot.val() == 0){
-        setTimeout(function() {
-            window.location.href = "menu/menu.html";
-        },1000);
-       
+    if(snapshot.val() == null){
+        database.ref("users/" + user + "/score").set(0);
+        database.ref("users/" + user + "/score").once("value", function(snapshot) {
+            console.log(snapshot.val())
+            if(snapshot.val() == 0){
+                setTimeout(function() {
+                    window.location.href = "menu/menu.html";
+                },1000);
+               
+            }
+        })
+    }else{
+        window.location.href = "menu/menu.html";
     }
 })
+
+
 
