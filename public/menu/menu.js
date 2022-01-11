@@ -151,10 +151,9 @@ function refreshDatabase(){
     
     });*/
 
-    /*database.ref("users").once('value').then(function(snapshot) {
-        total[j][h] = snapshot.val();
-        update(j, h);
-    });*/
+    database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
+        document.getElementById("score").innerHTML = "votre score est de : " + snapshot.val()
+    });
 
 
     let text = "numero " + week
