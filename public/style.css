@@ -26,17 +26,22 @@ nav {
 nav  {
   display: flex;
   justify-content: space-around;
+  
 }
 
-nav li {
+ul li {
   list-style: none; 
   font-size: 30px;
+  margin-right: 20px;
 }
 nav a {
   text-decoration:none;
   color: white;  
 }
 
+.ulheader{
+  align-content: right;
+}
 #menu-demo2, #menu-demo2 ul{
   padding:0;
   margin:0;

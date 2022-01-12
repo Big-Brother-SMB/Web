@@ -1,13 +1,29 @@
 <html lang="fr">
-<head>
-    <link rel="stylesheet"href="style.css">
+<head>  
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
+    <link rel="stylesheet"href="auth.css">
     <script type="module" src="auth.js"></script>
 </head>
 <body>
+    <header>
+        <img class="headerimg" src="Images/logo.png" alt="logo Lycée" >
+        <h1 id="logo">Foyer SMB</h1>
+      <ul id="menu-demo2" >
+        <li><a href="#">Profil</a>
+          <ul>
+            <li id="aide"><a href="#" ><a href="../guide/faq.html">FAQ</a></a></li>
+            <li id="aide"><a href="#" ><a href="../guide/guide.html">Info</a></a></li>
+            <li id="amis" class="amis"><a href="#">Amis</a></li>
+            <li id="deco"><a href="#">Déconnexion</a></li>
+          </ul>
+        </li>      
+      </ul>
+    </header>
+
+
     <p>Authentification (adresse mail Beaucamps)</p>
     <button id="popup">connexion</button>
     <h2 id="infos"></h2>
