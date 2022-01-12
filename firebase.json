@@ -1,5 +1,6 @@
 {
-  "hosting": {
+  "hosting":[
+    {
     "site": "foyer-smb",
     "public": "public",
     "ignore": [
@@ -7,5 +8,17 @@
       "**/.*",
       "**/node_modules/**"
     ]
+  },
+  {
+    "site": "foyer-test",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
   }
+
+]
+  
 }
