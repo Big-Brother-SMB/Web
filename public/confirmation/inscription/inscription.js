@@ -62,6 +62,8 @@ function suite2(placesDisp,rob){
         if(rob){
             score(nbChild, placesDisp)
         }else{
+            document.getElementById("amis").style = "display:none"
+            document.getElementById("pAmis").style = "display:none"
             suite3(placesDisp - nbChild);
         }
     });
@@ -79,7 +81,7 @@ function suite3(places){
         if(places==1){
             text = "une place"
         }
-        document.getElementById("info").innerHTML = "il reste " + text +" <br>Vous êtes temporairement inscrit pendant 10sec<br>Voulez vous vous inscrire ?"
+        document.getElementById("info").innerHTML = "il reste " + text +" <br>Vous êtes temporairement inscrit pendant 10sec"
         document.getElementById("oui").addEventListener("click", function() {
             database.ref(path(j,h) + "/demandes/" + user).remove();
             database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
@@ -107,7 +109,7 @@ function robi(pers, places, score){
     let divAmis = document.getElementById("amis")
     divAmis.innerHTML = "recherche d'amis en cours"
     let amis = []
-    document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a déjà " + pers + " personnes inscrites pour " + places + " places<br>Voulez vous vous inscrire ?"
+    document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a déjà " + pers + " personnes inscrites pour " + places + " places"
     document.getElementById("oui").addEventListener("click", function() {
         database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         database.ref(path(j,h) + "/demandes/" + user + "/score").set(score);
@@ -122,7 +124,7 @@ function robi(pers, places, score){
 
     
     database.ref("users/" + user + "/amis").once("value", function(snapshot) {
-        divAmis.innerHTML = "<p>mes amis : </p>"
+        divAmis.innerHTML = ""
         snapshot.forEach(function(child) {
             let ami = document.createElement("button")
             let name = child.key
