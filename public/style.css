@@ -1,111 +1,36 @@
-body,
-h1,
-ul {
-  margin: 0;
-  padding: 0;
-  color: white;
-}
-
-header {
-  align-items: center;
-  display: flex;
-  margin: 5px;
+header{
   background: #486381;
+  border: 5px, black;
+}
+figure {
+  float: left;
+  margin: 5px;
+}
+.textheader{
+  color: white;
+  padding-top: 20px;
+  float: left;
+
 }
 
-#logo,
-nav {
-  flex : 1;
+.deconnexion{
+  padding: 1px;
+  background-color: #486381;
+  border: 0px;
+  color: white;
+
 }
 
-p{
-  color: black;
-}
+#aide{
+  padding: 1px;
+  background-color: #486381;
+  border: 0px;
+  color: white;
 
-.headerimg{
-  width: 170px;
-  height: 150px;
 }
-
-nav  {
-  display: flex;
-  justify-content: space-around;
-  
+.divheader{
+  background-color: #486381;
 }
-
-ul li {
-  list-style: none; 
-  font-size: 30px;
-  margin-right: 20px;
-}
-nav a {
-  text-decoration:none;
-  color: white;  
-}
-
-.ulheader{
-  align-content: right;
-}
-#menu-demo2, #menu-demo2 ul{
-  padding:0;
-  margin:0;
-  list-style:none;
-  text-align:center;
-  }
-  #menu-demo2 li{
-  display:inline-block;
-  position:relative;
-  border-radius:8px 8px 0 0;
-  }
-  #menu-demo2 ul li{
-  display:inherit;
-  border-radius:0;
-  }
-  #menu-demo2 ul li:hover{
-  border-radius:0;
-  }
-  #menu-demo2 ul li:last-child{
-  border-radius:0 0 8px 8px;
-  }
-  #menu-demo2 ul{
-  position:absolute;
-  z-index: 1000;
-  max-height:0;
-  left: 0;
-  right: 0;
-  overflow:hidden;
-  -moz-transition: .8s all .3s;
-  -webkit-transition: .8s all .3s;
-  transition: .8s all .3s;
-  }
-  #menu-demo2 li:hover ul{
-  max-height:15em;
-  }
-
-  #menu-demo2 li:first-child{
-    background-color: #3d546e;
-    }
-  #menu-demo2 li:first-child li{
-    background:#3d546e;
-    }
-  #menu-demo2 li:first-child:hover, #menu-demo2 li:first-child li:hover{
-    background:#2e3f53;
-    }
-  #menu-demo2 a{
-    text-decoration:none;
-    display:block;
-    padding:8px 32px;
-    color:#fff;
-    font-family:arial;
-    }
-    #menu-demo2 ul a{
-    padding:8px 0;
-    }
-    #menu-demo2 li:hover li a{
-    color:#fff;
-    text-transform:inherit;
-    }
-
 button{
   background-color: #ff7be9;
   color: rgb(0, 0, 0);
