@@ -93,6 +93,7 @@ let demandes = [];
 let places = [];
 let inscrit = []
 let ouvert = []
+let nbAmis = []
 
 
 for(let j = 0; j < 4; j++){
@@ -106,6 +107,7 @@ for(let j = 0; j < 4; j++){
     total[j] = []
     places[j] = []
     demandes[j] = []
+    nbAmis[j] = []
     inscrit[j] = [false,false]
     ouvert[j] = [0,0]
     for(let h = 0; h < 2; h++){
@@ -179,6 +181,15 @@ function refreshDatabase(){
                     ouvert[j][h] = snapshot.val()
                 }
                 update(j, h);
+            });
+
+            nbAmis[j][h] = 0
+
+            database.ref(path(j,h) + "/demandes/" + user + "/amis").once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    nbAmis[j][h] = nbAmis[j][h] + 1
+                    update(j, h);
+                });
             });
          
             demandes[j][h] = 0
@@ -280,6 +291,7 @@ function updateAffichage(j,h){
     }
     if(inscrit[j][h]){
         bouton[j][h].className="inscrit"
+        text = text + "<br>vous êtes inscrit avec " + nbAmis[j][h] + " amis"
     }
     bouton[j][h].innerHTML = text;
 }
