@@ -5,34 +5,21 @@
     <title>Foyer</title>
     <link rel="stylesheet" href="../style.css">
   </head>
-  
   <body>
-    <header>
-      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
-      <h1 id="logo">Foyer SMB</h1>
-      <ul id="menu-demo2" >
-        <li><a href="#">PLUS D'OPTIONS</a>
-          <ul>
-            <li id="aide"><a href="#" ><a href="../guide/faq.html">FAQ</a></a></li>
-            <li id="aide"><a href="#" ><a href="../guide/guide.html">Info</a></a></li>
-            <li id="amis" class="amis"><a href="#">Amis</a></li>
-            <li id="deco"><a href="#">Déconnexion</a></li>
-          </ul>
-        </li>      
-      </ul>
-    </header>
-    
 
+<button id="deco" class="action">deconnexion</button>
+<p id="infoGroupe"></p>
+<div>
+  <button id="groupe" class="action">Groupes</button>
+</div>
 
-    <p id="score" class="info"></p>
-
-    <div>
-      <button id="semainePrecedente" class="semaine">Semaine précédente</button>
-      <button id="semaineActuelle" class="semaine">Semaine actuelle</button>
-      <button id="semaineSuivante" class="semaine">Semaine suivante</button>
-    </div>
-    <p id="semaine" class="info"></p>
-    
+<div>
+  <button id="semainePrecedente" class="semaine">Semaine précédente</button>
+  <button id="semaineActuelle" class="semaine">Retour à la semaine actuelle</button>
+  <button id="semaineSuivante" class="semaine">Semaine suivante</button>
+</div>
+<p id="semaine"></p>
+ 
     <div>
       <button class="jours">jours:</button>
       <button id="heure11">11h</button>
@@ -45,7 +32,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-    <script src="menu.js"></script>
+  <script src="menu.js"></script>
 
   </body>
 
