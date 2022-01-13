@@ -18,6 +18,10 @@ nav {
   flex : 1;
 }
 
+p{
+  color: black;
+}
+
 .headerimg{
   width: 170px;
   height: 150px;
