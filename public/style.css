@@ -15,8 +15,8 @@ header {
   display: flex;
   margin: 5px;
   background: #486381;
-  position: fixed;
-  top: 0px;
+  position: sticky;
+  top: 5px;
 }
 
 #logo,
