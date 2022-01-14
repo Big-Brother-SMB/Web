@@ -1,6 +1,12 @@
 header{
   background: #486381;
   border: 5px, black;
+  position: fixed;
+  top: 0px;
+}
+
+article{
+  margin-top: 300px
 }
 figure {
   float: left;
