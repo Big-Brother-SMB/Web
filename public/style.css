@@ -1,9 +1,21 @@
+<<<<<<< HEAD
 body,
 h1,
 ul {
   margin: 0;
   padding: 0;
   color: white;
+=======
+header{
+  background: #486381;
+  border: 5px, black;
+  position: fixed;
+  top: 0px;
+}
+
+article{
+  margin-top: 300px
+>>>>>>> 800b14adcf36e57cead862a4fff5b1602f011f8a
 }
 
 header {
