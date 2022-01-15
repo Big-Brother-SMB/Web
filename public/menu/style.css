@@ -1,3 +1,7 @@
+article{
+  margin-top: 30px
+}
+
 body,
 h1,
 ul {
@@ -6,9 +10,6 @@ ul {
   color: white;
 }
 
-article{
-  margin-top: 300px
-}
 
 header {
   align-items: center;
