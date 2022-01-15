@@ -21,7 +21,11 @@ const auth = getAuth()
 
 
 document.getElementById("popup").onclick = () => {
-  signInWithRedirect(auth, provider)
+  
+    signInWithRedirect(auth, provider)
+
+  //window.location.href = "connexion/connexion.html";
+  
 }
 
 getRedirectResult(auth)
