@@ -5,6 +5,12 @@ if(sessionStorage.getItem("logged") == 1){
   window.location.href ="menu/menu.html";
 }
 
+//window.location.href = "connexion/connexion.html";
+
+console.log("start")
+document.cookie = "test"
+console.log(document.cookie)
+
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyAPJ-33mJESHMcvEtaPX7JwIajUawblSuY",
     authDomain: "big-brother-ac39c.firebaseapp.com",
@@ -17,6 +23,9 @@ const firebaseApp = initializeApp({
   })
 
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  redirectUri: window.location.origin + "/callback"
+});
 const auth = getAuth()
 
 

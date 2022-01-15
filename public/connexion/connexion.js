@@ -13,11 +13,20 @@ const firebaseApp = initializeApp({
     measurementId: "G-J5N38BGN7R"
   })
 
+const provider = new GoogleAuthProvider();
 const auth = getAuth()
+
+if(sessionStorage.getItem("logged") == 0){
+    signInWithRedirect(auth, provider)
+}
+sessionStorage.setItem("logged", 1);
+
+
 
 
 getRedirectResult(auth)
   .then(result => {
+    console.log("redirected")
     const credential = GoogleAuthProvider.credentialFromResult(result)
     const token = credential.accessToken
 
@@ -39,29 +48,10 @@ getRedirectResult(auth)
       sessionStorage.setItem("week", 2);
       sessionStorage.setItem("user", user.displayName);
 
-      var database = firebase.database()
-
-        let user = sessionStorage.getItem("user");
-
-        database.ref("users/" + user + "/score").once("value", function(snapshot) {
-            if(snapshot.val() == null){
-                database.ref("users/" + user + "/score").set(0);
-                database.ref("users/" + user + "/score").once("value", function(snapshot) {
-                console.log(snapshot.val())
-                if(snapshot.val() == 0){
-                    setTimeout(function() {
-                        window.location.href = "menu/menu.html";
-                    },1000);
-               
-                }
-        })
+      window.location.href = "../fin.html";
     }else{
-        window.location.href = "menu/menu.html";
-    }
-})
-    }else{
+      document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
       console.log("Merci de prendre une adresse mail beaucamps")
-      window.location.href = "../index.html";
     }
   })
   .catch(error => {
