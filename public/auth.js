@@ -22,7 +22,7 @@ if (existCookie("user")){
   window.location.href ="menu/menu.html";
 }
         
-window.location.href = "connexion/connexion.html";
+//window.location.href = "connexion/connexion.html";
 
 console.log("start")
 console.log(document.cookie)
