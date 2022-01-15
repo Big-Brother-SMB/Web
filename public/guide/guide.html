@@ -3,11 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>Foyer</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="guide.css">
   </head>
   
   <body>
-    <h1>
+	<header>
+        <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
+        <h1 id="logo">Le Foyer</h1>
+      <ul id="menu-demo2" >
+        <li><a ><button_blue type="button" value="Retour" onclick="history.back()">Retour</button_blue></a></li>      
+      </ul>
+    </header>
+
+    <h1 class="titre">
 	Voici le guide de notre application, c'est ici que se situent toutes les informations concernant son utilisation.
 	</h1>
 	
@@ -55,11 +63,25 @@
 	
 	<div>
 
-		<button_blue type="button" value="Retour" onclick="history.back()">Retour</button_blue>
+		
 		
 	</div>
 	
-	
+	<footer>
+        <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+
+            <br/>
+            <hr style="width: 25%;" />
+
+            <a href="" target="_blank" style="text-decoration: none;">
+                <p style="font-weight:500; color:black;font-size:16px;letter-spacing: 1px;">Version Beta</p>
+            </a>
+
+            <br/>
+            <br/>
+
+        </div>
+    </footer>
 	
 	
   </body>

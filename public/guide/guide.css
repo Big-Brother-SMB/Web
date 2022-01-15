@@ -1,7 +1,7 @@
 h1  {
-  font-size: 40px;
-}
-body,
+    font-size: 40px;
+  }
+  body,
   h1,
   ul {
     margin: 0;
@@ -103,64 +103,17 @@ body,
       color:#fff;
       text-transform:inherit;
       }
-      
+        
+        
+
 p  {
-  color: black;
-  padding-top: 15px;
-  font-size: x-large;
-  font-family: "Optima", sans-serif ;
+    color: black;
+    padding-top: 15px;
+    font-family: "Optima", sans-serif ;
+    }
+
+.titre  {
+    font-size: 3em;
+    color: black;
+    text-align: center;
 }
-
-a  {
-  color: black;
-}
-
-.cgu  {
-  text-align: center;
-  border: 0px;
-}
-
-
-  .button {
-  border: none;
-  display: block;
-  text-align: center;
-  cursor: pointer;
-  text-transform: uppercase;
-  outline: none;
-  overflow: hidden;
-  position: relative;
-  color: #eeeeee;
-  font-weight: 600;
-  font-size: 50px;
-  background-color: #153f00;
-  padding: 15px 50px;
-  margin: 0 auto;
-  }
-  .button span {
-  position: relative; 
-  z-index: 1;
-  }
-  .button:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 470%;
-  width: 140%;
-  background: #52b71f;
-  -webkit-transition: all .5s ease-in-out;
-  transition: all .5s ease-in-out;
-  -webkit-transform: translateX(-100%) translateY(-25%) rotate(45deg);
-  transform: translateX(-100%) translateY(-25%) rotate(45deg);
-  }
-  .button:hover:after {
-  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
-  transform: translateX(-9%) translateY(-25%) rotate(45deg);
-  }
-
-.soustitre  {
-  text-align: center;
-  font-size: small;
-}
-

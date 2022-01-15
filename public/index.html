@@ -6,21 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
     <script type="module" src="auth.js"></script>
+    
 </head>
 <body>
     <header>
         <img class="headerimg" src="Images/logo.png" alt="logo Lycée" >
-        <h1 id="logo">Foyer SMB</h1>
+        <h1 id="logo">Le Foyer</h1>
       <ul id="menu-demo2" >
-        <li><a href="../guide/guide.html" id="aide">Informations</a></li>      
+        <li><a href="../guide/guide.html" id="infos">Tutoriel</a></li>      
       </ul>
     </header>
-    <p>Authentification (adresse mail Beaucamps)</p>
-    <button id="popup" class="action">connexion</button>
-    <p>
-        J'accepte la politique de confidentialitée des données : <input type="checkbox" value="RGPD" />
+
+    <p class="cgu">
+        J'accepte la <a href="cgu.html">politique de confidentialitée des données</a>  : <input type="checkbox" value="RGPD" />
     </p>
-    <h2 id="infos"></h2>
-    <p>Version beta</p>
+    <div class="container">
+        <button  type="button" id="popup" class="button"><span>Connexion</span></button>
+    </div>
+    <p class="soustitre">(adresse mail Beaucamps uniquement)</p>
+
+    
+    <footer>
+        <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+
+            <br/>
+            <hr style="width: 25%;" />
+
+            <a href="" target="_blank" style="text-decoration: none;">
+                <p style="font-weight:500; color:black;font-size:16px;letter-spacing: 1px;">Version Beta</p>
+            </a>
+
+            <br/>
+            <br/>
+
+        </div>
+    </footer>
 </body>
 </html>

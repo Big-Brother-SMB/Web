@@ -13,10 +13,10 @@ article{
 header {
   align-items: center;
   display: flex;
-  margin: 5px;
+  margin: 0px;
   background: #486381;
   position: sticky;
-  top: 5px;
+  top: 0px;
 }
 
 #logo,
