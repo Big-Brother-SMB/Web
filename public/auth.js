@@ -1,6 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential, getRedirectResult} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
 
+
+document.getElementById("body").style = "display:none"
+
 if(sessionStorage.getItem("logged") == 1){
   window.location.href ="menu/menu.html";
 }
@@ -60,7 +63,11 @@ document.getElementById("popup").onclick = () => {
 
 getRedirectResult(auth)
   .then(result => {
+
+    document.getElementById("body").style = "display:none"
     const credential = GoogleAuthProvider.credentialFromResult(result)
+    
+    document.getElementById("body").style = "display:none"
     const token = credential.accessToken
 
     const user = result.user
@@ -88,5 +95,7 @@ getRedirectResult(auth)
     }
   })
   .catch(error => {
+    document.getElementById("body").style = "display:block"
+    document.getElementById("chargement").style = "display:none"
     const err = error
   })
