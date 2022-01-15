@@ -22,10 +22,15 @@ console.log("read : " + readCookie("user"))
 if (existCookie("user")){
     console.log("user exist")
 }else{
-    deco()
+    //deco()
 }
 
 let user = readCookie("user")
+
+if(user == null){
+    deco()
+}
+
 function deco(){
     document.cookie = "user=; expires=Mon, 02 Oct 2000 01:00:00 GMT; path=/";
     sessionStorage.setItem("logged", 0);
