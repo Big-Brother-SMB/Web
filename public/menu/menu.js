@@ -14,13 +14,22 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database()
 
-let user = sessionStorage.getItem("user");
+console.log(document.cookie)
+console.log(cookie)
+
+console.log("read : " + readCookie("user"))
+
+if (existCookie("user")){
+    console.log("user exist")
+}else{
+    deco()
+}
+
+let user = readCookie("user")
 function deco(){
+    document.cookie = "user=; expires=Mon, 02 Oct 2000 01:00:00 GMT; path=/";
     sessionStorage.setItem("logged", 0);
     window.location.href = "../index.html";
-}
-if(user == null){
-    deco()
 }
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
     if(snapshot.val() == null){

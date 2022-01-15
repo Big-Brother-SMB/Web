@@ -5,10 +5,23 @@ if(sessionStorage.getItem("logged") == 1){
   window.location.href ="menu/menu.html";
 }
 
+console.log("start")
+console.log(document.cookie)
+
+
+
+let tablecookie = document.cookie.split(';');
+console.log(tablecookie)
+
+if (existCookie("user")){
+  sessionStorage.setItem("logged", 1);
+  sessionStorage.setItem("user", valeurcookie);
+  window.location.href ="menu/menu.html";
+}
+        
 //window.location.href = "connexion/connexion.html";
 
 console.log("start")
-document.cookie = "test"
 console.log(document.cookie)
 
 const firebaseApp = initializeApp({
@@ -59,7 +72,7 @@ getRedirectResult(auth)
       sessionStorage.setItem("logged", 1);
       sessionStorage.setItem("week", 2);
       sessionStorage.setItem("user", user.displayName);
-
+      document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
       window.location.href = "fin.html";
     }else{
       document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
