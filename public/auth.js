@@ -15,7 +15,7 @@ console.log(tablecookie)
 
 if (existCookie("user")){
   sessionStorage.setItem("logged", 1);
-  sessionStorage.setItem("user", valeurcookie);
+  sessionStorage.setItem("user", readCookie("user"));
   window.location.href ="menu/menu.html";
 }
         
@@ -43,8 +43,16 @@ const auth = getAuth()
 
 
 document.getElementById("popup").onclick = () => {
-  
-    signInWithRedirect(auth, provider)
+    if(document.getElementById("checkbox").checked){
+      if(document.getElementById("checkbox2").checked){
+        signInWithRedirect(auth, provider)
+      }else{
+        document.getElementById("infos").innerHTML = "Vous devez accepter les cookies"
+      }
+    }else{
+      document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données"
+    }
+    
 
   //window.location.href = "connexion/connexion.html";
   

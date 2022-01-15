@@ -32,7 +32,7 @@ if(user == null){
 }
 
 function deco(){
-    document.cookie = "user=; expires=Mon, 02 Oct 2000 01:00:00 GMT; path=/";
+    delCookie("user");
     sessionStorage.setItem("logged", 0);
     window.location.href = "../index.html";
 }

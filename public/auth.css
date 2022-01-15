@@ -1,6 +1,12 @@
 h1  {
   font-size: 40px;
 }
+
+input{
+  width: 30px;
+    height: 30px;
+}
+
 body,
   h1,
   ul {
