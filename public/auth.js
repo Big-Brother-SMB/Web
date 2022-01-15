@@ -22,7 +22,7 @@ if (existCookie("user")){
   window.location.href ="menu/menu.html";
 }
         
-//window.location.href = "connexion/connexion.html";
+window.location.href = "connexion/connexion.html";
 
 console.log("start")
 console.log(document.cookie)
@@ -39,9 +39,6 @@ const firebaseApp = initializeApp({
   })
 
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({
-  redirectUri: window.location.origin + "/callback"
-});
 const auth = getAuth()
 
 
@@ -64,15 +61,15 @@ document.getElementById("popup").onclick = () => {
 getRedirectResult(auth)
   .then(result => {
 
-    document.getElementById("body").style = "display:none"
     const credential = GoogleAuthProvider.credentialFromResult(result)
+    console.log("ok1")
     
-    document.getElementById("body").style = "display:none"
     const token = credential.accessToken
 
     const user = result.user
 
     if(user.email.split("@")[1] == "stemariebeaucamps.fr"){
+      console.log("ok")
        
       signInWithCredential(auth, credential).catch((error) => {
         const errorCode = error.code;
@@ -90,11 +87,16 @@ getRedirectResult(auth)
       document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
       window.location.href = "fin.html";
     }else{
+      document.getElementById("body").style = "display:block"
+    document.getElementById("chargement").style = "display:none"
       document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
+      
       console.log("Merci de prendre une adresse mail beaucamps")
+      
     }
   })
   .catch(error => {
+    console.log(error)
     document.getElementById("body").style = "display:block"
     document.getElementById("chargement").style = "display:none"
     const err = error

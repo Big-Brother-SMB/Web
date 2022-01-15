@@ -1,6 +1,28 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential, getRedirectResult} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
 
+if(sessionStorage.getItem("logged") == 1){
+  window.location.href ="../menu/menu.html";
+}
+
+console.log("start")
+console.log(document.cookie)
+
+
+
+let tablecookie = document.cookie.split(';');
+console.log(tablecookie)
+
+if (existCookie("user")){
+  sessionStorage.setItem("logged", 1);
+  sessionStorage.setItem("user", valeurcookie);
+  window.location.href ="../menu/menu.html";
+}
+        
+//window.location.href = "connexion/connexion.html";
+
+console.log("start")
+console.log(document.cookie)
 
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyAPJ-33mJESHMcvEtaPX7JwIajUawblSuY",
@@ -14,19 +36,22 @@ const firebaseApp = initializeApp({
   })
 
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  redirectUri: window.location.origin + "/callback"
+});
 const auth = getAuth()
 
-if(sessionStorage.getItem("logged") == 0){
+
+document.getElementById("popup").onclick = () => {
+  
     signInWithRedirect(auth, provider)
+
+  //window.location.href = "connexion/connexion.html";
+  
 }
-sessionStorage.setItem("logged", 1);
-
-
-
 
 getRedirectResult(auth)
   .then(result => {
-    console.log("redirected")
     const credential = GoogleAuthProvider.credentialFromResult(result)
     const token = credential.accessToken
 
@@ -47,7 +72,7 @@ getRedirectResult(auth)
       sessionStorage.setItem("logged", 1);
       sessionStorage.setItem("week", 2);
       sessionStorage.setItem("user", user.displayName);
-
+      document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
       window.location.href = "../fin.html";
     }else{
       document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."

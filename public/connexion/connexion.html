@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
+    <script src="../common.js"></script>
     <script type="module" src="connexion.js"></script>
     
 </head>
@@ -17,7 +18,16 @@
       </ul>
     </header>
 
-    <p>Chargement en cours</p>
+    <article id="body">
+    <p class="cgu">
+        J'accepte la <a href="cgu.html">politique de confidentialitée des données</a>  : <input type="checkbox" value="RGPD" />
+    </p>
+    <div class="container">
+        <button  type="button" id="popup" class="button"><span>Connexion</span></button>
+    </div>
+    <p id = "info"></p>
+    <p class="soustitre">(adresse mail Beaucamps uniquement)</p>
+    </article>
     
     <footer>
         <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
