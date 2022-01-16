@@ -172,11 +172,11 @@ function refreshDatabase(){
     });
 
 
-    let text = "numero " + week
+    let text = "semaine numero " + week
     if(week == actualWeek){
-        text = "actuelle"
+        text = "cette semaine"
     }
-    document.getElementById("semaine").innerHTML = "semaine " + text
+    document.getElementById("semaine").innerHTML = text
 
     nbFois = 0;
     for(let j = 0; j < 4; j++){
