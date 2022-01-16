@@ -171,12 +171,13 @@ function refreshDatabase(){
         document.getElementById("score").innerHTML = "votre score est de : " + snapshot.val()
     });
 
+    let sn = ["X","24 au 28 janvier","31 janvier au 4 février","7 au 11 févier","14 au 18 févier"]
 
-    let text = "semaine numero " + week
+    let text = "semaine du " + sn[week-actualWeek] 
     if(week == actualWeek){
         text = "cette semaine"
     }
-    document.getElementById("semaine").innerHTML = text
+    document.getElementById("semaine").innerHTML = text + " (n°" + week + ")"
 
     nbFois = 0;
     for(let j = 0; j < 4; j++){
