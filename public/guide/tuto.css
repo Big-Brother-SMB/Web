@@ -1,10 +1,12 @@
 h1  {
     font-size: 60px;
+    white-space: wrap;
   }
   
   h2  {
     font-size: 40px;
     color: black;
+    white-space: wrap;
   }
   
   input{
