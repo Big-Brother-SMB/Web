@@ -3,6 +3,7 @@ import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, sig
 
 
 document.getElementById("body").style = "display:none"
+document.getElementById("chargement").style = "display:block"
 
 if(sessionStorage.getItem("logged") == 1){
   window.location.href ="menu/menu.html";
@@ -82,7 +83,7 @@ getRedirectResult(auth)
       });
 
       sessionStorage.setItem("logged", 1);
-      sessionStorage.setItem("week", 2);
+      sessionStorage.setItem("week", actualWeek);
       sessionStorage.setItem("user", user.displayName);
       document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
       window.location.href = "fin.html";

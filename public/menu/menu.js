@@ -65,7 +65,7 @@ document.getElementById("amis").addEventListener("click", function() {
 
 
 
-let actualWeek = 2//(new Date()).getWeek();
+//(new Date()).getWeek();
 let week = parseInt(sessionStorage.getItem("week"))
 console.log(actualWeek)
 

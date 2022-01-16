@@ -33,3 +33,7 @@ function existCookie(key){
     
 }
 
+
+// semaine
+
+let actualWeek = 3;
