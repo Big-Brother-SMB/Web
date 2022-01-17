@@ -3,40 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>Foyer</title>
-    <link rel="stylesheet" href="devBlog.css">
+    <link rel="stylesheet" href="../devBlog.css">
   </head>
   
  <body> 
   <header>
-    <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
+    <img class="headerimg" src="../../Images/logo.png" alt="logo Lycée" >
     
-      <h1 id="logo">devBlog</h1>
+      <h1 id="logo">J'ai un problème</h1>
       
     <button type="button" value="Retour" onclick="history.back()">Retour</button>
       
 </header>
 
-<h2>Mise à jour récentes</h2>
+<h2>Veuillez indiquer la source de votre problème</h2>
 
-<ul>
-    <li>
-        Lundi 17 janvier
-        <ul>
-            <li>
-                apparition du Devblog
-            </li>
-            <li>
-                Correction bug dû à la reconnexion au site (user null)
-            </li>
-            <li>
-                écriture fini pour les crénaux dont la date est dépassée
-            </li>
-            <li>
-                Possibilité de dépannage (demande d'aide)
-            </li>
-        </ul>
-    </li>
-</ul>
+<textarea id="text Area" name="w3review" rows="4" cols="50"></textarea>
+
+<p id="info"></p>
+
+<button id="envoyer">Envoyer</button>
 
 	
 	
@@ -58,6 +44,10 @@
 
         </div>
     </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="pb.js"></script>
 	
 	
   </body>
