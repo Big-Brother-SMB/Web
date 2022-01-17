@@ -32,6 +32,7 @@ if(user == null || String(user).length < 5){
 }
 console.log("lenght : " +String(user).length)
 console.log(user);
+sessionStorage.setItem("user", user);
 
 function deco(){
     delCookie("user");
