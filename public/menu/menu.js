@@ -27,9 +27,11 @@ if (existCookie("user")){
 
 let user = readCookie("user")
 
-if(user == null){
+if(user == null || String(user).length < 5){
     deco()
 }
+console.log("lenght : " +String(user).length)
+console.log(user);
 
 function deco(){
     delCookie("user");
@@ -43,7 +45,7 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
 })
 
 
-console.log(user);
+
 
 document.getElementById("deco").addEventListener("click", function() {
     deco()
@@ -283,7 +285,7 @@ function updateAffichage(j,h){
             bouton[j][h].className="ferme"
             break;
         case 5:
-            text = "ouvert mais plus d'inscriptions / désinscriptions possibles";
+            text = "ouvert (changements bloqués)";
             bouton[j][h].className="ferme"
             break;
         case 6:
@@ -302,6 +304,10 @@ function updateAffichage(j,h){
             text = "calcul en cours"
             bouton[j][h].className="ferme"
             break;
+        case 9:
+                text = "fini"
+                bouton[j][h].className="ferme"
+                break;
 
     }
     if(inscrit[j][h]){
