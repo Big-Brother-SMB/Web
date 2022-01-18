@@ -14,13 +14,15 @@ const firebaseConfig = {
 
 var database = firebase.database()
 
-let d = new Date();
+let d = new Date(2022, 1, 18, 11, 05, 0, 0);
 
 const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
 let user = sessionStorage.getItem("user");
 let j = jour[d.getDay() - 1];
 let h;
-if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes <=55)){
+console.log("heure : " + d.getHours())
+console.log("min : " + d.getMinutes())
+if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
     h = "/11h";
 }else{
     h = "/12h";
