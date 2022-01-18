@@ -103,6 +103,7 @@ getRedirectResult(auth)
       let classe = sessionStorage.getItem("classe");
       document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
       writeCookie("classe",classe)
+      writeCookie("week",actualWeek)
       window.location.href = "fin.html";
     }else{
       document.getElementById("body").style = "display:block"

@@ -73,18 +73,20 @@ document.getElementById("amis").addEventListener("click", function() {
 
 
 //(new Date()).getWeek();
-let week = parseInt(sessionStorage.getItem("week"))
+console.log("week : " + week)
 console.log(actualWeek)
 
 document.getElementById("semainePrecedente").addEventListener("click", function() {
     sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) - 1);
     week = week - 1
+    writeCookie("week",week)
     refreshDatabase()
 });
 
 document.getElementById("semaineActuelle").addEventListener("click", function() {
     sessionStorage.setItem("week", actualWeek);
     week = actualWeek
+    writeCookie("week",week)
     refreshDatabase()
 });
 
@@ -92,6 +94,7 @@ document.getElementById("semaineActuelle").addEventListener("click", function() 
 document.getElementById("semaineSuivante").addEventListener("click", function() {
     sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) + 1);
     week = week + 1
+    writeCookie("week",week)
     refreshDatabase()
 });
 

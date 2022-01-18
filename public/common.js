@@ -20,6 +20,10 @@ function readCookie(key){
     return cookie[key];
 }
 
+function readIntCookie(key){
+    return parseInt(cookie[key]);
+}
+
 function delCookie(key){
     document.cookie = key + "=; expires=Mon, 02 Oct 2000 01:00:00 GMT; path=/";
 }
@@ -35,6 +39,7 @@ function existCookie(key){
 
 let user = readCookie("user")
 let classe = readCookie("classe")
+let week = readIntCookie("week")
 
 
 // semaine
