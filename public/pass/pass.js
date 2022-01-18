@@ -14,7 +14,7 @@ const firebaseConfig = {
 
 var database = firebase.database()
 
-let d = new Date(2022, 1, 18, 11, 05, 0, 0);
+let d = new Date();
 
 const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
 let user = sessionStorage.getItem("user");
