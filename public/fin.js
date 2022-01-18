@@ -20,19 +20,18 @@ let classe = sessionStorage.getItem("classe");
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
     if(snapshot.val() == null){
         database.ref("users/" + user + "/score").set(0);
-        database.ref("users/" + user + "/score").once("value", function(snapshot) {
-            console.log(snapshot.val())
-            if(snapshot.val() == 0){
-                setTimeout(function() {
-                    window.location.href = "menu/menu.html";
-                },1000);
-               
-            }
-        })
-    }else{
-        window.location.href = "menu/menu.html";
     }
 })
+
+database.ref("users/" + user + "/classe").once("value", function(snapshot) {
+    if(snapshot.val() == null){
+        database.ref("users/" + user + "/classe").set(classe);
+    }
+})
+
+setTimeout(function() {
+    window.location.href = "menu/menu.html";
+},2000);
 
 
 

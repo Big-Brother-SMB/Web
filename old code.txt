@@ -33,3 +33,15 @@
         <option>TI</option>
         <option>TJ</option>
         <option>TK</option>
+
+
+
+        database.ref("users/" + user + "/score").once("value", function(snapshot) {
+            console.log(snapshot.val())
+            if(snapshot.val() == 0){
+                setTimeout(function() {
+                    window.location.href = "menu/menu.html";
+                },1000);
+               
+            }
+        })
