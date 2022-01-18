@@ -15,6 +15,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database()
 
 let user = sessionStorage.getItem("user");
+let classe = sessionStorage.getItem("classe");
 
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
     if(snapshot.val() == null){

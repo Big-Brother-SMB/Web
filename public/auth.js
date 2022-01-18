@@ -42,14 +42,26 @@ const firebaseApp = initializeApp({
 const provider = new GoogleAuthProvider();
 const auth = getAuth()
 
+for(i in listClasse){
+  let opt = document.createElement("option")
+  opt.innerHTML = listClasse[i]
+  document.getElementById("classe").appendChild(opt);
+}
+
 
 document.getElementById("popup").onclick = () => {
     if(document.getElementById("checkbox").checked){
       if(document.getElementById("checkbox2").checked){
-        signInWithRedirect(auth, provider)
+        if(document.getElementById("classe").selectedIndex != 0){
+          console.log(document.getElementById("classe").selectedIndex)
+          signInWithRedirect(auth, provider)
+        }else{
+          document.getElementById("infos").innerHTML = "Vous devez selectionner votre classe"
+        }
       }else{
         document.getElementById("infos").innerHTML = "Vous devez accepter les cookies"
       }
+      
     }else{
       document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données"
     }
@@ -81,11 +93,13 @@ getRedirectResult(auth)
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
       });
-
+    let classe = listClasse[document.getElementById("classe").selectedIndex]
       sessionStorage.setItem("logged", 1);
       sessionStorage.setItem("week", actualWeek);
       sessionStorage.setItem("user", user.displayName);
+      sessionStorage.setItem("classe", classe);
       document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
+      writeCookie("classe",classe)
       window.location.href = "fin.html";
     }else{
       document.getElementById("body").style = "display:block"

@@ -25,13 +25,17 @@ if (existCookie("user")){
     //deco()
 }
 
-let user = readCookie("user")
+
 
 if(user == null || String(user).length < 5){
     deco()
 }
+if(classe == null){
+    deco()
+}
 console.log("lenght : " +String(user).length)
 console.log(user);
+console.log("classe : " + classe);
 sessionStorage.setItem("user", user);
 
 function deco(){

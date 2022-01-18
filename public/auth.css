@@ -12,6 +12,15 @@ input{
     height: 30px;
 }
 
+select{
+  font-size: 50px;
+  width: 200px;
+}
+
+body{
+  text-align: center;
+}
+
 body,
   h1,
   ul {
