@@ -49,11 +49,14 @@ for(i in listClasse){
 }
 
 
+
 document.getElementById("popup").onclick = () => {
     if(document.getElementById("checkbox").checked){
       if(document.getElementById("checkbox2").checked){
         if(document.getElementById("classe").selectedIndex != 0){
-          console.log(document.getElementById("classe").selectedIndex)
+          let classe = listClasse[document.getElementById("classe").selectedIndex - 1]
+          console.log(classe)
+          sessionStorage.setItem("classe", classe);
           signInWithRedirect(auth, provider)
         }else{
           document.getElementById("infos").innerHTML = "Vous devez selectionner votre classe"
@@ -93,11 +96,11 @@ getRedirectResult(auth)
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
       });
-    let classe = listClasse[document.getElementById("classe").selectedIndex]
+    
       sessionStorage.setItem("logged", 1);
       sessionStorage.setItem("week", actualWeek);
       sessionStorage.setItem("user", user.displayName);
-      sessionStorage.setItem("classe", classe);
+      let classe = sessionStorage.getItem("classe");
       document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
       writeCookie("classe",classe)
       window.location.href = "fin.html";
