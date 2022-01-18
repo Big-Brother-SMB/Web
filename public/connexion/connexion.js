@@ -1,6 +1,28 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential, getRedirectResult} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
 
+if(sessionStorage.getItem("logged") == 1){
+  window.location.href ="../menu/menu.html";
+}
+
+console.log("start")
+console.log(document.cookie)
+
+
+
+let tablecookie = document.cookie.split(';');
+console.log(tablecookie)
+
+if (existCookie("user")){
+  sessionStorage.setItem("logged", 1);
+  sessionStorage.setItem("user", valeurcookie);
+  window.location.href ="../menu/menu.html";
+}
+        
+//window.location.href = "connexion/connexion.html";
+
+console.log("start")
+console.log(document.cookie)
 
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyAPJ-33mJESHMcvEtaPX7JwIajUawblSuY",
@@ -13,8 +35,20 @@ const firebaseApp = initializeApp({
     measurementId: "G-J5N38BGN7R"
   })
 
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  redirectUri: window.location.origin + "/callback"
+});
 const auth = getAuth()
 
+
+document.getElementById("popup").onclick = () => {
+  
+    signInWithRedirect(auth, provider)
+
+  //window.location.href = "connexion/connexion.html";
+  
+}
 
 getRedirectResult(auth)
   .then(result => {
@@ -38,30 +72,11 @@ getRedirectResult(auth)
       sessionStorage.setItem("logged", 1);
       sessionStorage.setItem("week", 2);
       sessionStorage.setItem("user", user.displayName);
-
-      var database = firebase.database()
-
-        let user = sessionStorage.getItem("user");
-
-        database.ref("users/" + user + "/score").once("value", function(snapshot) {
-            if(snapshot.val() == null){
-                database.ref("users/" + user + "/score").set(0);
-                database.ref("users/" + user + "/score").once("value", function(snapshot) {
-                console.log(snapshot.val())
-                if(snapshot.val() == 0){
-                    setTimeout(function() {
-                        window.location.href = "menu/menu.html";
-                    },1000);
-               
-                }
-        })
+      document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
+      window.location.href = "../fin.html";
     }else{
-        window.location.href = "menu/menu.html";
-    }
-})
-    }else{
+      document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
       console.log("Merci de prendre une adresse mail beaucamps")
-      window.location.href = "../index.html";
     }
   })
   .catch(error => {

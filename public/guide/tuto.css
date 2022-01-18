@@ -1,6 +1,19 @@
 h1  {
-    font-size: 40px;
+    font-size: 60px;
+    white-space: wrap;
   }
+  
+  h2  {
+    font-size: 40px;
+    color: black;
+    white-space: wrap;
+  }
+  
+  input{
+    width: 30px;
+      height: 30px;
+  }
+  
   body,
     h1,
     ul {

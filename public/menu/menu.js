@@ -14,13 +14,30 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database()
 
-let user = sessionStorage.getItem("user");
+console.log(document.cookie)
+console.log(cookie)
+
+console.log("read : " + readCookie("user"))
+
+if (existCookie("user")){
+    console.log("user exist")
+}else{
+    //deco()
+}
+
+let user = readCookie("user")
+
+if(user == null || String(user).length < 5){
+    deco()
+}
+console.log("lenght : " +String(user).length)
+console.log(user);
+sessionStorage.setItem("user", user);
+
 function deco(){
+    delCookie("user");
     sessionStorage.setItem("logged", 0);
     window.location.href = "../index.html";
-}
-if(user == null){
-    deco()
 }
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
     if(snapshot.val() == null){
@@ -29,7 +46,7 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
 })
 
 
-console.log(user);
+
 
 document.getElementById("deco").addEventListener("click", function() {
     deco()
@@ -51,7 +68,7 @@ document.getElementById("amis").addEventListener("click", function() {
 
 
 
-let actualWeek = 2//(new Date()).getWeek();
+//(new Date()).getWeek();
 let week = parseInt(sessionStorage.getItem("week"))
 console.log(actualWeek)
 
@@ -157,12 +174,13 @@ function refreshDatabase(){
         document.getElementById("score").innerHTML = "votre score est de : " + snapshot.val()
     });
 
+    let sn = ["X","24 au 28 janvier","31 janvier au 4 février","7 au 11 févier","14 au 18 févier"]
 
-    let text = "numero " + week
+    let text = "semaine du " + sn[week-actualWeek] 
     if(week == actualWeek){
-        text = "actuelle"
+        text = "cette semaine"
     }
-    document.getElementById("semaine").innerHTML = "semaine " + text
+    document.getElementById("semaine").innerHTML = text + " (n°" + week + ")"
 
     nbFois = 0;
     for(let j = 0; j < 4; j++){
@@ -268,7 +286,7 @@ function updateAffichage(j,h){
             bouton[j][h].className="ferme"
             break;
         case 5:
-            text = "ouvert mais plus d'inscriptions / désinscriptions possibles";
+            text = "ouvert (changements bloqués)";
             bouton[j][h].className="ferme"
             break;
         case 6:
@@ -287,6 +305,10 @@ function updateAffichage(j,h){
             text = "calcul en cours"
             bouton[j][h].className="ferme"
             break;
+        case 9:
+                text = "fini"
+                bouton[j][h].className="ferme"
+                break;
 
     }
     if(inscrit[j][h]){

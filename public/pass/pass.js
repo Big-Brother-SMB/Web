@@ -20,7 +20,9 @@ const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
 let user = sessionStorage.getItem("user");
 let j = jour[d.getDay() - 1];
 let h;
-if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes <=55)){
+console.log("heure : " + d.getHours())
+console.log("min : " + d.getMinutes())
+if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
     h = "/11h";
 }else{
     h = "/12h";
@@ -28,7 +30,7 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes <=55)){
 console.log(j);
 console.log(h);
 document.getElementById("pass").innerHTML = "<img width=\"1000\" height=\"1000\" alt=\"\" src=\"croix.png\" />"
-database.ref("foyer_midi/semaine" + 2 + "/" + j + h + "/demandes").once("value", function(snapshot) {
+database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/demandes").once("value", function(snapshot) {
     snapshot.forEach(function(child) {
         if(child.key == user){
             console.log("inscrit");
