@@ -16,9 +16,7 @@ var database = firebase.database()
 
 let d = new Date();
 
-const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
-let user = sessionStorage.getItem("user");
-let j = jour[d.getDay() - 1];
+let j = dayNum[d.getDay() - 1];
 let h;
 console.log("heure : " + d.getHours())
 console.log("min : " + d.getMinutes())
