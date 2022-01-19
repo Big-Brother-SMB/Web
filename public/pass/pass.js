@@ -16,9 +16,7 @@ var database = firebase.database()
 
 let d = new Date();
 
-const jour = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
-let user = sessionStorage.getItem("user");
-let j = jour[d.getDay() - 1];
+let j = dayNum[d.getDay() - 1];
 let h;
 console.log("heure : " + d.getHours())
 console.log("min : " + d.getMinutes())
@@ -51,7 +49,8 @@ document.getElementById("retour").addEventListener("click", function() {
 
 function loop(){
     d = new Date();
-    document.getElementById("heure").innerHTML = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+
+    document.getElementById("heure").innerHTML = d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
 
     setTimeout(loop,1000);
 }

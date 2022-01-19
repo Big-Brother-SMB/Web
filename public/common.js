@@ -45,6 +45,8 @@ let week = readIntCookie("week")
 // semaine
 
 let actualWeek = 3;
+const day = ["lundi", "mardi","jeudi","vendredi"];
+const dayNum = ["1lundi", "2mardi","err","3jeudi","4vendredi"];
 
 //classe
 let listClasse = ["S1","S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
