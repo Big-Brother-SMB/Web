@@ -18,7 +18,7 @@ const menu = "../../menu/menu.html"
 
 document.getElementById("envoyer").addEventListener("click", function() {
     let message = document.getElementById("text Area").value
-    if(message.length > 200 && message.length < 20){
+    if(message.length <= 200 && message.length >= 20){
         console.log(message)
         database.ref("probleme/" + user).set(message)
         document.getElementById("info").style.color = "black"
@@ -27,6 +27,9 @@ document.getElementById("envoyer").addEventListener("click", function() {
             window.location.href = menu;
         },1000);
         
+    }else{
+        document.getElementById("info").style.color = "red"
+        document.getElementById("info").innerHTML = "Taille de message non réglementaire"
     }
     
 });
