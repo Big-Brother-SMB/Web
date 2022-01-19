@@ -49,7 +49,8 @@ document.getElementById("retour").addEventListener("click", function() {
 
 function loop(){
     d = new Date();
-    document.getElementById("heure").innerHTML = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+
+    document.getElementById("heure").innerHTML = d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
 
     setTimeout(loop,1000);
 }
