@@ -34,18 +34,18 @@ nav {
   height: 150px;
 }
 
-nav  {
+header nav  {
   display: flex;
   justify-content: space-around;
   
 }
 
-ul li {
+header ul li {
   list-style: none; 
   font-size: 30px;
   margin-right: 20px;
 }
-nav a {
+header nav a {
   text-decoration:none;
   color: white;  
 }
@@ -189,6 +189,22 @@ h2{
   width: 313px;
 }
 
+.amisdiv{
+  text-align: center;
+}
+.semainediv{
+  text-align: center;
+}
+.heurediv{
+  text-align: center;
+}
+.creneaudiv{
+  text-align: center;
+}
+.passdiv{
+  text-align: center;
+}
+
 .action{
   background-color: #6b6dd4;
   color: rgb(0, 0, 0);
@@ -197,6 +213,7 @@ h2{
   height: 150px;
   margin: 30px 200px;
   font-size: 25px;
+  text-align: center;
 }
 
 #heure11{
