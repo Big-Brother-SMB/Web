@@ -43,7 +43,7 @@ header nav  {
 header ul li {
   list-style: none; 
   font-size: 30px;
-  margin-right: 20px;
+
 }
 header nav a {
   text-decoration:none;
@@ -106,21 +106,21 @@ header nav a {
     font-family:arial;
     }
     #menu-demo2 ul a{
-    padding:8px 0;
+    padding:8px 0px;
     }
     #menu-demo2 li:hover li a{
     color:#fff;
     text-transform:inherit;
     }
-    .tuto  {
-      border-radius:8px 8px 8px 8px;
-      background-color: #3d546e;
-      margin-right: 20px;
-    }
+.tuto  {
+  border-radius:8px 8px 8px 8px;
+  background-color: #3d546e;
+  margin-right: 20px;
+}
 
-    .tuto:hover  {
-      background:#2e3f53;
-    }
+.tuto:hover  {
+  background:#2e3f53;
+}
 
 button{
   background-color: #ff7be9;
@@ -160,6 +160,19 @@ p{
 
 h1{
   font-size: 40px;
+}
+
+.scorediv  {
+  text-align: center;
+}
+
+.score  {
+    width: 170px;
+    height: 50px;
+    border: 1px solid black;
+    position: relative ;
+    margin-left:auto ;
+    margin-right: auto;
 }
 
 input{
