@@ -183,11 +183,11 @@ function refreshDatabase(){
 
     let sn = ["X","24 au 28 janvier","31 janvier au 4 février","7 au 11 févier","14 au 18 févier"]
 
-    let text = "semaine du " + sn[week-actualWeek] 
+    let text = "Semaine " + week + " du " + sn[week-actualWeek] 
     if(week == actualWeek){
-        text = "cette semaine"
+        text = "Cette semaine"
     }
-    document.getElementById("semaine").innerHTML = text + " (n°" + week + ")"
+    document.getElementById("semaine").innerHTML = text 
 
     nbFois = 0;
     for(let j = 0; j < 4; j++){
@@ -257,26 +257,26 @@ function update(j,h){
 function updateAffichage(j,h){
     let text;
     if(places[j][h] <= 0){
-        text = "plein";
+        text = "Plein";
     }else if(places[j][h] == 1){
-        text = "il reste une place";
+        text = "Il reste une place";
     }else{
-        text = "il reste " + places[j][h] + " places";
+        text = "Il reste " + places[j][h] + " places";
     }
               
     switch (ouvert[j][h]){
         case 0:
-            text = "horaire non planifié"
+            text = "Horaire non planifié"
             bouton[j][h].className="ferme"
             break;
         case 1:
             if(places[j][h] <= 0){
                 bouton[j][h].className="zero"
-                text = "plein";
+                text = "Plein";
             }else{
                 bouton[j][h].className="places"
                 if(places[j][h] == 1){
-                    text = "il reste une place";
+                    text = "Il reste une place";
                 }
             }
             break;
@@ -293,11 +293,11 @@ function updateAffichage(j,h){
             bouton[j][h].className="ferme"
             break;
         case 5:
-            text = "ouvert (changements bloqués)";
+            text = "Ouvert (changements bloqués)";
             bouton[j][h].className="ferme"
             break;
         case 6:
-            text = "vacances"
+            text = "Vacances"
             bouton[j][h].className="ferme"
             break;
         case 7:
@@ -309,18 +309,24 @@ function updateAffichage(j,h){
             text = demandes[j][h] + "/" + total[j][h]
             break;
         case 8:
-            text = "calcul en cours"
+            text = "Calcul en cours"
             bouton[j][h].className="ferme"
             break;
         case 9:
-                text = "fini"
+                text = "Fini"
                 bouton[j][h].className="ferme"
                 break;
 
     }
     if(inscrit[j][h]){
         bouton[j][h].className="inscrit"
-        text = text + "<br>vous êtes inscrit avec " + nbAmis[j][h] + " amis"
+        if (nbAmis[j][h]==1){
+            text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " ami"
+        }
+        else {
+            text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " amis"
+        }
+        
     }
     bouton[j][h].innerHTML = text;
 }
