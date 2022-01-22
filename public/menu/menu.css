@@ -34,20 +34,11 @@ nav {
   height: 150px;
 }
 
-header nav  {
-  display: flex;
-  justify-content: space-around;
-  
-}
 
 header ul li {
   list-style: none; 
   font-size: 30px;
 
-}
-header nav a {
-  text-decoration:none;
-  color: white;  
 }
 
 .ulheader{
@@ -112,6 +103,26 @@ header nav a {
     color:#fff;
     text-transform:inherit;
     }
+
+
+#logo,
+nav {
+  flex : 1;
+}
+
+.headerimg{
+  width: 170px;
+  height: 150px;
+}
+
+
+header ul li {
+  list-style: none; 
+  font-size: 30px;
+
+}
+
+
 .tuto  {
   border-radius:8px 8px 8px 8px;
   background-color: #3d546e;
@@ -166,13 +177,21 @@ h1{
   text-align: center;
 }
 
+.hautpage {
+  display: flex;
+  justify-content: space-between;
+  vertical-align: middle;
+}
+
 .score  {
-    width: 170px;
-    height: 50px;
+    width: 150px;
     border: 1px solid black;
-    position: relative ;
-    margin-left:auto ;
-    margin-right: auto;
+    margin-right: 50px ;
+    padding: 10px;
+    text-align:center ;
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 
 input{
@@ -218,9 +237,22 @@ h2{
   text-align: center;
 }
 
+.actionamis{
+  background:#3d546e;
+  color: white;
+  padding: 10px 10px;
+  width: 192px;
+  height: 72px;
+  margin-left: 50px;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
 .action{
-  background-color: #6b6dd4;
-  color: rgb(0, 0, 0);
+  background:#3d546e;
+  color: white;
   padding: 10px 10px;
   width: 500px;
   height: 150px;
