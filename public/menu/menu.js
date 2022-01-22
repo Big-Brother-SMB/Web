@@ -150,32 +150,6 @@ let nbFois;
 //refreshDatabase();
 function refreshDatabase(){
 
-    /*database.ref("groupes").once("value", function(snapshot) {
-        snapshot.forEach(function(child) {
-            database.ref("groupes/"+ child.key + "/members").once("value", function(snapshot) {
-                let number = snapshot.numChildren();
-                snapshot.forEach(function(child2) {
-                    if(child2.key == user){
-                        database.ref("groupes/"+ child.key + "/members/" + user).once('value').then(function(snapshot) {
-                            let text = "faites parti"
-                            let chef = false
-                            let groupe = child.key
-                            if(snapshot.val() == 1){
-                                chef = true
-                                text = "êtes le chef"
-                            }
-                            sessionStorage.setItem("chef", chef);
-                            sessionStorage.setItem("groupe", groupe);
-                            document.getElementById("infoGroupe").innerHTML = "vous " + text + " du groupe : " + groupe + ", qui comporte " + number + " personne(s)"
-   
-                        });
-                    }
-                });
-            });
-        });
-    
-    });*/
-
     database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
         document.getElementById("score").innerHTML = snapshot.val()+" pts"
     });
@@ -319,8 +293,11 @@ function updateAffichage(j,h){
     }
     if(inscrit[j][h]){
         bouton[j][h].className="inscrit"
-        if (nbAmis[j][h]==1){
-            text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " ami"
+        if (nbAmis[j][h] == 0){
+            text = text + "<br>Vous êtes inscrit"
+        }
+        else if (nbAmis[j][h]==1){
+            text = text + "<br>Vous êtes inscrit avec 1 ami"
         }
         else {
             text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " amis"
