@@ -100,7 +100,6 @@ document.getElementById("semaineSuivante").addEventListener("click", function() 
 
 
 const body = document.getElementById("body");
-const jour = ["lundi", "mardi","jeudi","vendredi"];
 Date.prototype.getWeek = function() {
     console.log(this)
     var onejan = new Date(this.getFullYear(), 0, 1);
@@ -124,7 +123,7 @@ for(let j = 0; j < 4; j++){
     let div = document.createElement("div")
     let text = document.createElement("button")
     text.className = "jours";
-    text.innerHTML = jour[j]
+    text.innerHTML = day[j]
     div.appendChild(text);
     
     bouton[j] = []
@@ -369,7 +368,7 @@ function reload(){
 }
 
 function path(j,h){
-    return "foyer_midi/semaine"+ week + "/" + (j+1) + jour[j] + "/" + (11 + h) + "h"
+    return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
 }
 
 function loop(){

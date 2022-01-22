@@ -16,7 +16,7 @@ var database = firebase.database()
 
 let d = new Date();
 
-let j = dayNum[d.getDay() - 1];
+let j = dayWithMer[d.getDay() - 1];
 let h;
 console.log("heure : " + d.getHours())
 console.log("min : " + d.getMinutes())
