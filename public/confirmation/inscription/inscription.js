@@ -109,7 +109,7 @@ function robi(pers, places, score){
     let divAmis = document.getElementById("amis")
     divAmis.innerHTML = "recherche d'amis en cours"
     let amis = []
-    document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a déjà " + pers + " personnes inscrites pour " + places + " places"
+    document.getElementById("info").innerHTML = "Ce crénau est en mode aléatoire.<br>Il y a " + pers + " personnes inscrites pour " + places + " places"
     document.getElementById("oui").addEventListener("click", function() {
         database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         database.ref(path(j,h) + "/demandes/" + user + "/score").set(score);
