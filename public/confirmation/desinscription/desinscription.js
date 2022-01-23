@@ -46,6 +46,7 @@ function robi(){
         divAmis.innerHTML = ""
         snapshot.forEach(function(child) {
             let ami = document.createElement("button")
+            ami.classList.add("amis")
             ami.innerHTML = child.key + " (supprimer)"
             ami.addEventListener("click", function() {
                 console.log("remove")

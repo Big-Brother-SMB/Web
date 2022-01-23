@@ -2,6 +2,82 @@
 body {
   font: 50px Arial;
 }
+
+
+body,
+    h1
+    {
+      margin: 0;
+      padding: 0;
+      font-size: 30px;
+    }
+
+    h1{
+      font-size: 50px;
+      color: white;
+    }
+    
+    header {
+      align-items: center;
+      display: flex;
+      background: #486381;
+    }
+    
+    #logo,
+    nav {
+      flex : 1;
+    }
+    
+    .headerimg{
+      width: 170px;
+      height: 150px;
+    }
+    
+    nav  {
+      display: flex;
+      justify-content: space-around;
+      
+    }
+    
+    .retour  {
+      border-radius:8px 8px 8px 8px;
+      background-color: #3d546e;
+      margin-right: 20px;
+    }
+    .envoyer  {
+      border-radius:8px 8px 8px 8px;
+      background-color: #3d546e;
+      margin: 10px;
+      margin-bottom: 0px;
+      width: 20%;
+    }
+
+    .retour:hover  {
+      background:#2e3f53;
+    }
+
+    button {
+      border: none;
+      text-align: center;
+      text-transform: uppercase;
+      outline: none;
+      overflow: hidden;
+      color: #eeeeee;
+      font-weight: 600;
+      font-size: 20px;
+      background-color: grey;
+      padding: 15px 50px;
+      }
+
+      .amis{
+        background-color: #8b9fc9;
+        border-radius:8px 8px 8px 8px;
+        padding: .75rem;
+        margin: .25em;
+        height: 50px;
+      }
+
+
 .autocomplete {
   /*the container must be positioned relative:*/
   position: relative;
@@ -48,18 +124,3 @@ input[type=submit] {
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
-
-
-
-button{
-    background-color: #6b6dd4;
-    color: rgb(0, 0, 0);
-    padding: 10px 10px;
-    width: 400px;
-    height: 150px;
-    margin: 0px 0px;
-    font-size: 25px;
-    font-family: DejaVu Sans Mono, monospace; 
-    text-align: center;
-    vertical-align: text-top;
-  }
