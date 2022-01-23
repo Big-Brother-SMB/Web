@@ -84,6 +84,7 @@ function suite3(places){
         document.getElementById("info").innerHTML = "il reste " + text +" <br>Vous êtes temporairement inscrit pendant 10sec"
         document.getElementById("oui").addEventListener("click", function() {
             database.ref(path(j,h) + "/demandes/" + user).remove();
+            database.ref(path(j,h) + "/demandes/" + user + "/score").set(score);
             database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
             window.location.href = menu;
         });
