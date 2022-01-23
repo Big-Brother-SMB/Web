@@ -65,10 +65,14 @@ body,
       margin-right: 20px;
     }
 
+
     .retour:hover  {
       background:#2e3f53;
     }
     
+    .retourdiv  {
+      text-align: center;
+    }
         
   p  {
     color: black;
