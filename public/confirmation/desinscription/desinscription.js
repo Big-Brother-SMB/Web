@@ -62,7 +62,7 @@ function robi(){
 
 
 function suite(){
-    document.getElementById("info").innerHTML = "Vous êtes inscrit à cet horraire"
+    document.getElementById("info").innerHTML = "Vous êtes inscrit à cet horaire"
     document.getElementById("oui").addEventListener("click", function() {
         database.ref(path(j,h) + "/demandes/" + user).remove();
         window.location.href = menu;
