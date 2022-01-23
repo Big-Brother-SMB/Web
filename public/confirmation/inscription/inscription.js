@@ -127,6 +127,7 @@ function robi(pers, places, score){
         divAmis.innerHTML = ""
         snapshot.forEach(function(child) {
             let ami = document.createElement("button")
+            ami.classList.add("amis")
             let name = child.key
             ami.innerHTML = name
             ami.addEventListener("click", function() {
