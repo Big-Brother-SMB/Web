@@ -154,7 +154,7 @@ function refreshDatabase(){
         document.getElementById("score").innerHTML = snapshot.val()+" pts"
     });
 
-    let sn = ["X","24 au 28 janvier","31 janvier au 4 février","7 au 11 févier","14 au 18 févier"]
+    let sn = ["24 au 28 janvier","31 janvier au 4 février","7 au 11 févier","14 au 18 févier"]
 
     let text = "Semaine " + week + " du " + sn[week-actualWeek] 
     if(week == actualWeek){

@@ -54,24 +54,15 @@ function suite2(placesDisp,rob){
         if(snapshot.numChildren() >= 0){
             nbChild = snapshot.numChildren()
         }
-        /*    suite3(placesDisp - snapshot.numChildren());
-        }else{
-            suite3(placesDisp);
-        }*/
-
-        if(rob){
-            score(nbChild, placesDisp)
-        }else{
-            document.getElementById("amis").style = "display:none"
-            document.getElementById("pAmis").style = "display:none"
-            suite3(placesDisp - nbChild);
-        }
+        
+        score(nbChild, placesDisp,rob)
+        
     });
 }
 
 
 
-function suite3(places){
+function suite3(places,score){
     console.log("suite2");
     if(places <= 0){
         window.location.href = menu;
@@ -100,9 +91,17 @@ function suite3(places){
     }
 }
 
-function score(nbChild, placesDisp){
+function score(nbChild, placesDisp,rob){
     database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
-        robi(nbChild, placesDisp, snapshot.val())
+        let score = snapshot.val()
+        if(rob){
+            robi(nbChild, placesDisp, score)
+        }else{
+            document.getElementById("amis").style = "display:none"
+            document.getElementById("pAmis").style = "display:none"
+            suite3(placesDisp - nbChild,score);
+        }
+        
     });
 }
 
