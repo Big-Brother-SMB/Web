@@ -200,6 +200,22 @@ h1{
     
 }
 
+.user {
+  width: 500px;
+  font-size: 15;
+  border: 1px solid black;
+  /*margin-right: 50px ;
+  padding: 10px;*/
+  text-align:center ;
+  display: inline;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  border-radius:8px 8px 8px 8px;
+  padding: .25rem;
+  margin: .25em 2em .25em .25em ;
+  
+}
+
 input{
   width: 500px;
   height: 100px;

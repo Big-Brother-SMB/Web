@@ -1,19 +1,3 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyAPJ-33mJESHMcvEtaPX7JwIajUawblSuY",
-    authDomain: "big-brother-ac39c.firebaseapp.com",
-    databaseURL: "https://big-brother-ac39c-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "big-brother-ac39c",
-    storageBucket: "big-brother-ac39c.appspot.com",
-    messagingSenderId: "498546882155",
-    appId: "1:498546882155:web:722a18432bf108e0c1632e",
-    measurementId: "G-J5N38BGN7R"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-
-var database = firebase.database()
-
 console.log(document.cookie)
 console.log(cookie)
 
@@ -37,6 +21,8 @@ console.log("lenght : " +String(user).length)
 console.log(user);
 console.log("classe : " + classe);
 sessionStorage.setItem("user", user);
+
+document.getElementById("user").innerHTML = user + " " + classe
 
 function deco(){
     delCookie("user");
@@ -346,9 +332,6 @@ function select(j,h){
      
 }
 
-function reload(){
-    window.location.reload(true)
-}
 
 function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
