@@ -14,12 +14,13 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database()
 
+//import * as cookie from "util/cookie.js";
 
 //cookies
 
 let tablecookie = document.cookie.split('; ');
 let cookie = {};
-for(i in tablecookie){
+for(let i in tablecookie){
     let row = tablecookie[i].split('=')
     if(row.length >1){
         cookie[row[0]] = row[1];
@@ -63,15 +64,15 @@ let classe = readCookie("classe")
 let week = readIntCookie("week")
 
 
-database.ref("users/" + user + "/classe").once("value", function(snapshot) {
+/*database.ref("users/" + user + "/classe").once("value", function(snapshot) {
     let val = snapshot.val()
     if(classe != val){
         writeCookie("classe",val)
-        week = val
-        reload()
+        classe = val
+        //reload()
     }
     
-});
+});*/
 // semaine
 
 let actualWeek = 4;

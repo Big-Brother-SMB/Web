@@ -5,9 +5,6 @@ import {getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, sig
 document.getElementById("body").style = "display:none"
 document.getElementById("chargement").style = "display:block"
 
-if(sessionStorage.getItem("logged") == 1){
-  window.location.href ="menu/menu.html";
-}
 
 console.log("start")
 console.log(document.cookie)
@@ -16,10 +13,16 @@ console.log(document.cookie)
 
 let tablecookie = document.cookie.split(';');
 console.log(tablecookie)
+let cookie = {};
+for(let i in tablecookie){
+    let row = tablecookie[i].split('=')
+    if(row.length >1){
+        cookie[row[0]] = row[1];
+    }
+}
 
-if (existCookie("user")){
-  sessionStorage.setItem("logged", 1);
-  sessionStorage.setItem("user", readCookie("user"));
+if (cookie["user"] != null){
+  sessionStorage.setItem("user", cookie["user"]);
   window.location.href ="menu/menu.html";
 }
         
@@ -42,7 +45,10 @@ const firebaseApp = initializeApp({
 const provider = new GoogleAuthProvider();
 const auth = getAuth()
 
-for(i in listClasse){
+
+let listClasse = ["S1","S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+
+for(let i in listClasse){
   let opt = document.createElement("option")
   opt.innerHTML = listClasse[i]
   document.getElementById("classe").appendChild(opt);
@@ -97,13 +103,8 @@ getRedirectResult(auth)
         // ...
       });
     
-      sessionStorage.setItem("logged", 1);
-      sessionStorage.setItem("week", actualWeek);
+      
       sessionStorage.setItem("user", user.displayName);
-      let classe = sessionStorage.getItem("classe");
-      document.cookie = "user=" + user.displayName + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
-      writeCookie("classe",classe)
-      writeCookie("week",actualWeek)
       window.location.href = "fin.html";
     }else{
       document.getElementById("body").style = "display:block"

@@ -20,13 +20,13 @@ if(classe == null){
 console.log("lenght : " +String(user).length)
 console.log(user);
 console.log("classe : " + classe);
-sessionStorage.setItem("user", user);
 
 document.getElementById("user").innerHTML = user + " " + classe
 
 function deco(){
     delCookie("user");
-    sessionStorage.setItem("logged", 0);
+    delCookie("week");
+    delCookie("classe");
     window.location.href = "../index.html";
 }
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
@@ -63,14 +63,12 @@ console.log("week : " + week)
 console.log(actualWeek)
 
 document.getElementById("semainePrecedente").addEventListener("click", function() {
-    sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) - 1);
     week = week - 1
     writeCookie("week",week)
     refreshDatabase()
 });
 
 document.getElementById("semaineActuelle").addEventListener("click", function() {
-    sessionStorage.setItem("week", actualWeek);
     week = actualWeek
     writeCookie("week",week)
     refreshDatabase()
@@ -78,7 +76,6 @@ document.getElementById("semaineActuelle").addEventListener("click", function() 
 
 
 document.getElementById("semaineSuivante").addEventListener("click", function() {
-    sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) + 1);
     week = week + 1
     writeCookie("week",week)
     refreshDatabase()
