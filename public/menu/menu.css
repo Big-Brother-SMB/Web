@@ -8,6 +8,8 @@ ul {
   margin: 0;
   padding: 0;
   color: white;
+  z-index: 10;
+
 }
 
 p {
@@ -169,6 +171,7 @@ p{
 marquee{
   font-size: 40px;
   color:black;
+  z-index: 1;
 }
 
 .info{

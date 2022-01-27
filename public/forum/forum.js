@@ -30,7 +30,9 @@ function selectItem({ target }) {
     if (target.tagName === 'P') {
         let forum = target.textContent;
         database.ref("users/" + user + "/forums/" + forum).set(0)
-    
+        setTimeout(function() {
+            reload()
+        },1000);
     }
 }
 
@@ -52,6 +54,20 @@ database.ref("users/" + user + "/forums").once("value", function(snapshot) {
         });
         divForums.appendChild(bouton);
     });
+});
+
+
+let inputCreer = document.getElementById('input creer');
+let bCreer = document.getElementById('bCreer');
+
+bCreer.addEventListener('click', function(){
+    console.log("creation")
+    let forum = inputCreer.value;
+    database.ref("users/" + user + "/forums/" + forum).set(0)
+    database.ref("forums/" + forum + "/type").set("public")
+        setTimeout(function() {
+            reload()
+        },1000);
 });
 
 

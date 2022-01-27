@@ -153,3 +153,16 @@ body,
     background-color: DodgerBlue !important;
     color: #ffffff;
   }
+
+  button {
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    overflow: hidden;
+    color: #eeeeee;
+    font-weight: 600;
+    font-size: 20px;
+    background-color: grey;
+    padding: 15px 50px;
+    }
