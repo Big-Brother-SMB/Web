@@ -4,7 +4,8 @@ document.getElementById("envoyer").addEventListener("click", function() {
     let message = document.getElementById("text Area").value
     if(message.length <= 200 && message.length >= 20){
         console.log(message)
-        database.ref("probleme/" + user).set(message)
+        let d = new Date();
+        database.ref("probleme/" + user + "/" + d.getHours() + ":" + d.getMinutes()).set(message)
         document.getElementById("info").style.color = "black"
         document.getElementById("info").innerHTML = "envoi de votre message encours, veuillez patientez"
         setTimeout(function() {
