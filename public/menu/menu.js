@@ -35,7 +35,9 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
     }
 })
 
-
+if(user == "Felix CARPENTIER" || user == "Matthias HAYART"){
+    document.getElementById("banderole").innerHTML = " <a href=\"../blog/msg/msg.html\">Réponse pour Félix</a>"
+}
 
 
 document.getElementById("deco").addEventListener("click", function() {
