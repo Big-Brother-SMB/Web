@@ -37,7 +37,18 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
 
 if(user == "Felix CARPENTIER"){
     document.getElementById("banderole").innerHTML = " <a href=\"../blog/msg/msg.html\">Réponse pour Félix</a>"
+}else{
+    database.ref("banderole").once("value", function(snapshot) {
+        let msg = snapshot.val()
+        if(msg != null){
+            document.getElementById("banderole").innerHTML = msg
+        }
+        
+       
+    })
 }
+
+
 
 
 document.getElementById("deco").addEventListener("click", function() {
