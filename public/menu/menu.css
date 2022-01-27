@@ -166,6 +166,11 @@ p{
   font-size: 40px;
 }
 
+marquee{
+  font-size: 40px;
+  color:black;
+}
+
 .info{
   text-align: center;
   color: black;
