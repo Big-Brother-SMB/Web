@@ -45,18 +45,16 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
     }
 })
 
-if(user == "Felix CARPENTIER"){
-    document.getElementById("banderole").innerHTML = " <a href=\"../blog/msg/msg.html\">Réponse pour Félix</a>"
-}else{
-    database.ref("banderole").once("value", function(snapshot) {
-        let msg = snapshot.val()
-        if(msg != null){
-            document.getElementById("banderole").innerHTML = msg
-        }
-        
-       
-    })
-}
+
+database.ref("banderole").once("value", function(snapshot) {
+    let msg = snapshot.val()
+    if(msg != null){
+        document.getElementById("banderole").innerHTML = msg
+    }
+    
+    
+})
+
 
 
 
@@ -167,7 +165,7 @@ function refreshDatabase(){
         document.getElementById("score").innerHTML = snapshot.val()+" pts"
     });
 
-    let sn = ["31 janvier au 4 février","7 au 11 févier","14 au 18 févier"]
+    let sn = ["31 janvier au 4 février","7 au 11 févier","14 au 18 févier","21 au 25 févier","28 au 4 mars","7 au 11 mars","14 au 18 mars","21 au 25 mars","28 au 1 avril","4 au 8 avril","11 au 15 avril"]
 
     let text = "Semaine " + week + " du " + sn[week-actualWeek] 
     if(week == actualWeek){

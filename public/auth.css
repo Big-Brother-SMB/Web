@@ -86,7 +86,33 @@ a  {
   text-align: center;
   border: 0px;
 }
-
+.marquee-rtl {
+  overflow: hidden; 
+  width:100%;
+  color: black;
+  background-color:#b5c3e4 ;
+  font-size: 1.5em;
+}
+.marquee-rtl > div {
+  display: inline-block;
+  white-space: nowrap; 
+  animation: defilement-rtl 10s infinite linear;
+  cursor: pointer;
+  padding: 5px 2em 5px 100%;
+}
+.marquee-rtl:hover > div {
+  animation-play-state: paused; /* met en pause le défilement */
+}
+@keyframes defilement-rtl {
+  0% {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+  }
+  100% {
+    -webkit-transform: translate(-100%);
+    transform: translate(-100%);
+  }
+}
 
   .button {
   border: none;
@@ -201,3 +227,4 @@ a  {
   from {transform: rotate(360deg)}
   to {transform: rotate(-360deg)}
 }
+

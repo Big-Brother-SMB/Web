@@ -27,6 +27,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         initBoolAmis.push(false)
 
         let b = document.createElement("button")
+        b.classList.add("amis")
         b.innerHTML = name
         
         divAmis.appendChild(b);
