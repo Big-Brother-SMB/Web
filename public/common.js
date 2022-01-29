@@ -81,7 +81,7 @@ const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
 const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
 
 //classe
-let listClasse = ["S1","S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
 
 //path
 function path(j,h){

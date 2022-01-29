@@ -7,7 +7,7 @@ week = actualWeek
 writeCookie("user",user)
 writeCookie("classe",classe)
 writeCookie("week",week)
-
+writeCookie("RGPD",true)
 
 
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
@@ -23,6 +23,10 @@ database.ref("users/" + user + "/classe").once("value", function(snapshot) {
     if(snapshot.val() == null){
         console.log("classe create")
         database.ref("users/" + user + "/classe").set(classe);
+    }else{
+        console.log("classe err")
+        classe = snapshot.val()
+        writeCookie("classe",classe)
     }
 })
 

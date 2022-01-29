@@ -10,8 +10,9 @@ console.log("start")
 console.log(document.cookie)
 
 
+let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
 
-let tablecookie = document.cookie.split(';');
+let tablecookie = document.cookie.split('; ');
 console.log(tablecookie)
 let cookie = {};
 for(let i in tablecookie){
@@ -20,12 +21,29 @@ for(let i in tablecookie){
         cookie[row[0]] = row[1];
     }
 }
+console.log("cookie",cookie)
 
-if (cookie["user"] != null){
+if (cookie["user"] != null && cookie["classe"] != null){
   sessionStorage.setItem("user", cookie["user"]);
   window.location.href ="menu/menu.html";
 }
-        
+
+if (cookie["RGPD"]){
+  document.getElementById("checkbox").checked = true
+  document.getElementById("checkbox2").checked = true
+}
+
+for(let i in listClasse){
+  let opt = document.createElement("option")
+  opt.innerHTML = listClasse[i]
+  document.getElementById("classe").appendChild(opt);
+}
+ 
+console.log(cookie["classe"])
+if (cookie["classe"] != null){
+  console.log("classe remember : " + (listClasse.indexOf(cookie["classe"]) + 1))
+  document.getElementById("classe").selectedIndex = listClasse.indexOf(cookie["classe"]) + 1
+}
 //window.location.href = "connexion/connexion.html";
 
 console.log("start")
@@ -46,13 +64,8 @@ const provider = new GoogleAuthProvider();
 const auth = getAuth()
 
 
-let listClasse = ["S1","S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
 
-for(let i in listClasse){
-  let opt = document.createElement("option")
-  opt.innerHTML = listClasse[i]
-  document.getElementById("classe").appendChild(opt);
-}
+
 
 
 

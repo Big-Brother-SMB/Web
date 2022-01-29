@@ -26,7 +26,6 @@ document.getElementById("user").innerHTML = user + " " + classe
 function deco(){
     delCookie("user");
     delCookie("week");
-    delCookie("classe");
     window.location.href = "../index.html";
 }
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
