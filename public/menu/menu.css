@@ -22,7 +22,9 @@ header {
   display: flex;
   margin: 0px;
   background: #486381;
-  position: sticky;
+    position: absolute;
+    position: sticky;
+
   top: 0px;
 }
 
@@ -43,6 +45,7 @@ header ul li {
 
 }
 
+
 .ulheader{
   align-content: right;
 }
@@ -55,7 +58,10 @@ header ul li {
   #menu-demo2 li{
   display:inline-block;
   position:relative;
-  border-radius:8px 8px 0 0;
+  border-radius:8px 8px 0px 0px;
+  }
+  #menu-demo2 .tuto2{
+    border-radius:8px 8px 8px 8px;
   }
   #menu-demo2 ul li{
   display:inherit;
@@ -97,33 +103,52 @@ header ul li {
     padding:8px 32px;
     color:#fff;
     font-family:arial;
+    font-weight: 600;
+    font-size: 35px;
     }
     #menu-demo2 ul a{
     padding:8px 0px;
     }
     #menu-demo2 li:hover li a{
     color:#fff;
-    text-transform:inherit;
+    font-weight: 600;
+    font-size: 35px;
     }
 
 
-#logo,
-nav {
-  flex : 1;
-}
-
-.headerimg{
-  width: 170px;
-  height: 150px;
-}
 
 
-header ul li {
-  list-style: none; 
-  font-size: 30px;
-
-}
-
+    body {
+      --banner-width: 200%;
+    }
+    @media screen and (min-width: 64rem) {
+      body { --banner-width: 100%; }
+    }
+    @keyframes marqueelike {
+      0%, 100% { margin-left: 0; }
+      99.99% { margin-left: calc(var(--banner-width) * -1); }
+    }
+    .banner {
+      color: black;
+      width: 100%;
+      height: 1.5rem;
+      overflow: hidden;
+      background-color: #b5c3e4;
+    }
+    .banner > span {
+      position: absolute;
+      min-width: 100%;
+      display: inline-block;
+      white-space: nowrap !important;
+      padding-top: 0.3rem;
+      animation: linear marqueelike 15s infinite;
+    }
+    .banner > span:first-of-type {
+      left: 0;
+    }
+    .banner > span:last-of-type {
+      left: var(--banner-width);
+    }
 
 .tuto  {
   border-radius:8px 8px 8px 8px;
@@ -150,19 +175,6 @@ button{
   text-overflow: ellipsis; 
 }
 
-button_blue{
-  background-color: #6b6dd4;
-  color: rgb(0, 0, 0);
-  padding: 10px 10px;
-  width: 20%;
-  height: 100px;
-  margin: 0px 0px;
-  font-size: 25px;
-  font-family: DejaVu Sans Mono, monospace; 
-  text-align: center;
-  vertical-align: text-top;
-
-}
 
 p{
   font-size: 40px;
@@ -196,8 +208,6 @@ h1{
 .score  {
     width: 150px;
     border: 1px solid black;
-    /*margin-right: 50px ;
-    padding: 10px;*/
     text-align:center ;
     display: inline;
     overflow: hidden;
@@ -212,8 +222,6 @@ h1{
   width: 500px;
   font-size: 15;
   border: 1px solid black;
-  /*margin-right: 50px ;
-  padding: 10px;*/
   text-align:center ;
   display: inline;
   overflow: hidden;

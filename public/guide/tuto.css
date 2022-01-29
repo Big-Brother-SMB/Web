@@ -6,6 +6,7 @@ h1  {
   h2  {
     font-size: 40px;
     color: black;
+    background-color: rgb(131, 135, 143);
     white-space: wrap;
   }
   
@@ -49,6 +50,7 @@ h1  {
     }
     
     .retour  {
+      color:#ffffff;
       border-radius:8px 8px 8px 8px;
       background-color: #3d546e;
       margin-right: 20px;
@@ -61,7 +63,7 @@ h1  {
       overflow: hidden;
       position: relative;
       font-weight: 600;
-      font-size: 20px;
+      font-size: 35px;
       padding: 15px 50px;
       text-transform: uppercase;
     }
@@ -96,7 +98,8 @@ h1  {
     outline: none;
     overflow: hidden;
     position: relative;
-    color: #eeeeee;
+    color: #ffffff;
+    font-family:arial;
     font-weight: 600;
     font-size: 50px;
     background-color: #153f00;
