@@ -122,7 +122,7 @@ function charged(){
             }  
         }
         database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
-            if(snapshot.val() == score){
+            if(snapshot.val() != null){
                 window.location.href = menu;
             }
         });
