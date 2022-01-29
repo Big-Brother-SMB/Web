@@ -17,6 +17,17 @@ if(user == null || String(user).length < 5){
 if(classe == null){
     deco()
 }
+
+//temporaire
+if(listClasse.indexOf(classe) == -1){
+    database.ref("users/" + user + "/classe").remove()
+    delCookie("classe");
+    setTimeout(function() {
+        deco()
+    },2000);
+    
+}
+
 console.log("lenght : " +String(user).length)
 console.log(user);
 console.log("classe : " + classe);
