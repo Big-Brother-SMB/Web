@@ -87,3 +87,9 @@ let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","1A","1
 function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
 }
+
+//hour
+function getHour(){
+    let d = new Date()
+    return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+}

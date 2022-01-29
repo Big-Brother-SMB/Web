@@ -21,7 +21,7 @@ let envoyer = document.getElementById('envoyer');
 envoyer.addEventListener('click', function(){
     if(msg.value.length > 1){
         let d = new Date();
-        database.ref("forums/" + forum + "/fil/" + nbMsg + "-" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + user).set(msg.value)
+        database.ref("forums/" + forum + "/fil/" + nbMsg + "-" + getHour() + ":" + user).set(msg.value)
         reload()
     }
     

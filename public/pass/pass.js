@@ -13,7 +13,7 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
 console.log(j);
 console.log(h);
 document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
-database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/demandes").once("value", function(snapshot) {
+database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
     snapshot.forEach(function(child) {
         if(child.key == user){
             console.log("inscrit");
@@ -25,17 +25,12 @@ database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/demandes").once
     });
 }); 
 
-
-
-document.getElementById("retour").addEventListener("click", function() {
-    window.location.href = "../menu/menu.html";
-});
-
+document.getElementById("user").innerHTML = user
 
 function loop(){
     d = new Date();
 
-    document.getElementById("heure").innerHTML = d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+    document.getElementById("heure").innerHTML = getHour()
 
     setTimeout(loop,1000);
 }

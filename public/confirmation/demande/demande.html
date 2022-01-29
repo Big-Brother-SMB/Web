@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Demande</title>
+    <link rel = "icon" href= "../Images/logo.png">
+    <link rel="stylesheet" href="demande.css">
+    <link rel="stylesheet" href="../../loading.css">
+  </head>
+  <body>
+
+    <header>
+      <img class="headerimg" src="../../Images/logo.png" alt="logo Lycée" > 
+      <h1 id="logo">Demande</h1>     
+      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
+    </header>
+
+    <article id="article" style="text-align: center;display: none;">
+    <p id ="info" class="info"></p>
+
+    <p id="pAmis">Amis avec lesquels vous voulez manger à cet horaire :</p>
+    <div style="font-size: 40px;height:500px;width:1000px;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;display:grid;" id="amis">Recherche d'amis en cours</div>
+    
+    <p>Demander ?</p>
+
+    <div>
+        <button id="oui" class="envoyer">Oui</button>
+        <button id="non" class="envoyer">Non</button>
+    </div>
+    </article>
+
+    <div class="loader-wrap" id="chargement">
+        <p class="loading-text">Chargement en cours</p>
+        <div class="loader">   
+              <div class="circle-1 circle">
+            <div class="circle-2 circle">
+              <div class="circle-3 circle">
+                <div class="circle-4 circle">
+              </div>
+            </div>
+        </div>
+        </div>
+        
+    </div>
+    
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="../../common.js"></script>
+    <script src="demande.js"></script>
+
+    <footer>
+      <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+          <br/>
+          <hr style="width: 25%;" />
+          <a href="../blog/devBlog.html" style="text-decoration: none;">
+              <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version Beta</p>
+          </a>
+          <br/>
+          <br/>
+      </div>
+    </footer>
+  </body>
+
+</html>

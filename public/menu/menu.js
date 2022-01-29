@@ -119,11 +119,14 @@ Date.prototype.getWeek = function() {
 let bouton = [];
 let total = [];
 let demandes = [];
+let demande = []
 let places = [];
-let inscrit = []
+
 let ouvert = []
 let nbAmis = []
 
+let inscrits = [];
+let inscrit = []
 
 for(let j = 0; j < 4; j++){
     let div = document.createElement("div")
@@ -135,8 +138,12 @@ for(let j = 0; j < 4; j++){
     bouton[j] = []
     total[j] = []
     places[j] = []
-    demandes[j] = []
+    
     nbAmis[j] = []
+    demandes[j] = []
+    demande[j] = [false,false]
+
+    inscrits[j] = []
     inscrit[j] = [false,false]
     ouvert[j] = [0,0]
     for(let h = 0; h < 2; h++){
@@ -189,12 +196,14 @@ function refreshDatabase(){
 
             nbAmis[j][h] = 0
 
-            database.ref(path(j,h) + "/demandes/" + user + "/amis").once("value", function(snapshot) {
+            database.ref(path(j,h) + "/users/" + user + "/amis").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     nbAmis[j][h] = nbAmis[j][h] + 1
                     update(j, h);
                 });
             });
+
+            //demande en cours
          
             demandes[j][h] = 0
       
@@ -211,10 +220,41 @@ function refreshDatabase(){
                 });
             });
 
-            inscrit[j][h] = false;
+            demande[j][h] = false;
             
       
             database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    if(child.key == user){
+                        nbFois++;
+                        demande[j][h] = true;
+                    }    
+                });
+            });
+
+
+            //inscrits
+
+            inscrits[j][h] = 0
+      
+            /*database.ref(path(j,h)).once('child_added').then(function(snapshot) {
+                if(snapshot.numChildren() >= 0){
+                    demandes[j][h] = snapshot.numChildren();
+                    update(j, h);
+                }
+            });*/
+            database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    inscrits[j][h] = inscrits[j][h] + 1
+                    total[j][h] -= 1
+                    update(j, h);
+                });
+            });
+
+            inscrit[j][h] = false;
+            
+      
+            database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     if(child.key == user){
                         nbFois++;
@@ -222,6 +262,7 @@ function refreshDatabase(){
                     }    
                 });
             });
+
         
         }
     }
@@ -297,6 +338,20 @@ function updateAffichage(j,h){
                 break;
 
     }
+    if(demande[j][h]){
+        bouton[j][h].className="inscrit"
+        if (nbAmis[j][h] == 0){
+            text = text + "<br>Demande enregistrée sans amis"
+        }
+        else if (nbAmis[j][h]==1){
+            text = text + "<br>Demande enregistrée avec 1 ami"
+        }
+        else {
+            text = text + "<br>Demande enregistrée avec " + nbAmis[j][h] + " amis"
+        }
+        
+    }
+
     if(inscrit[j][h]){
         bouton[j][h].className="inscrit"
         if (nbAmis[j][h] == 0){
@@ -314,7 +369,20 @@ function updateAffichage(j,h){
 }
 
 function select(j,h){
-    console.log(places[j][h])
+    sessionStorage.setItem("j", j);
+        sessionStorage.setItem("h", h);
+    if(demande[j][h]){
+        window.location.href = "../confirmation/modifier/modifier.html";
+    }else{
+        if(ouvert[j][h] ==7 && nbFois < 1){
+            window.location.href = "../confirmation/demande/demande.html";
+        }
+    }
+    
+    
+
+
+    /*console.log(places[j][h])
     let inscription = false;
     let desinscription = false;
     let placesRestantes = places[j][h] > 0;
@@ -336,19 +404,22 @@ function select(j,h){
         case 7:
             desinscription = true;     
     }
-    if(inscrit[j][h] && desinscription){
+    if(demande[j][h] && desinscription){
         //database.ref(path(j,h) + "/demandes/" + user).remove();
         //reload();
         sessionStorage.setItem("j", j);
         sessionStorage.setItem("h", h);
-        window.location.href = "../confirmation/desinscription/desinscription.html";
+        //window.location.href = "../confirmation/desinscription/desinscription.html";
+        window.location.href = "../confirmation/modifier/modifier.html";
+
     }else if(nbFois < 1 && placesRestantes > 0 && inscription){
         //database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
         //reload();
         sessionStorage.setItem("j", j);
         sessionStorage.setItem("h", h);
-        window.location.href = "../confirmation/inscription/inscription.html";
-    }
+        //window.location.href = "../confirmation/inscription/inscription.html";
+        window.location.href = "../confirmation/demande/demande.html";
+    }*/
      
 }
 
