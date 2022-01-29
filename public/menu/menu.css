@@ -43,6 +43,7 @@ header ul li {
 
 }
 
+
 .ulheader{
   align-content: right;
 }
@@ -55,7 +56,10 @@ header ul li {
   #menu-demo2 li{
   display:inline-block;
   position:relative;
-  border-radius:8px 8px 0 0;
+  border-radius:8px 8px 0px 0px;
+  }
+  #menu-demo2 .tuto2{
+    border-radius:8px 8px 8px 8px;
   }
   #menu-demo2 ul li{
   display:inherit;
@@ -97,13 +101,16 @@ header ul li {
     padding:8px 32px;
     color:#fff;
     font-family:arial;
+    font-weight: 600;
+    font-size: 35px;
     }
     #menu-demo2 ul a{
     padding:8px 0px;
     }
     #menu-demo2 li:hover li a{
     color:#fff;
-    text-transform:inherit;
+    font-weight: 600;
+    font-size: 35px;
     }
 
 
