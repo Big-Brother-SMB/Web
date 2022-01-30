@@ -39,6 +39,10 @@ function readIntCookie(key){
     return parseInt(cookie[key]);
 }
 
+function readBoolCookie(key){
+    return cookie[key] == 'true';
+}
+
 function delCookie(key){
     document.cookie = key + "=; expires=Mon, 02 Oct 2000 01:00:00 GMT; path=/";
 }
@@ -57,11 +61,25 @@ function reload(){
     window.location.reload(true)
 }
 
+function deco(){
+    delCookie("user");
+    delCookie("week");
+    window.location.href = "../index.html";
+}
+
 //var
 
 let user = readCookie("user")
 let classe = readCookie("classe")
 let week = readIntCookie("week")
+let bollAllAmis = readBoolCookie("allAmis")
+
+if(bollAllAmis == null){
+    bollAllAmis = true
+    writeCookie("allAmis",bollAllAmis)
+}
+
+
 
 
 /*database.ref("users/" + user + "/classe").once("value", function(snapshot) {

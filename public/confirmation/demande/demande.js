@@ -27,7 +27,13 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         let ami = document.createElement("button")
         ami.classList.add("amis")
         let name = child.key
-        ami.innerHTML = name
+        if(bollAllAmis){
+            ami.innerHTML = name + " (ajouté)"
+                amis.push(name)
+        }else{
+            ami.innerHTML = name
+        }
+        
         ami.addEventListener("click", function() {
             if(amis.indexOf(name) == -1){
                 console.log("add")

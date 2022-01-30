@@ -3,11 +3,11 @@ console.log(cookie)
 
 console.log("read : " + readCookie("user"))
 
-if (existCookie("user")){
+/*if (existCookie("user")){
     console.log("user exist")
 }else{
     //deco()
-}
+}*/
 
 
 
@@ -34,11 +34,7 @@ console.log("classe : " + classe);
 
 document.getElementById("user").innerHTML = user + " " + classe
 
-function deco(){
-    delCookie("user");
-    delCookie("week");
-    window.location.href = "../index.html";
-}
+
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
     if(snapshot.val() == null){
         deco()
@@ -59,9 +55,7 @@ database.ref("banderole").once("value", function(snapshot) {
 
 
 
-document.getElementById("deco").addEventListener("click", function() {
-    deco()
-});
+
 
 
 
@@ -264,6 +258,16 @@ function refreshDatabase(){
         
         }
     }
+
+    //get utilisation time
+    /*database.ref("users/" + user + "/time").once("value", function(snapshot) {
+        let time = snapshot.val()
+        if(time == null){
+            time = "0"
+        }
+        database.ref("users/" + user + "/time").set(time + 1)
+    });*/
+
 }
 
 
@@ -427,8 +431,8 @@ function path(j,h){
 }
 
 function loop(){
+    console.log("update database")
     refreshDatabase();
-
-    setTimeout(loop,10000);
+    setTimeout(loop,5000);
 }
 loop();
