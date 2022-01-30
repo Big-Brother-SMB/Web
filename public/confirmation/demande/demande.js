@@ -10,6 +10,14 @@ database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
     charged()
 });
 
+database.ref(path(j,h) + "/info").once("value", function(snapshot) {
+    let msg = snapshot.val()
+    if(msg != null){
+        document.getElementById("banderole").innerHTML = msg
+    } 
+    charged()
+})
+
 let divAmis = document.getElementById("amis")
 divAmis.innerHTML = "recherche d'amis en cours"
 let amis = []
@@ -68,7 +76,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
 
 let charge = 1
 function charged(){
-    if(charge < 6){
+    if(charge < 7){
         charge++
         return
     }
