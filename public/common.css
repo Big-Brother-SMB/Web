@@ -82,10 +82,6 @@
   .marquee-rtl:hover > div {
     animation-play-state: paused; /* met en pause le défilement */
   }
-  .marquee-rtl > div:first-letter {
-    font-weight: 700;
-    color: #F00;
-  }
   @keyframes defilement-rtl {
     0% {
       -webkit-transform: translate(0);
