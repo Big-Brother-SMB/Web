@@ -1,0 +1,220 @@
+.loading-text {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 200;
+    font-size: 38px;
+    text-align: center;
+    color: rgb(167, 167, 167);
+    margin-top: 50px;
+}
+  
+.circle-1 {
+    margin: 0 auto;
+    width: 100px;
+    height: 50px; 
+    border-radius: 100px 100px 0 0;
+    border-top: 2px solid #DEA568;
+    border-left: 2px solid #DEA568;
+    border-right: 2px solid #DEA568;
+    animation: 2s loader linear infinite;
+    transform-origin: 50% 100%;
+}
+  
+.circle-2 {
+    width: 80px;
+    height: 40px;
+    margin: 50px auto;
+    border-radius: 0 0 80px 80px;
+    border-bottom: 4px solid #416A8A;
+    border-left: 4px solid #416A8A;
+    border-right: 4px solid #416A8A;
+    animation: 2s loader-reverse linear infinite;
+    transform-origin: 50% 0%;
+}
+
+.circle-3 {
+    width: 60px;
+    height: 30px;
+    margin: 50px auto;
+    border-radius: 0 0 80px 80px;
+    border-bottom: 2px solid #7C2A6C;
+    border-left: 2px solid #7C2A6C;
+    border-right: 2px solid #7C2A6C;
+    animation: 1s loader linear infinite;
+    transform-origin: 50% 0%;
+}
+
+.circle-4 {
+    width: 40px;
+    height: 20px;
+    margin: 50px auto;
+    border-radius: 0 0 80px 80px;
+    border-bottom: 5px solid #56916C;
+    border-left: 5px solid #56916C;
+    border-right: 5px solid #56916C;
+    animation: 1.5s loader-reverse linear infinite;
+    transform-origin: 50% 0%;
+}
+
+@keyframes loader {
+    from {transform: rotate(0deg)}
+    to {transform: rotate(360deg)}
+}
+  
+@keyframes loader-reverse {
+    from {transform: rotate(360deg)}
+    to {transform: rotate(-360deg)}
+}
+
+.marquee-rtl {
+    overflow: hidden; 
+    width:100%;
+    color: black;
+    background-color:#b5c3e4 ;
+    font-size: 2em;
+  }
+  .marquee-rtl > div {
+    display: inline-block;
+    white-space: nowrap; 
+    animation: defilement-rtl 10s infinite linear;
+    cursor: pointer;
+    padding: 5px 2em 5px 100%;
+  }
+  .marquee-rtl:hover > div {
+    animation-play-state: paused; /* met en pause le défilement */
+  }
+  @keyframes defilement-rtl {
+    0% {
+      -webkit-transform: translate(0);
+      transform: translate(0);
+    }
+    100% {
+      -webkit-transform: translate(-100%);
+      transform: translate(-100%);
+    }
+  }
+
+
+
+
+
+
+
+
+
+  body,
+  h1
+  {
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+  }
+
+  h1{
+    font-size: 50px;
+    color: white;
+  }
+  
+  header {
+    align-items: center;
+    display: flex;
+    background: #486381;
+  }
+  
+  #logo,
+  nav {
+    flex : 1;
+  }
+  
+  .headerimg{
+    width: 170px;
+    height: 150px;
+  }
+  
+  nav  {
+    display: flex;
+    justify-content: space-around;
+    
+  }
+  
+  .retour  {
+    border-radius:8px 8px 8px 8px;
+    background-color: #3d546e;
+    margin-right: 20px;
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    overflow: hidden;
+    color: #eeeeee;
+    font-weight: 600;
+    font-size: 20px;
+    padding: 15px 50px;
+  }
+  
+
+  .retour:hover  {
+    background:#2e3f53;
+  }
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

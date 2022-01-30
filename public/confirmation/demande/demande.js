@@ -10,6 +10,14 @@ database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
     charged()
 });
 
+database.ref(path(j,h) + "/info").once("value", function(snapshot) {
+    let msg = snapshot.val()
+    if(msg != null){
+        document.getElementById("banderole").innerHTML = msg
+    } 
+    charged()
+})
+
 let divAmis = document.getElementById("amis")
 divAmis.innerHTML = "recherche d'amis en cours"
 let amis = []
@@ -19,7 +27,13 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         let ami = document.createElement("button")
         ami.classList.add("amis")
         let name = child.key
-        ami.innerHTML = name
+        if(bollAllAmis){
+            ami.innerHTML = name + " (ajouté)"
+                amis.push(name)
+        }else{
+            ami.innerHTML = name
+        }
+        
         ami.addEventListener("click", function() {
             if(amis.indexOf(name) == -1){
                 console.log("add")
@@ -68,7 +82,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
 
 let charge = 1
 function charged(){
-    if(charge < 6){
+    if(charge < 7){
         charge++
         return
     }

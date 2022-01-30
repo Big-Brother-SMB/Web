@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <link rel="stylesheet"href="option.css">
+    <link rel="stylesheet"href="../common.css">
+    
+    <meta charset="utf-8">
+    <title>Options</title>
+    <link rel = "icon" href= "../Images/logo.png">
+  </head>
+  <body>
+
+    <header>
+      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
+      <h1 id="logo">Options</h1>  
+      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button> 
+  </header>
+ <article style="text-align: center;">
+    <p>Ajouter automatiquement tous les amis
+        <label class="switch">
+        <input type="checkbox" id="allAmis">
+        <span class="slider round"></span>
+      </label>
+    </p>
+    
+    <button id="deco">Déconnexion</button>
+
+    
+  </article>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="../common.js"></script>
+  <script src="option.js"></script>
+
+  </body>
+
+</html>
