@@ -99,8 +99,7 @@ function charged(){
     document.getElementById("article").style.display = "inline"
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
-    document.getElementById("info").innerHTML = "Votre demande est enrgegistrée<br>il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes + " demandes en cours (dont la votre)<br>Votre score est de " + score + "pts"
-
+    document.getElementById("info").innerHTML = "Votre demande est enrgegistrée<br>Il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes + " demandes en cours (dont la votre)<br>Votre score est de " + score + "pts"
     document.getElementById("retirer").addEventListener("click", function() {
         database.ref(path(j,h) + "/users/" + user).remove()
         database.ref(path(j,h) + "/demandes/" + user).remove()
