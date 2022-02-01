@@ -12,8 +12,9 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
 }
 console.log(j);
 console.log(h);
-document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
+
 database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
+    document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
     snapshot.forEach(function(child) {
         if(child.key == user){
             console.log("inscrit");
