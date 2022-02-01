@@ -63,8 +63,6 @@ function reload(){
 
 function deco(){
     delCookie("user");
-    delCookie("email");
-    delCookie("week");
     window.location.href = "../index.html";
 }
 
