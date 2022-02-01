@@ -63,6 +63,7 @@ function reload(){
 
 function deco(){
     delCookie("user");
+    delCookie("email");
     delCookie("week");
     window.location.href = "../index.html";
 }
@@ -70,6 +71,7 @@ function deco(){
 //var
 
 let user = readCookie("user")
+let email = readCookie("email")
 let classe = readCookie("classe")
 let week = readIntCookie("week")
 let bollAllAmis = readBoolCookie("allAmis")

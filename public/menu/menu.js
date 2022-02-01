@@ -40,6 +40,11 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
         deco()
     }
 })
+database.ref("users/" + user + "/email").once("value", function(snapshot) {
+    if(snapshot.val() == null){
+        deco()
+    }
+})
 
 
 database.ref("banderole").once("value", function(snapshot) {

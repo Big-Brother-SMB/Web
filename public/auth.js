@@ -23,7 +23,7 @@ for(let i in tablecookie){
 }
 console.log("cookie",cookie)
 
-if (cookie["user"] != null && cookie["classe"] != null){
+if (cookie["user"] != null && cookie["classe"] != null && cookie["email"] != null){
   sessionStorage.setItem("user", cookie["user"]);
   window.location.href ="menu/menu.html";
 }
@@ -118,6 +118,7 @@ getRedirectResult(auth)
     
       
       sessionStorage.setItem("user", user.displayName);
+      sessionStorage.setItem("email",user.email)
       window.location.href = "fin.html";
     }else{
       document.getElementById("body").style = "display:block"
