@@ -31,7 +31,12 @@ function loop(){
     d = new Date();
 
     document.getElementById("heure").innerHTML = getHour()
+    if(d.getMinutes() == 56 && d.getHours() == 11 && h == "/11h"){
+        window.location.href = "../menu/menu.html";
+    }
+
 
     setTimeout(loop,1000);
+    
 }
 loop();
