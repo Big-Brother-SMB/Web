@@ -46,6 +46,10 @@ database.ref("banderole").once("value", function(snapshot) {
     let msg = snapshot.val()
     if(msg != null){
         document.getElementById("banderole").innerHTML = msg
+        if (msg.length > 0){
+            document.getElementById("banderole").style.animation= "defilement-rtl " + msg.length/10 + "s infinite linear"
+
+        }
     }
     
     
