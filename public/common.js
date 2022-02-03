@@ -43,6 +43,17 @@ function readBoolCookie(key){
     return cookie[key] == 'true';
 }
 
+function readBoolCookie(key,ifNone){
+    if(cookie[key] == 'true'){
+        return true
+    }else if(cookie[key] == 'false'){
+        return false
+    }else{
+        return ifNone;
+    }
+    
+}
+
 function delCookie(key){
     document.cookie = key + "=; expires=Mon, 02 Oct 2000 01:00:00 GMT; path=/";
 }
@@ -67,18 +78,12 @@ function deco(){
 }
 
 //var
-
 let user = readCookie("user")
 let email = readCookie("email")
 let classe = readCookie("classe")
 let week = readIntCookie("week")
-let bollAllAmis = readBoolCookie("allAmis")
-
-if(bollAllAmis == null){
-    bollAllAmis = true
-    writeCookie("allAmis",bollAllAmis)
-}
-
+let bollAllAmis = readBoolCookie("allAmis",true)
+let bollEmail = readBoolCookie("bEmail",true)
 
 
 
@@ -110,4 +115,13 @@ function path(j,h){
 function getHour(){
     let d = new Date()
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+}
+
+
+//database
+function getUserData(path,onValue){
+    database.ref("users/" + user + "/" + path).once("value", function(snapshot) {
+        onValue(snapshot.val())
+        
+    });
 }

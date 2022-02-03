@@ -12,6 +12,7 @@ writeCookie("week",week)
 writeCookie("RGPD",true)
 
 database.ref("users/" + user + "/email").set(email);
+database.ref("users/" + user + "/send mail").set(true)
 
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
     console.log("score : " + snapshot.val())
