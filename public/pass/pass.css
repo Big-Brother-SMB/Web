@@ -38,12 +38,15 @@ body,
       background-color: #3d546e;
       margin-right: 20px;
     }
-    .envoyer  {
+    .generer  {
       border-radius:8px 8px 8px 8px;
       background-color: #3d546e;
       margin: 10px;
       margin-bottom: 0px;
       width: 20%;
+    }
+    .generer:hover{
+      background:#2e3f53;
     }
 
     .retour:hover  {
@@ -69,4 +72,7 @@ p {
   }
  .pass {
    width: 40%;
+ }
+ .barcode{
+   width: 80%;
  }
