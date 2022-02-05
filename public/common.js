@@ -43,6 +43,17 @@ function readBoolCookie(key){
     return cookie[key] == 'true';
 }
 
+function readBoolCookie(key,ifNone){
+    if(cookie[key] == 'true'){
+        return true
+    }else if(cookie[key] == 'false'){
+        return false
+    }else{
+        return ifNone;
+    }
+    
+}
+
 function delCookie(key){
     document.cookie = key + "=; expires=Mon, 02 Oct 2000 01:00:00 GMT; path=/";
 }
@@ -63,22 +74,16 @@ function reload(){
 
 function deco(){
     delCookie("user");
-    delCookie("week");
     window.location.href = "../index.html";
 }
 
 //var
-
 let user = readCookie("user")
+let email = readCookie("email")
 let classe = readCookie("classe")
 let week = readIntCookie("week")
-let bollAllAmis = readBoolCookie("allAmis")
-
-if(bollAllAmis == null){
-    bollAllAmis = true
-    writeCookie("allAmis",bollAllAmis)
-}
-
+let bollAllAmis = readBoolCookie("allAmis",true)
+let bollEmail = readBoolCookie("bEmail",true)
 
 
 
@@ -99,7 +104,7 @@ const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
 const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
 
 //classe
-let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
 
 //path
 function path(j,h){
@@ -110,4 +115,13 @@ function path(j,h){
 function getHour(){
     let d = new Date()
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+}
+
+
+//database
+function getUserData(path,onValue){
+    database.ref("users/" + user + "/" + path).once("value", function(snapshot) {
+        onValue(snapshot.val())
+        
+    });
 }

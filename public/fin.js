@@ -1,14 +1,18 @@
 
 user = sessionStorage.getItem("user");
+email = sessionStorage.getItem("email");
 classe = sessionStorage.getItem("classe");
 console.log("classe : " + classe)
 week = actualWeek
 
 writeCookie("user",user)
+writeCookie("email",email)
 writeCookie("classe",classe)
 writeCookie("week",week)
 writeCookie("RGPD",true)
 
+database.ref("users/" + user + "/email").set(email);
+database.ref("users/" + user + "/send mail").set(true)
 
 database.ref("users/" + user + "/score").once("value", function(snapshot) {
     console.log("score : " + snapshot.val())

@@ -12,8 +12,9 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
 }
 console.log(j);
 console.log(h);
-document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
+
 database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
+    document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
     snapshot.forEach(function(child) {
         if(child.key == user){
             console.log("inscrit");
@@ -31,7 +32,12 @@ function loop(){
     d = new Date();
 
     document.getElementById("heure").innerHTML = getHour()
+    if(d.getMinutes() == 56 && d.getHours() == 11 && h == "/11h"){
+        window.location.href = "../menu/menu.html";
+    }
+
 
     setTimeout(loop,1000);
+    
 }
 loop();

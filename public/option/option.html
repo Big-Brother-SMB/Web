@@ -15,18 +15,39 @@
       <h1 id="logo">Options</h1>  
       <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button> 
   </header>
- <article style="text-align: center;">
+ <article id="article" style="text-align: center;display: none;">
     <p>Ajouter automatiquement tous les amis
         <label class="switch">
         <input type="checkbox" id="allAmis">
         <span class="slider round"></span>
       </label>
     </p>
+
+    <p>Envoyer des messages par mail
+      <label class="switch">
+      <input type="checkbox" id="switch email">
+      <span class="slider round"></span>
+    </label>
+  </p>
     
     <button id="deco">Déconnexion</button>
 
     
   </article>
+
+  <div class="loader-wrap" id="chargement">
+    <p class="loading-text">Chargement en cours</p>
+    <div class="loader">   
+          <div class="circle-1 circle">
+        <div class="circle-2 circle">
+          <div class="circle-3 circle">
+            <div class="circle-4 circle">
+          </div>
+        </div>
+    </div>
+    </div>
+    
+</div>
 
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>

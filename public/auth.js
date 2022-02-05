@@ -10,7 +10,7 @@ console.log("start")
 console.log(document.cookie)
 
 
-let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
 
 let tablecookie = document.cookie.split('; ');
 console.log(tablecookie)
@@ -23,7 +23,7 @@ for(let i in tablecookie){
 }
 console.log("cookie",cookie)
 
-if (cookie["user"] != null && cookie["classe"] != null){
+if (cookie["user"] != null && cookie["classe"] != null && cookie["email"] != null){
   sessionStorage.setItem("user", cookie["user"]);
   window.location.href ="menu/menu.html";
 }
@@ -118,6 +118,7 @@ getRedirectResult(auth)
     
       
       sessionStorage.setItem("user", user.displayName);
+      sessionStorage.setItem("email",user.email)
       window.location.href = "fin.html";
     }else{
       document.getElementById("body").style = "display:block"

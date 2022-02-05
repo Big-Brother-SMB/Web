@@ -40,12 +40,21 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
         deco()
     }
 })
+database.ref("users/" + user + "/email").once("value", function(snapshot) {
+    if(snapshot.val() == null){
+        deco()
+    }
+})
 
 
 database.ref("banderole").once("value", function(snapshot) {
     let msg = snapshot.val()
     if(msg != null){
         document.getElementById("banderole").innerHTML = msg
+        if (msg.length > 0){
+            document.getElementById("banderole").style.animation= "defilement-rtl " + msg.length/10 + "s infinite linear"
+
+        }
     }
     
     
@@ -238,7 +247,6 @@ function refreshDatabase(){
             database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     inscrits[j][h] = inscrits[j][h] + 1
-                    total[j][h] -= 1
                     update(j, h);
                 });
             });
@@ -272,7 +280,7 @@ function refreshDatabase(){
 
 
 function update(j,h){
-    places[j][h] = total[j][h] - demandes[j][h];
+    places[j][h] = total[j][h] - inscrits[j][h];
     setTimeout(updateAffichage(j,h),1000);
 }
 
@@ -323,12 +331,9 @@ function updateAffichage(j,h){
             bouton[j][h].className="ferme"
             break;
         case 7:
-            if(places[j][h] <= 0){
-                
-            }else{
-                bouton[j][h].className="places"
-            }
-            text = demandes[j][h] + "/" + total[j][h]
+            bouton[j][h].className="places"
+            
+            text = demandes[j][h] + " demandes pour " + places[j][h] + " places"
             break;
         case 8:
             text = "Calcul en cours"
@@ -343,13 +348,13 @@ function updateAffichage(j,h){
     if(demande[j][h]){
         bouton[j][h].className="inscrit"
         if (nbAmis[j][h] == 0){
-            text = text + "<br>Demande enregistrée sans amis"
+            text = "Demande enregistrée sans amis"
         }
         else if (nbAmis[j][h]==1){
-            text = text + "<br>Demande enregistrée avec 1 ami"
+            text = "Demande enregistrée avec 1 ami"
         }
         else {
-            text = text + "<br>Demande enregistrée avec " + nbAmis[j][h] + " amis"
+            text = "Demande enregistrée avec " + nbAmis[j][h] + " amis"
         }
         
     }
