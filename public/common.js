@@ -98,7 +98,7 @@ let bollEmail = readBoolCookie("bEmail",true)
 });*/
 // semaine
 
-let actualWeek = 5;
+let actualWeek = 6;
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
 const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
 const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
