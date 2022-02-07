@@ -2,6 +2,7 @@
 user = sessionStorage.getItem("user");
 email = sessionStorage.getItem("email");
 classe = sessionStorage.getItem("classe");
+codeBar = sessionStorage.getItem("codeBar");
 console.log("classe : " + classe)
 week = actualWeek
 
@@ -10,6 +11,9 @@ writeCookie("email",email)
 writeCookie("classe",classe)
 writeCookie("week",week)
 writeCookie("RGPD",true)
+if(codeBar != null){
+    writeCookie("code bar", codeBar);
+}
 
 database.ref("users/" + user + "/email").set(email);
 database.ref("users/" + user + "/send mail").set(true)

@@ -84,6 +84,9 @@ let classe = readCookie("classe")
 let week = readIntCookie("week")
 let bollAllAmis = readBoolCookie("allAmis",true)
 let bollEmail = readBoolCookie("bEmail",true)
+let codeBar = readIntCookie("code bar")
+let hasCodeBar = codeBar != null
+
 
 
 

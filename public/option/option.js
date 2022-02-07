@@ -1,5 +1,6 @@
 let switchAllAmis = document.getElementById("allAmis")
 let switchEmail = document.getElementById("switch email")
+let inputCodeBar = document.getElementById("code bar")
 
 switchAllAmis.checked = bollAllAmis
 switchAllAmis.addEventListener("change",function(){
@@ -22,6 +23,21 @@ switchEmail.addEventListener("change",function(){
         document.getElementById("chargement").style.display = "none"
     })
 })
+
+if(hasCodeBar){
+    inputCodeBar.value = codeBar
+}
+
+inputCodeBar.addEventListener("input",function(){
+    let val = inputCodeBar.value
+    if(String(val).length  == 5){
+        writeCookie("code bar", val)
+    }else{
+        delCookie("code bar")
+    }
+    
+})
+
 
 document.getElementById("deco").addEventListener("click", function() {
     deco()

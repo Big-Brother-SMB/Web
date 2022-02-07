@@ -62,10 +62,11 @@ h2  {
   color: black;
 }
 
-input{
+input[type="checkbox"]{
   width: 30px;
-    height: 30px;
+  height: 30px;
 }
+
 
 select{
   font-size: 50px;

@@ -218,3 +218,10 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+input[type="number"]{
+  font-size: 40px;
+  width: 150px;
+  height: 50px;
+}

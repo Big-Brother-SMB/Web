@@ -412,7 +412,7 @@ const products = [
      // remove contents of get one
      containerElement.innerHTML = '';
      // get the value of input
-     const val = document.getElementById('code').value;
+     const val = codeBar
      if (val){
        // log it, dog
        console.log(val);

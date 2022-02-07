@@ -44,7 +44,11 @@ if (cookie["classe"] != null){
   console.log("classe remember : " + (listClasse.indexOf(cookie["classe"]) + 1))
   document.getElementById("classe").selectedIndex = listClasse.indexOf(cookie["classe"]) + 1
 }
-//window.location.href = "connexion/connexion.html";
+
+console.log(cookie["code bar"])
+if (cookie["code bar"] != null){
+  document.getElementById("code bar").value = cookie["code bar"]
+}
 
 console.log("start")
 console.log(document.cookie)
@@ -76,6 +80,10 @@ document.getElementById("popup").onclick = () => {
           let classe = listClasse[document.getElementById("classe").selectedIndex - 1]
           console.log(classe)
           sessionStorage.setItem("classe", classe);
+          let codeBar = document.getElementById("code bar").value
+          if(codeBar != null){
+            sessionStorage.setItem("code bar", codeBar);
+          }
           signInWithRedirect(auth, provider)
         }else{
           document.getElementById("infos").innerHTML = "Vous devez selectionner votre classe"

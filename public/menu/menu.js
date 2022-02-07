@@ -52,7 +52,7 @@ database.ref("banderole").once("value", function(snapshot) {
     if(msg != null){
         document.getElementById("banderole").innerHTML = msg
         if (msg.length > 0){
-            document.getElementById("banderole").style.animation= "defilement-rtl " + msg.length/10 + "s infinite linear"
+            document.getElementById("banderole").style.animation= "defilement-rtl " + msg.length/8 + "s infinite linear"
 
         }
     }
@@ -208,12 +208,7 @@ function refreshDatabase(){
          
             demandes[j][h] = 0
       
-            /*database.ref(path(j,h)).once('child_added').then(function(snapshot) {
-                if(snapshot.numChildren() >= 0){
-                    demandes[j][h] = snapshot.numChildren();
-                    update(j, h);
-                }
-            });*/
+            
             database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     demandes[j][h] = demandes[j][h] + 1
@@ -238,12 +233,6 @@ function refreshDatabase(){
 
             inscrits[j][h] = 0
       
-            /*database.ref(path(j,h)).once('child_added').then(function(snapshot) {
-                if(snapshot.numChildren() >= 0){
-                    demandes[j][h] = snapshot.numChildren();
-                    update(j, h);
-                }
-            });*/
             database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     inscrits[j][h] = inscrits[j][h] + 1
