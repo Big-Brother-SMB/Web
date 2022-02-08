@@ -41,3 +41,17 @@ function loop(){
     
 }
 loop();
+
+
+
+
+
+const containerElement = document.getElementById('single');
+     
+     const bcid = 'bc'+codeBar;
+        // create the image element    
+        const bcimg = document.createElement('img');
+        bcimg.className = "barcode";
+        bcimg.setAttribute('id', bcid);
+        containerElement.appendChild(bcimg);
+        JsBarcode('#'+bcid, codeBar, {format: 'code39'});
