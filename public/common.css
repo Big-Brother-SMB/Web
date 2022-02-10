@@ -70,7 +70,7 @@
     width:100%;
     color: black;
     background-color:#b5c3e4 ;
-    font-size: 2em;
+    font-size: 1em;
   }
   .marquee-rtl > div {
     display: inline-block;
