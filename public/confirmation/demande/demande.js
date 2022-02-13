@@ -90,7 +90,13 @@ function charged(){
     document.getElementById("article").style.display = "inline"
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
-    document.getElementById("info").innerHTML = "il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes + " demandes en cours<br>Votre score est de " + score + "pts"
+    document.getElementById("info").innerHTML = "Demander "+ day[j]  +  " à " + (h+11)  + "h<br>Il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes + " demandes en cours<br>Votre score est de " + score + "pts"
+
+    if(h == 1){
+        document.getElementById("opt").style.display = "inline"
+
+    }
+
 
     document.getElementById("oui").addEventListener("click", function() {
         database.ref(path(j,h) + "/users/" + user + "/score").set(score);
@@ -98,10 +104,22 @@ function charged(){
         for(let a in amis){
             database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).set(0);
         }
+
+        
+        if(h == 1){
+            let fini = document.getElementById("12h20").checked
+            let commence = document.getElementById("12h50").checked
+            if(fini || commence){
+                database.ref(path(j,h) + "/users/" + user + "/horaire").set((fini?1:0) + (commence?2:0));
+            }
+        }
         database.ref(path(j,h) + "/demandes/" + user).set(score);
         database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
             if(snapshot.val() == score){
-                window.location.href = menu;
+                setTimeout(function() {
+                    window.location.href = menu;
+                },1000);
+                
             }
         });
         

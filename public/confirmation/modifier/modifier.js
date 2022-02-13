@@ -98,13 +98,27 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
     charged()
 });
 
+let horaire = 0
+
+if(h == 1){
+    database.ref(path(j,h) + "/users/" + user + "/horaire").once('value').then(function(snapshot) {
+        horaire = snapshot.val()
+        charged()
+    });
+}else{
+    charged()
+}
+
 let charge = 1
 function charged(){
-    if(charge < 7){
+    
+    if(charge < 8){
         charge++
         return
     }
     console.log("charged")
+    console.log(h)
+    console.log(horaire)
     document.getElementById("article").style.display = "inline"
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
@@ -119,6 +133,20 @@ function charged(){
             }
         });
     });
+
+
+
+    if(h == 1){
+        document.getElementById("opt").style.display = "inline"
+        if(horaire == 1 || horaire == 3){
+            document.getElementById("12h20").checked = true
+        }
+        if(horaire == 2 || horaire == 3){
+            document.getElementById("12h50").checked = true
+        }
+        
+    }
+
 
     document.getElementById("modif").addEventListener("click", function() {
         for(let a in initBoolAmis){
