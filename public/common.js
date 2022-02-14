@@ -16,7 +16,7 @@ var database = firebase.database()
 
 //import * as cookie from "util/cookie.js";
 
-//cookies
+//--------------------cookies functions--------------------
 
 let tablecookie = document.cookie.split('; ');
 let cookie = {};
@@ -67,7 +67,7 @@ function existCookie(key){
     
 }
 
-//reload
+//--------------------reload--------------------
 function reload(){
     window.location.reload(true)
 }
@@ -77,7 +77,7 @@ function deco(){
     window.location.href = "../index.html";
 }
 
-//var
+//--------------------var--------------------
 let user = readCookie("user")
 let email = readCookie("email")
 let classe = readCookie("classe")
@@ -106,25 +106,76 @@ const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
 const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
 const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
 
-//classe
+//--------------------classe--------------------
 let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
 
-//path
+//--------------------path--------------------
 function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
 }
 
-//hour
+//--------------------hour--------------------
 function getHour(){
     let d = new Date()
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
 }
 
 
-//database
+//--------------------database functions--------------------
+
 function getUserData(path,onValue){
+    readDatabase(path,onValue)
     database.ref("users/" + user + "/" + path).once("value", function(snapshot) {
         onValue(snapshot.val())
         
     });
 }
+
+function setUserData(path,value){
+    writeDatabase("users/" + user + "/" + path,value)
+}
+
+/**
+ * @param {String} path - The path to the value
+ * @param {Object} value - The value to write
+ */
+function writeDatabase(path,value){
+    database.ref(path).set(value);
+
+}
+
+/**
+ * @param {String} path - The path to the value
+ * @param {Object} value - The value to write
+ * @param {function} onEnd - The function that start when the value is writed. No parameters
+ */
+function writeDatabase(path,value,onEnd){
+    database.ref(path).set(value);
+    function done(){
+        readDatabase(path,function(val){
+            if(val == value){
+                onEnd()
+            }else{
+                console.log("error while getting the response to writeDatabase")
+                done()
+            }
+        } )
+    }
+    done();
+ 
+}
+
+
+
+/**
+ * @param {String} path - The path to the value
+ * @param {function} onValue - The function that start when the value is returned. One parameter : the value read on the database
+ */
+function readDatabase(path,onValue){
+    database.ref(path).once("value", function(snapshot) {
+        onValue(snapshot.val())
+    });
+}
+
+
+
