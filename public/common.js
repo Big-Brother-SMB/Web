@@ -86,7 +86,8 @@ let bollAllAmis = readBoolCookie("allAmis",true)
 let bollEmail = readBoolCookie("bEmail",true)
 let codeBar = readIntCookie("code bar")
 let hasCodeBar = String(codeBar).length == 5
-
+let jour = readIntCookie("jour")
+let heure = readIntCookie("heure")
 
 
 
@@ -101,18 +102,20 @@ let hasCodeBar = String(codeBar).length == 5
 });*/
 // semaine
 
-let actualWeek = 6;
+const actualWeek = 6;
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
 const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
 const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
 
 //--------------------classe--------------------
-let listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+const listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
 
 //--------------------path--------------------
 function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
 }
+
+let slotPath = path(jour,heure)
 
 //--------------------hour--------------------
 function getHour(){
@@ -178,4 +181,290 @@ function readDatabase(path,onValue){
 }
 
 
+function readSlot(path,onValue){
+    readDatabase(slotPath + "/demandes/" + path, onValue)
+}
 
+function readSlotUserData(u,path,onValue){
+    readDatabase(slotPath + "/users/" + u + "/" + path, onValue)
+}
+
+function getChilds(path,forEach){
+    database.ref(path).once("value", function(snapshot) {
+        snapshot.forEach(function(child) {
+            forEach(child.key)
+        })
+    });
+}
+
+function getChildsList(path,onEnd){
+    database.ref(path).once("value", function(snapshot) {
+        let list = []
+        snapshot.forEach(function(child) {
+            list.push(child.key)
+        })
+        onEnd(list)
+    });
+}
+
+function getDemandesUsers(forEach){
+    getChilds(slotPath + "/demandes",forEach)
+}
+
+function getDemandesUsersList(onEnd){
+    getChildsList(slotPath + "/demandes",onEnd)
+}
+
+function getInscritsUsers(forEach){
+    getChilds(slotPath + "/inscrits",forEach)
+}
+
+function getSlotFriendsList(user,onEnd){
+    getChildsList(slotPath + "/users/" + user + "/amis",onEnd)
+}
+
+
+//Stats
+
+function getDemandesStat(onEnd){
+    
+    getDemandesUsersList(function(users){
+        let usersFriends = []
+        let usersScore = []
+        let from = []
+        for(let u in users){
+            usersFriends.push("err")
+            usersScore.push(0)
+            from.push("err")
+            readSlotUserData(users[u],"score",function(score){
+                usersScore[u] = score
+                getSlotFriendsList(users[u],function(friends){
+                    usersFriends[u] = friends
+                    suite()
+                })
+            })
+            
+        }
+        let progress = 0
+        function suite(){
+            console.log("suite" + progress)
+            
+            progress++
+            if(progress < users.length){
+                return
+            }
+            console.log("users",users)
+            console.log("users score",usersScore)
+            console.log("users friends",usersFriends)
+
+            let usersFriendsTag = []
+            for(let u in users){
+                usersFriendsTag[u] = []
+                for(let a in usersFriends[u]){
+                    let index = users.indexOf(usersFriends[u][a])
+                    if(index != -1){
+                        usersFriendsTag[u].push(index)
+                    }
+                    
+                }
+            }
+
+            let to = []
+
+            let actUser
+            function searchFriends(u){
+                if(from[actUser].indexOf(u) == -1){
+                    from[actUser].push(u)
+                    for(a in usersFriendsTag[u]){
+                        searchFriends(usersFriendsTag[u][a])
+                    }
+                }
+                
+            }
+
+            for(let u in users){
+                actUser = parseInt(u)
+                from[actUser] = []
+                searchFriends(actUser)
+            }
+
+            let userGroupScore = []
+            for(let u in users){
+                let somme = 0
+                for(let a in from[u]){
+                    somme += usersScore[from[u][a]]
+                }
+                userGroupScore.push(somme / from[u].length)
+            }
+
+            console.log("from",from)
+            console.log("group score",userGroupScore)
+
+
+            //onEnd(users,from)
+
+        }
+    })
+    
+}
+
+
+
+/*function getStat(j,h,type,onEnd){
+    let users = []
+    let amis = []
+    let amisTag = []
+
+    let nbScores = []
+    let usersScore = []
+
+    let classes = []
+    let usersClasse = []
+
+    let addLinkTag = []
+    let linkedTag = []
+    let delLinkTag = []
+    
+    
+    database.ref(path(j,h)+"/" + type).once("value", function(snapshot) {
+        let i = 0
+        snapshot.forEach(function(child) {
+            let user = child.key
+            
+            users.push(user)
+            amis[i] = []
+            amisTag[i] = []
+            addLinkTag[i] = []
+            linkedTag[i] = []
+            delLinkTag[i] = []
+            
+            let num = i
+            database.ref(path(j,h)+"/users/" + user +"/amis").once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    let ami = child.key
+                    amis[num].push(ami)
+                })
+            })
+            i++
+            
+            
+        });
+        
+        
+        for(let u in users){
+            let user = users[u] 
+            database.ref(path(j,h)+"/users/" + user + "/score").once("value", function(snapshot) {
+                let sc = snapshot.val()
+                if(nbScores[sc] == null){
+                    nbScores[sc] = []
+                }
+                nbScores[sc].push(u)
+                usersScore.push(sc)
+            })
+            
+        }
+
+        for(let u in users){
+            let user = users[u] 
+            database.ref(path(j,h)+"/users/" + user + "/classe").once("value", function(snapshot) {
+                let c = snapshot.val()
+                if(c == null){
+                    usersClasse.push("none")
+                }else{
+                    if(classes[c] == null){
+                        classes[c] = []
+                    }
+                    classes[c].push(u)
+                    usersClasse.push(c)
+                }
+            })
+            
+        }
+
+ 
+    })
+
+
+    setTimeout(function() {
+        console.log("start")
+        console.log(amis)
+        for(let u in users){
+            amisTag[u] = []
+            for(let a in amis[u]){
+                let index = users.indexOf(amis[u][a])
+                if(index != -1){
+                    amisTag[u].push(index)
+                }
+                
+            }
+        }
+
+        
+        for(let u in users){
+            linkedTag[u] = []
+        }
+        for(let u in users){
+            for(let a in amisTag[u]){
+                linkedTag[amisTag[u][a]].push(parseInt(u))
+                
+            }
+            
+        }
+        
+        //adding link -> users needed to add if you add this user
+
+        
+        let actUser
+        function searchAmis(u){
+            if(addLinkTag[actUser].indexOf(u) == -1){
+                addLinkTag[actUser].push(u)
+                for(a in amisTag[u]){
+                    searchAmis(amisTag[u][a])
+                }
+            }
+            
+        }
+
+        for(let u in users){
+            actUser = parseInt(u)
+            addLinkTag[actUser] = []
+            searchAmis(actUser)
+        }
+
+        //del link -> users needed to delete if you delete this user
+
+        
+        function searchLink(u){
+            if(delLinkTag[actUser].indexOf(u) == -1){
+                delLinkTag[actUser].push(u)
+                for(l in linkedTag[u]){
+                    searchLink(linkedTag[u][l])
+                }
+            }
+            
+        }
+
+        for(let u in users){
+            actUser = parseInt(u)
+            delLinkTag[actUser] = []
+            searchLink(actUser)
+        }
+
+
+
+        console.log("users",users)
+        console.log("amis",amis)
+        console.log(amisTag)
+        console.log("addLinkTag",addLinkTag)
+        console.log(linkedTag)
+        console.log("delLinkTag",delLinkTag)
+        console.log("classes",classes)
+        console.log(usersClasse)
+        console.log(nbScores)
+        console.log("users score",usersScore)
+        onEnd()
+
+    },1000);
+
+
+}*/

@@ -169,4 +169,11 @@ function charged(){
         window.location.href = menu;
     });
 
+
+
+    getDemandesStat(null)
+
 }
+
+
+

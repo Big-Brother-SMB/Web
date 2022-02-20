@@ -366,7 +366,9 @@ function updateAffichage(j,h){
 
 function select(j,h){
     sessionStorage.setItem("j", j);
-        sessionStorage.setItem("h", h);
+    sessionStorage.setItem("h", h);
+    writeCookie("jour",j)
+    writeCookie("heure",h)
     if(demande[j][h]){
         window.location.href = "../confirmation/modifier/modifier.html";
     }else{
@@ -420,9 +422,9 @@ function select(j,h){
 }
 
 
-function path(j,h){
+/*function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
-}
+}*/
 
 function loop(){
     console.log("update database")
