@@ -176,6 +176,14 @@ function refreshDatabase(){
     }
     document.getElementById("semaine").innerHTML = text 
 
+    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function(snapshot) {
+        let val = snapshot.val()
+        if(val == null){
+            val = "inconnu pour le moment"
+        }
+        document.getElementById("menu semaine").innerHTML = "<u>menu de la semaine n°" + week + "</u><br>" + val
+    });
+
     nbFois = 0;
     for(let j = 0; j < 4; j++){
         for(let h = 0; h < 2; h++){
@@ -335,7 +343,7 @@ function updateAffichage(j,h){
 
     }
     if(demande[j][h]){
-        bouton[j][h].className="inscrit tableau"
+        bouton[j][h].className="demande tableau"
         if (nbAmis[j][h] == 0){
             text = "Demande enregistrée sans amis"
         }

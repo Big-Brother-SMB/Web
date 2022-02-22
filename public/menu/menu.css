@@ -315,11 +315,20 @@ h2{
 }
 
 .inscrit{
+  background-color: #03fa10;
+  border-radius:8px 8px 8px 8px;
+  padding: .25rem;
+  margin: .25em;
+}
+
+
+.demande{
   background-color: #80eff7;
   border-radius:8px 8px 8px 8px;
   padding: .25rem;
   margin: .25em;
 }
+
 
 .places{
   background-color: #8b9fc9;
