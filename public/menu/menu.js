@@ -132,7 +132,7 @@ let inscrit = []
 for(let j = 0; j < 4; j++){
     let div = document.createElement("div")
     let text = document.createElement("button")
-    text.className = "jours";
+    text.className = "jours tableau";
     text.innerHTML = day[j]
     div.appendChild(text);
     
@@ -151,7 +151,7 @@ for(let j = 0; j < 4; j++){
         bouton[j][h] = document.createElement("button")
         bouton[j][h].id = "" + j + h;
         bouton[j][h].onclick = function(){select(j,h)};
-        bouton[j][h].className="places"
+        bouton[j][h].className="places tableau"
         div.appendChild(bouton[j][h]);
       
     }
@@ -286,14 +286,14 @@ function updateAffichage(j,h){
     switch (ouvert[j][h]){
         case 0:
             text = "Horaire non planifié"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 1:
             if(places[j][h] <= 0){
-                bouton[j][h].className="zero"
+                bouton[j][h].className="zero tableau"
                 text = "Plein";
             }else{
-                bouton[j][h].className="places"
+                bouton[j][h].className="places tableau"
                 if(places[j][h] == 1){
                     text = "Il reste une place";
                 }
@@ -301,41 +301,41 @@ function updateAffichage(j,h){
             break;
         case 2:
             text = "Foyer fermé"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 3:
             text = text + "<br>(pas de désinscriptions possible)";
-            bouton[j][h].className="bloque"
+            bouton[j][h].className="bloque tableau"
             break;
         case 4:
             text = text + "<br>(pas d'inscriptions possible)";
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 5:
             text = "Ouvert (changements bloqués)";
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 6:
             text = "Vacances"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 7:
-            bouton[j][h].className="places"
+            bouton[j][h].className="places tableau"
             
             text = demandes[j][h] + " demandes pour " + places[j][h] + " places"
             break;
         case 8:
             text = "Calcul en cours"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 9:
                 text = "Fini"
-                bouton[j][h].className="ferme"
+                bouton[j][h].className="ferme tableau"
                 break;
 
     }
     if(demande[j][h]){
-        bouton[j][h].className="inscrit"
+        bouton[j][h].className="inscrit tableau"
         if (nbAmis[j][h] == 0){
             text = "Demande enregistrée sans amis"
         }
@@ -349,7 +349,7 @@ function updateAffichage(j,h){
     }
 
     if(inscrit[j][h]){
-        bouton[j][h].className="inscrit"
+        bouton[j][h].className="inscrit tableau"
         if (nbAmis[j][h] == 0){
             text = text + "<br>Vous êtes inscrit"
         }

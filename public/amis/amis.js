@@ -7,7 +7,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     snapshot.forEach(function(child) {
         let ami = document.createElement("button")
         ami.classList.add("amis")
-        ami.innerHTML = child.key + " (supprimer)"
+        ami.innerHTML = child.key
         ami.addEventListener("click", function() {
             console.log("remove")
             database.ref("users/" + user + "/amis/" + child.key).remove();

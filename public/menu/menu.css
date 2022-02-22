@@ -143,6 +143,10 @@ button{
   text-overflow: ellipsis; 
 }
 
+.tableau{
+  height: 150px;
+}
+
 
 p{
   font-size: 40px;
