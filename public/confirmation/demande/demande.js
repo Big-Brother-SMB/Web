@@ -55,7 +55,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 let divListeAmis = document.getElementById("liste d'amis")
 let divAmisAjoute = document.getElementById("amis ajoutés")
 let amis2 = []
-let bAmis = []
+let boolAmis = []
 let butAmis = []
 database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     let i = 0
