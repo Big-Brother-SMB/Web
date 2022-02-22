@@ -1,9 +1,5 @@
 const menu = "../menu/menu.html"
 
-document.getElementById("retour").addEventListener("click", function() {
-    window.location.href = menu;
-});
-
 let amis = []
 let divAmis = document.getElementById("amis")
 database.ref("users/" + user + "/amis").once("value", function(snapshot) {
