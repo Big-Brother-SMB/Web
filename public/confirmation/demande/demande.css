@@ -1,3 +1,9 @@
+#col {
+  column-count: 2;
+}
+
+
+
 body,
     h1
     {
@@ -51,7 +57,6 @@ body,
     }
 
     button {
-      border: none;
       text-align: center;
       text-transform: uppercase;
       outline: none;
@@ -59,8 +64,10 @@ body,
       color: #eeeeee;
       font-weight: 600;
       font-size: 20px;
-      background-color: grey;
+      
       padding: 15px 50px;
+      border-radius:8px 8px 8px 8px;
+      background-color: #3d546e;
       }
 
       .amis{

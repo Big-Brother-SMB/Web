@@ -20,7 +20,7 @@ database.ref(path(j,h) + "/info").once("value", function(snapshot) {
 })
 
 
-let divAmis = document.getElementById("amis")
+/*let divAmis = document.getElementById("amis")
 divAmis.innerHTML = "recherche d'amis en cours"
 let amis = []
 let boolAmis = []
@@ -68,7 +68,70 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         }
         charged()
     })
+})*/
+
+
+let divListeAmis = document.getElementById("liste d'amis")
+let divAmisAjoute = document.getElementById("amis ajoutés")
+let amis = []
+let boolAmis = []
+let initBoolAmis = []
+let butAmis = []
+database.ref("users/" + user + "/amis").once("value", function(snapshot) {
+    let i = 0
+    snapshot.forEach(function(child) {
+        amis.push(child.key)
+        boolAmis.push(false)
+        initBoolAmis.push(false)
+        butAmis[i] = document.createElement("button")
+        butAmis[i].classList.add("amis")
+        butAmis[i].innerHTML = amis[i]
+        divListeAmis.appendChild(butAmis[i]);
+        
+        
+        
+        const num = i
+        butAmis[num].addEventListener("click", function() {
+            if(boolAmis[num]){
+                divListeAmis.appendChild(butAmis[num]);
+            }else{
+                divAmisAjoute.appendChild(butAmis[num]);
+            }
+            boolAmis[num] = !boolAmis[num]
+        })
+
+        i++
+    })
+
+    database.ref(path(j,h) + "/users/" + user + "/amis").once("value", function(snapshot) {
+        snapshot.forEach(function(child) {
+            let name = child.key
+            let index = amis.indexOf(name)
+            boolAmis[index] = true
+            initBoolAmis[index] = true
+            divAmisAjoute.appendChild(butAmis[index]);
+        })
+        charged()
+    })
+
 })
+
+document.getElementById("tout ajouter").addEventListener("click", function() {
+    for(let i in boolAmis){
+        boolAmis[i] = true;
+        divAmisAjoute.appendChild(butAmis[i]);
+    }
+})
+
+
+document.getElementById("tout retirer").addEventListener("click", function() {
+    for(let i in boolAmis){
+        boolAmis[i] = false;
+        divListeAmis.appendChild(butAmis[i]);
+    }
+})
+
+
 
 let places = 0
 database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
@@ -100,6 +163,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
 
 let horaire = 0
 
+let charge = 1
 if(h == 1){
     database.ref(path(j,h) + "/users/" + user + "/horaire").once('value').then(function(snapshot) {
         horaire = snapshot.val()
@@ -109,7 +173,7 @@ if(h == 1){
     charged()
 }
 
-let charge = 1
+
 function charged(){
     
     if(charge < 8){
@@ -160,7 +224,9 @@ function charged(){
         }
         database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
             if(snapshot.val() != null){
-                window.location.href = menu;
+                setTimeout(function() {
+                    window.location.href = menu;
+                },1000);
             }
         });
     });

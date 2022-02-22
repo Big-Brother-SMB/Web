@@ -18,7 +18,7 @@ database.ref(path(j,h) + "/info").once("value", function(snapshot) {
     charged()
 })
 
-let divAmis = document.getElementById("amis")
+/*let divAmis = document.getElementById("amis")
 divAmis.innerHTML = "recherche d'amis en cours"
 let amis = []
 database.ref("users/" + user + "/amis").once("value", function(snapshot) {
@@ -50,7 +50,63 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         divAmis.appendChild(ami);
     })
     charged()
+})*/
+
+let divListeAmis = document.getElementById("liste d'amis")
+let divAmisAjoute = document.getElementById("amis ajoutés")
+let amis2 = []
+let bAmis = []
+let butAmis = []
+database.ref("users/" + user + "/amis").once("value", function(snapshot) {
+    let i = 0
+    snapshot.forEach(function(child) {
+        amis2.push(child.key)
+        boolAmis.push(bollAllAmis)
+        butAmis[i] = document.createElement("button")
+        butAmis[i].classList.add("amis")
+        butAmis[i].innerHTML = amis2[i]
+        if(boolAmis[i]){
+            divAmisAjoute.appendChild(butAmis[i]);
+        }else{
+            divListeAmis.appendChild(butAmis[i]);
+        }
+        
+        
+        const num = i
+        butAmis[num].addEventListener("click", function() {
+            if(boolAmis[num]){
+                divListeAmis.appendChild(butAmis[num]);
+            }else{
+                divAmisAjoute.appendChild(butAmis[num]);
+            }
+            boolAmis[num] = !boolAmis[num]
+        })
+
+        i++
+    })
+
+    charged()
 })
+
+document.getElementById("tout ajouter").addEventListener("click", function() {
+    for(let i in boolAmis){
+        boolAmis[i] = true;
+        divAmisAjoute.appendChild(butAmis[i]);
+    }
+})
+
+
+document.getElementById("tout retirer").addEventListener("click", function() {
+    for(let i in boolAmis){
+        boolAmis[i] = false;
+        divListeAmis.appendChild(butAmis[i]);
+    }
+})
+
+
+
+
+
 
 let places = 0
 database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
@@ -101,9 +157,16 @@ function charged(){
     document.getElementById("oui").addEventListener("click", function() {
         database.ref(path(j,h) + "/users/" + user + "/score").set(score);
         database.ref(path(j,h) + "/users/" + user + "/classe").set(classe);
-        for(let a in amis){
+        /*for(let a in amis){
             database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).set(0);
+        }*/
+        for(let i in boolAmis){
+            if(boolAmis[i]){
+                database.ref(path(j,h) + "/users/" + user + "/amis/" + amis2[i]).set(0);
+            }
+            
         }
+        
 
         
         if(h == 1){
