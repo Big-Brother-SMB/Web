@@ -30,7 +30,6 @@ if (cookie["user"] != null && cookie["classe"] != null && cookie["email"] != nul
 
 if (cookie["RGPD"]){
   document.getElementById("checkbox").checked = true
-  document.getElementById("checkbox2").checked = true
 }
 
 for(let i in listClasse){
@@ -75,25 +74,23 @@ const auth = getAuth()
 
 document.getElementById("popup").onclick = () => {
     if(document.getElementById("checkbox").checked){
-      if(document.getElementById("checkbox2").checked){
-        if(document.getElementById("classe").selectedIndex != 0){
-          let classe = listClasse[document.getElementById("classe").selectedIndex - 1]
-          console.log(classe)
-          sessionStorage.setItem("classe", classe);
-          let codeBar = document.getElementById("code bar").value
-          if(codeBar != null){
-            sessionStorage.setItem("code bar", codeBar);
-          }
-          signInWithRedirect(auth, provider)
-        }else{
-          document.getElementById("infos").innerHTML = "Vous devez selectionner votre classe"
+
+      if(document.getElementById("classe").selectedIndex != 0){
+
+        let classe = listClasse[document.getElementById("classe").selectedIndex - 1]
+        console.log(classe)
+        sessionStorage.setItem("classe", classe);
+        let codeBar = document.getElementById("code bar").value
+        if(codeBar != null){
+          sessionStorage.setItem("code bar", codeBar);
         }
+        signInWithRedirect(auth, provider)
       }else{
-        document.getElementById("infos").innerHTML = "Vous devez accepter les cookies"
+        document.getElementById("infos").innerHTML = "Vous devez selectionner votre classe"
       }
       
     }else{
-      document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données"
+      document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies"
     }
     
 

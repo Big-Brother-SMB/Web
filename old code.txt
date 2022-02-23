@@ -84,3 +84,26 @@
           </ul>
         </li>      
       </ul>
+
+
+
+      <ul id="menu-demo2" class="tuto2">
+        <li id="aide" class="tuto2"><a href="../guide/faq.html">FAQ</a></li>
+      </ul>
+
+
+      <ul id="menu-demo2" >
+        <li class="retour"><a href="../guide/tuto.html" id="tuto" >Tutoriel</a></li>      
+      </ul>
+
+
+      <div style="position: sticky;">
+    <div class="marquee-rtl">
+        <div> Information : Le bug de connection (chargement infini) viens d'être corrigé</div>
+    </div>
+    </div>
+
+
+    <p class="cgu">
+        J'accepte les <a href="cgu/cookie.html">Cookies</a>  : <input id="checkbox2" type="checkbox" value="cookies"/>
+    </p>

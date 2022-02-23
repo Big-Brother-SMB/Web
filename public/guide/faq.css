@@ -1,3 +1,75 @@
+
+    h1
+    {
+      margin: 0;
+      padding: 0;
+      font-size: 30px;
+    }
+
+    h1{
+      font-size: 50px;
+      color: white;
+    }
+    
+    header {
+      align-items: center;
+      display: flex;
+      background: #486381;
+    }
+    
+    #logo,
+    nav {
+      flex : 1;
+    }
+    
+    .headerimg{
+      width: 170px;
+      height: 150px;
+    }
+    
+    nav  {
+      display: flex;
+      justify-content: space-around;
+      
+    }
+    
+    .retour  {
+      border-radius:8px 8px 8px 8px;
+      background-color: #3d546e;
+      margin-right: 20px;
+    }
+    .envoyer  {
+      text-align: center;
+      border-radius:8px 8px 8px 8px;
+      background-color: #3d546e;
+      margin: 10px;
+      margin-bottom: 0px;
+      width: 25%;
+      padding-right:-40px ;
+      padding-left:-40px ;
+    }
+
+    .retour:hover  {
+      background:#2e3f53;
+    }
+
+    button {
+      text-align: center;
+      text-transform: uppercase;
+      outline: none;
+      overflow: hidden;
+      color: #eeeeee;
+      font-weight: 600;
+      font-size: 20px;
+      
+      padding: 15px 50px;
+      border-radius:8px 8px 8px 8px;
+      background-color: #3d546e;
+      }
+
+
+
+
 question{
     background-color: #6b6dd4;
     color: rgb(0, 0, 0);
@@ -69,18 +141,7 @@ reponse{
     left: 0;
   }
 
-  button{
-    background-color: #6b6dd4;
-    color: rgb(0, 0, 0);
-    padding: 10px 10px;
-    width: 400px;
-    height: 150px;
-    margin: 0px 0px;
-    font-size: 25px;
-    font-family: DejaVu Sans Mono, monospace; 
-    text-align: center;
-    vertical-align: text-top;
-  }
+  
 
   a:hover { 
     color:red;
