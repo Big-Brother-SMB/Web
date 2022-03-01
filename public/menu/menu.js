@@ -366,6 +366,8 @@ function updateAffichage(j,h){
             text = "Demande enregistrée avec " + nbAmis[j][h] + " amis<br>"
             if(nbAmisDemande[j][h] == 0){
                 text += "qui n'ont pas fait de demande"
+            }else if(nbAmis[j][h] == nbAmisDemande[j][h]){
+                text += "qui ont tous fait une demande"
             }else if (nbAmisDemande[j][h]==1){
                 text += "dont un seul a fait une demande"
             }else{
