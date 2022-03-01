@@ -74,6 +74,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 let divListeAmis = document.getElementById("liste d'amis")
 let divAmisAjoute = document.getElementById("amis ajoutés")
 let amis = []
+let demandesAmis = []
 let boolAmis = []
 let initBoolAmis = []
 let butAmis = []
@@ -81,6 +82,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     let i = 0
     snapshot.forEach(function(child) {
         amis.push(child.key)
+        demandesAmis.push(0)
         boolAmis.push(false)
         initBoolAmis.push(false)
         butAmis[i] = document.createElement("button")
@@ -98,6 +100,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
                 divAmisAjoute.appendChild(butAmis[num]);
             }
             boolAmis[num] = !boolAmis[num]
+            updateConfirmation()
         })
 
         i++
@@ -111,16 +114,36 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
             initBoolAmis[index] = true
             divAmisAjoute.appendChild(butAmis[index]);
         })
+        updateConfirmation()
         charged()
     })
 
 })
+
+function updateConfirmation(){
+    let pb = 0
+    for(let i in boolAmis){
+        if(boolAmis[i] && demandesAmis[i] == 0){
+            pb++
+        }
+    }
+    let p = document.getElementById("attention amis")
+    if(pb == 0){
+        p.innerHTML = ""
+    }else if(pb == 1){
+        p.innerHTML = "Attention, un ami n'a pas encore fait de demande"
+    }else{
+        p.innerHTML = "Attention, " + pb + " amis n'ont pas encore fait de demande"
+    }
+    
+}
 
 document.getElementById("tout ajouter").addEventListener("click", function() {
     for(let i in boolAmis){
         boolAmis[i] = true;
         divAmisAjoute.appendChild(butAmis[i]);
     }
+    updateConfirmation()
 })
 
 
@@ -129,6 +152,7 @@ document.getElementById("tout retirer").addEventListener("click", function() {
         boolAmis[i] = false;
         divListeAmis.appendChild(butAmis[i]);
     }
+    updateConfirmation()
 })
 
 
@@ -142,7 +166,12 @@ database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
 let inscrits = 0
 database.ref(path(j,h) + "/inscrits").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
-        inscrits++
+        const name = child.key
+        inscrits++ 
+        const index = amis.indexOf(name)  
+        if(index != -1){
+            demandesAmis[index] = 2
+        }
     });
     charged()
 });
@@ -150,7 +179,12 @@ database.ref(path(j,h) + "/inscrits").once('value').then(function(snapshot) {
 let demandes = 0
 database.ref(path(j,h) + "/demandes").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
-        demandes++      
+        const name = child.key
+        demandes++    
+        const index = amis.indexOf(name)  
+        if(index != -1){
+            demandesAmis[index] = 1
+        }
     })
     charged()
 });
@@ -180,6 +214,14 @@ function charged(){
         charge++
         return
     }
+    for(let i in demandesAmis){
+        if(demandesAmis[i] == 1){
+            butAmis[i].innerHTML += " (a fait une demande)"
+        }else if(demandesAmis[i] == 2){
+            butAmis[i].innerHTML += " (inscrit)"
+        }
+    }
+
     console.log("charged")
     console.log(h)
     console.log(horaire)
@@ -213,6 +255,7 @@ function charged(){
 
 
     document.getElementById("modif").addEventListener("click", function() {
+        let str = ""
         for(let a in initBoolAmis){
             if(initBoolAmis[a] != boolAmis[a]){
                 if(boolAmis[a]){
@@ -221,7 +264,11 @@ function charged(){
                     database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).remove()
                 }
             }  
+            if(boolAmis[a]){
+                str += amis[a] + "/"
+            }
         }
+        writeCookie("derniere demande",str)
         database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
             if(snapshot.val() != null){
                 setTimeout(function() {

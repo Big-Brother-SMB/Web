@@ -54,23 +54,27 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 
 let divListeAmis = document.getElementById("liste d'amis")
 let divAmisAjoute = document.getElementById("amis ajoutés")
-let amis2 = []
+let amis = []
+let demandesAmis = []
+let amisCookie = readCookie("derniere demande").split("/")
 let boolAmis = []
 let butAmis = []
 database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     let i = 0
     snapshot.forEach(function(child) {
-        amis2.push(child.key)
-        boolAmis.push(bollAllAmis)
+        const name = child.key
+        amis.push(name)
+        demandesAmis.push(0)
+        boolAmis.push(bollAllAmis || amisCookie.indexOf(name) != -1)
         butAmis[i] = document.createElement("button")
         butAmis[i].classList.add("amis")
-        butAmis[i].innerHTML = amis2[i]
+        butAmis[i].innerHTML = amis[i]
         if(boolAmis[i]){
             divAmisAjoute.appendChild(butAmis[i]);
         }else{
             divListeAmis.appendChild(butAmis[i]);
         }
-        
+        updateConfirmation()
         
         const num = i
         butAmis[num].addEventListener("click", function() {
@@ -80,6 +84,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
                 divAmisAjoute.appendChild(butAmis[num]);
             }
             boolAmis[num] = !boolAmis[num]
+            updateConfirmation()
         })
 
         i++
@@ -88,11 +93,31 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     charged()
 })
 
+function updateConfirmation(){
+    let pb = 0
+    console.log(demandesAmis)
+    for(let i in boolAmis){
+        if(boolAmis[i] && demandesAmis[i] == 0){
+            pb++
+        }
+    }
+    let p = document.getElementById("attention amis")
+    if(pb == 0){
+        p.innerHTML = ""
+    }else if(pb == 1){
+        p.innerHTML = "Attention, un ami n'a pas encore fait de demande"
+    }else{
+        p.innerHTML = "Attention, " + pb + " amis n'ont pas encore fait de demande"
+    }
+    
+}
+
 document.getElementById("tout ajouter").addEventListener("click", function() {
     for(let i in boolAmis){
         boolAmis[i] = true;
         divAmisAjoute.appendChild(butAmis[i]);
     }
+    updateConfirmation()
 })
 
 
@@ -101,6 +126,7 @@ document.getElementById("tout retirer").addEventListener("click", function() {
         boolAmis[i] = false;
         divListeAmis.appendChild(butAmis[i]);
     }
+    updateConfirmation()
 })
 
 
@@ -117,16 +143,29 @@ database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
 let inscrits = 0
 database.ref(path(j,h) + "/inscrits").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
-        inscrits++
+        const name = child.key
+        inscrits++ 
+        const index = amis.indexOf(name)  
+        if(index != -1){
+            demandesAmis[index] = 2
+        }
     });
+    updateConfirmation()
     charged()
 });
 
 let demandes = 0
+
 database.ref(path(j,h) + "/demandes").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
-        demandes++      
+        const name = child.key
+        demandes++    
+        const index = amis.indexOf(name)  
+        if(index != -1){
+            demandesAmis[index] = 1
+        }
     })
+    updateConfirmation()
     charged()
 });
 
@@ -143,6 +182,16 @@ function charged(){
         return
     }
     console.log("charged")
+
+    for(let i in demandesAmis){
+        if(demandesAmis[i] == 1){
+            butAmis[i].innerHTML += " (a fait une demande)"
+        }else if(demandesAmis[i] == 2){
+            butAmis[i].innerHTML += " (inscrit)"
+        }
+    }
+
+
     document.getElementById("article").style.display = "inline"
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
@@ -160,12 +209,15 @@ function charged(){
         /*for(let a in amis){
             database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).set(0);
         }*/
+        let str = ""
         for(let i in boolAmis){
             if(boolAmis[i]){
-                database.ref(path(j,h) + "/users/" + user + "/amis/" + amis2[i]).set(0);
+                str += amis[i] + "/"
+                database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[i]).set(0);
             }
             
         }
+        writeCookie("derniere demande",str)
         
 
         

@@ -119,12 +119,14 @@ Date.prototype.getWeek = function() {
 
 let bouton = [];
 let total = [];
-let demandes = [];
+let nbDemandes = [];
+let demandes = []
 let demande = []
 let places = [];
 
 let ouvert = []
 let nbAmis = []
+let nbAmisDemande = []
 
 let inscrits = [];
 let inscrit = []
@@ -141,6 +143,8 @@ for(let j = 0; j < 4; j++){
     places[j] = []
     
     nbAmis[j] = []
+    nbAmisDemande[j] = []
+    nbDemandes[j] = []
     demandes[j] = []
     demande[j] = [false,false]
 
@@ -203,60 +207,63 @@ function refreshDatabase(){
                 update(j, h);
             });
 
-            nbAmis[j][h] = 0
-
-            database.ref(path(j,h) + "/users/" + user + "/amis").once("value", function(snapshot) {
-                snapshot.forEach(function(child) {
-                    nbAmis[j][h] = nbAmis[j][h] + 1
-                    update(j, h);
-                });
-            });
+            
 
             //demande en cours
          
-            demandes[j][h] = 0
-      
-            
-            database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
-                snapshot.forEach(function(child) {
-                    demandes[j][h] = demandes[j][h] + 1
-                    update(j, h);
-                });
-            });
-
+            nbDemandes[j][h] = 0
+            demandes[j][h] = []
             demande[j][h] = false;
+
             
-      
             database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
-                    if(child.key == user){
+                    const name = child.key
+                    nbDemandes[j][h] = nbDemandes[j][h] + 1
+                    if(name == user){
                         nbFois++;
                         demande[j][h] = true;
-                    }    
+                    }else{
+                        demandes[j][h].push(name)
+                    }
+                    
                 });
+                update(j, h);
             });
+
+            
 
 
             //inscrits
 
             inscrits[j][h] = 0
-      
+            inscrit[j][h] = false;
+
             database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     inscrits[j][h] = inscrits[j][h] + 1
-                    update(j, h);
-                });
-            });
-
-            inscrit[j][h] = false;
-            
-      
-            database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
-                snapshot.forEach(function(child) {
                     if(child.key == user){
                         nbFois++;
                         inscrit[j][h] = true;
                     }    
+                    
+                });
+                update(j, h);
+            });
+
+            
+
+
+            nbAmis[j][h] = 0
+            nbAmisDemande[j][h] = 0
+
+            database.ref(path(j,h) + "/users/" + user + "/amis").once("value", function(snapshot) {
+                snapshot.forEach(function(child) {
+                    nbAmis[j][h] = nbAmis[j][h] + 1
+                    if(demandes[j][h].indexOf(child.key) != -1){
+                        nbAmisDemande[j][h]++
+                    }
+                    update(j, h);
                 });
             });
 
@@ -330,7 +337,7 @@ function updateAffichage(j,h){
         case 7:
             bouton[j][h].className="places tableau"
             
-            text = demandes[j][h] + " demandes pour " + places[j][h] + " places"
+            text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places"
             break;
         case 8:
             text = "Calcul en cours"
@@ -348,10 +355,23 @@ function updateAffichage(j,h){
             text = "Demande enregistrée sans amis"
         }
         else if (nbAmis[j][h]==1){
-            text = "Demande enregistrée avec 1 ami"
+            text = "Demande enregistrée avec 1 ami<br>"
+            if(nbAmisDemande[j][h] == 0){
+                text += "qui n'a pas fait de demande"
+            }else{
+                text += "qui a fait une demande"
+            }
         }
         else {
-            text = "Demande enregistrée avec " + nbAmis[j][h] + " amis"
+            text = "Demande enregistrée avec " + nbAmis[j][h] + " amis<br>"
+            if(nbAmisDemande[j][h] == 0){
+                text += "qui n'ont pas fait de demande"
+            }else if (nbAmisDemande[j][h]==1){
+                text += "dont un seul a fait une demande"
+            }else{
+                text += "dont " + nbAmisDemande[j][h] + " ont fait une demande"
+            }
+            
         }
         
     }
