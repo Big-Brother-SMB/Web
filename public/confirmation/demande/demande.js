@@ -3,6 +3,8 @@ const menu = "../../menu/menu.html"
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
 
+let charge = 1
+
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
     if(snapshot.val() != 7){
         window.location.href = menu;
@@ -56,7 +58,13 @@ let divListeAmis = document.getElementById("liste d'amis")
 let divAmisAjoute = document.getElementById("amis ajoutés")
 let amis = []
 let demandesAmis = []
-let amisCookie = readCookie("derniere demande").split("/")
+let amisCookie = []
+try{
+    amisCookie = readCookie("derniere demande").split("/")
+}catch(Exception){
+    
+}
+
 let boolAmis = []
 let butAmis = []
 database.ref("users/" + user + "/amis").once("value", function(snapshot) {
@@ -175,7 +183,6 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
     charged()
 });
 
-let charge = 1
 function charged(){
     if(charge < 7){
         charge++
