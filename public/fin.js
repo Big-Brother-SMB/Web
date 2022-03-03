@@ -29,7 +29,7 @@ database.ref("users/" + user + "/score").once("value", function(snapshot) {
 })
 
 database.ref("users/" + user + "/classe").once("value", function(snapshot) {
-    console.log("classe : " + snapshot.val())
+    console.log("classe database : " + snapshot.val())
     if(snapshot.val() == null){
         console.log("classe create")
         database.ref("users/" + user + "/classe").set(classe);

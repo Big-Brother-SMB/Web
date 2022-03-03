@@ -103,7 +103,6 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 
 function updateConfirmation(){
     let pb = 0
-    console.log(demandesAmis)
     for(let i in boolAmis){
         if(boolAmis[i] && demandesAmis[i] == 0){
             pb++
