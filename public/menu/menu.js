@@ -172,7 +172,7 @@ function refreshDatabase(){
         document.getElementById("score").innerHTML = snapshot.val()+" pts"
     });
 
-    let sn = ["28 au 4 mars","7 au 11 mars","14 au 18 mars","21 au 25 mars","28 au 1 avril","4 au 8 avril","11 au 15 avril"]
+    let sn = ["7 au 11 mars","14 au 18 mars","21 au 25 mars","28 au 1 avril","4 au 8 avril","11 au 15 avril"]
 
     let text = "Semaine " + week + " du " + sn[week-actualWeek] 
     if(week == actualWeek){
