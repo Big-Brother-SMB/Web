@@ -107,3 +107,13 @@
     <p class="cgu">
         J'accepte les <a href="cgu/cookie.html">Cookies</a>  : <input id="checkbox2" type="checkbox" value="cookies"/>
     </p>
+
+
+
+
+
+
+
+
+
+    <a href="POLITIQUE DE confidentialité.odt">politique de confidentialitée des données</a>
