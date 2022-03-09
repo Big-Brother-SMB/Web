@@ -21,7 +21,7 @@ if(classe == null){
 //temporaire
 if(hasCodeBar){
     database.ref("codes barres/" + codeBar).set(user)
-    database.ref("users/" + user + "/codes barres").set(codeBar)
+    database.ref("users/" + user + "/code barre").set(codeBar)
 }else{
     deco()
 }
