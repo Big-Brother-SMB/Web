@@ -46,9 +46,6 @@ inputCodeBar.addEventListener("input",function(){
             document.getElementById("chargement").style.display = "none"
             document.getElementById("article").style.display = "block"
         })
-    }else{
-        database.ref("codes barres/" + codeBar).remove()
-        delCookie("code bar")
     }
     
     
