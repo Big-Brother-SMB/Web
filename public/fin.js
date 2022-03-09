@@ -10,6 +10,7 @@ database.ref("codes barres/" + codeBar).once('value',function(snapshot) {
     if(snapshot.val() == null || snapshot.val() == user){
         console.log(snapshot.val())
         database.ref("codes barres/" + codeBar).set(user)
+        database.ref("users/" + user + "/code barre").set(codeBar)
         suite();
     }else{
         sessionStorage.setItem("auth err", 1);

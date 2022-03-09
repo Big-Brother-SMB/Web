@@ -39,7 +39,8 @@ inputCodeBar.addEventListener("input",function(){
                 database.ref("codes barres/" + codeBar).remove()
                 writeCookie("code bar", val)
                 codeBar = val
-                database.ref("codes barres/" + codeBar).set(user)
+                database.ref("code barre/" + codeBar).set(user)
+                database.ref("users/" + user + "/codes barres").set(codeBar)
             }else{
                 document.getElementById("info code bar").innerHTML = "ce code barre est déjà attribué"
             }
