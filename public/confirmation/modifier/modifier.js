@@ -191,7 +191,12 @@ database.ref(path(j,h) + "/demandes").once('value').then(function(snapshot) {
 
 let score = 0
 database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
-    score = snapshot.val()
+    snapshot.forEach(function(child) {
+        database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
+            score += snapshot.val()
+            score = Math.round(score*100)/100
+        }) 
+    })
     charged()
 });
 

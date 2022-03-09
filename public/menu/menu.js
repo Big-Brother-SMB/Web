@@ -19,6 +19,11 @@ if(classe == null){
 }
 
 //temporaire
+if(hasCodeBar){
+    database.ref("codes barres/" + codeBar).set(user)
+}
+
+//temporaire
 if(listClasse.indexOf(classe) == -1){
     database.ref("users/" + user + "/classe").remove()
     delCookie("classe");
@@ -35,11 +40,12 @@ console.log("classe : " + classe);
 document.getElementById("user").innerHTML = user + " " + classe
 
 
-database.ref("users/" + user + "/score").once("value", function(snapshot) {
+/*database.ref("users/" + user + "/score").once("value", function(snapshot) {
     if(snapshot.val() == null){
         deco()
     }
-})
+})*/
+
 database.ref("users/" + user + "/email").once("value", function(snapshot) {
     if(snapshot.val() == null){
         deco()
@@ -78,6 +84,10 @@ document.getElementById("pass").addEventListener("click", function() {
 
 document.getElementById("amis").addEventListener("click", function() {
     window.location.href = "../amis/amis.html";
+});
+
+document.getElementById("score").addEventListener("click", function() {
+    window.location.href = "../score/score.html";
 });
 
 
@@ -169,7 +179,15 @@ let nbFois;
 function refreshDatabase(){
 
     database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
-        document.getElementById("score").innerHTML = snapshot.val()+" pts"
+        let total = 0
+        document.getElementById("score").innerHTML = total + " pts"
+        snapshot.forEach(function(child) {
+            database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
+                total += snapshot.val()
+                total = Math.round(total*100)/100
+                document.getElementById("score").innerHTML = total + " pts"
+            }) 
+        })
     });
 
     let sn = ["7 au 11 mars","14 au 18 mars","21 au 25 mars","28 au 1 avril","4 au 8 avril","11 au 15 avril"]

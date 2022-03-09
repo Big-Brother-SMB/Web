@@ -178,15 +178,18 @@ h1{
 }
 
 .score  {
-    width: 150px;
-    border: 1px solid black;
-    text-align:center ;
-    display: inline;
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    border-radius:8px 8px 8px 8px;
-    padding: .25rem;
-    margin: .25em 2em .25em .25em ;
+  
+  font-size: 30dp;
+  background-color: #fff;
+  width: 150px;
+  border: 1px solid black;
+  text-align:center ;
+  display: inline;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  border-radius:8px 8px 8px 8px;
+  padding: .25rem;
+  margin: .25em 2em .25em .25em ;
     
 }
 

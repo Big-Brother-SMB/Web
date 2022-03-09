@@ -29,12 +29,29 @@ if(hasCodeBar){
 }
 
 inputCodeBar.addEventListener("input",function(){
+    document.getElementById("info code bar").innerHTML = ""
     let val = inputCodeBar.value
     if(String(val).length  == 5){
-        writeCookie("code bar", val)
+        document.getElementById("chargement").style.display = "block"
+        document.getElementById("article").style.display = "none"
+        database.ref("codes barres/" + val).once('value',function(snapshot) {
+            if(snapshot.val() == null){
+                database.ref("codes barres/" + codeBar).remove()
+                writeCookie("code bar", val)
+                codeBar = val
+                database.ref("codes barres/" + codeBar).set(user)
+            }else{
+                document.getElementById("info code bar").innerHTML = "ce code barre est déjà attribué"
+            }
+            document.getElementById("chargement").style.display = "none"
+            document.getElementById("article").style.display = "block"
+        })
     }else{
+        database.ref("codes barres/" + codeBar).remove()
         delCookie("code bar")
     }
+    
+    
     
 })
 
