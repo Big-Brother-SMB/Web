@@ -67,7 +67,12 @@ const provider = new GoogleAuthProvider();
 const auth = getAuth()
 
 
-
+let err = sessionStorage.getItem("auth err");
+console.log(err)
+if(err == 1){
+  console.log("err code bar")
+  document.getElementById("infos").innerHTML = "Ce code barre est déjà attribué"
+}
 
 
 
@@ -77,14 +82,18 @@ document.getElementById("popup").onclick = () => {
 
       if(document.getElementById("classe").selectedIndex != 0){
 
-        let classe = listClasse[document.getElementById("classe").selectedIndex - 1]
-        console.log(classe)
-        sessionStorage.setItem("classe", classe);
+        
         let codeBar = document.getElementById("code bar").value
-        if(codeBar != null){
+        if(String(codeBar).length == 5){
+          sessionStorage.setItem("auth err", 0);
+          let classe = listClasse[document.getElementById("classe").selectedIndex - 1]
+          sessionStorage.setItem("classe", classe);
           sessionStorage.setItem("code bar", codeBar);
+          signInWithRedirect(auth, provider)
+        }else{
+          document.getElementById("infos").innerHTML = "Vous devez indiquer votre code barre (5 chiffres)"
         }
-        signInWithRedirect(auth, provider)
+        
       }else{
         document.getElementById("infos").innerHTML = "Vous devez selectionner votre classe"
       }
