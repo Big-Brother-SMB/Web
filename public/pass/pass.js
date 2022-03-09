@@ -5,7 +5,7 @@ let j = dayWithMer[d.getDay() - 1];
 let h;
 console.log("heure : " + d.getHours())
 console.log("min : " + d.getMinutes())
-if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
+if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=49)){
     h = "/11h";
 }else{
     h = "/12h";
@@ -32,7 +32,7 @@ function loop(){
     d = new Date();
 
     document.getElementById("heure").innerHTML = getHour()
-    if(d.getMinutes() == 56 && d.getHours() == 11 && h == "/11h"){
+    if(d.getMinutes() == 50 && d.getHours() == 11 && h == "/11h"){
         window.location.href = "../menu/menu.html";
     }
 
