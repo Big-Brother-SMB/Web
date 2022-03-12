@@ -183,12 +183,17 @@ function refreshDatabase(){
 
     database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
         let total = 0
-        document.getElementById("score").innerHTML = total + " pts"
+        
+        
         snapshot.forEach(function(child) {
             database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
                 total += snapshot.val()
                 total = Math.round(total*100)/100
-                document.getElementById("score").innerHTML = total + " pts"
+                if (total <2) {
+                    document.getElementById("score").innerHTML = total + " pt"
+                }else{
+                    document.getElementById("score").innerHTML = total + " pts"
+                }
             }) 
         })
     });
