@@ -133,7 +133,7 @@ button{
   color: rgb(0, 0, 0);
   padding: 10px 10px;
   width: 30%;
-  height: 50px;
+  height: 100px;
   margin: 0px 0px;
   font-size: 20px;
   font-family: DejaVu Sans Mono, monospace; 
@@ -184,6 +184,7 @@ h1{
   width: 150px;
   border: 1px solid black;
   text-align:center ;
+  line-height: 30px;
   display: inline;
   overflow: hidden;
   text-overflow: ellipsis; 
@@ -194,10 +195,12 @@ h1{
 }
 
 .user {
-  width: 500px;
+  width: 40%;
+  line-height: 72px;
+  height: 72px;
   font-size: 15;
   border: 1px solid black;
-  text-align:center ;
+  text-align: center ;
   display: inline;
   overflow: hidden;
   text-overflow: ellipsis; 
