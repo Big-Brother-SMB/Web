@@ -1,50 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-  <head>
-    <link rel="stylesheet"href="pass.css">
-    <meta charset="utf-8">
-    <title>Pass</title>
-    <link rel = "icon" href= "../Images/logo.png">
-  </head>
-  <body>
 
-    <header>
-      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
-      <h1 id="logo">Pass</h1>  
-      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button> 
+<head>
+  <link rel="stylesheet" href="pass.css">
+  <link rel="stylesheet" href="../common.css">
+  <meta charset="utf-8">
+  <title style="font-size: 50px;">Pass</title>
+  <link rel="icon" href="../Images/logo.png">
+</head>
+
+<body>
+
+  <header>
+    <img class="headerimg" src="../Images/logo.png" alt="logo Lycée">
+    <h1 id="logo">Pass</h1>
+    <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
   </header>
- <article style="text-align: center; margin-top: -50px;margin-bottom: 20px;">
+  <article style="text-align: center; margin-top: -50px;margin-bottom: 20px;">
     <div id="divPass">
-      <p id ="user"></p>
-      <p id ="heure"></p>
+      <p id="user"></p>
+      <p id="heure"></p>
       <div id="pass" style="max-height: 10%;"></div>
     </div>
 
-    <div id="single"></div>      
-    
+    <div id="single"></div>
+
   </article>
 
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-    <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js"></script>
-    <script src="../common.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js"></script>
+  <script src="../common.js"></script>
   <script src="pass.js"></script>
-  
+
   <footer>
     <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
 
-        <br/>
-        <hr style="width: 25%;" />
+      <br />
+      <hr style="width: 25%;" />
 
-        <a href="../blog/devBlog.html" style="text-decoration: none;">
-            <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version Beta</p>
-        </a>
+      <a href="../blog/devBlog.html" style="text-decoration: none;">
+        <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version 1.0</p>
+      </a>
 
-        <br/>
-        <br/>
+      <br />
+      <br />
 
     </div>
   </footer>
-  </body>
+</body>
 
 </html>

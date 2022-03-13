@@ -200,7 +200,7 @@ function refreshDatabase() {
 
     let sn = ["7 au 11 mars", "14 au 18 mars", "21 au 25 mars", "28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
 
-    let text = "Semaine " + week + " du " + sn[week - actualWeek]
+    let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
     if (week == actualWeek) {
         text = "Cette semaine"
     }
@@ -211,7 +211,7 @@ function refreshDatabase() {
         if (val == null) {
             val = "inconnu pour le moment"
         }
-        document.getElementById("menu semaine").innerHTML = "<u>menu de la semaine n°" + week + "</u><br>" + val
+        document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
     });
 
     nbFois = 0;
