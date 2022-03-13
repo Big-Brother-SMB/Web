@@ -185,6 +185,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   vertical-align: middle;
+
 }
 
 .score {
@@ -351,6 +352,7 @@ h2 {
 
 .bloque {
   background-color: #d3af4c;
+<<<<<<< Updated upstream
   border-radius: 8px 8px 8px 8px;
   padding: 0.25rem;
   margin: 0.25em;
@@ -367,3 +369,10 @@ rouge{
   font-weight: bold;
   text-decoration: underline;     
 }
+=======
+  border-radius:8px 8px 8px 8px;
+  padding: .25rem;
+  margin: .25em;
+}
+
+>>>>>>> Stashed changes
