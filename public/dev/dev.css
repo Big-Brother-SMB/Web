@@ -89,5 +89,59 @@ button {
   background-color: grey;
   padding: 15px 50px;
 }
+#githubCode{
+  background-color: #b5c3e4;
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  width: 30%;
+  height: 100px;
+  margin: 0px 0px;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: text-top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#githubCode:hover{
+  background-color: #90a8e0;
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  width: 30%;
+  height: 100px;
+  margin: 0px 0px;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: text-top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
+
+
+#githubGraphs{
+  background-color: #b5c3e4;
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  width: 30%;
+  height: 100px;
+  margin: 0px 0px;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: text-top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#githubGraphs:hover{
+  background-color: #90a8e0;
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  width: 30%;
+  height: 100px;
+  margin: 0px 0px;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: text-top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
