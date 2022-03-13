@@ -52,17 +52,28 @@ header ul li {
   list-style: none;
   text-align: center;
 }
-#menu-demo2 .settings-button{
-  margin-left:20px;
-}
+
 #menu-demo2 li {
   display: inline-block;
   position: relative;
   border-radius: 8px 8px 0px 0px;
 }
+
 #menu-demo2 .tuto2 {
+  display: block;
   border-radius: 8px 8px 8px 8px;
+  border: none;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  color: #eeeeee;
+  font-weight: 600;
+  font-size: 20px;
+  background-color: grey;
+  padding: 15px 50px;
 }
+
 #menu-demo2 ul li {
   display: inherit;
   border-radius: 0;
@@ -70,9 +81,11 @@ header ul li {
 #menu-demo2 ul li:hover {
   border-radius: 0;
 }
+
 #menu-demo2 ul li:last-child {
   border-radius: 0 0 8px 8px;
 }
+
 #menu-demo2 ul {
   position: absolute;
   z-index: 1000;
