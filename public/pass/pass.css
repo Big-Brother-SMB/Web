@@ -1,78 +1,76 @@
 body,
-    h1
-    {
-      margin: 0;
-      padding: 0;
-      font-size: 30px;
-    }
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+}
 
-    h1{
-      font-size: 50px;
-      color: white;
-    }
-    
-    header {
-      align-items: center;
-      display: flex;
-      background: #486381;
-    }
-    
-    #logo,
-    nav {
-      flex : 1;
-    }
-    
-    .headerimg{
-      width: 170px;
-      height: 150px;
-    }
-    
-    nav  {
-      display: flex;
-      justify-content: space-around;
-      
-    }
-    
-    .retour  {
-      border-radius:8px 8px 8px 8px;
-      background-color: #3d546e;
-      margin-right: 20px;
-    }
-    .generer  {
-      border-radius:8px 8px 8px 8px;
-      background-color: #3d546e;
-      margin: 10px;
-      margin-bottom: 0px;
-      width: 20%;
-    }
-    .generer:hover{
-      background:#2e3f53;
-    }
+h1 {
+  font-size: 50px;
+  color: white;
+}
 
-    .retour:hover  {
-      background:#2e3f53;
-    }
+header {
+  align-items: center;
+  display: flex;
+  background: #486381;
+}
 
-    button {
-      border: none;
-      text-align: center;
-      text-transform: uppercase;
-      outline: none;
-      overflow: hidden;
-      color: #eeeeee;
-      font-weight: 600;
-      font-size: 20px;
-      background-color: grey;
-      padding: 15px 50px;
-      }
+#logo,
+nav {
+  flex: 1;
+}
+
+.headerimg {
+  width: 170px;
+  height: 150px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+}
+
+.retour {
+  border-radius: 8px 8px 8px 8px;
+  background-color: #3d546e;
+  margin-right: 20px;
+}
+.generer {
+  border-radius: 8px 8px 8px 8px;
+  background-color: #3d546e;
+  margin: 10px;
+  margin-bottom: 0px;
+  width: 20%;
+}
+.generer:hover {
+  background: #2e3f53;
+}
+
+.retour:hover {
+  background: #2e3f53;
+}
+
+button {
+  border: none;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  color: #eeeeee;
+  font-weight: 600;
+  font-size: 20px;
+  background-color: grey;
+  padding: 15px 50px;
+}
 p {
-    color: black;
-    text-align: center;
-    font-size: 100px;
-  }
- .pass {
-   width: 40%;
- }
- .barcode{
-   width: 80%;
- }
+  color: black;
+  text-align: center;
+  font-size: 100px;
+}
+.pass {
+  width: 40%;
+}
+.barcode {
+  width: 80%;
+}

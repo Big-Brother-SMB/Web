@@ -92,7 +92,10 @@ a {
 }
 
 .button {
-  border: none;
+  border-width: 2px;
+  border-color: #1a2838;
+  border-style: solid;
+  border-radius: 6px;
   display: block;
   text-align: center;
   cursor: pointer;
@@ -103,7 +106,7 @@ a {
   color: #eeeeee;
   font-weight: 600;
   font-size: 50px;
-  background-color: #153f00;
+  background-color: #233242e6;
   padding: 15px 50px;
   margin: 0 auto;
 }
@@ -131,7 +134,7 @@ a {
 
 .soustitre {
   text-align: center;
-  font-size: small;
+  font-size: 20px;
 }
 
 .loader-wrap {

@@ -1,14 +1,21 @@
-button{
-    background-color: #b5c3e4;
-    color: rgb(0, 0, 0);
-    padding: 10px 10px;
-    width: 30%;
-    height: 100px;
-    margin: 0px 0px;
-    font-size: 20px;
-    font-family: DejaVu Sans Mono, monospace; 
-    text-align: center;
-    vertical-align: text-top;
-    overflow: hidden;
-    text-overflow: ellipsis; 
-  }
+button {
+  border: none;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  color: #eeeeee;
+  font-weight: 600;
+  font-size: 20px;
+  background-color: grey;
+  padding: 15px 50px;
+}
+
+button .disconnect {
+  border-radius: 5px;
+}
+
+h1 {
+  font-size: 50px;
+  color: white;
+}
