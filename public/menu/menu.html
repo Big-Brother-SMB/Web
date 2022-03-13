@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Foyer</title>
-    <link rel = "icon" href= "../Images/logo.png">
-    <link rel="stylesheet" href="menu.css">
-    <link rel="stylesheet" href="../common.css">
-  </head>
-  
-  <body>
-    <header>
-      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
-      <h1 id="logo">Accueil
-      </h1>
-      
-        
-      <ul id="menu-demo2" class="tuto2">
-        <li id="opt" class="tuto2"><a href="../option/option.html">Options</a></li>
-      </ul>
-      
-    </header>
-    <div class="marquee-rtl">
-      <div id="banderole"></div>
-    </div>
 
-    
-    <article>
+<head>
+  <meta charset="utf-8">
+  <title>Foyer</title>
+  <link rel="icon" href="../Images/logo.png">
+  <link rel="stylesheet" href="menu.css">
+  <link rel="stylesheet" href="../common.css">
+</head>
+
+<body>
+  <header>
+    <img class="headerimg" src="../Images/logo.png" alt="logo Lycée">
+    <h1 id="logo" style="font-size: 50px;">Planning
+    </h1>
+
+
+    <ul id="menu-demo2" class="tuto2">
+      <li id="opt" class="tuto2"><a href="../option/option.html" class="setting-button">Options</a></li>
+    </ul>
+
+  </header>
+  <div class="marquee-rtl">
+    <div id="banderole"></div>
+  </div>
+
+
+  <article>
 
     <ul class="hautpage">
       <button id="amis" class="actionamis">Amis</button>
       <p id="user" class="user"></p>
       <button id="score" class="score"></button>
     </ul>
-      
+
     <hr style="width: 90%;margin-bottom: 40px;margin-top: 40px;" />
 
-    
+
 
     <div class="semainediv">
       <button id="semainePrecedente" class="semaine">Semaine précédente</button>
@@ -43,10 +44,10 @@
       <button id="semaineSuivante" class="semaine">Semaine suivante</button>
     </div>
 
-    
+
 
     <p id="semaine" class="info"></p>
-    
+
     <p id="menu semaine" class="info"></p>
 
     <div class="heurediv">
@@ -54,37 +55,37 @@
       <button id="heure11">10h55-11h49</button>
       <button id="heure12">11h50-13h07</button>
     </div>
-    <div id ="body" class="creneaudiv"></div>
+    <div id="body" class="creneaudiv"></div>
     <div class="passdiv">
       <button id="pass" class="action">Pass</button>
     </div>
-    
-
-    </article>
-    
-   
 
 
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-    <script src="../common.js"></script>
-    <script src="menu.js"></script>
+  </article>
 
-    <footer>
-      <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
-  
-          <br/>
-          <hr style="width: 25%;" />
-  
-          <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version 1.0</p>
-          
-  
-          <br/>
-          <br/>
-  
-      </div>
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="../common.js"></script>
+  <script src="menu.js"></script>
+
+  <footer>
+    <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+
+      <br />
+      <hr style="width: 25%;" />
+
+      <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version 1.0</p>
+
+
+      <br />
+      <br />
+
+    </div>
   </footer>
-    
-  </body>
+
+</body>
 
 </html>
