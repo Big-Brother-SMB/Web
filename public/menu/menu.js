@@ -188,7 +188,7 @@ function refreshDatabase() {
         snapshot.forEach(function(child) {
             database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
                 score += parseFloat(snapshot.val())
-                score = Math.round(score*100)/100
+                score = round(score)
                 if (score <2) {
                     document.getElementById("score").innerHTML = score + " pt"
                 }else{
@@ -235,7 +235,7 @@ function refreshDatabase() {
 
             database.ref(path(j, h) + "/cout").once('value').then(function (snapshot) {
                 if (snapshot.val() != null) {
-                    cout[j][h] = snapshot.val()
+                    cout[j][h] = Math.abs(parseFloat(snapshot.val()))
                 }
                 update(j, h);
             });
@@ -321,6 +321,19 @@ function update(j, h) {
 }
 
 function updateAffichage(j, h) {
+    let coutPourcentage = round((cout[j][h] - 1) * 100)
+    let textcout = ""
+    if(coutPourcentage != 0){
+        
+        if(coutPourcentage > 0){
+            textcout += "<br><rouge>Cout en point : " + "+" + coutPourcentage + "%(" + cout[j][h] + ")</rouge>"
+        }else{
+            textcout = "<br><vert>Cout en point : " + coutPourcentage + "%(" + cout[j][h] + ")</vert>"
+        }
+        
+        
+    }
+
     let text;
     if (places[j][h] <= 0) {
         text = "Plein";
@@ -369,7 +382,7 @@ function updateAffichage(j, h) {
         case 7:
             bouton[j][h].className = "places tableau"
 
-            text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places"
+            text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
             break;
         case 8:
             text = "Calcul en cours"

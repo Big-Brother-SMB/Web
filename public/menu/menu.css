@@ -355,3 +355,15 @@ h2 {
   padding: 0.25rem;
   margin: 0.25em;
 }
+
+vert{
+  color: #027908;
+  font-weight: bold;
+  text-decoration: underline;     
+}
+
+rouge{
+  color: #b30404;
+  font-weight: bold;
+  text-decoration: underline;     
+}

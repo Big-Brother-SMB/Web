@@ -16,6 +16,12 @@ var database = firebase.database()
 
 //import * as cookie from "util/cookie.js";
 
+//--------------------
+
+function round(nb){
+    return Math.round(nb*100)/100
+}
+
 //--------------------cookies functions--------------------
 
 let tablecookie = document.cookie.split('; ');
