@@ -1,6 +1,10 @@
 article {
   margin-top: 30px;
-  
+  align-items: center;
+}
+
+div{
+  width:100%;
 }
 
 body,
@@ -44,6 +48,7 @@ header ul li {
 }
 
 p {
+  text-align: center;
   font-size: 40px;
   color: black;
 }
