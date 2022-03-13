@@ -23,10 +23,12 @@ switchEmail.addEventListener("change", function () {
         document.getElementById("chargement").style.display = "none"
     })
 })
-
-if (hasCodeBar) {
-    inputCodeBar.value = codeBar
-}
+database.ref("users/" + user + "/code barre").once('value', function (snapshot) {
+    const val = snapshot.val()
+    inputCodeBar.value = val
+    writeCookie("code bar", val)
+    charged()
+})
 
 inputCodeBar.addEventListener("input", function () {
     document.getElementById("info code bar").innerHTML = ""
@@ -35,7 +37,7 @@ inputCodeBar.addEventListener("input", function () {
         document.getElementById("chargement").style.display = "block"
         document.getElementById("article").style.display = "none"
         database.ref("codes barres/" + val).once('value', function (snapshot) {
-            if (snapshot.val() == null) {
+            if (snapshot.val() == null || snapshot.val() == user) {
                 database.ref("codes barres/" + codeBar).remove()
                 writeCookie("code bar", val)
                 codeBar = val
@@ -61,7 +63,7 @@ document.getElementById("disconnect").addEventListener("click", function () {
 
 let charge = 1
 function charged() {
-    if (charge < 1) {
+    if (charge < 2) {
         charge++
         return
     }
