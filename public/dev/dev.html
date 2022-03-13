@@ -12,7 +12,10 @@
 <body>
   <header>
     <img class="headerimg" src="../Images/logo.png" alt="logo Lycée">
+
     <h1 id="logo" style="font-size: 50px;">Accueil</h1>
+
+    <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
 
   </header>
   <div class="marquee-rtl">
@@ -24,7 +27,7 @@
     
    
     <a id="liens" href="https://github.com/Big-Brother-SMB/Web" style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;padding: 10px;">
-        <button type="button">Lien vers Github</button>
+        <button id="githubCode">Lien vers Github</button>
     </a>
 
     <p>
@@ -47,7 +50,7 @@
     </p>
 
     <a id="liens" href="https://github.com/Big-Brother-SMB/Web/graphs/contributors" style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;padding: 10px;">
-      <button type="button">Lien vers les contributions</button>
+      <button id="githubGraphs" >Lien vers les contributions</button>
     </a>
 
   </article>
