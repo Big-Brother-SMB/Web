@@ -169,8 +169,8 @@ a {
 
 
 .content {
-  min-width: fit-content;
-  max-width: 40%;
+  min-width: fill-available;
+  max-width: 850px;
   margin: auto;
   border-radius: 5px;
   background-color: rgba(46, 63, 83, 0.9);
