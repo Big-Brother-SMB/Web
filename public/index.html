@@ -1,74 +1,83 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <link rel="stylesheet"href="auth.css">
-    <link rel="stylesheet"href="common.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Accueil</title>
-    <link rel = "icon" href= "../Images/logo.png">
-    <script type="module" src="auth.js"></script>
-    
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="common.css">
+  <script type="module" src="auth.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Accueil</title>
+  <link rel="icon" href="../Images/logo.png">
+
 </head>
+
 <body>
-    <header>
-        <img class="headerimg" src="Images/logo.png" alt="logo Lycée" >
-        <h1 id="logo">Authentification</h1>
-      
-    </header>
-    
 
-    <article id="body">
-    <p class="cgu">
-        J'accepte la <a href="cgu/POLITIQUE DE confidentialité.odt" download>Politique de confidentialité des données</a> et <a href="cgu/cookie.html">les Cookies</a> : <input id="checkbox" type="checkbox" value="RGPD" />
-    </p>
-    
+  <header>
+    <img class="headerimg" src="Images/logo.png" alt="logo Lycée">
+    <h1 id="logo">Authentification</h1>
 
-    <p class="cgu">
-        Ma classe : 
-        <select id="classe">
+  </header>
+
+  <div class="auth-ui">
+    <div class="content">
+      <article id="body">
+        <p class="cgu">
+          J'accepte la <a href="cgu/POLITIQUE DE confidentialité.odt" download>Politique de confidentialité des
+            données</a> et <a href="cgu/cookie.html">les Cookies</a> : <input id="checkbox" type="checkbox"
+            value="RGPD" />
+        </p>
+
+
+        <p class="cgu">
+          Ma classe :
+          <select id="classe">
             <option>--</option>
-        </select>
-    </p>
+          </select>
+        </p>
 
-    <p class="cgu">Code carte : <input id="code bar" type="number" placeholder="XXXXX"></p>
-    
-
-    <div class="container">
-        <button  type="button" id="popup" class="button"><span>Connexion</span></button>
-    </div>
-    <p class="soustitre">(adresse mail Beaucamps uniquement)</p>
-    <p id = "infos" class="cgu" style="color:red"></p>
+        <p class="cgu">Code carte : <input id="code bar" type="number" placeholder="XXXXX"></p>
 
 
-    </article>
-    
+        <div class="container">
+          <button type="button" id="popup" class="button"><span>Connexion</span></button>
+        </div>
+        <p class="soustitre">(adresse mail Beaucamps uniquement)</p>
+        <p id="infos" class="cgu" style="color:red"></p>
 
-    <div class="loader-wrap" id="chargement">
+
+      </article>
+
+
+      <div class="loader-wrap" id="chargement">
         <p class="loading-text">Chargement en cours</p>
         <div class="loader">
-  
-            <div class="circle-1 circle">
-              <div class="circle-2 circle">
-                <div class="circle-3 circle">
-                  <div class="circle-4 circle"></div>
-                </div>
+
+          <div class="circle-1 circle">
+            <div class="circle-2 circle">
+              <div class="circle-3 circle">
+                <div class="circle-4 circle"></div>
               </div>
             </div>
-        
-        </div>
-    </div>
+          </div>
 
-    
-    
-    <footer>
-        <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
-          <br/>
-          <hr style="width: 25%;" />
-          <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version 1.0</p>
-          <br/>
-          <br/>
         </div>
-      </footer>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="footer">
+    <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+      <br />
+      <hr style="width: 25%;" />
+      <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version 1.0</p>
+      <br />
+      <br />
+    </div>
+  </footer>
+
 </body>
+
 </html>
