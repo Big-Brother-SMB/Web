@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-  <head>
-    <link rel="stylesheet"href="option.css">
-    <link rel="stylesheet"href="../common.css">
-    
-    <meta charset="utf-8">
-    <title>Options</title>
-    <link rel = "icon" href= "../Images/logo.png">
-  </head>
-  <body>
 
-    <header>
-      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
-      <h1 id="logo">Options</h1>  
-      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button> 
+<head>
+  <link rel="stylesheet" href="option.css">
+  <link rel="stylesheet" href="../common.css">
+
+  <meta charset="utf-8">
+  <title>Options</title>
+  <link rel="icon" href="../Images/logo.png">
+</head>
+
+<body>
+
+  <header>
+    <img class="headerimg" src="../Images/logo.png" alt="logo Lycée">
+    <h1 id="logo" style="font-size: 50px;">Options</h1>
+    <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
   </header>
- <article id="article" style="text-align: center;display: none;">
+
+  <article id="article" style="text-align: center;display: none;">
     <p>Ajouter automatiquement tous les amis
-        <label class="switch">
+      <label class="switch">
         <input type="checkbox" id="allAmis">
         <span class="slider round"></span>
       </label>
@@ -25,30 +28,32 @@
 
     <p>Envoyer des messages par mail
       <label class="switch">
-      <input type="checkbox" id="switch email">
-      <span class="slider round"></span>
-    </label>
-  </p>
+        <input type="checkbox" id="switch email">
+        <span class="slider round"></span>
+      </label>
+    </p>
 
-  <p>Code carte : <input id="code bar" type="number" placeholder="aucun"><p id="info code bar" style="color: red;"></p></p>
-    
+    <p>Code carte : <input id="code bar" type="number" placeholder="aucun">
+    <p id="info code bar" style="color: red;"></p>
+    </p>
+
     <button id="deco">Déconnexion</button>
 
-    
+
   </article>
 
   <div class="loader-wrap" id="chargement">
     <p class="loading-text">Chargement en cours</p>
     <div class="loader">
 
-        <div class="circle-1 circle">
-          <div class="circle-2 circle">
-            <div class="circle-3 circle">
-              <div class="circle-4 circle"></div>
-            </div>
+      <div class="circle-1 circle">
+        <div class="circle-2 circle">
+          <div class="circle-3 circle">
+            <div class="circle-4 circle"></div>
           </div>
         </div>
-    
+      </div>
+
     </div>
   </div>
 
@@ -59,14 +64,14 @@
 
   <footer>
     <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
-        <br/>
-        <hr style="width: 25%;" />
-        <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version 1.0</p>
-        <br/>
-        <br/>
+      <br />
+      <hr style="width: 25%;" />
+      <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version 1.0</p>
+      <br />
+      <br />
     </div>
   </footer>
 
-  </body>
+</body>
 
 </html>
