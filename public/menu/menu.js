@@ -326,9 +326,9 @@ function updateAffichage(j, h) {
     if(coutPourcentage != 0){
         
         if(coutPourcentage > 0){
-            textcout += "<br><rouge>Cout en point : " + "+" + coutPourcentage + "%(" + cout[j][h] + ")</rouge>"
+            textcout += "<br><rouge>Cout en point : " + "+" + coutPourcentage + "%</rouge>"
         }else{
-            textcout = "<br><vert>Cout en point : " + coutPourcentage + "%(" + cout[j][h] + ")</vert>"
+            textcout = "<br><vert>Cout en point : " + coutPourcentage + "%</vert>"
         }
         
         
