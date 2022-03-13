@@ -109,6 +109,10 @@ h1 {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+#logo{
+  color: white;
+}
+
 header {
   align-items: center;
   display: flex;

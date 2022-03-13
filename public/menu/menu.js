@@ -131,13 +131,14 @@ Date.prototype.getWeek = function () {
 
 
 let bouton = [];
-let total = [];
+let placesTotal = [];
 let nbDemandes = [];
 let demandes = []
 let demande = []
 let places = [];
 
 let ouvert = []
+let cout = []
 let nbAmis = []
 let nbAmisDemande = []
 
@@ -152,7 +153,7 @@ for (let j = 0; j < 4; j++) {
     div.appendChild(text);
 
     bouton[j] = []
-    total[j] = []
+    placesTotal[j] = []
     places[j] = []
 
     nbAmis[j] = []
@@ -164,6 +165,7 @@ for (let j = 0; j < 4; j++) {
     inscrits[j] = []
     inscrit[j] = [false, false]
     ouvert[j] = [0, 0]
+    cout[j] = [1, 1]
     for (let h = 0; h < 2; h++) {
         bouton[j][h] = document.createElement("button")
         bouton[j][h].id = "" + j + h;
@@ -185,7 +187,7 @@ function refreshDatabase() {
     database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
         snapshot.forEach(function(child) {
             database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
-                score += snapshot.val()
+                score += parseFloat(snapshot.val())
                 score = Math.round(score*100)/100
                 if (score <2) {
                     document.getElementById("score").innerHTML = score + " pt"
@@ -196,7 +198,7 @@ function refreshDatabase() {
         })
     });
 
-    let sn = ["7 au 11 mars", "14 au 18 mars", "21 au 25 mars", "28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
+    let sn = ["14 au 18 mars", "21 au 25 mars", "28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
 
     let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
     if (week == actualWeek) {
@@ -215,9 +217,9 @@ function refreshDatabase() {
     nbFois = 0;
     for (let j = 0; j < 4; j++) {
         for (let h = 0; h < 2; h++) {
-            total[j][h] = 0
+            placesTotal[j][h] = 0
             database.ref(path(j, h) + "/places").once('value').then(function (snapshot) {
-                total[j][h] = snapshot.val();
+                placesTotal[j][h] = snapshot.val();
                 update(j, h);
             });
 
@@ -227,6 +229,13 @@ function refreshDatabase() {
                     ouvert[j][h] = 0
                 } else {
                     ouvert[j][h] = snapshot.val()
+                }
+                update(j, h);
+            });
+
+            database.ref(path(j, h) + "/cout").once('value').then(function (snapshot) {
+                if (snapshot.val() != null) {
+                    cout[j][h] = snapshot.val()
                 }
                 update(j, h);
             });
@@ -270,9 +279,8 @@ function refreshDatabase() {
                         nbFois++;
                         inscrit[j][h] = true;
                     }
-
+                    update(j, h);
                 });
-                update(j, h);
             });
 
 
@@ -308,7 +316,7 @@ function refreshDatabase() {
 
 
 function update(j, h) {
-    places[j][h] = total[j][h] - inscrits[j][h];
+    places[j][h] = placesTotal[j][h] - inscrits[j][h];
     setTimeout(updateAffichage(j, h), 1000);
 }
 
