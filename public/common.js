@@ -102,7 +102,7 @@ let heure = readIntCookie("heure")
 });*/
 // semaine
 
-const actualWeek = 10;
+const actualWeek = 11;
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
 const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
 const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];

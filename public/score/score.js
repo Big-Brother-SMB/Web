@@ -18,19 +18,19 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 name += " : "
             }
             database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot2) {
-                let sc = snapshot2.val()
-                if (sc <2) {
-                    event.innerHTML = name + sc + " point"
+                let eventScore = parseFloat(snapshot2.val())
+                if (eventScore <2) {
+                    event.innerHTML = name + eventScore + " point"
                 }else{
-                    event.innerHTML = name + sc + " points"
+                    event.innerHTML = name + eventScore + " points"
                 }
                 
-                total += sc
+                total += eventScore
                 total = Math.round(total*100)/100
                 if (total <2) {
-                    document.getElementById("score").innerHTML = total + " point"
+                    document.getElementById("score").innerHTML = total + "pt"
                 }else{
-                    document.getElementById("score").innerHTML = total + " points"
+                    document.getElementById("score").innerHTML = total + "pts"
                 }
             }) 
         }) 
