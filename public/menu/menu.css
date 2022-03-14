@@ -305,6 +305,8 @@ h2 {
   border-radius: 8px 8px 8px 8px;
   padding: 0.25rem;
   margin: 0.25em;
+  margin-right: 0.25em;
+  margin-left: -0.3em;
 }
 
 #heure12 {
@@ -312,6 +314,7 @@ h2 {
   border-radius: 8px 8px 8px 8px;
   padding: 0.25rem;
   margin: 0.25em;
+  margin-left: -0.125em;
 }
 
 .ferme {
