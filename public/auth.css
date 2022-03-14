@@ -128,8 +128,8 @@ a {
   transform: translateX(-100%) translateY(-25%) rotate(45deg);
 }
 .button:hover:after {
-  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
-  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  -webkit-transform: translateX(-6%) translateY(-25%) rotate(45deg);
+  transform: translateX(-6%) translateY(-25%) rotate(45deg);
 }
 
 .soustitre {

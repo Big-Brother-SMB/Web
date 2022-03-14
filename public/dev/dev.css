@@ -93,6 +93,9 @@ button {
   font-size: 20px;
   background-color: grey;
   padding: 15px 50px;
+  border-radius: 8px;
+  max-width: 18em;
+  max-height: 15em;
 }
 #githubCode{
   background-color: #b5c3e4;
@@ -100,7 +103,6 @@ button {
   padding: 10px 10px;
   width: 30%;
   height: 100px;
-  margin: 0px 0px;
   font-size: 20px;
   text-align: center;
   vertical-align: text-top;
@@ -110,10 +112,6 @@ button {
 #githubCode:hover{
   background-color: #90a8e0;
   color: rgb(0, 0, 0);
-  padding: 10px 10px;
-  width: 30%;
-  height: 100px;
-  margin: 0px 0px;
   font-size: 20px;
   text-align: center;
   vertical-align: text-top;
@@ -139,14 +137,17 @@ button {
 #githubGraphs:hover{
   background-color: #90a8e0;
   color: rgb(0, 0, 0);
-  padding: 10px 10px;
-  width: 30%;
-  height: 100px;
-  margin: 0px 0px;
   font-size: 20px;
   text-align: center;
   vertical-align: text-top;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#LinkButtons {
+  margin: 0 auto;
+  padding-left: 225px;
+  width: 700px;
+  height: 100px;
 }
 
