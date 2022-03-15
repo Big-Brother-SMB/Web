@@ -13,18 +13,23 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=49)){
 console.log(j);
 console.log(h);
 
-database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
-    document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
-    snapshot.forEach(function(child) {
-        if(child.key == user){
-            console.log("inscrit");
-            document.getElementById("pass").innerHTML = "<img width=\"1000\" height=\"1000\" alt=\"\" src=\"pass.gif\" />"
-        }else{
-            console.log("pas inscrit");    
-        }
-      
-    });
-}); 
+function loop2(){
+
+    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
+        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
+        snapshot.forEach(function(child) {
+            if(child.key == user){
+                console.log("inscrit");
+                document.getElementById("pass").innerHTML = "<img width=\"1000\" height=\"1000\" alt=\"\" src=\"pass.gif\" />"
+            }
+        
+        });
+    }); 
+    console.log("refresh")
+    setTimeout(loop2,10000)
+
+}
+loop2()
 
 document.getElementById("user").innerHTML = user
 
