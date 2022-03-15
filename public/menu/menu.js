@@ -504,6 +504,6 @@ function select(j, h) {
 function loop() {
     console.log("update database")
     refreshDatabase();
-    setTimeout(loop, 5000);
+    setTimeout(loop, 20000);
 }
 loop();
