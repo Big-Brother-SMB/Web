@@ -4,6 +4,7 @@ let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
 
 let charge = 1
+const nbCharge = 7;
 
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
     if(snapshot.val() != 7){
@@ -177,18 +178,39 @@ database.ref(path(j,h) + "/demandes").once('value').then(function(snapshot) {
 });
 
 let score = 0
+let textScore = ""
 database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
+    let nb = 0
+    let charge2 = 1
     snapshot.forEach(function(child) {
+        nb++
         database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
-            score += snapshot.val()
-            score = Math.round(score*100)/100
-        }) 
+            console.log(round(parseFloat(snapshot.val())))
+            score += parseFloat(snapshot.val())
+            score = round(score)
+            charged2()
+        })
     })
-    charged()
+    
+    function charged2(){
+        console.log(charge2)
+        if(charge2 < nb){
+            charge2++
+            return
+        }
+        console.log(score)
+        if (score <2) {
+            textScore = score + " pt"
+        }else{
+            textScore = score + " pts"
+        }
+        charged()
+    }
+    
 });
 
 function charged(){
-    if(charge < 7){
+    if(charge < nbCharge){
         charge++
         return
     }
@@ -206,7 +228,9 @@ function charged(){
     document.getElementById("article").style.display = "inline"
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
-    document.getElementById("info").innerHTML = "Demander l'inscription pour le "+ day[j]  +  " à " + (h+11)  + "h<br>Il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes + " demandes en cours<br>Votre score est de " + score + "pts"
+    document.getElementById("info").innerHTML = "Demander l'inscription pour le "+ day[j]  +  " à " + (h+11) 
+    + "h<br>Il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes
+    + " demandes en cours<br>Votre score est de " + textScore
 
     if(h == 1){
         document.getElementById("opt").style.display = "inline"
@@ -257,3 +281,10 @@ function charged(){
 
 }
 
+
+setTimeout(function(){
+    while(charge < nbCharge - 1){
+        charge++
+    }
+    charged()
+}, 5000);

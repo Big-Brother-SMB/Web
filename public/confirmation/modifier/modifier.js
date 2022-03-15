@@ -3,6 +3,9 @@ const menu = "../../menu/menu.html"
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
 
+let charge = 1
+const nbCharge = 8;
+
 
 database.ref(path(j,h) + "/demandes/" +user).once('value').then(function(snapshot) {
     if(snapshot.val() == null){
@@ -190,19 +193,40 @@ database.ref(path(j,h) + "/demandes").once('value').then(function(snapshot) {
 });
 
 let score = 0
+let textScore = ""
 database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
+    let nb = 0
+    let charge2 = 1
     snapshot.forEach(function(child) {
+        nb++
         database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
-            score += snapshot.val()
-            score = Math.round(score*100)/100
-        }) 
+            console.log(round(parseFloat(snapshot.val())))
+            score += parseFloat(snapshot.val())
+            score = round(score)
+            charged2()
+        })
     })
-    charged()
+    
+    function charged2(){
+        console.log(charge2)
+        if(charge2 < nb){
+            charge2++
+            return
+        }
+        console.log(score)
+        if (score <2) {
+            textScore = score + " pt"
+        }else{
+            textScore = score + " pts"
+        }
+        charged()
+    }
+    
 });
 
 let horaire = 0
 
-let charge = 1
+
 if(h == 1){
     database.ref(path(j,h) + "/users/" + user + "/horaire").once('value').then(function(snapshot) {
         horaire = snapshot.val()
@@ -215,7 +239,7 @@ if(h == 1){
 
 function charged(){
     
-    if(charge < 8){
+    if(charge < nbCharge){
         charge++
         return
     }
@@ -233,7 +257,11 @@ function charged(){
     document.getElementById("article").style.display = "inline"
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
-    document.getElementById("info").innerHTML = "Votre demande est enrgegistrée<br>Il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes + " demandes en cours (dont la votre)<br>Votre score est de " + score + "pts"
+
+    document.getElementById("info").innerHTML = "Votre demande est enregistrée<br>Il reste " + reste + " places<br>("
+    + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes
+    + " demandes en cours (dont la votre)<br>Votre score est de " + textScore
+
     document.getElementById("retirer").addEventListener("click", function() {
         database.ref(path(j,h) + "/users/" + user).remove()
         database.ref(path(j,h) + "/demandes/" + user).remove()
@@ -295,3 +323,9 @@ function charged(){
 
 
 
+setTimeout(function(){
+    while(charge < nbCharge - 1){
+        charge++
+    }
+    charged()
+}, 5000);
