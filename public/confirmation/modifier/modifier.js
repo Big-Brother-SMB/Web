@@ -245,9 +245,9 @@ function charged(){
     }
     for(let i in demandesAmis){
         if(demandesAmis[i] == 1){
-            butAmis[i].innerHTML += " (a fait une demande)"
+            butAmis[i].innerHTML += " (demande enregistrée)"
         }else if(demandesAmis[i] == 2){
-            butAmis[i].innerHTML += " (inscrit)"
+            butAmis[i].innerHTML += " (accepté)"
         }
     }
 
@@ -258,9 +258,9 @@ function charged(){
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
 
-    document.getElementById("info").innerHTML = "Votre demande est enregistrée<br>Il reste " + reste + " places<br>("
-    + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes
-    + " demandes en cours (dont la votre)<br>Votre score est de " + textScore
+    document.getElementById("info").innerHTML = "Demande enregistrée<br>" + reste + " places restantes<br>("
+    + inscrits + " acceptées pour " + places + " places)<br>" + demandes
+    + " demandes en cours<br>Votre score: " + textScore
 
     document.getElementById("retirer").addEventListener("click", function() {
         database.ref(path(j,h) + "/users/" + user).remove()

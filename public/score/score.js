@@ -107,9 +107,9 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 total += eventScore
                 total = Math.round(total*100)/100
                 if (total <2) {
-                    document.getElementById("score").innerHTML = total + "pt"
+                    document.getElementById("score").innerHTML = total + " point"
                 }else{
-                    document.getElementById("score").innerHTML = total + "pts"
+                    document.getElementById("score").innerHTML = total + " points"
                 }
                 
             }) 
