@@ -47,7 +47,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                               backgroundColor: '#fff'
                           },
                           title: {
-                              text: 'Weekly Revenue',
+                              text: 'Points au cours du temps',
                               style: {  
                                 color: '#fff'
                               }
@@ -68,6 +68,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                              title: {
                                   text: '',
                                   style: {
+                                    fontFamily: "arial",
                                     color: '#333'
                                    }
                               },
