@@ -131,3 +131,10 @@ input[type=submit] {
   margin: 0 auto;
   padding-top: 2%;
 }
+
+rect.highcharts-point{
+  fill:#486381;
+}
+rect.highcharts-point:hover{
+  fill:#3d5570;
+}
