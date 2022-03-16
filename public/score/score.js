@@ -1,7 +1,9 @@
 let divScore = document.getElementById("divScore")
 let score = document.getElementById("score")
 
-
+var histogramValues = []
+var histogramNames = []
+let i=0
 database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
     let total = 0
     snapshot.forEach(function(child) {
@@ -24,6 +26,83 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 }else{
                     event.innerHTML = name + eventScore + " points"
                 }
+
+                // graphique
+                if (histogramValues.length==0){
+                    histogramValues[i]=eventScore
+                    }
+                else{
+                    histogramValues[i]=Math.round((histogramValues[i-1]+eventScore)*100)/100
+                }
+
+                histogramNames[i]=name
+                
+                i++
+
+                $(function () { 
+
+                    $('#container').highcharts({
+                          chart: {
+                              type: 'column',
+                              backgroundColor: '#fff'
+                          },
+                          title: {
+                              text: 'Weekly Revenue',
+                              style: {  
+                                color: '#fff'
+                              }
+                          },
+                          xAxis: {
+                              tickWidth: 0,
+                              labels: {
+                                style: {
+                                    color: '#333',
+                                   }
+                                },
+                              categories: histogramNames
+                          },
+                          yAxis: {
+                             gridLineWidth: .5,
+                                gridLineDashStyle: 'dash',
+                                gridLineColor: 'black',
+                             title: {
+                                  text: '',
+                                  style: {
+                                    color: '#333'
+                                   }
+                              },
+                              labels: {
+                                formatter: function() {
+                                          return Highcharts.numberFormat(this.value, 1, '.', ',')+' pts';
+                                      },
+                                style: {
+                                    color: '#333',
+                                   }
+                                }
+                              },
+                          legend: {
+                              enabled: false,
+                          },
+                          credits: {
+                              enabled: false
+                          },
+                          tooltip: {
+                             valuePrefix: ''
+                          },
+                          plotOptions: {
+                                column: {
+                                    borderRadius: 0,
+                               pointPadding: -0.12,
+                                    groupPadding: 0.1
+                              } 
+                              },
+                          series: [{
+                              name: 'Points',
+                              data: histogramValues
+                          }]
+                      });
+                  });
+                //
                 
                 total += eventScore
                 total = Math.round(total*100)/100
@@ -32,12 +111,12 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 }else{
                     document.getElementById("score").innerHTML = total + "pts"
                 }
+                
             }) 
         }) 
     })
     charged()
 });
-
 
 let charge = 1
 function charged(){
@@ -48,4 +127,4 @@ function charged(){
     console.log("charged")
     document.getElementById("article").style.display = "block"
     document.getElementById("chargement").style.display = "none"
-}
+} 

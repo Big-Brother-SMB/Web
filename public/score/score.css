@@ -126,3 +126,8 @@ input[type=submit] {
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+#container{
+  margin: 0 auto;
+  padding-top: 2%;
+}
