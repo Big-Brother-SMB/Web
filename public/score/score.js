@@ -10,7 +10,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
         let event = document.createElement("button")
         event.classList.add("event")
         
-        divScore.appendChild(event);
+       /* divScore.appendChild(event);*/
         
         database.ref("users/" + user + "/score/" + child.key + "/name").once('value').then(function(snapshot) {
             let name = snapshot.val()
@@ -21,11 +21,11 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
             }
             database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot2) {
                 let eventScore = parseFloat(snapshot2.val())
-                if (eventScore <2) {
+               /* if (eventScore <2) {
                     event.innerHTML = name + eventScore + " point"
                 }else{
                     event.innerHTML = name + eventScore + " points"
-                }
+                }*/
 
                 // graphique
                 if (histogramValues.length==0){
@@ -106,11 +106,11 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 
                 total += eventScore
                 total = Math.round(total*100)/100
-                if (total <2) {
+                /*if (total <2) {
                     document.getElementById("score").innerHTML = total + " point"
                 }else{
                     document.getElementById("score").innerHTML = total + " points"
-                }
+                }*/
                 
             }) 
         }) 
