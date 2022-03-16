@@ -137,16 +137,17 @@ nav {
 .retour {
   border-radius: 8px 8px 8px 8px;
   background-color: #3d546e;
-  margin-right: 20px;
+  margin-right: 40px;
   border: none;
   text-align: center;
   text-transform: uppercase;
+  font-family: arial;
   outline: none;
   overflow: hidden;
   color: #eeeeee;
   font-weight: 600;
-  font-size: 20px;
-  padding: 15px 50px;
+  font-size: 25px;
+  padding: 23px 70px;
 }
 
 .retour:hover {
