@@ -444,10 +444,11 @@ function select(j, h) {
     sessionStorage.setItem("h", h);
     writeCookie("jour", j)
     writeCookie("heure", h)
+    const hInv = h==0?1:0
     if (demande[j][h]) {
         window.location.href = "../confirmation/modifier/modifier.html";
     } else {
-        if (ouvert[j][h] == 7 && nbFois < 1) {
+        if (ouvert[j][h] == 7 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]) { //verrou : nbFois < 1
             window.location.href = "../confirmation/demande/demande.html";
         }
     }
