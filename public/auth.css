@@ -167,12 +167,12 @@ a {
   margin-bottom: 20%;
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1400px) {
   .auth-ui {
     background-image: url("Images/auth_background.jpg");
   }
 }
-@media (max-width: 1600px) {
+@media (max-width: 1400px) {
   .auth-ui {
     background-image: url("Images/logo.png");
     background-size: auto 100% ;
