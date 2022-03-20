@@ -198,7 +198,7 @@ function refreshDatabase() {
         })
     });
 
-    let sn = ["14 au 18 mars", "21 au 25 mars", "28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
+    let sn = ["21 au 25 mars", "28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
 
     let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
     if (week == actualWeek) {
@@ -444,10 +444,11 @@ function select(j, h) {
     sessionStorage.setItem("h", h);
     writeCookie("jour", j)
     writeCookie("heure", h)
+    const hInv = h==0?1:0
     if (demande[j][h]) {
         window.location.href = "../confirmation/modifier/modifier.html";
     } else {
-        if (ouvert[j][h] == 7 && nbFois < 1) {
+        if (ouvert[j][h] == 7 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]) { //verrou : nbFois < 1
             window.location.href = "../confirmation/demande/demande.html";
         }
     }
