@@ -158,7 +158,7 @@ a {
 .auth-ui {
   height: 100%;
   width: 100%;
-  background-image: url("Images/auth_background.jpg");
+  background-image: url("Images/paysage.jpg");
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: center;
@@ -169,13 +169,14 @@ a {
 
 @media (min-width: 1400px) {
   .auth-ui {
-    background-image: url("Images/auth_background.jpg");
+    background-image: url("Images/paysage.jpg	");
   }
 }
 @media (max-width: 1400px) {
   .auth-ui {
-    background-image: url("Images/logo.png");
-    background-size: auto 100% ;
+    background-image: url("Images/portrait.jpg");
+    background-size: 100% auto ;
+    height: 1200px;
   }
 }
 
