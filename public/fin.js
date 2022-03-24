@@ -14,7 +14,10 @@ database.ref("codes barres/" + codeBar).once('value',function(snapshot) {
         suite();
     }else{
         sessionStorage.setItem("auth err", 1);
-        window.location.href = "index.html";
+        setTimeout(function() {
+            window.location.href = "index.html";
+        },2000);
+        
         
     }
 })
