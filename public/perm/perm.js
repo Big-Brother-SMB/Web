@@ -15,10 +15,15 @@ let nbAmisDemande = []
 let inscrits = [];
 let inscrit = []
 
-let horaires = ["de 8h à 9h","9h - 10h","10h - 11h",""]
+let horaires = ["8h-9h","9h-10h","10h-11h","13h-14h","14h-15h","15h-16h"]
 
 let divHoraires = document.createElement("div")
-for (let h = 0; h < 7; h++) {
+let text = document.createElement("button")
+    text.className = "jours tableau";
+    text.style.height = "50px";
+    text.style.visibility = "hidden";
+    divHoraires.appendChild(text);
+for (let h = 0; h < 6; h++) {
     let horaire = document.createElement("button")
     horaire.innerHTML = horaires[h]
     horaire.className = "horaire"
@@ -48,10 +53,10 @@ for (let j = 0; j < 4; j++) {
     inscrit[j] = [false, false]
     ouvert[j] = [0, 0]
     cout[j] = [1, 1]
-    for (let h = 0; h < 7; h++) {
+    for (let h = 0; h < 6; h++) {
         bouton[j][h] = document.createElement("button")
         bouton[j][h].id = "" + j + h;
-        bouton[j][h].onclick = function () { select(j, h) };
+        //bouton[j][h].onclick = function () { select(j, h) };
         bouton[j][h].className = "crenau"
         div.appendChild(bouton[j][h]);
 
@@ -60,11 +65,29 @@ for (let j = 0; j < 4; j++) {
 
 }
 
+document.getElementById("semainePrecedente").addEventListener("click", function () {
+    week = week - 1
+    writeCookie("week", week)
+    refreshDatabase()
+});
+
+document.getElementById("semaineActuelle").addEventListener("click", function () {
+    week = actualWeek
+    writeCookie("week", week)
+    refreshDatabase()
+});
+
+
+document.getElementById("semaineSuivante").addEventListener("click", function () {
+    week = week + 1
+    writeCookie("week", week)
+    refreshDatabase()
+});
 
 
 function refreshDatabase() {
 
-    let sn = ["21 au 25 mars", "28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
+    let sn = ["28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
 
     let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
     if (week == actualWeek) {
@@ -74,25 +97,28 @@ function refreshDatabase() {
 
     
 
-    nbFois = 0;
     for (let j = 0; j < 4; j++) {
-        for (let h = 0; h < 2; h++) {
-           
+        for (let h = 0; h < 6; h++) {
+           let heure = h + 8
+           if(h >= 3){
+               heure += 2
+           }
 
 
-            database.ref("perm/semaine12/" + dayWithNum[j] + "/" + (h+11) + "h/inscrits").once("value", function (snapshot) {
+            database.ref("perm/semaine" + week + "/" + dayNum[j] + "/" + heure + "h/classes").once("value", function (snapshot) {
+                let str = ""
                 snapshot.forEach(function (child) {
                     const name = child.key
-                    nbDemandes[j][h] = nbDemandes[j][h] + 1
-                    if (name == user) {
-                        nbFois++;
-                        demande[j][h] = true;
-                    } else {
-                        demandes[j][h].push(name)
+                    if(str != ""){
+                        str += ","
                     }
+                    str += name
 
                 });
-                update(j, h);
+                if(str == ""){
+                    str = "aucune classe"
+                }
+                bouton[j][h].innerHTML = str
             });
 
 
@@ -100,3 +126,11 @@ function refreshDatabase() {
     }
 
 }
+
+
+function loop() {
+    console.log("update database")
+    refreshDatabase();
+    setTimeout(loop, 20000);
+}
+loop();
