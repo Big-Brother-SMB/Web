@@ -16,7 +16,7 @@ console.log(h);
 function loop2(){
 
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
-        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.png\" />"
+        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"croix.gif\" />"
         snapshot.forEach(function(child) {
             if(child.key == user){
                 console.log("inscrit");
