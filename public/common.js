@@ -185,6 +185,9 @@ function setColorMode(rootPath){
             case 1:
                 name = "dark"
                 break;
+            case 2:
+                name = "lens"
+                break;
         }
         
         document.getElementById("css").href = rootPath + "/css/" + name + ".css"

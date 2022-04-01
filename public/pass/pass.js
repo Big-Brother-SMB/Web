@@ -1,3 +1,4 @@
+setColorMode("..")
 
 let d = new Date();
 
