@@ -1,3 +1,4 @@
+setColorMode("..")
 const menu = "../menu/menu.html"
 
 let amis = []

@@ -5,7 +5,7 @@ body{
 p,u,a,h1{
     color: white;
 }
-.score{
+.score,.user,#addAmi,.zonecadre{
     background-color: rgb(40, 40, 40);
     color: white;
 }
