@@ -25,13 +25,6 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
             database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot2) {
                 let eventScore = parseFloat(snapshot2.val())
                 histogramGain[i] = eventScore
-               /* if (eventScore <2) {
-                    event.innerHTML = name + eventScore + " point"
-                }else{
-                    event.innerHTML = name + eventScore + " points"
-                }*/
-
-                // graphique
                 if (histogramValues.length==0){
                     histogramValues[i]=eventScore
                     }
@@ -52,13 +45,13 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                         data: {
                             labels: histogramNames,
                             datasets: [{
-                                borderColor: "rgba(0,0,255,1)",
+                                borderColor: "rgba(100,155,155,1)",
                                 label: 'Total',
                                 data: histogramValues,
-                                borderWidth: 1
+                                borderWidth: 3
                             },
                             {
-                                borderColor: "rgba(0,255,150,1)",
+                                borderColor: "rgba(70,155,100,1)",
                                 lineTension: 0,
                                 fill: false,
                                 label: 'Gain',
@@ -75,15 +68,9 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                             }
                         }
                     });
-                //
                 
                 total += eventScore
                 total = Math.round(total*100)/100
-                /*if (total <2) {
-                    document.getElementById("score").innerHTML = total + " point"
-                }else{
-                    document.getElementById("score").innerHTML = total + " points"
-                }*/
                 
             }) 
         }) 

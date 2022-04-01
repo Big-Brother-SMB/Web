@@ -2,6 +2,10 @@ body{
     background-color: rgb(20, 20, 20);
 }
 
-p,u,a{
+p,u,a,h1{
+    color: white;
+}
+.score{
+    background-color: rgb(40, 40, 40);
     color: white;
 }
