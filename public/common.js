@@ -96,7 +96,8 @@ let jour = readIntCookie("jour")
 let heure = readIntCookie("heure")
 
 let colorMode = readIntCookie("color mode")
-
+let backgroundColor = readCookie("color background")
+let textColor = readCookie("color text")
 
 
 /*database.ref("users/" + user + "/classe").once("value", function(snapshot) {
@@ -177,25 +178,33 @@ function getHour(){
 
 function setColorMode(rootPath){
     try{
+        document.getElementById("css").href = ""
         let name = ""
         switch(colorMode){
-            case 0:
+            case 1:
                 name = "light"
                 break;
-            case 1:
+            case 2:
                 name = "dark"
                 break;
-            case 2:
-                name = "lens"
-                break;
+                
+        }
+        if(colorMode == 0){
+            document.body.style.backgroundColor = backgroundColor
+            document.body.style.color = textColor
+        }else{
+            document.body.style.backgroundColor = "";
+            document.body.style.color = "";
+            document.getElementById("css").href = rootPath + "/css/" + name + ".css"
         }
         
-        document.getElementById("css").href = rootPath + "/css/" + name + ".css"
+        
     }catch(Exception){
         console.log("error with color mode")
     }
     
 }
+//    mix-blend-mode: difference;
 
 //--------------------database functions--------------------
 

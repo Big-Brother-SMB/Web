@@ -61,6 +61,7 @@ var ele = document.getElementsByName("color");
 console.log("colorMode : " + colorMode)
 setColorMode("..")
 
+
 for(i = 0; i < ele.length; i++) {
     const index = i
     ele[index].addEventListener("change", function () {
@@ -74,6 +75,25 @@ for(i = 0; i < ele.length; i++) {
     }
 
 }
+
+
+let selectBack = document.getElementById("color back");
+selectBack.value = backgroundColor
+selectBack.addEventListener("input", function () {
+    writeCookie("color background", this.value)
+    backgroundColor = this.value
+    setColorMode("..")
+    //document.getElementById("article").style.backgroundColor = this.value;
+})
+
+let selectText = document.getElementById("color text");
+selectText.value = textColor
+selectText.addEventListener("input", function () {
+    writeCookie("color text", this.value)
+    textColor = this.value
+    setColorMode("..") 
+})
+
 
 
 document.getElementById("disconnect").addEventListener("click", function () {

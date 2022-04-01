@@ -12,6 +12,9 @@ console.log("read : " + readCookie("user"))
 setColorMode("..")
 
 
+
+
+
 if (user == null || String(user).length < 5) {
     deco()
 }
@@ -102,23 +105,35 @@ document.getElementById("planing").addEventListener("click", function () {
 console.log("week : " + week)
 console.log(actualWeek)
 
-document.getElementById("semainePrecedente").addEventListener("click", function () {
+
+function nextWeek(){
+    week = week + 1
+    writeCookie("week", week)
+    refreshDatabase()
+}
+function previousWeek(){
     week = week - 1
     writeCookie("week", week)
     refreshDatabase()
-});
-
-document.getElementById("semaineActuelle").addEventListener("click", function () {
+}
+function thisWeek(){
     week = actualWeek
     writeCookie("week", week)
     refreshDatabase()
+}
+
+document.getElementById("semainePrecedente").addEventListener("click", function () {
+    previousWeek()
+});
+
+
+document.getElementById("semaineActuelle").addEventListener("click", function () {
+    thisWeek()
 });
 
 
 document.getElementById("semaineSuivante").addEventListener("click", function () {
-    week = week + 1
-    writeCookie("week", week)
-    refreshDatabase()
+    nextWeek()
 });
 
 
@@ -511,3 +526,54 @@ function loop() {
     setTimeout(loop, 20000);
 }
 loop();
+
+
+
+/*document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;                                                        
+var yDown = null;
+
+function getTouches(evt) {
+  return evt.touches ||             // browser API
+         evt.originalEvent.touches; // jQuery
+}                                                     
+                                                                         
+function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];                                      
+    xDown = firstTouch.clientX;                                      
+    yDown = firstTouch.clientY;                                      
+};                                                
+                                                                         
+function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+                                                                         
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {//most significant
+        if ( xDiff > 0 ) {
+            // right swipe 
+            nextWeek()
+        } else {
+            previousWeek()
+            // left swipe
+        }                       
+    } else {
+        if ( yDiff > 0 ) {
+            // down swipe 
+            window.location.href = "../pass/pass.html";
+        } else { 
+            // up swipe
+        }                                                                 
+    }
+    // reset values
+    xDown = null;
+    yDown = null;                                             
+};*/
