@@ -1,3 +1,4 @@
+setColorMode("..")
 const body = document.getElementById("body");
 
 let bouton = [];

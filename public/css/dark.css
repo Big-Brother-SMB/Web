@@ -2,10 +2,10 @@ body{
     background-color: rgb(20, 20, 20);
 }
 
-p,u,a,h1{
+p,u,a,h1,.info,.heurediv{
     color: white;
 }
-.score{
+.score,.user,#addAmi,.zonecadre{
     background-color: rgb(40, 40, 40);
     color: white;
 }
