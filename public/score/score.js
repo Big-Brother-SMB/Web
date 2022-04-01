@@ -1,3 +1,5 @@
+setColorMode("..")
+
 let divScore = document.getElementById("divScore")
 let score = document.getElementById("score")
 
@@ -41,69 +43,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 
                 i++
 
-                /*$(function () { 
-
-                    $('#container').highcharts({
-                          chart: {
-                              type: 'column',
-                              backgroundColor: '#fff'
-                          },
-                          title: {
-                              text: 'Points au cours du temps',
-                              style: {  
-                                color: '#fff'
-                              }
-                          },
-                          xAxis: {
-                              tickWidth: 0,
-                              labels: {
-                                style: {
-                                    color: '#333',
-                                   }
-                                },
-                              categories: histogramNames
-                          },
-                          yAxis: {
-                             gridLineWidth: .5,
-                                gridLineDashStyle: 'dash',
-                                gridLineColor: 'black',
-                             title: {
-                                  text: '',
-                                  style: {
-                                    color: '#333'
-                                   }
-                              },
-                              labels: {
-                                formatter: function() {
-                                          return Highcharts.numberFormat(this.value, 1, '.', ',')+' pts';
-                                      },
-                                style: {
-                                    color: '#333',
-                                   }
-                                }
-                              },
-                          legend: {
-                              enabled: false,
-                          },
-                          credits: {
-                              enabled: false
-                          },
-                          tooltip: {
-                             valuePrefix: ''
-                          },
-                          plotOptions: {
-                                column: {
-                                    borderRadius: 0,
-                               pointPadding: -0.12,
-                                    groupPadding: 0.1
-                              } 
-                              },
-                          series: [{
-                              name: 'Points',
-                              data: histogramValues
-                          }]
-                      });
-                  });*/
+                
 
 
                   const ctx = document.getElementById('myChart')
