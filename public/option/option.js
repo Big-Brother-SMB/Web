@@ -55,6 +55,26 @@ inputCodeBar.addEventListener("input", function () {
 
 })
 
+var ele = document.getElementsByName("color");
+
+
+console.log("colorMode : " + colorMode)
+setColorMode("..")
+
+for(i = 0; i < ele.length; i++) {
+    const index = i
+    ele[index].addEventListener("change", function () {
+        writeCookie("color mode", index)
+        colorMode = index
+        setColorMode("..")
+    })
+    if(index == colorMode){
+        ele[index].checked = true
+        
+    }
+
+}
+
 
 document.getElementById("disconnect").addEventListener("click", function () {
     deco()

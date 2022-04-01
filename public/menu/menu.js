@@ -9,6 +9,7 @@ console.log("read : " + readCookie("user"))
     //deco()
 }*/
 
+setColorMode("..")
 
 
 if (user == null || String(user).length < 5) {

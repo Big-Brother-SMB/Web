@@ -7,12 +7,7 @@ h1,
 ul {
   margin: 0;
   padding: 0;
-  color: white;
   z-index: 10;
-}
-
-p {
-  color: black;
 }
 
 header {
@@ -170,7 +165,6 @@ marquee {
 
 .info {
   text-align: center;
-  color: black;
 }
 
 h1 {
@@ -190,7 +184,6 @@ h1 {
 
 .score {
   font-size: 30dp;
-  color: black;
   background-color: #fff;
   width: 150px;
   border: 1px solid black;

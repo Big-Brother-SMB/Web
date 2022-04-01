@@ -95,6 +95,8 @@ let hasCodeBar = String(codeBar).length == 5
 let jour = readIntCookie("jour")
 let heure = readIntCookie("heure")
 
+let colorMode = readIntCookie("color mode")
+
 
 
 /*database.ref("users/" + user + "/classe").once("value", function(snapshot) {
@@ -170,6 +172,27 @@ function getHour(){
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
 }
 
+
+//--------------------color functions-----------------------
+
+function setColorMode(rootPath){
+    try{
+        let name = ""
+        switch(colorMode){
+            case 0:
+                name = "light"
+                break;
+            case 1:
+                name = "dark"
+                break;
+        }
+        
+        document.getElementById("css").href = rootPath + "/css/" + name + ".css"
+    }catch(Exception){
+        console.log("error with color mode")
+    }
+    
+}
 
 //--------------------database functions--------------------
 
