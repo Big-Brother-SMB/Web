@@ -11,9 +11,7 @@ article {
     z-index: 10;
   }
   
-  p {
-    color: black;
-  }
+
   
   header {
     align-items: center;
@@ -154,25 +152,7 @@ article {
     text-overflow: ellipsis;
   }
 
-  .crenau {
-    background-color: #b5c3e4;
-    color: rgb(0, 0, 0);
-    padding: 10px 10px;
-    width: 10%;
-    height: 100px;
-    margin: 0px 0px;
-    font-size: 20px;
-    font-family: DejaVu Sans Mono, monospace;
-    text-align: center;
-    vertical-align: text-top;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #8b9fc9;
-    border-radius: 8px 8px 8px 8px;
-    padding: 0.25rem;
-    margin: 0.25em;
-    height: 150px;
-  }
+  
   
   .tableau {
     height: 150px;
@@ -190,7 +170,6 @@ article {
   
   .info {
     text-align: center;
-    color: black;
   }
   
   h1 {
@@ -259,7 +238,7 @@ article {
   
   .jours {
     display: inline;
-    width: 15%;
+    width: 12%;
     border-radius: 8px 8px 8px 8px;
     padding: 0.25rem;
     margin: 0.25em;
@@ -319,20 +298,35 @@ article {
     padding: 0.25rem;
     margin: 0.25em;
   }
-  
+  .crenau {
+    color: rgb(0, 0, 0);
+    width: 11%;
+    font-size: 18px;
+    font-family: DejaVu Sans Mono, monospace;
+    text-align: center;
+    vertical-align: text-top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #8b9fc9;
+    border-radius: 8px 8px 8px 8px;
+    padding: 1px;
+    margin: 5px;
+    height: 150px;
+  }
+
   .horaire {
     color: rgb(0, 0, 0);
-    width: 10%;
-    height: 50px;
-    font-size: 20px;
+    width: 11%;
+    font-size: 18px;
     font-family: DejaVu Sans Mono, monospace;
     text-align: center;
     vertical-align: text-top;
     overflow: hidden;
     text-overflow: ellipsis;
     border-radius: 8px 8px 8px 8px;
-    padding: 0.25rem;
-    margin: 0.25em;
+    padding: 1px;
+    margin: 5px;
+    height: 50px;
   }
   
   #heure12 {
@@ -345,10 +339,6 @@ article {
   
   .ferme {
     background: #526e8f;
-    color: white;
-    border-radius: 8px 8px 8px 8px;
-    padding: 0.25rem;
-    margin: 0.25em;
   }
   
   .zero {
@@ -360,6 +350,10 @@ article {
   
   .inscrit {
     background-color: #03fa10;
+  }
+
+  .reserve{
+    background: #ff9d00;
   }
   
   .demande {

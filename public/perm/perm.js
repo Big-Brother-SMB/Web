@@ -109,6 +109,7 @@ function refreshDatabase() {
                 heure += 1
             }
             bouton[j][h].innerHTML = "aucune info"
+            bouton[j][h].className = "crenau"
             database.ref(pathPerm(j,h) + "/ouvert").once("value", function (snapshot) {
 
                 let ouvert = snapshot.val()
@@ -138,6 +139,7 @@ function refreshDatabase() {
                     switch(ouvert){
                         case 1:
                             bouton[j][h].innerHTML = "fermé"
+                            bouton[j][h].className = "crenau ferme"
                             break;
                         case 2:
                             bouton[j][h].innerHTML = "ouvert à tous"
@@ -145,9 +147,11 @@ function refreshDatabase() {
                             break;
                         case 3:
                             bouton[j][h].innerHTML = "réservé"
+                            bouton[j][h].className = "crenau reserve"
                             break;
                         case 4:
                             bouton[j][h].innerHTML = "vacances"
+                            bouton[j][h].className = "crenau ferme"
                             break;
                     }
                     
