@@ -45,6 +45,14 @@ function readIntCookie(key){
     return parseInt(cookie[key]);
 }
 
+function readIntCookieDefault(key){
+    let read = readIntCookie(key)
+    if(isNaN(read)){
+        read = 0
+    }
+    return read
+}
+
 function readBoolCookie(key){
     return cookie[key] == 'true';
 }
@@ -109,17 +117,17 @@ let textColor = readCookie("color text")
     }
     
 });*/
-// semaine
 
 
 
-// This script is released to the public domain and may be used, modified and
-// distributed without restrictions. Attribution not necessary but appreciated.
-// Source: https://weeknumber.com/how-to/javascript
+
 
 // Returns the ISO week of the date.
 
 
+
+
+//-----------------------dates--------------------------
 
 Date.prototype.getWeek = function() {
     var date = new Date(this.getTime());
@@ -173,6 +181,16 @@ function getHour(){
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
 }
 
+function hash(){
+    let d =  new Date()
+    return d.getFullYear()
+    + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
+    + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
+    + " " + (String(d.getHours()).length == 1?"0":"") + d.getHours()
+    + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes()
+    + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+}
+
 
 //--------------------color functions-----------------------
 
@@ -205,6 +223,83 @@ function setColorMode(rootPath){
     
 }
 //    mix-blend-mode: difference;
+
+
+//--------------------Big Data functions--------------------
+
+const pages = ["menu","amis","score","perm","pass","option","fin","dev","demande","modifier"]
+try{
+    let lastDay = readIntCookieDefault("last day")
+    let lastMonth = readIntCookieDefault("last month")
+    let actualDay = date.getDate()
+    let actualMonth = date.getMonth() + 1;
+    console.log("date : " + actualDay + "/" + actualMonth)
+    console.log("old date : " + lastDay + "/" + lastMonth)
+    let time = readIntCookieDefault("time")
+    
+    console.log("time : "+ time);
+
+    var page = window.location.pathname.split("/").pop().split(".");
+    page.pop()
+    let pageName = "page-" + page[0]
+    let pageNameTime = "time-" + page[0]
+    console.log("page : "+ pageName);
+    let nbPageRead =  readIntCookieDefault(pageName) + 1
+    console.log("page read : " + nbPageRead)
+    let pageTime = readIntCookieDefault(pageNameTime)
+    console.log("page time : " + pageTime)
+
+    if(lastDay != actualDay){
+        if(lastDay != 0){
+            console.log("new day")
+            let hashCode = hash()
+            database.ref("data/" + user + "/" + hashCode +  "/date").set(lastDay + "/" + lastMonth)
+            database.ref("data/" + user + "/" + hashCode +  "/time").set(time)
+            for(let i in pages){
+                let val = readIntCookieDefault("page-" + pages[i])
+                writeCookie("page-" + pages[i],0)
+                let t = readIntCookieDefault("time-" + pages[i])
+                writeCookie("time-" + pages[i],0)
+                if(val != 0){
+                    database.ref("data/" + user + "/" + hashCode +  "/pages/" + pages[i] + "/vues").set(val)
+                    database.ref("data/" + user + "/" + hashCode +  "/pages/" + pages[i] + "/time").set(t)
+                }
+                
+            }
+        }
+        
+        lastDay = actualDay
+        lastMonth = actualMonth
+        writeCookie("last day",lastDay)
+        writeCookie("last month",lastMonth)
+        time = 0
+        pageTime = 0
+        nbPageRead = 1
+        console.log("finnish sendding")
+    }
+
+    writeCookie(pageName,nbPageRead)
+    
+    
+    
+
+    
+    
+    function loopTime() {
+        time++
+        writeCookie("time", time)
+        pageTime++
+        writeCookie(pageNameTime, pageTime)
+        setTimeout(loopTime, 1000);
+    }
+    loopTime();
+    
+    
+    
+}catch(Exception){
+    console.log("error data",Exception)
+}
+
 
 //--------------------database functions--------------------
 

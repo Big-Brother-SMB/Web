@@ -103,7 +103,7 @@ document.getElementById("planing").addEventListener("click", function () {
 
 //(new Date()).getWeek();
 console.log("week : " + week)
-console.log(actualWeek)
+console.log("actual week : " + actualWeek)
 
 
 function nextWeek(){
@@ -216,7 +216,7 @@ function refreshDatabase() {
         })
     });
 
-    let sn = ["28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
+    let sn = ["4 au 8 avril", "11 au 15 avril","18 au 22 avril","25 au 29 avril"]
 
     let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
     if (week == actualWeek) {
