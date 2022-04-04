@@ -1,4 +1,4 @@
-setColorMode("..")
+//setColorMode("..")
 
 let d = new Date();
 
@@ -17,11 +17,11 @@ console.log(h);
 function loop2(){
 
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
-        document.getElementById("pass").innerHTML = "<img width=\"1000\" height=\"1000\ class=\"pass\" src=\"croix.gif\" />"
+        document.getElementById("pass").innerHTML = "<img width=\"400\" height=\"400\ class=\"pass\" src=\"croix.gif\" />"
         snapshot.forEach(function(child) {
             if(child.key == user){
                 console.log("inscrit");
-                document.getElementById("pass").innerHTML = "<img width=\"1000\" height=\"1000\" alt=\"\" src=\"pass.gif\" />"
+                document.getElementById("pass").innerHTML = "<img width=\"400\" height=\"400\" alt=\"\" src=\"pass.gif\" />"
             }
         
         });

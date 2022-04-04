@@ -66,6 +66,8 @@ button {
 p {
   text-align: center;
   font-size: 100px;
+  margin:5px;
+  margin-top: 30px;
 }
 .pass {
   width: 40%;
