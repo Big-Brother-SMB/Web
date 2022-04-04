@@ -233,11 +233,14 @@ try{
     let lastMonth = readIntCookieDefault("last month")
     let actualDay = date.getDate()
     let actualMonth = date.getMonth() + 1;
+    
     console.log("date : " + actualDay + "/" + actualMonth)
     console.log("old date : " + lastDay + "/" + lastMonth)
     let time = readIntCookieDefault("time")
     
     console.log("time : "+ time);
+
+    
 
     var page = window.location.pathname.split("/").pop().split(".");
     page.pop()
@@ -252,17 +255,17 @@ try{
     if(lastDay != actualDay){
         if(lastDay != 0){
             console.log("new day")
-            let hashCode = hash()
-            database.ref("data/" + user + "/" + hashCode +  "/date").set(lastDay + "/" + lastMonth)
-            database.ref("data/" + user + "/" + hashCode +  "/time").set(time)
+            let hashCode = hash() + " -> " + user
+            let date = lastMonth + "-" + lastDay
+            database.ref("data/" + date + "/" + hashCode +  "/time").set(time)
             for(let i in pages){
                 let val = readIntCookieDefault("page-" + pages[i])
                 writeCookie("page-" + pages[i],0)
                 let t = readIntCookieDefault("time-" + pages[i])
                 writeCookie("time-" + pages[i],0)
                 if(val != 0){
-                    database.ref("data/" + user + "/" + hashCode +  "/pages/" + pages[i] + "/vues").set(val)
-                    database.ref("data/" + user + "/" + hashCode +  "/pages/" + pages[i] + "/time").set(t)
+                    database.ref("data/" + date + "/" + hashCode +  "/pages/" + pages[i] + "/vues").set(val)
+                    database.ref("data/" + date + "/" + hashCode +  "/pages/" + pages[i] + "/time").set(t)
                 }
                 
             }
@@ -290,6 +293,7 @@ try{
         writeCookie("time", time)
         pageTime++
         writeCookie(pageNameTime, pageTime)
+
         setTimeout(loopTime, 1000);
     }
     loopTime();
