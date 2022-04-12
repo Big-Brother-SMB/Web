@@ -393,3 +393,27 @@ article {
     background-color: #3d546e;
     margin-right: 20px;
   }
+
+  .envoyer  {
+    border-radius:8px 8px 8px 8px;
+    background-color: #3d546e;
+    margin: 10px;
+    margin-bottom: 0px;
+    width: 20%;
+  }
+
+  .retour  {
+    width:250px;
+    border-radius:8px 8px 8px 8px;
+    background-color: #3d546e;
+    margin-right: 20px;
+  }
+
+  .amis{
+    background-color: #8b9fc9;
+    border-radius:8px 8px 8px 8px;
+    padding: .75rem;
+    margin: .25em;
+    height: 50px;
+    width: 97%;
+  }

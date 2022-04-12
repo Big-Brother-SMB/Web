@@ -61,7 +61,11 @@ for (let j = 0; j < 5; j++) {
         }
 
         //bouton[j][h].id = "" + j + h;
-        //bouton[j][h].onclick = function () { select(j, h) };
+        let heure = h + 8
+        if(h >= 4){
+            heure += 1
+        }
+        bouton[j][h].onclick = function () { select(j, h) };
         bouton[j][h].className = "crenau"
         div.appendChild(bouton[j][h]);
 
@@ -112,11 +116,12 @@ function refreshDatabase() {
             bouton[j][h].className = "crenau"
             database.ref(pathPerm(j,h) + "/ouvert").once("value", function (snapshot) {
 
-                let ouvert = snapshot.val()
-                if (ouvert == null){
-                    ouvert = 0
+                let ouv = snapshot.val()
+                if (ouv == null){
+                    ouv = 0
                 }
-                if(ouvert == 0){
+                ouvert[j][h] = ouv
+                if(ouv == 0){
                     database.ref(pathPerm(j,h) + "/classes").once("value", function (snapshot2) {
                         let str = ""
                         snapshot2.forEach(function (child) {
@@ -136,7 +141,7 @@ function refreshDatabase() {
                         
                     });
                 }else{
-                    switch(ouvert){
+                    switch(ouv){
                         case 1:
                             bouton[j][h].innerHTML = "fermé"
                             bouton[j][h].className = "crenau ferme"
@@ -174,3 +179,13 @@ function loop() {
     setTimeout(loop, 20000);
 }
 loop();
+
+
+function select(j, h){
+    console.log("click")
+    sessionStorage.setItem("j", j);
+    sessionStorage.setItem("h", h);
+    if (ouvert[j][h] == 0) {
+        window.location.href = "demandePerm.html";
+    } 
+}
