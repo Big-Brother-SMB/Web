@@ -11,6 +11,16 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=49)){
 }else{
     h = "/12h";
 }
+
+database.ref("version").once("value", function (snapshot) {
+  let msg = snapshot.val()
+  if (msg != null) {
+    document.getElementById("version").innerHTML ="Version "+msg
+    }
+
+
+})
+
 console.log(j);
 console.log(h);
 
@@ -23,9 +33,9 @@ function loop2(){
                 console.log("inscrit");
                 document.getElementById("pass").innerHTML = "<img width=\"400\" height=\"400\" alt=\"\" src=\"pass.gif\" />"
             }
-        
+
         });
-    }); 
+    });
     console.log("refresh")
     setTimeout(loop2,10000)
 
@@ -44,7 +54,7 @@ function loop(){
 
 
     setTimeout(loop,1000);
-    
+
 }
 loop();
 
@@ -56,7 +66,7 @@ const containerElement = document.getElementById('single');
 if(hasCodeBar){
     console.log(codeBar)
     const bcid = 'bc'+codeBar;
-    // create the image element    
+    // create the image element
     const bcimg = document.createElement('img');
     bcimg.className = "barcode";
     bcimg.setAttribute('id', bcid);

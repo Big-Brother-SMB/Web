@@ -12,9 +12,9 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         let event = document.createElement("button")
         event.classList.add("event")
-        
+
        /* divScore.appendChild(event);*/
-        
+
         database.ref("users/" + user + "/score/" + child.key + "/name").once('value').then(function(snapshot) {
             let name = snapshot.val()
             /*if(name == null){
@@ -33,10 +33,10 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 }
 
                 histogramNames[i]=name
-                
+
                 i++
 
-                
+
 
 
                   const ctx = document.getElementById('myChart')
@@ -68,15 +68,24 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                             }
                         }
                     });
-                
+
                 total += eventScore
                 total = Math.round(total*100)/100
-                
-            }) 
-        }) 
+
+            })
+        })
     })
     charged()
 });
+
+database.ref("version").once("value", function (snapshot) {
+  let msg = snapshot.val()
+  if (msg != null) {
+    document.getElementById("version").innerHTML ="Version "+msg
+    }
+
+
+})
 
 let charge = 1
 function charged(){
@@ -86,12 +95,8 @@ function charged(){
     }
     console.log("charged")
 
-    
+
 
     document.getElementById("article").style.display = "block"
     document.getElementById("chargement").style.display = "none"
-} 
-
-
-
-
+}

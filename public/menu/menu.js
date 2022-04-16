@@ -207,7 +207,7 @@ function semaine(nombreSemaineSup){ //nombreSemaineSup = nombre de semaine ce tr
 	dateEnd = dateEnd.toLocaleString();
 	let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
 	return(dateBeg[0]+dateBeg[1]+" "+mois[parseInt(dateBeg[3]+dateBeg[4])]+" au "+dateEnd[0]+dateEnd[1]+" "+mois[parseInt(dateEnd[3]+dateEnd[4])]);
-	// renvoie un intervalle de jour de forme : 11 avril au 15 avril 
+	// renvoie un intervalle de jour de forme : 11 avril au 15 avril
 	}
 
 let nbFois;
@@ -355,14 +355,14 @@ function updateAffichage(j, h) {
     let coutPourcentage = round((cout[j][h] - 1) * 100)
     let textcout = ""
     if(coutPourcentage != 0){
-        
+
         if(coutPourcentage > 0){
             textcout += "<br><rouge>Cout en point : " + "+" + coutPourcentage + "%</rouge>"
         }else{
             textcout = "<br><vert>Cout en point : " + coutPourcentage + "%</vert>"
         }
-        
-        
+
+
     }
 
     let text;
@@ -486,7 +486,14 @@ function select(j, h) {
 
 
 
+database.ref("version").once("value", function (snapshot) {
+  let msg = snapshot.val()
+  if (msg != null) {
+    document.getElementById("version").innerHTML ="Version "+msg
+    }
 
+
+})
     /*console.log(places[j][h])
     let inscription = false;
     let desinscription = false;
@@ -507,7 +514,7 @@ function select(j, h) {
         case 6:
         case 2:
         case 7:
-            desinscription = true;     
+            desinscription = true;
     }
     if(demande[j][h] && desinscription){
         //database.ref(path(j,h) + "/demandes/" + user).remove();
@@ -542,51 +549,51 @@ loop();
 
 
 
-/*document.addEventListener('touchstart', handleTouchStart, false);        
+/*document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchmove', handleTouchMove, false);
 
-var xDown = null;                                                        
+var xDown = null;
 var yDown = null;
 
 function getTouches(evt) {
   return evt.touches ||             // browser API
          evt.originalEvent.touches; // jQuery
-}                                                     
-                                                                         
+}
+
 function handleTouchStart(evt) {
-    const firstTouch = getTouches(evt)[0];                                      
-    xDown = firstTouch.clientX;                                      
-    yDown = firstTouch.clientY;                                      
-};                                                
-                                                                         
+    const firstTouch = getTouches(evt)[0];
+    xDown = firstTouch.clientX;
+    yDown = firstTouch.clientY;
+};
+
 function handleTouchMove(evt) {
     if ( ! xDown || ! yDown ) {
         return;
     }
 
-    var xUp = evt.touches[0].clientX;                                    
+    var xUp = evt.touches[0].clientX;
     var yUp = evt.touches[0].clientY;
 
     var xDiff = xDown - xUp;
     var yDiff = yDown - yUp;
-                                                                         
+
     if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {//most significant
         if ( xDiff > 0 ) {
-            // right swipe 
+            // right swipe
             nextWeek()
         } else {
             previousWeek()
             // left swipe
-        }                       
+        }
     } else {
         if ( yDiff > 0 ) {
-            // down swipe 
+            // down swipe
             window.location.href = "../pass/pass.html";
-        } else { 
+        } else {
             // up swipe
-        }                                                                 
+        }
     }
     // reset values
     xDown = null;
-    yDown = null;                                             
+    yDown = null;
 };*/

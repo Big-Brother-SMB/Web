@@ -104,7 +104,7 @@ function semaine(nombreSemaineSup){ //nombreSemaineSup = nombre de semaine ce tr
 	dateEnd = dateEnd.toLocaleString();
 	let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
 	return(dateBeg[0]+dateBeg[1]+" "+mois[parseInt(dateBeg[3]+dateBeg[4])]+" au "+dateEnd[0]+dateEnd[1]+" "+mois[parseInt(dateEnd[3]+dateEnd[4])]);
-	// renvoie un intervalle de jour de forme : 11 avril au 15 avril 
+	// renvoie un intervalle de jour de forme : 11 avril au 15 avril
 	}
 
 
@@ -118,7 +118,7 @@ function refreshDatabase() {
     }
     document.getElementById("semaine").innerHTML = text
 
-    
+
 
     for (let j = 0; j < 5; j++) {
         for (let h = 0; h < 7; h++) {
@@ -147,12 +147,12 @@ function refreshDatabase() {
                                 str += ", "
                             }
                             str += name
-    
+
                         });
                         if(str != ""){
                             bouton[j][h].innerHTML = str
                         }
-                        
+
                     });
                 }else{
                     switch(ouv){
@@ -173,10 +173,10 @@ function refreshDatabase() {
                             bouton[j][h].className = "crenau ferme"
                             break;
                     }
-                    
+
                 }
 
-                
+
 
             })
 
@@ -186,7 +186,14 @@ function refreshDatabase() {
 
 }
 
+database.ref("version").once("value", function (snapshot) {
+  let msg = snapshot.val()
+  if (msg != null) {
+    document.getElementById("version").innerHTML ="Version "+msg
+    }
 
+
+})
 function loop() {
     console.log("update database")
     refreshDatabase();
@@ -201,5 +208,5 @@ function select(j, h){
     sessionStorage.setItem("h", h);
     if (ouvert[j][h] == 0) {
         window.location.href = "demandePerm.html";
-    } 
+    }
 }

@@ -20,6 +20,13 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     suite1();
 })
 
+database.ref("version").once("value", function (snapshot) {
+    let msg = snapshot.val()
+    if (msg != null) {
+      document.getElementById("version").innerHTML ="Version "+msg
+      }
+
+    })
 
 function suite1(){
     console.log(amis)
@@ -29,23 +36,23 @@ function suite1(){
             if(child.key != user && amis.indexOf(child.key) == -1){
                 users.push(child.key)
             }
-            
-            
+
+
         })
         autocomplete(document.getElementById("addAmi"), users);
     })
-    
+
     document.getElementById("ajout").addEventListener("click", function() {
         console.log("click")
-        
+
         let ami = document.getElementById("addAmi").value
-        
+
         if(users.indexOf(ami) != -1){
             console.log(ami)
             database.ref("users/" + user + "/amis/" + ami).set(0);
         }
         reload()
-        
+
     })
 }
 
