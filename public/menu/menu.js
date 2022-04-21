@@ -483,14 +483,6 @@ function select(j, h) {
 
 
 
-database.ref("version").once("value", function (snapshot) {
-  let msg = snapshot.val()
-  if (msg != null) {
-    document.getElementById("version").innerHTML ="Version "+msg
-    }
-
-
-})
     /*console.log(places[j][h])
     let inscription = false;
     let desinscription = false;
@@ -531,6 +523,8 @@ database.ref("version").once("value", function (snapshot) {
     }*/
 
 }
+
+
 
 
 /*function path(j,h){
