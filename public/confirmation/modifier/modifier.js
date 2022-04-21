@@ -7,6 +7,13 @@ let h = parseInt(sessionStorage.getItem("h"));
 let charge = 1
 const nbCharge = 8;
 
+database.ref("version").once("value", function (snapshot) {
+    let msg = snapshot.val()
+    if (msg != null) {
+      document.getElementById("version").innerHTML ="Version "+msg
+      }
+
+    })
 
 database.ref(path(j,h) + "/demandes/" +user).once('value').then(function(snapshot) {
     if(snapshot.val() == null){
@@ -19,7 +26,7 @@ database.ref(path(j,h) + "/info").once("value", function(snapshot) {
     let msg = snapshot.val()
     if(msg != null){
         document.getElementById("banderole").innerHTML = msg
-    } 
+    }
     charged()
 })
 
@@ -42,12 +49,12 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         let b = document.createElement("button")
         b.classList.add("amis")
         b.innerHTML = name
-        
+
         divAmis.appendChild(b);
         bAmis.push(b)
         i++
     })
-    
+
     database.ref(path(j,h) + "/users/" + user + "/amis").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
             let name = child.key
@@ -61,13 +68,13 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
                 if(boolAmis[i]){
                     console.log("remove")
                     bAmis[i].innerHTML = amis[i]
-                    boolAmis[i] = false         
+                    boolAmis[i] = false
                 }else{
                     console.log("add")
                     bAmis[i].innerHTML = amis[i] + " (ajouté)"
-                    boolAmis[i] = true 
+                    boolAmis[i] = true
                 }
-                
+
             })
         }
         charged()
@@ -93,9 +100,9 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         butAmis[i].classList.add("amis")
         butAmis[i].innerHTML = amis[i]
         divListeAmis.appendChild(butAmis[i]);
-        
-        
-        
+
+
+
         const num = i
         butAmis[num].addEventListener("click", function() {
             if(boolAmis[num]){
@@ -139,7 +146,7 @@ function updateConfirmation(){
     }else{
         p.innerHTML = "Attention, " + pb + " amis n'ont pas encore fait de demande"
     }
-    
+
 }
 
 document.getElementById("tout ajouter").addEventListener("click", function() {
@@ -171,8 +178,8 @@ let inscrits = 0
 database.ref(path(j,h) + "/inscrits").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         const name = child.key
-        inscrits++ 
-        const index = amis.indexOf(name)  
+        inscrits++
+        const index = amis.indexOf(name)
         if(index != -1){
             demandesAmis[index] = 2
         }
@@ -184,8 +191,8 @@ let demandes = 0
 database.ref(path(j,h) + "/demandes").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         const name = child.key
-        demandes++    
-        const index = amis.indexOf(name)  
+        demandes++
+        const index = amis.indexOf(name)
         if(index != -1){
             demandesAmis[index] = 1
         }
@@ -207,7 +214,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
             charged2()
         })
     })
-    
+
     function charged2(){
         console.log(charge2)
         if(charge2 < nb){
@@ -222,7 +229,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
         }
         charged()
     }
-    
+
 });
 
 let horaire = 0
@@ -239,7 +246,7 @@ if(h == 1){
 
 
 function charged(){
-    
+
     if(charge < nbCharge){
         charge++
         return
@@ -284,7 +291,7 @@ function charged(){
         if(horaire == 2 || horaire == 3){
             document.getElementById("12h50").checked = true
         }
-        
+
     }
 
 
@@ -297,7 +304,7 @@ function charged(){
                 }else{
                     database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).remove()
                 }
-            }  
+            }
             if(boolAmis[a]){
                 str += amis[a] + "/"
             }

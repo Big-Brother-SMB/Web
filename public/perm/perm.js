@@ -101,7 +101,7 @@ function refreshDatabase() {
     }
     document.getElementById("semaine").innerHTML = text
 
-    
+
 
     for (let j = 0; j < 5; j++) {
         for (let h = 0; h < 7; h++) {
@@ -130,12 +130,12 @@ function refreshDatabase() {
                                 str += ", "
                             }
                             str += name
-    
+
                         });
                         if(str != ""){
                             bouton[j][h].innerHTML = str
                         }
-                        
+
                     });
                 }else{
                     switch(ouv){
@@ -156,10 +156,10 @@ function refreshDatabase() {
                             bouton[j][h].className = "crenau ferme"
                             break;
                     }
-                    
+
                 }
 
-                
+
 
             })
 
@@ -169,7 +169,14 @@ function refreshDatabase() {
 
 }
 
+database.ref("version").once("value", function (snapshot) {
+  let msg = snapshot.val()
+  if (msg != null) {
+    document.getElementById("version").innerHTML ="Version "+msg
+    }
 
+
+})
 function loop() {
     console.log("update database")
     refreshDatabase();
@@ -184,5 +191,5 @@ function select(j, h){
     sessionStorage.setItem("h", h);
     if (ouvert[j][h] == 0) {
         window.location.href = "demandePerm.html";
-    } 
+    }
 }

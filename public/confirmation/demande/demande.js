@@ -6,6 +6,14 @@ let h = parseInt(sessionStorage.getItem("h"));
 let charge = 1
 const nbCharge = 7;
 
+database.ref("version").once("value", function (snapshot) {
+    let msg = snapshot.val()
+    if (msg != null) {
+      document.getElementById("version").innerHTML ="Version "+msg
+      }
+
+    })
+
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
     if(snapshot.val() != 7){
         window.location.href = menu;
@@ -17,7 +25,7 @@ database.ref(path(j,h) + "/info").once("value", function(snapshot) {
     let msg = snapshot.val()
     if(msg != null){
         document.getElementById("banderole").innerHTML = msg
-    } 
+    }
     charged()
 })
 
@@ -36,7 +44,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         }else{
             ami.innerHTML = name
         }
-        
+
         ami.addEventListener("click", function() {
             if(amis.indexOf(name) == -1){
                 console.log("add")
@@ -48,7 +56,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
                 amis.splice(amis.indexOf(name), 1)
                 console.log(amis)
             }
-            
+
         })
         divAmis.appendChild(ami);
     })
@@ -63,7 +71,7 @@ let amisCookie = []
 try{
     amisCookie = readCookie("derniere demande").split("/")
 }catch(Exception){
-    
+
 }
 
 let boolAmis = []
@@ -84,7 +92,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
             divListeAmis.appendChild(butAmis[i]);
         }
         updateConfirmation()
-        
+
         const num = i
         butAmis[num].addEventListener("click", function() {
             if(boolAmis[num]){
@@ -117,7 +125,7 @@ function updateConfirmation(){
     }else{
         p.innerHTML = "Attention, " + pb + " amis n'ont pas encore fait de demande"
     }
-    
+
 }
 
 document.getElementById("tout ajouter").addEventListener("click", function() {
@@ -152,8 +160,8 @@ let inscrits = 0
 database.ref(path(j,h) + "/inscrits").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         const name = child.key
-        inscrits++ 
-        const index = amis.indexOf(name)  
+        inscrits++
+        const index = amis.indexOf(name)
         if(index != -1){
             demandesAmis[index] = 2
         }
@@ -167,8 +175,8 @@ let demandes = 0
 database.ref(path(j,h) + "/demandes").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         const name = child.key
-        demandes++    
-        const index = amis.indexOf(name)  
+        demandes++
+        const index = amis.indexOf(name)
         if(index != -1){
             demandesAmis[index] = 1
         }
@@ -191,7 +199,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
             charged2()
         })
     })
-    
+
     function charged2(){
 
         if(charge2 < nb){
@@ -206,7 +214,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
         }
         charged()
     }
-    
+
 });
 let executed = false
 function charged(){
@@ -229,7 +237,7 @@ function charged(){
     document.getElementById("article").style.display = "inline"
     document.getElementById("chargement").style.display = "none"
     let reste = places - inscrits
-    document.getElementById("info").innerHTML = "Demander l'inscription pour le "+ day[j]  +  " à " + (h+11) 
+    document.getElementById("info").innerHTML = "Demander l'inscription pour le "+ day[j]  +  " à " + (h+11)
     + "h<br>Il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes
     + " demandes en cours<br>Votre score est de " + textScore
 
@@ -251,12 +259,12 @@ function charged(){
                 str += amis[i] + "/"
                 database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[i]).set(0);
             }
-            
+
         }
         writeCookie("derniere demande",str)
-        
 
-        
+
+
         if(h == 1){
             let fini = document.getElementById("12h20").checked
             let commence = document.getElementById("12h50").checked
@@ -270,11 +278,11 @@ function charged(){
                 setTimeout(function() {
                     window.location.href = menu;
                 },1000);
-                
+
             }
         });
-        
-        
+
+
     });
     document.getElementById("non").addEventListener("click", function() {
         window.location.href = menu;
