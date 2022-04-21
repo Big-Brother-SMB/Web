@@ -9,17 +9,25 @@ console.log("read : " + readCookie("user"))
     //deco()
 }*/
 
-setColorMode("..")
+
 
 
 
 
 
 if (user == null || String(user).length < 5) {
-    deco()
+    sessionStorage.setItem("auth err", 2);
+    setTimeout(function () {
+        deco()
+    }, 2000);
+    
 }
 if (classe == null) {
-    deco()
+    sessionStorage.setItem("auth err", 3);
+    setTimeout(function () {
+        deco()
+    }, 2000);
+    
 }
 
 //temporaire
@@ -27,13 +35,18 @@ if (hasCodeBar) {
     database.ref("codes barres/" + codeBar).set(user)
     database.ref("users/" + user + "/code barre").set(codeBar)
 } else {
-    deco()
+    sessionStorage.setItem("auth err", 4);
+    setTimeout(function () {
+        deco()
+    }, 2000);
+    
 }
 
 //temporaire
 if (listClasse.indexOf(classe) == -1) {
     database.ref("users/" + user + "/classe").remove()
     delCookie("classe");
+    sessionStorage.setItem("auth err", 5);
     setTimeout(function () {
         deco()
     }, 2000);
@@ -196,20 +209,6 @@ for (let j = 0; j < 4; j++) {
 
 }
 
-function semaine(nombreSemaineSup){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer
-	let aujd= new Date();
-	let jour=aujd.getDay()-1;
-	let dateBeg=(Date.now()+604800000*nombreSemaineSup)-jour*86400000; //86400000ms=1 jour et 604800000ms= 1semaine
-	let dateEnd=dateBeg+4*86400000;
-	dateBeg=new Date(dateBeg);
-	dateEnd=new Date(dateEnd);
-	dateBeg = dateBeg.toLocaleString();
-	dateEnd = dateEnd.toLocaleString();
-	let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
-	return(dateBeg[0]+dateBeg[1]+" "+mois[parseInt(dateBeg[3]+dateBeg[4])]+" au "+dateEnd[0]+dateEnd[1]+" "+mois[parseInt(dateEnd[3]+dateEnd[4])]);
-	// renvoie un intervalle de jour de forme : 11 avril au 15 avril 
-	}
-
 let nbFois;
 //refreshDatabase();
 function refreshDatabase() {
@@ -229,9 +228,7 @@ function refreshDatabase() {
         })
     });
 
-    let sn = [semaine(0),semaine(1),semaine(2),semaine(3)]
-
-    let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
+    let text = "Semaine n°" + week + " du " + semaine(week)
     if (week == actualWeek) {
         text = "Cette semaine"
     }

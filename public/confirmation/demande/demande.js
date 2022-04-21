@@ -1,5 +1,4 @@
-setColorMode("../..")
-const menu = "../../menu/menu.html"
+
 
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
@@ -186,7 +185,7 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         nb++
         database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
-            console.log(round(parseFloat(snapshot.val())))
+
             score += parseFloat(snapshot.val())
             score = round(score)
             charged2()
@@ -194,12 +193,12 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
     })
     
     function charged2(){
-        console.log(charge2)
+
         if(charge2 < nb){
             charge2++
             return
         }
-        console.log(score)
+
         if (score <2) {
             textScore = score + " pt"
         }else{
@@ -209,12 +208,13 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
     }
     
 });
-
+let executed = false
 function charged(){
-    if(charge < nbCharge){
-        charge++
+    charge++
+    if(charge <= nbCharge || executed){
         return
     }
+    executed = true
     console.log("charged")
 
     for(let i in demandesAmis){

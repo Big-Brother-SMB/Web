@@ -1,4 +1,3 @@
-setColorMode("..")
 const body = document.getElementById("body");
 
 let bouton = [];
@@ -93,26 +92,10 @@ document.getElementById("semaineSuivante").addEventListener("click", function ()
     refreshDatabase()
 });
 
-function semaine(nombreSemaineSup){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer
-	let aujd= new Date();
-	let jour=aujd.getDay()-1;
-	let dateBeg=(Date.now()+604800000*nombreSemaineSup)-jour*86400000; //86400000ms=1 jour et 604800000ms= 1semaine
-	let dateEnd=dateBeg+4*86400000;
-	dateBeg=new Date(dateBeg);
-	dateEnd=new Date(dateEnd);
-	dateBeg = dateBeg.toLocaleString();
-	dateEnd = dateEnd.toLocaleString();
-	let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
-	return(dateBeg[0]+dateBeg[1]+" "+mois[parseInt(dateBeg[3]+dateBeg[4])]+" au "+dateEnd[0]+dateEnd[1]+" "+mois[parseInt(dateEnd[3]+dateEnd[4])]);
-	// renvoie un intervalle de jour de forme : 11 avril au 15 avril 
-	}
-
 
 function refreshDatabase() {
 
-    let sn = [semaine(0),semaine(1),semaine(2),semaine(3)]
-
-    let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
+    let text = "Semaine n°" + week + " du " + semaine(week)
     if (week == actualWeek) {
         text = "Cette semaine"
     }

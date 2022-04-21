@@ -150,6 +150,33 @@ Date.prototype.getWeek = function() {
 let date = new Date();
 const actualWeek = date.getWeek();
 
+function semaine(semaine){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer
+	let jour=date.getDay()-1;
+	let dateBeg=(Date.now()+604800000*(semaine - actualWeek))-jour*86400000; //86400000ms=1 jour et 604800000ms= 1semaine
+	let dateEnd=dateBeg+4*86400000;
+	dateBeg=new Date(dateBeg);
+	dateEnd=new Date(dateEnd);
+	dateBeg = dateBeg.toLocaleString();
+	dateEnd = dateEnd.toLocaleString();
+	let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
+    let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
+    let mEnd = parseInt(dateEnd[3]+dateEnd[4] - 1)
+    let text = ""
+    if(dateBeg[0] != "0"){
+        text += dateBeg[0]
+    }
+    text += dateBeg[1] + " "
+    if(mBeg != mEnd){
+        text += mois[mBeg] + " "
+    }
+    text += "au "
+    if(dateEnd[0] != "0"){
+        text += dateEnd[0]
+    }
+    text += dateEnd[1]+" " + mois[mEnd]
+    return text
+}
+
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
 
 const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
@@ -162,6 +189,9 @@ const dayNumMer = ["1lundi", "2mardi","3mercredi","4jeudi","5vendredi"];
 const listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK","PCSI","PC","professeur-personnel"]
 
 //--------------------path--------------------
+
+const menu = window.location.origin + "/menu/menu.html"
+
 function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
 }
@@ -193,7 +223,9 @@ function hash(){
 
 
 //--------------------color functions-----------------------
-
+if(window.location.pathname.split("/").pop()!= "pass.html"){
+    setColorMode(window.location.origin)
+}
 function setColorMode(rootPath){
     try{
         document.getElementById("css").href = ""
@@ -405,7 +437,7 @@ function getSlotFriendsList(user,onEnd){
 }
 
 
-//Stats
+//-----------------------------------Stats--------------------------
 
 function getDemandesStat(onEnd){
     
@@ -649,3 +681,19 @@ function getDemandesStat(onEnd){
 
 
 }*/
+
+
+
+
+
+//---------------------------------other functions-----------------------
+
+function charged(bool){
+    if(bool){
+        document.getElementById("article").style.display = "inline"
+        document.getElementById("chargement").style.display = "none"
+    }else{
+        document.getElementById("article").style.display = "none"
+        document.getElementById("chargement").style.display = "inline"
+    }
+}

@@ -69,9 +69,31 @@ const auth = getAuth()
 
 let err = sessionStorage.getItem("auth err");
 console.log(err)
-if (err == 1) {
-  console.log("err code bar")
-  document.getElementById("infos").innerHTML = "Ce code barre est déjà attribué"
+switch (err) {
+  case 1:
+    console.log("err code bar")
+    document.getElementById("infos").innerHTML = "Ce code barre est déjà attribué (code 1)"
+    break;
+  case 2:
+    console.log("err code bar")
+    document.getElementById("infos").innerHTML = "err user null or < 5 (code 2)"
+    break;
+  case 3:
+    console.log("err code bar")
+    document.getElementById("infos").innerHTML = "err class null (code 3)"
+    break;
+  case 4:
+    console.log("err code bar")
+    document.getElementById("infos").innerHTML = "err no barcode (code 4)"
+    break;
+  case 5:
+    console.log("err code bar")
+    document.getElementById("infos").innerHTML = "class -1 (code 5)"
+    break;
+  default:
+    console.log("autre")
+    document.getElementById("infos").innerHTML = "err code 0XF"
+    break;
 }
 
 
