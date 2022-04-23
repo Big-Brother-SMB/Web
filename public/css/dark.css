@@ -9,3 +9,11 @@ p,u,a,h1,.info,.heurediv{
     background-color: rgb(40, 40, 40);
     color: white;
 }
+
+.same{
+    background-color: black;
+}
+
+.opposed{
+    background-color: white;
+}

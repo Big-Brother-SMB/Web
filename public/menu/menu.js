@@ -556,6 +556,18 @@ database.ref("sondages").once('value').then(function(snapshot) {
     })
 })
 
+database.ref("news").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        database.ref("news/" + child.key + "/users/" + user).once('value').then(function(snapshot) {
+            console.log(snapshot.val())
+            if(snapshot.val() == null){
+                nbMsg++
+                updateMsg()
+            }
+        })
+    })
+})
+
 
 function updateMsg(){
     notifMsg.style.visibility = "visible"

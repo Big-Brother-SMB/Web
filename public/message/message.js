@@ -5,20 +5,22 @@ let divOld = document.getElementById("old msg")
 const rep = [
     ["oui","non"],
     ["très satisfait(e)","satisfait(e)","insatisfait(e)","très insatisfait(e)"],
-    []
+    [1,2,3,4,5,6,7,8,9,10]
 ]
 
 const color = [
     ["#20ff03","red"],
-    ["#20ff03","#b7ff00","#ffae00","red"]
+    ["#20ff03","#b7ff00","#ffae00","red"],
+    ["red","#ff3000","#ff7000","#ffa000","#ffd000","#d0ff00","#a0ff00","#70ff00","#30ff00","green"]
 ]
 
 const size = [
     ["49%","100px"],
-    ["24%","100px"]
+    ["24%","100px"],
+    ["9.9%","100px"]
 ]
 
-let nbNew = 0
+
 
 database.ref("sondages").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
@@ -32,25 +34,11 @@ database.ref("sondages").once('value').then(function(snapshot) {
                 }
                 database.ref("sondages/" + h + "/users/" + user).once('value').then(function(snapshot) {
                     let reponse = snapshot.val()
-                    if(reponse == null){
-                        nbNew++
-                        newMsg()
-                        sondage(h, text, mode)
-                    }else{
-                        let nameRep = "je ne sais pas"
-                        if(reponse != -1){
-                            nameRep = rep[mode][reponse]
-                        }
-                        oldMsg(h,"sondage (" + text + ") réponse : " + nameRep, 1)
-                    }
+                    sondage(h, text, mode,reponse)
                 })
                 
             })
         })
-
-
-
-
 
         
     })
@@ -58,6 +46,8 @@ database.ref("sondages").once('value').then(function(snapshot) {
 
 let pNew = document.getElementById("p new")
 function newMsg(){
+    let nbNew = divNew.childElementCount
+    console.log(nbNew)
     if(nbNew == 0){
         pNew.innerHTML = ""
     }else if(nbNew == 1){
@@ -71,88 +61,175 @@ function newMsg(){
 
 
 
-function sondage(h, text, mode){
+function sondage(h, text, mode, reponse){
     let msg = document.createElement("div")
     msg.className = "msg"
 
-    let p = document.createElement("p")
-    p.innerHTML = text
-    p.className = "text"
-    msg.appendChild(p);
-
-   
-    let divRep = document.createElement("div")
-    divRep.className = "divRep"
-    for(let i in rep[mode]){
-        console.log(i)
-        let bRep = document.createElement("button")
-        bRep.innerHTML = rep[mode][i]
-        bRep.className = "rep"
-        bRep.style.backgroundColor = color[mode][i]
-        bRep.style.width = size[mode][0]
-        bRep.style.height = size[mode][1]
-
-        bRep.addEventListener("click", function() {
-            msg.remove()
-            nbNew--
-            newMsg()
-            console.log("rep")
-            database.ref("sondages/" + h + "/users/" + user).set(i)
-            oldMsg(h,"sondage (" + text + ") réponse : " + rep[mode][i], 1)
-        })
-
-        divRep.appendChild(bRep);
-    }
-    msg.appendChild(divRep);
-
-    let jsp = document.createElement("button")
-    jsp.innerHTML = "je ne sais pas"
-    jsp.className = "rep"
-
-    jsp.addEventListener("click", function() {
-        msg.remove()
-        nbNew--
+    if(reponse != null){
+        
+        hide()
+                    
+              
+    }else{
+        display()
+        divNew.appendChild(msg);
         newMsg()
-        console.log("rep")
-        database.ref("sondages/" + h + "/users/" + user).set(-1)
-        oldMsg(h,"sondage (" + text + ") réponse : je ne sais pas", 1)
-    })
+    }
 
-    msg.appendChild(jsp);
-
+    function hide(){
+        msg.innerHTML = ""
+        let nameRep = "je ne sais pas"
+        if(reponse != -1){
+            nameRep = rep[mode][reponse]
+            if(mode == 2){
+                nameRep += "/10"
+            }
+        }
+        let p = document.createElement("p")
+        p.innerHTML = "sondage (" + text + ") réponse : " + nameRep
+        p.className = "text"
+        msg.appendChild(p);
+        msg.addEventListener("click",event)
+        function event(){
+            msg.removeEventListener("click", event)
+            display()
+        }
+        if(!divOld.contains(msg)){
+            divOld.appendChild(msg);
+            newMsg()
+        }
+        
+    }
 
     
-    divNew.appendChild(msg);
-}
 
+    function display(){
+        msg.innerHTML = ""
+        let p = document.createElement("p")
+        p.innerHTML = text
+        p.className = "text"
+        msg.appendChild(p);
+    
+       
+        let divRep = document.createElement("div")
+        divRep.className = "divRep"
+        for(let i in rep[mode]){
 
-function oldMsg(h,text,type){
-    let msg = document.createElement("button")
-    msg.className = "msg"
-    msg.innerHTML = text
-    msg.addEventListener("click", function() {
-        msg.remove()
-        switch(type){
-            case 0:
-                break
-            case 1:
-                database.ref("sondages/" + h + "/text").once('value').then(function(snapshot) {
-                    let text = snapshot.val()
-                    database.ref("sondages/" + h + "/mode").once('value').then(function(snapshot) {
-                        let mode = snapshot.val()
-                        if(mode == null){
-                            mode = 0
-                        }
-                        sondage(h, text, mode)
-                    })
-                })
-                
-                break
-
+            let bRep = document.createElement("button")
+            bRep.innerHTML = rep[mode][i]
+            bRep.className = "rep"
+            bRep.style.backgroundColor = color[mode][i]
+            bRep.style.width = size[mode][0]
+            bRep.style.height = size[mode][1]
+    
+            bRep.addEventListener("mouseup", function() {
+                reponse = i
+                database.ref("sondages/" + h + "/users/" + user).set(i)
+                hide()
+            })
+    
+            divRep.appendChild(bRep);
         }
-    })
-    divOld.appendChild(msg);
+        msg.appendChild(divRep);
+    
+        let jsp = document.createElement("button")
+        jsp.innerHTML = "je ne sais pas"
+        jsp.className = "rep"
+    
+        jsp.addEventListener("mouseup", function() {
+            database.ref("sondages/" + h + "/users/" + user).set(-1)
+            hide()
+        })
+    
+        msg.appendChild(jsp);
+    }
+    
+    
 }
+
+
+
+
+database.ref("news").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        let h = child.key
+        database.ref("news/" + h + "/title").once('value').then(function(snapshot) {
+            let title = snapshot.val()
+            database.ref("news/" + h + "/text").once('value').then(function(snapshot) {
+                let text = snapshot.val()
+                database.ref("news/" + h + "/users/" + user).once('value').then(function(snapshot) {
+                    let lu = snapshot.val() != null
+                    news(h, title, text,lu)
+                })
+            })
+                
+            
+        })
+
+        
+    })
+})
+
+
+function news(h,title,text,lu){
+    let msg = document.createElement("div")
+    msg.className = "msg"
+    if(lu){
+        hide()               
+    }else{
+        display()
+        divNew.appendChild(msg);
+        newMsg()
+    }
+
+    function hide(){
+        msg.innerHTML = ""
+        let p = document.createElement("p")
+        p.innerHTML = title
+        p.className = "text"
+        msg.appendChild(p);
+        msg.addEventListener("click",event)
+        function event(){
+            msg.removeEventListener("click", event)
+            display()
+        }
+        if(!divOld.contains(msg)){
+            divOld.appendChild(msg);
+            newMsg()
+        }
+        
+    }
+
+    
+
+    function display(){
+        msg.innerHTML = ""
+        let p = document.createElement("p")
+        p.innerHTML = title
+        p.className = "text"
+        msg.appendChild(p);
+
+        let main = document.createElement("p")
+        main.innerHTML = text
+        main.className = "text"
+        msg.appendChild(main);
+    
+        let lu = document.createElement("button")
+        lu.innerHTML = "lu"
+        lu.className = "rep"
+    
+        lu.addEventListener("mouseup", function() {
+            database.ref("news/" + h + "/users/" + user).set(0)
+            hide()
+        })
+    
+        msg.appendChild(lu);
+    }
+}
+
+
+
+//----------------------------send---------------------------
 
 
 let iconSend = document.getElementById("iconSend")
