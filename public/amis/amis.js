@@ -1,5 +1,4 @@
-setColorMode("..")
-const menu = "../menu/menu.html"
+
 
 let amis = []
 let divAmis = document.getElementById("amis")

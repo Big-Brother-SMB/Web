@@ -1,0 +1,22 @@
+.msg{
+    background-color: #8b9fc9;
+    border-radius:8px 8px 8px 8px;
+    padding: .75rem;
+    margin: .25em;
+
+    width: 97%;
+    font-size: 50px;
+    vertical-align:middle;
+    align-items: center;
+  }
+
+.divRep{
+    display: flex;
+    
+}
+
+.rep{
+    top: 0px;
+    width: 30%;
+    font-size: 80%;
+}

@@ -540,6 +540,41 @@ loop();
 
 
 
+//-----------sondages--------------------
+const notifMsg = document.getElementById("notif msg")
+
+let nbMsg = 0
+database.ref("sondages").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        database.ref("sondages/" + child.key + "/" + user).once('value').then(function(snapshot) {
+            console.log(snapshot.val())
+            if(snapshot.val() == null){
+                nbMsg++
+                updateMsg()
+            }
+        })
+    })
+})
+
+
+function updateMsg(){
+    notifMsg.style.visibility = "visible"
+    notifMsg.innerHTML = nbMsg
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchmove', handleTouchMove, false);
 

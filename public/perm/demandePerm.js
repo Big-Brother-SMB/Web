@@ -1,6 +1,3 @@
-setColorMode("../..")
-const menu = "perm.html"
-
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
 
