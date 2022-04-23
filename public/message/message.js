@@ -30,7 +30,7 @@ database.ref("sondages").once('value').then(function(snapshot) {
                 if(mode == null){
                     mode = 0
                 }
-                database.ref("sondages/" + h + "/" + user).once('value').then(function(snapshot) {
+                database.ref("sondages/" + h + "/users/" + user).once('value').then(function(snapshot) {
                     let reponse = snapshot.val()
                     if(reponse == null){
                         nbNew++
@@ -97,7 +97,7 @@ function sondage(h, text, mode){
             nbNew--
             newMsg()
             console.log("rep")
-            database.ref("sondages/" + h + "/" + user).set(i)
+            database.ref("sondages/" + h + "/users/" + user).set(i)
             oldMsg(h,"sondage (" + text + ") réponse : " + rep[mode][i], 1)
         })
 
@@ -114,7 +114,7 @@ function sondage(h, text, mode){
         nbNew--
         newMsg()
         console.log("rep")
-        database.ref("sondages/" + h + "/" + user).set(-1)
+        database.ref("sondages/" + h + "/users/" + user).set(-1)
         oldMsg(h,"sondage (" + text + ") réponse : je ne sais pas", 1)
     })
 
@@ -154,6 +154,43 @@ function oldMsg(h,text,type){
     divOld.appendChild(msg);
 }
 
+
+let iconSend = document.getElementById("iconSend")
+let divSend = document.getElementById("divSend")
+
+iconSend.addEventListener("click", function() {
+    iconSend.style.visibility = "hidden"
+    divSend.style.visibility = "visible"
+    
+})
+
+let send = document.getElementById("send")
+let title = document.getElementById("title")
+let type = document.getElementById("type")
+let text = document.getElementById("text")
+
+const listType = ["Question","Problème","Erreur/Bug","Sugestion","Demande","Autre"]
+
+for (let i in listType) {
+    let opt = document.createElement("option")
+    opt.innerHTML = listType[i]
+    type.appendChild(opt);
+}
+
+send.addEventListener("click", function() {
+    if(title.value != "" && text.value != ""){
+        let hashCode = hash()
+        database.ref("messages/" + hashCode + "/user").set(user)
+        database.ref("messages/" + hashCode + "/title").set(title.value)
+        database.ref("messages/" + hashCode + "/type").set(listType[type.selectedIndex])
+        database.ref("messages/" + hashCode + "/text").set(text.value)
+        title.value = ""
+        text.value = ""
+        iconSend.style.visibility = "visible"
+        divSend.style.visibility = "hidden"
+    }
+    
+})
 
 
 

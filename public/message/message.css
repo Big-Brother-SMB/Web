@@ -20,3 +20,49 @@
     width: 30%;
     font-size: 80%;
 }
+
+
+
+#iconSend{
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+
+    width: 20%;
+}
+
+#divSend{
+    position: fixed;
+    bottom: 0px;
+    height: 40%;
+    width: 100%;
+}
+
+p{
+    font-size: 40px;
+}
+
+input, textarea{
+    font-size: 40px;
+}
+
+#text{
+    width: 95%;
+    height: 250px;
+}
+
+#title{
+    width: 80%;
+}
+
+button{
+    font-size: 40px;
+}
+
+select{
+    font-size: 40px;
+}
+
+option{
+    font-size: 20px;
+}
