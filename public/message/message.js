@@ -119,7 +119,7 @@ function sondage(h, text, mode, reponse){
             }
         }
         let p = document.createElement("p")
-        p.innerHTML = "sondage (" + text + ")<br>réponse : " + nameRep
+        p.innerHTML = "Sondage (" + text + ")<br>réponse : " + nameRep
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
