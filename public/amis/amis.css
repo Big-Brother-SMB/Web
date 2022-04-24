@@ -1,4 +1,4 @@
-* { box-sizing: border-box; }
+
 body {
   font: 50px Arial;
 }
@@ -39,11 +39,6 @@ body,
       
     }
     
-    .retour  {
-      border-radius:8px 8px 8px 8px;
-      background-color: #3d546e;
-      margin-right: 20px;
-    }
     .envoyer  {
       border-radius:8px 8px 8px 8px;
       background-color: #3d546e;
