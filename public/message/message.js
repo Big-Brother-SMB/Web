@@ -23,6 +23,7 @@ function addOld(elem, h){
     elem.id = h
     idOld.push(h)
     idOld.sort()
+    idOld.reverse()
     let index = idOld.indexOf(h)
     if(index + 1 == idOld.length){
         divOld.appendChild(elem);
