@@ -3,8 +3,9 @@
     border-radius:8px 8px 8px 8px;
     padding: .75rem;
     margin: .25em;
-
-    width: 97%;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
     font-size: 50px;
     vertical-align:middle;
     align-items: center;
