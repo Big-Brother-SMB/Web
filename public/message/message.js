@@ -1,25 +1,5 @@
-
 let divNew = document.getElementById("new msg")
 let divOld = document.getElementById("old msg")
-
-const rep = [
-    ["oui","non"],
-    ["très satisfait(e)","satisfait(e)","insatisfait(e)","très insatisfait(e)"],
-    [1,2,3,4,5,6,7,8,9,10]
-]
-
-const color = [
-    ["#20ff03","red"],
-    ["#20ff03","#b7ff00","#ffae00","red"],
-    ["red","#ff3000","#ff7000","#ffa000","#ffd000","#d0ff00","#a0ff00","#70ff00","#30ff00","green"]
-]
-
-const size = [
-    ["49%","100px"],
-    ["24%","100px"],
-    ["9.9%","100px"]
-]
-
 
 let idNew = []
 let idOld = []
@@ -55,6 +35,24 @@ function addOld(elem, h){
 
 
 //----------------------sondages---------------------
+
+const rep = [
+    ["oui","non"],
+    ["très satisfait(e)","satisfait(e)","insatisfait(e)","très insatisfait(e)"],
+    [1,2,3,4,5,6,7,8,9,10]
+]
+
+const color = [
+    ["#20ff03","red"],
+    ["#20ff03","#b7ff00","#ffae00","red"],
+    ["red","#ff3000","#ff7000","#ffa000","#ffd000","#d0ff00","#a0ff00","#70ff00","#30ff00","green"]
+]
+
+const size = [
+    ["49%","100px"],
+    ["24%","100px"],
+    ["9.9%","100px"]
+]
 
 
 database.ref("sondages").once('value').then(function(snapshot) {
