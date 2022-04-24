@@ -383,7 +383,7 @@ let title = document.getElementById("title")
 let type = document.getElementById("type")
 let text = document.getElementById("text")
 
-const listType = ["Question","Problème","Erreur/Bug","Sugestion","Demande","Autre"]
+const listType = ["Question","Problème","Erreur/Bug","Suggestion","Autre"]
 
 for (let i in listType) {
     let opt = document.createElement("option")
