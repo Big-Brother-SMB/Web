@@ -21,6 +21,41 @@ const size = [
 ]
 
 
+let idNew = []
+let idOld = []
+
+
+function addNew(elem, h){
+    elem.id = h
+    idNew.push(h)
+    idNew.sort()
+    let index = idNew.indexOf(h)
+    if(index + 1 == idNew.length){
+        divNew.appendChild(elem);
+    }else{
+        let idSup = idNew[index + 1]
+        let elemSup = document.getElementById(idSup)
+        divNew.insertBefore(elem, elemSup)
+    }
+}
+
+function addOld(elem, h){
+    elem.id = h
+    idOld.push(h)
+    idOld.sort()
+    let index = idOld.indexOf(h)
+    if(index + 1 == idOld.length){
+        divOld.appendChild(elem);
+    }else{
+        let idSup = idOld[index + 1]
+        let elemSup = document.getElementById(idSup)
+        divOld.insertBefore(elem, elemSup)
+    }
+}
+
+
+//----------------------sondages---------------------
+
 
 database.ref("sondages").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
@@ -47,7 +82,6 @@ database.ref("sondages").once('value').then(function(snapshot) {
 let pNew = document.getElementById("p new")
 function newMsg(){
     let nbNew = divNew.childElementCount
-    console.log(nbNew)
     if(nbNew == 0){
         pNew.innerHTML = ""
     }else if(nbNew == 1){
@@ -72,7 +106,8 @@ function sondage(h, text, mode, reponse){
               
     }else{
         display()
-        divNew.appendChild(msg);
+        addNew(msg, h)
+        //divNew.appendChild(msg);
         newMsg()
     }
 
@@ -86,7 +121,7 @@ function sondage(h, text, mode, reponse){
             }
         }
         let p = document.createElement("p")
-        p.innerHTML = "sondage (" + text + ") réponse : " + nameRep
+        p.innerHTML = "sondage (" + text + ")<br>réponse : " + nameRep
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -95,7 +130,8 @@ function sondage(h, text, mode, reponse){
             display()
         }
         if(!divOld.contains(msg)){
-            divOld.appendChild(msg);
+            addOld(msg, h)
+            //divOld.appendChild(msg);
             newMsg()
         }
         
@@ -137,6 +173,7 @@ function sondage(h, text, mode, reponse){
         jsp.className = "rep"
     
         jsp.addEventListener("mouseup", function() {
+            reponse = -1
             database.ref("sondages/" + h + "/users/" + user).set(-1)
             hide()
         })
@@ -148,7 +185,7 @@ function sondage(h, text, mode, reponse){
 }
 
 
-
+//------------------------------news---------------------------------
 
 database.ref("news").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
@@ -178,7 +215,8 @@ function news(h,title,text,lu){
         hide()               
     }else{
         display()
-        divNew.appendChild(msg);
+        addNew(msg, h)
+        //divNew.appendChild(msg);
         newMsg()
     }
 
@@ -194,7 +232,8 @@ function news(h,title,text,lu){
             display()
         }
         if(!divOld.contains(msg)){
-            divOld.appendChild(msg);
+            addOld(msg, h)
+            //divOld.appendChild(msg);
             newMsg()
         }
         
@@ -215,7 +254,7 @@ function news(h,title,text,lu){
         msg.appendChild(main);
     
         let lu = document.createElement("button")
-        lu.innerHTML = "lu"
+        lu.innerHTML = "marquer comme lu"
         lu.className = "rep"
     
         lu.addEventListener("mouseup", function() {
@@ -224,6 +263,105 @@ function news(h,title,text,lu){
         })
     
         msg.appendChild(lu);
+    }
+}
+
+
+
+//------------------------------news---------------------------------
+
+database.ref("users/" + user + "/messages").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        let h = child.key
+        database.ref("users/" + user + "/messages/" + h + "/title").once('value').then(function(snapshot) {
+            let title = snapshot.val()
+            database.ref("users/" + user + "/messages/" + h + "/text").once('value').then(function(snapshot) {
+                let text = snapshot.val()
+                database.ref("users/" + user + "/messages/" + h + "/lu").once('value').then(function(snapshot) {
+                    let lu = snapshot.val() != null
+                    message(h, title, text,lu)
+                })
+            })
+                
+            
+        })
+
+        
+    })
+})
+
+
+function message(h,title,text,lu){
+    let msg = document.createElement("div")
+    msg.className = "msg"
+    if(lu){
+        hide()               
+    }else{
+        display()
+        addNew(msg, h)
+        newMsg()
+    }
+
+    function hide(){
+        msg.innerHTML = ""
+        let p = document.createElement("p")
+        p.innerHTML = "MP : " + title
+        p.className = "text"
+        msg.appendChild(p);
+        msg.addEventListener("click",event)
+        function event(){
+            msg.removeEventListener("click", event)
+            display()
+        }
+        if(!divOld.contains(msg)){
+            addOld(msg, h)
+            newMsg()
+        }
+        
+    }
+
+    
+
+    function display(){
+        msg.innerHTML = ""
+
+        let prive = document.createElement("p")
+        prive.innerHTML = "message prive"
+        prive.className = "text"
+        msg.appendChild(prive);
+
+        let p = document.createElement("p")
+        p.innerHTML = title
+        p.className = "text"
+        msg.appendChild(p);
+
+        let main = document.createElement("p")
+        main.innerHTML = text
+        main.className = "text"
+        msg.appendChild(main);
+    
+        let lu = document.createElement("button")
+        lu.innerHTML = "marquer comme lu"
+        lu.className = "rep"
+    
+        lu.addEventListener("mouseup", function() {
+            database.ref("users/" + user + "/messages/" + h + "/lu").set(0)
+            hide()
+        })
+        msg.appendChild(lu);
+
+        let repondre = document.createElement("button")
+        repondre.innerHTML = "repondre"
+        repondre.className = "rep"
+    
+        repondre.addEventListener("mouseup", function() {
+            database.ref("users/" + user + "/messages/" + h + "/lu").set(0)
+            hide()
+            iconSend.style.visibility = "hidden"
+            divSend.style.visibility = "visible"
+        })
+    
+        msg.appendChild(repondre);
     }
 }
 
