@@ -223,7 +223,7 @@ function news(h,title,text,lu){
         msg.innerHTML = ""
         let p = document.createElement("p")
         p.innerHTML = title
-        p.className = "text"
+        p.className = "text title"
         msg.appendChild(p);
         msg.addEventListener("click",event)
         function event(){
@@ -244,7 +244,7 @@ function news(h,title,text,lu){
         msg.innerHTML = ""
         let p = document.createElement("p")
         p.innerHTML = title
-        p.className = "text"
+        p.className = "text title"
         msg.appendChild(p);
 
         let main = document.createElement("p")
@@ -267,7 +267,7 @@ function news(h,title,text,lu){
 
 
 
-//------------------------------news---------------------------------
+//------------------------------msg---------------------------------
 
 database.ref("users/" + user + "/messages").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {

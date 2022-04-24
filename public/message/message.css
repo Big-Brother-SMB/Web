@@ -47,6 +47,11 @@ p{
     font-size: 40px;
 }
 
+.title{
+    text-decoration: underline;
+    font-size: 50px;
+}
+
 input, textarea{
     font-size: 40px;
 }
