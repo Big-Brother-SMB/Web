@@ -596,8 +596,8 @@ function updateMsg(){
 
 
 
-/*document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchmove', handleTouchMove, false);
+document.getElementById("semaine").addEventListener('touchstart', handleTouchStart, false);
+document.getElementById("semaine").addEventListener('touchmove', handleTouchMove, false);
 
 var xDown = null;
 var yDown = null;
@@ -635,7 +635,7 @@ function handleTouchMove(evt) {
     } else {
         if ( yDiff > 0 ) {
             // down swipe
-            window.location.href = "../pass/pass.html";
+            //window.location.href = "../pass/pass.html";
         } else {
             // up swipe
         }
@@ -643,4 +643,4 @@ function handleTouchMove(evt) {
     // reset values
     xDown = null;
     yDown = null;
-};*/
+};
