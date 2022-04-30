@@ -16,22 +16,20 @@
         <h1 id="logo">Amis</h1>
 
         <button type="button" class="notification" onclick="history.back()"><img src="../Images/retour.png" alt="retour"></button>
+    </header>
 
-  </header>
   <Article style="text-align: center;">
-    <h1 style=" margin: 30px; font-size:larger;">Liste d'amis : </h1>
-    <p>(clique sur le prénom pour le retirer)</p>
-    <div style="height:500px;width:1000px;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;" id="amis">Recherche d'amis en cours</div>
+      <h1 style=" margin: 30px; font-size:larger;">Liste d'amis : </h1>
+      <p>(clique sur le prénom pour le retirer)</p>
+      <div id="amis">Recherche d'amis en cours</div>
+    <form autocomplete="off" action="/action_page.php">
+    <div class="autocomplete" style="width:500px;margin-top: 10px;">
+      <input id="addAmi" type="text" name="myCountry" placeholder="Prénom Nom" style="text-align: center; border-radius:10px;">
+    </div>
+    </form>
+      <button id="ajout" class="envoyer">Ajouter</button>
 
-
-  <form autocomplete="off" action="/action_page.php">
-  <div class="autocomplete" style="width:500px;margin-top: 10px;">
-    <input id="addAmi" type="text" name="myCountry" placeholder="Prénom Nom">
-  </div>
-  </form>
-<button id="ajout" class="envoyer">Ajouter</button>
-
-</Article>
+  </Article>
 
 
 

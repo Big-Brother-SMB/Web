@@ -16,22 +16,6 @@ h1{
   color: white;
 }
 
-header {
-  align-items: center;
-  display: flex;
-  background: #486381;
-}
-
-#logo,
-nav {
-  flex : 1;
-}
-
-.headerimg{
-  width: 170px;
-  height: 150px;
-}
-
 nav  {
   display: flex;
   justify-content: space-around;
