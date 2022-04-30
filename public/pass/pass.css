@@ -75,3 +75,7 @@ p {
 .barcode {
   width: 80%;
 }
+
+#code{
+  font-size: 200px;
+}

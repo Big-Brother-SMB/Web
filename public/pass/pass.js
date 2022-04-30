@@ -52,8 +52,10 @@ function loop(){
         window.location.href = "../menu/menu.html";
     }
 
+    document.getElementById("code").innerHTML = hashDate()
 
-    setTimeout(loop,1000);
+
+    setTimeout(loop,100);
 
 }
 loop();

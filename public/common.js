@@ -211,6 +211,11 @@ function getHour(){
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
 }
 
+function hashDate(){
+    let d = new Date()
+    return (d.getHours() + d.getMinutes() +Math.floor(d.getSeconds()/10))**3 %1000
+}
+
 function hash(){
     let d =  new Date()
     return d.getFullYear()
