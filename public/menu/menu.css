@@ -317,10 +317,11 @@ h2 {
 }
 
 .inscrit {
-  background-color: #03fa10;
+  background-color: #104312 !important;
   border-radius: 8px 8px 8px 8px;
   padding: 0.25rem;
   margin: 0.25em;
+  color: white;
 }
 
 .demande {
