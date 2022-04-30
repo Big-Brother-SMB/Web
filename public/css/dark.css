@@ -82,9 +82,11 @@ vert {
 
 /*Page Ajouts Amis quand on réserve*/
 
+
 .zonecadre{
     border-color: gray !important;
 }
+
 
 /*Page Amis*/
 
@@ -108,7 +110,22 @@ vert {
 
 /*Page Version*/
 
+
 #githubCode, #githubGraphs {
     background-color: rgb(45, 45, 45);
+    color: white;
+}
+
+
+/*Page Perm*/
+
+
+.ferme, .crenau {
+    background-color: rgb(70, 70, 70);
+    color: white;
+}
+
+.horaire, .jours.tableau {
+    background-color: rgb(50, 50, 50);
     color: white;
 }
