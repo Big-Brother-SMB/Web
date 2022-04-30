@@ -15,22 +15,8 @@ ul {
   color: white;
 }
 
-header {
-  align-items: center;
-  display: flex;
-  background: #486381;
-  padding: 15px 0px;
-  border-bottom: 5px ridge gray;
-}
-
 #logo{
   margin-left:50px;
-}
-
-.headerimg {
-  width: 170px;
-  height: 150px;
-  margin-left:20px;
 }
 
 nav {

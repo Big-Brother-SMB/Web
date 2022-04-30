@@ -79,6 +79,8 @@
   color: black;
   background-color: #b5c3e4;
   font-size: 1.5em;
+  border-bottom: 2px solid gray;
+  padding-bottom: 5px;
 }
 .marquee-rtl > div {
   display: inline-block;
@@ -109,7 +111,6 @@
 }
 header button{
   background-color: #486381;
-  border: 1px solid #486381;
 }
 
 body,
@@ -122,22 +123,27 @@ h1 {
 
 #logo{
   color: white;
+  font-size: 50px;
 }
 
 header {
   align-items: center;
   display: flex;
   background: #486381;
+  padding: 15px 0px;
+  border-bottom: 5px ridge gray;
 }
 
 #logo,
 nav {
   flex: 1;
+  padding-left: 40px;
 }
 
 .headerimg {
   width: 170px;
   height: 150px;
+  margin-left:20px;
 }
 
 nav {
