@@ -325,10 +325,11 @@ h2 {
 }
 
 .demande {
-  background-color: #80eff7;
+  background-color: #292a3f;
   border-radius: 8px 8px 8px 8px;
   padding: 0.25rem;
   margin: 0.25em;
+  color: white;
 }
 
 .places {
