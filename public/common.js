@@ -14,7 +14,11 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database()
 
-//import * as cookie from "util/cookie.js";
+//----------analytics
+
+const analytics = firebase.analytics();
+
+
 
 //--------------------
 
@@ -263,6 +267,13 @@ function setColorMode(rootPath){
 
 
 //--------------------Big Data functions--------------------
+try{
+    let page = window.location.pathname.split("/").pop().split(".")[0];
+    console.log("analytics : " + page)
+    analytics.logEvent(page);
+}catch(Exception){
+    console.log(Exception)
+}
 
 const pages = ["menu","amis","score","perm","pass","option","fin","dev","demande","modifier"]
 try{
