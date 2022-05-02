@@ -79,6 +79,10 @@ vert {
     color: white;
 }
 
+.inscrit {
+    background-color: #104312;
+}
+
 
 /*Page Ajouts Amis quand on réserve*/
 
@@ -128,4 +132,14 @@ vert {
 .horaire, .jours.tableau {
     background-color: rgb(50, 50, 50);
     color: white;
+}
+
+.crenau.inscrit {
+    background-color: #104312;
+}
+
+#demandes {
+    color: white;
+    border: 5px ridge gray !important;
+    border-radius: 10px;
 }
