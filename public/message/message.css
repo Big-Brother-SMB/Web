@@ -20,6 +20,10 @@ header button{
     
 }
 
+.divVerticale{
+    align-items: center;
+}
+
 .rep{
     top: 0px;
     width: 30%;
@@ -78,5 +82,7 @@ option{
 }
 
 
-
-
+#textarea{
+    width: 95%;
+    height: 150px;
+}

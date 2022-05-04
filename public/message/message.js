@@ -34,6 +34,18 @@ function addOld(elem, h){
     }
 }
 
+let pNew = document.getElementById("p new")
+function newMsg(){
+    let nbNew = divNew.childElementCount
+    if(nbNew == 0){
+        pNew.innerHTML = ""
+    }else if(nbNew == 1){
+        pNew.innerHTML = "Un nouveau message"
+    }else{
+        pNew.innerHTML = nbNew + " nouveaux messages"
+    }
+    
+}
 
 //----------------------sondages---------------------
 
@@ -66,10 +78,24 @@ database.ref("sondages").once('value').then(function(snapshot) {
                 if(mode == null){
                     mode = 0
                 }
+                
                 database.ref("sondages/" + h + "/users/" + user).once('value').then(function(snapshot) {
                     let reponse = snapshot.val()
-                    sondage(h, text, mode,reponse)
+                    if(mode < 0){
+                        database.ref("sondages/" + h + "/choices").once('value').then(function(snapshot) {
+                            let choices = []
+                            snapshot.forEach(function(child) {
+                                choices.push(child.key)
+                            })
+                            sondage(h, text, mode,reponse,choices)
+                        })
+                    }else{
+                        sondage(h, text, mode,reponse,null)
+                    }
+                    
                 })
+                
+                
                 
             })
         })
@@ -78,23 +104,12 @@ database.ref("sondages").once('value').then(function(snapshot) {
     })
 })
 
-let pNew = document.getElementById("p new")
-function newMsg(){
-    let nbNew = divNew.childElementCount
-    if(nbNew == 0){
-        pNew.innerHTML = ""
-    }else if(nbNew == 1){
-        pNew.innerHTML = "Un nouveau message"
-    }else{
-        pNew.innerHTML = nbNew + " nouveaux messages"
-    }
-    
-}
 
 
 
 
-function sondage(h, text, mode, reponse){
+let numRadio = 0
+function sondage(h, text, mode, reponse,choices){
     let msg = document.createElement("div")
     msg.className = "msg"
 
@@ -112,8 +127,10 @@ function sondage(h, text, mode, reponse){
 
     function hide(){
         msg.innerHTML = ""
-        let nameRep = "je ne sais pas"
-        if(reponse != -1){
+        let nameRep = "Pas de réponse"
+        if(isNaN(parseInt(reponse))){
+            nameRep = reponse
+        }else if(reponse != -1){
             nameRep = rep[mode][reponse]
             if(mode == 2){
                 nameRep += "/10"
@@ -141,34 +158,115 @@ function sondage(h, text, mode, reponse){
     function display(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = text
+        p.innerHTML = text + "<br><br>Propositions : "
         p.className = "text"
         msg.appendChild(p);
     
        
         let divRep = document.createElement("div")
-        divRep.className = "divRep"
-        for(let i in rep[mode]){
+        
+        if(mode < 0){
+            let num = numRadio
+            numRadio++
+            divRep.className = "divVerticale"
+            let other = false
+            if(choices.indexOf("other") != -1){
+                other = true
+            }
 
-            let bRep = document.createElement("button")
-            bRep.innerHTML = rep[mode][i]
-            bRep.className = "rep"
-            bRep.style.backgroundColor = color[mode][i]
-            bRep.style.width = size[mode][0]
-            bRep.style.height = size[mode][1]
-    
-            bRep.addEventListener("mouseup", function() {
-                reponse = i
-                database.ref("sondages/" + h + "/users/" + user).set(i)
-                hide()
-            })
-    
-            divRep.appendChild(bRep);
+            let checked = -1
+            if(reponse != -1 && reponse != null){
+                checked = choices.indexOf(reponse)
+                if(checked == -1){
+                    checked--
+                }
+            }
+
+            for(let i in choices){
+                if(choices[i] != "other"){
+                    let bRep = document.createElement("p")
+                    bRep.innerHTML = "<p><input type=\"radio\" name=\"choices" + num + "\"" + (i == checked?"checked":"") +"> " + choices[i] + "</p>"
+                    
+            
+                    bRep.addEventListener("mouseup", function() {
+                        reponse = choices[i]
+                        database.ref("sondages/" + h + "/users/" + user).set(choices[i])
+                        hide()
+                    })
+            
+                    divRep.appendChild(bRep);
+                }
+                
+            }
+
+            if(other){
+                let bRep = document.createElement("p")
+                bRep.innerHTML = "<p><input type=\"radio\" name=\"choices" + num + "\"" + (checked == -2?"checked":"") +"> Autre (écrire sa proposition)</p>"
+                let divOther = document.createElement("div")
+                
+                
+
+                //divOther.innerHTML = "<textarea id=\"textarea\"></textarea><button id=\"valider\">Valider</button>"
+                bRep.addEventListener("click", function() {
+                    text()
+                })
+
+                if(checked == -2){
+                    text()
+                }
+
+                function text(){
+                    let textarea = document.createElement("textarea")
+                    textarea.id = "textarea"
+                    divOther.appendChild(textarea);
+                    let valider = document.createElement("button")
+                    valider.innerHTML = "Valider"
+                    divOther.appendChild(valider);
+                    if(checked == -2){
+                        textarea.value = reponse
+                    }
+                    valider.addEventListener("mouseup", function() {
+                        const text = textarea.value
+                        if(text != ""){
+                            reponse = text
+                            database.ref("sondages/" + h + "/users/" + user).set(text)
+                            hide()
+                        }
+                    })
+                }
+
+                divRep.appendChild(bRep);
+                divRep.appendChild(divOther);
+        
+                
+                
+            }
+
+        }else{
+            divRep.className = "divRep"
+            for(let i in rep[mode]){
+
+                let bRep = document.createElement("button")
+                bRep.innerHTML = rep[mode][i]
+                bRep.className = "rep"
+                bRep.style.backgroundColor = color[mode][i]
+                bRep.style.width = size[mode][0]
+                bRep.style.height = size[mode][1]
+        
+                bRep.addEventListener("mouseup", function() {
+                    reponse = i
+                    database.ref("sondages/" + h + "/users/" + user).set(i)
+                    hide()
+                })
+        
+                divRep.appendChild(bRep);
+            }
         }
+        
         msg.appendChild(divRep);
     
         let jsp = document.createElement("button")
-        jsp.innerHTML = "je ne sais pas"
+        jsp.innerHTML = "Pas de réponse"
         jsp.className = "rep"
     
         jsp.addEventListener("mouseup", function() {
