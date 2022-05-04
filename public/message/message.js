@@ -208,14 +208,14 @@ function sondage(h, text, mode, reponse,choices){
 
                 //divOther.innerHTML = "<textarea id=\"textarea\"></textarea><button id=\"valider\">Valider</button>"
                 bRep.addEventListener("click", function() {
-                    text()
+                    otherText()
                 })
 
                 if(checked == -2){
-                    text()
+                    otherText()
                 }
 
-                function text(){
+                function otherText(){
                     let textarea = document.createElement("textarea")
                     textarea.id = "textarea"
                     divOther.appendChild(textarea);
