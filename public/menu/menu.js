@@ -230,7 +230,7 @@ function refreshDatabase() {
 
     let text = "Semaine n°" + week + " du " + semaine(week)
     if (week == actualWeek) {
-        text = "Cette semaine"
+        text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
     }
     document.getElementById("semaine").innerHTML = text
 
