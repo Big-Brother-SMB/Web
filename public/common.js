@@ -189,6 +189,8 @@ const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
 const dayMer = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"];
 const dayNumMer = ["1lundi", "2mardi","3mercredi","4jeudi","5vendredi"];
 
+const allDay = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+
 //--------------------classe--------------------
 const listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL","1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK","PCSI","PC","professeur-personnel"]
 

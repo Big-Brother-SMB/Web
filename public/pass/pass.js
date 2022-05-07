@@ -3,6 +3,7 @@
 let d = new Date();
 
 let j = dayWithMer[d.getDay() - 1];
+document.getElementById("day").innerHTML = allDay[d.getDay() - 1]
 let h;
 console.log("heure : " + d.getHours())
 console.log("min : " + d.getMinutes())
@@ -27,11 +28,11 @@ console.log(h);
 function loop2(){
 
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits").once("value", function(snapshot) {
-        document.getElementById("pass").innerHTML = "<img width=\"400\" height=\"400\ class=\"pass\" src=\"croix.gif\" />"
+        document.getElementById("pass").innerHTML = "<img width=\"300\" height=\"300\ class=\"pass\" src=\"https://drive.google.com/uc?export=view&id=1FHW_39sTlBoeor6f4kiVrCzYFfvvsXPT\" />"
         snapshot.forEach(function(child) {
             if(child.key == user){
                 console.log("inscrit");
-                document.getElementById("pass").innerHTML = "<img width=\"400\" height=\"400\" alt=\"\" src=\"pass.gif\" />"
+                document.getElementById("pass").innerHTML = "<img width=\"300\" height=\"300\" alt=\"\" src=\"https://drive.google.com/uc?export=view&id=1-VW-UPQH4jlp7kbkLmbcpRH4rW69mKPs\" />"
             }
 
         });
