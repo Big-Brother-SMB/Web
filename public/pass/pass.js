@@ -3,7 +3,7 @@
 let d = new Date();
 
 let j = dayWithMer[d.getDay() - 1];
-document.getElementById("day").innerHTML = allDay[d.getDay() - 1]
+document.getElementById("day").innerHTML = allDay[d.getDay()]
 let h;
 console.log("heure : " + d.getHours())
 console.log("min : " + d.getMinutes())
@@ -32,7 +32,23 @@ function loop2(){
         snapshot.forEach(function(child) {
             if(child.key == user){
                 console.log("inscrit");
-                document.getElementById("pass").innerHTML = "<img width=\"300\" height=\"300\" alt=\"\" src=\"https://drive.google.com/uc?export=view&id=1-VW-UPQH4jlp7kbkLmbcpRH4rW69mKPs\" />"
+                document.getElementById("pass").innerHTML = "<img width=\"300\" height=\"300\" alt=\"inscrit\" src=\"https://drive.google.com/uc?export=view&id=1-VW-UPQH4jlp7kbkLmbcpRH4rW69mKPs\" />"
+                database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
+                    snapshot.forEach(function(child) {
+                        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
+                            if(snapshot.val() != null){
+                                console.log("prio")
+                                document.getElementById("pass").innerHTML = "<img width=\"300\" height=\"300\" alt=\"prio\" src=\"https://drive.google.com/uc?export=view&id=1mvRP5x3xNjxUcTXiAD7QQ8LeBkCg-xtG\" />"
+                            }
+                        })
+                    })
+                })
+                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
+                    if(snapshot.val() != null){
+                        console.log("prio classe")
+                        document.getElementById("pass").innerHTML = "<img width=\"300\" height=\"300\" alt=\"prio\" src=\"https://drive.google.com/uc?export=view&id=1mvRP5x3xNjxUcTXiAD7QQ8LeBkCg-xtG\" />"
+                    }
+                })
             }
 
         });
