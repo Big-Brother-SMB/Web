@@ -20,13 +20,23 @@ database.ref(pathPerm(j,h) + "/demandes").once('value').then(function(snapshot) 
         divDemandes.innerHTML = ""
     }
     snapshot.forEach(function(child) {
-        let name = child.key
+        database.ref(pathPerm(j,h) + "/demandes/" + child.key + "/name").once('value').then(function(snapshot) {
+            let name = snapshot.val()
+            database.ref(pathPerm(j,h) + "/demandes/" + child.key + "/nb").once('value').then(function(snapshot) {
+                let nb = snapshot.val()
+                database.ref(pathPerm(j,h) + "/demandes/" + child.key + "/user").once('value').then(function(snapshot) {
+                    let user = snapshot.val()
+                    but = document.createElement("button")
+                    but.classList.add("amis")
+                    but.innerHTML = name +  " : " + nb +" (" + user + ")"
+                    divDemandes.appendChild(but);
+                })
+            })
+        })
+        /*let name = child.key
         let nb = child.val()
-        console.log(name)
-        but = document.createElement("button")
-        but.classList.add("amis")
-        but.innerHTML = name +  " (" + nb +")"
-        divDemandes.appendChild(but);
+        console.log(name)*/
+        
     })
     charged()
 });
@@ -49,8 +59,13 @@ function charged(){
         let val = document.getElementById("input").value
         let nb = document.getElementById("nb").value
         if(val.lenght != 0 && nb != ""){
-            database.ref(pathPerm(j,h) + "/demandes/" + val).set(nb)
-            window.location.href = menu;
+            let hashCode = hash()
+            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/name").set(val)
+            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/nb").set(nb)
+            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/user").set(user)
+            setTimeout(function() {
+            window.location.href = "perm.html";
+            },1000)
         }
         
     })
