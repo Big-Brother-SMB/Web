@@ -82,15 +82,13 @@ loop();
 
 
 const containerElement = document.getElementById('single');
-if(hasCodeBar){
-    console.log(codeBar)
-    const bcid = 'bc'+codeBar;
-    // create the image element
-    const bcimg = document.createElement('img');
-    bcimg.className = "barcode";
-    bcimg.setAttribute('id', bcid);
-    containerElement.appendChild(bcimg);
-    JsBarcode('#'+bcid, codeBar, {format: 'code39'});
-}else{
-    containerElement.innerHTML = "ajoutez votre code barre depuis <a href=\"../option/option.html\">les options</a>"
-}
+
+console.log(codeBar)
+const bcid = 'bc'+codeBar;
+// create the image element
+const bcimg = document.createElement('img');
+bcimg.className = "barcode";
+bcimg.setAttribute('id', bcid);
+containerElement.appendChild(bcimg);
+JsBarcode('#'+bcid, codeBar, {format: 'code39'});
+

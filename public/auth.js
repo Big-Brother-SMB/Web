@@ -10,7 +10,6 @@ console.log("start")
 console.log(document.cookie)
 
 
-let listClasse = ["SA", "SB", "SC", "SD", "SE", "SF", "SG", "SH", "SI", "SJ", "SK", "SL", "1A", "1B", "1C", "1D", "1E", "1F", "1G", "1H", "1I", "1J", "1K", "TA", "TB", "TC", "TD", "TE", "TF", "TG", "TH", "TI", "TJ", "TK", "PCSI", "PC", "professeur-personnel"]
 
 let tablecookie = document.cookie.split('; ');
 console.log(tablecookie)
@@ -23,7 +22,7 @@ for (let i in tablecookie) {
 }
 console.log("cookie", cookie)
 
-if (cookie["user"] != null && cookie["classe"] != null && cookie["email"] != null) {
+if (cookie["user"] != null && cookie["email"] != null) {
   sessionStorage.setItem("user", cookie["user"]);
   window.location.href = "menu/menu.html";
 }
@@ -32,22 +31,6 @@ if (cookie["RGPD"]) {
   document.getElementById("checkbox").checked = true
 }
 
-for (let i in listClasse) {
-  let opt = document.createElement("option")
-  opt.innerHTML = listClasse[i]
-  document.getElementById("classe").appendChild(opt);
-}
-
-console.log(cookie["classe"])
-if (cookie["classe"] != null) {
-  console.log("classe remember : " + (listClasse.indexOf(cookie["classe"]) + 1))
-  document.getElementById("classe").selectedIndex = listClasse.indexOf(cookie["classe"]) + 1
-}
-
-console.log(cookie["code bar"])
-if (cookie["code bar"] != null) {
-  document.getElementById("code bar").value = cookie["code bar"]
-}
 
 console.log("start")
 console.log(document.cookie)
@@ -103,25 +86,8 @@ switch (err) {
 
 document.getElementById("popup").onclick = () => {
   if (document.getElementById("checkbox").checked) {
-
-    if (document.getElementById("classe").selectedIndex != 0) {
-
-
-      let codeBar = document.getElementById("code bar").value
-      if (String(codeBar).length == 5) {
-        sessionStorage.setItem("auth err", 0);
-        let classe = listClasse[document.getElementById("classe").selectedIndex - 1]
-        sessionStorage.setItem("classe", classe);
-        sessionStorage.setItem("code bar", codeBar);
-        signInWithRedirect(auth, provider)
-      } else {
-        document.getElementById("infos").innerHTML = "Vous devez indiquer votre code barre (5 chiffres)"
-      }
-
-    } else {
-      document.getElementById("infos").innerHTML = "Vous devez selectionner votre classe"
-    }
-
+    sessionStorage.setItem("auth err", 0);
+    signInWithRedirect(auth, provider)
   } else {
     document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies"
   }

@@ -22,36 +22,10 @@ if (user == null || String(user).length < 5) {
     }, 2000);
     
 }
-if (classe == null) {
-    sessionStorage.setItem("auth err", 3);
-    setTimeout(function () {
-        deco()
-    }, 2000);
-    
-}
 
-//temporaire
-/*if (hasCodeBar) {
-    database.ref("codes barres/" + codeBar).set(user)
-    database.ref("users/" + user + "/code barre").set(codeBar)
-} else {
-    sessionStorage.setItem("auth err", 4);
-    setTimeout(function () {
-        deco()
-    }, 2000);
-    
-}*/
 
-//temporaire
-if (listClasse.indexOf(classe) == -1) {
-    database.ref("users/" + user + "/classe").remove()
-    delCookie("classe");
-    sessionStorage.setItem("auth err", 5);
-    setTimeout(function () {
-        deco()
-    }, 2000);
 
-}
+
 
 console.log("lenght : " + String(user).length)
 console.log(user);

@@ -116,7 +116,8 @@ let week = readIntCookie("week")
 let bollAllAmis = readBoolCookie("allAmis",true)
 let bollEmail = readBoolCookie("bEmail",true)
 let codeBar = readIntCookie("code bar")
-let hasCodeBar = String(codeBar).length == 5
+
+
 let jour = readIntCookie("jour")
 let heure = readIntCookie("heure")
 
@@ -125,15 +126,24 @@ let backgroundColor = readCookie("color background")
 let textColor = readCookie("color text")
 
 
-/*database.ref("users/" + user + "/classe").once("value", function(snapshot) {
-    let val = snapshot.val()
-    if(classe != val){
-        writeCookie("classe",val)
-        classe = val
-        //reload()
+database.ref("users/" + user + "/classe").once("value", function(snapshot) {
+    classe = snapshot.val()
+    if(classe != null){
+        
+        writeCookie("classe",classe)
     }
-    
-});*/
+})
+
+database.ref("users/" + user + "/code barre").once("value", function(snapshot) {
+    codeBar = snapshot.val()
+    if(codeBar != null){
+        console.log(codeBar)
+        
+        writeCookie("code bar",codeBar)
+    }else{
+        console.log("err code bar")
+    }
+})
 
 
 

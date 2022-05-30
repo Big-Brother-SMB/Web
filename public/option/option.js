@@ -1,6 +1,6 @@
 let switchAllAmis = document.getElementById("allAmis")
 let switchEmail = document.getElementById("switch email")
-let inputCodeBar = document.getElementById("code bar")
+//let inputCodeBar = document.getElementById("code bar")
 
 switchAllAmis.checked = bollAllAmis
 switchAllAmis.addEventListener("change", function () {
@@ -23,7 +23,7 @@ switchEmail.addEventListener("change", function () {
         document.getElementById("chargement").style.display = "none"
     })
 })
-database.ref("users/" + user + "/code barre").once('value', function (snapshot) {
+/*database.ref("users/" + user + "/code barre").once('value', function (snapshot) {
     const val = snapshot.val()
     inputCodeBar.value = val
     writeCookie("code bar", val)
@@ -53,7 +53,7 @@ inputCodeBar.addEventListener("input", function () {
 
 
 
-})
+})*/
 
 var ele = document.getElementsByName("color");
 
