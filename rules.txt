@@ -1,5 +1,5 @@
 ".read" : "auth != null",
-".write": "auth != null &&  auth.uid == '5GjNgGlM5nQmY0qgSkAtXPUKrIs1'",
+".write": "auth != null && auth.uid == 'DpVhY0nSeCe0BMcbqHOuaWmFA7E3' || auth.uid == '5GjNgGlM5nQmY0qgSkAtXPUKrIs1'",
 "foyer_midi":{
     "$s":{
     "$j":{
@@ -84,4 +84,3 @@
 
 
 
-//auth.uid == 'DpVhY0nSeCe0BMcbqHOuaWmFA7E3' ||
