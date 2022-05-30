@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential, getRedirectResult } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential, getRedirectResult,setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
 
 
 document.getElementById("body").style = "display:none"
@@ -65,6 +65,8 @@ const firebaseApp = initializeApp({
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth()
+setPersistence(auth, browserSessionPersistence)
+
 
 
 let err = sessionStorage.getItem("auth err");

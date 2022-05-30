@@ -121,7 +121,7 @@ h1 {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#logo{
+#title{
   color: white;
   font-size: 50px;
 }
@@ -134,8 +134,7 @@ header {
   border-bottom: 5px ridge gray;
 }
 
-#logo,
-nav {
+#title{
   flex: 1;
   padding-left: 40px;
 }

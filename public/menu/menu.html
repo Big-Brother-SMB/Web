@@ -12,8 +12,8 @@
 
 <body id="b">
   <header>
-    <img class="headerimg" src="../Images/logo.png" alt="logo Lycée">
-    <h1 id="logo" style="font-size: 50px;">Accueil</h1>
+    <img id="logo" class="headerimg" src="../Images/logo.png" alt="logo Lycée">
+    <h1 id="title" style="font-size: 50px;">Accueil</h1>
 
     <a href="../guide/faq.html" class="notification" style="visibility: hidden;">
       <img src="../Images/question.png" alt="FAQ">
@@ -31,6 +31,8 @@
 
 
   </header>
+
+
   <div class="marquee-rtl">
     <div id="banderole"></div>
   </div>
@@ -77,9 +79,20 @@
   </article>
 
 
+  <nav>
+    <a href="#" class="notification">
+      <img src="../Images/menu.png" alt="repas">
+    </a>
+    <a href="../guide/faq.html" class="notification">
+      <img src="../Images/repas.png" alt="repas">
+    </a>
+  </nav>
+
+
 
 
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
   <script src="../common.js"></script>

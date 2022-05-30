@@ -31,7 +31,7 @@ if (classe == null) {
 }
 
 //temporaire
-if (hasCodeBar) {
+/*if (hasCodeBar) {
     database.ref("codes barres/" + codeBar).set(user)
     database.ref("users/" + user + "/code barre").set(codeBar)
 } else {
@@ -40,7 +40,7 @@ if (hasCodeBar) {
         deco()
     }, 2000);
     
-}
+}*/
 
 //temporaire
 if (listClasse.indexOf(classe) == -1) {
@@ -644,3 +644,14 @@ function handleTouchMove(evt) {
     xDown = null;
     yDown = null;
 };
+
+
+
+
+document.getElementById("logo").addEventListener("click",function(){
+    console.log("click")
+    document.querySelectorAll("nav")[0].style.visibility = "visible"
+})
+
+
+

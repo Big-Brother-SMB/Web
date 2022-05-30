@@ -18,7 +18,7 @@ p,u,a,h1,.info,.heurediv{
     background-color: white;
 }
 
-header, header button, .notification img {
+header, header button, .notification img, nav {
     background-color: rgb(45, 45, 45);
 }
 

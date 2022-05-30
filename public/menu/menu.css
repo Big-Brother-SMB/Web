@@ -10,8 +10,7 @@ ul {
   z-index: 10;
 }
 
-#logo,
-nav {
+h1{
   flex: 1;
 }
 
@@ -389,4 +388,18 @@ rouge{
   height: 50px;
   text-align: center;
   font-size: 35px;
+}
+
+
+
+nav{
+  visibility: hidden;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 20%;
+  background-color: black;
+  display: block;
+  border-right: 20px solid black ;
 }
