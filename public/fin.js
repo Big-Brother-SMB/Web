@@ -22,7 +22,7 @@ database.ref("users/" + user + "/classe").once("value", function(snapshot) {
 
 setTimeout(function() {
     window.location.href = "menu/menu.html";
-},2000);
+},1000);
 
 
 

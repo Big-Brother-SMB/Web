@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithPopup, signInWithCredential, getRedirectResult,setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithCredential, getRedirectResult,setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
 
 
 document.getElementById("body").style = "display:none"
@@ -27,6 +27,9 @@ if (cookie["user"] != null && cookie["email"] != null) {
   window.location.href = "menu/menu.html";
 }
 
+
+
+
 if (cookie["RGPD"]) {
   document.getElementById("checkbox").checked = true
 }
@@ -48,9 +51,23 @@ const firebaseApp = initializeApp({
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth()
-setPersistence(auth, browserSessionPersistence)
+//setPersistence(auth, browserSessionPersistence)
 
-
+auth.onAuthStateChanged(function(user) {
+  if (user) {
+      var uid = user.uid; 
+      console.log(user.displayName)
+      document.getElementById("continue text").innerHTML = user.displayName
+      document.getElementById("continue").style.display = "block"
+      document.getElementById("continue").addEventListener("click",function(){
+        sessionStorage.setItem("user", user.displayName);
+        sessionStorage.setItem("email", user.email)
+        window.location.href = "fin.html";
+      })
+  } else {
+      console.log("log out")
+  } 
+});
 
 let err = sessionStorage.getItem("auth err");
 console.log(err)
@@ -77,14 +94,14 @@ switch (err) {
     break;
   default:
     console.log("autre")
-    document.getElementById("infos").innerHTML = "err code 0XF"
+    //document.getElementById("infos").innerHTML = "err code 0XF"
     break;
 }
 
 
 
 
-document.getElementById("popup").onclick = () => {
+document.getElementById("change").onclick = () => {
   if (document.getElementById("checkbox").checked) {
     sessionStorage.setItem("auth err", 0);
     signInWithRedirect(auth, provider)
