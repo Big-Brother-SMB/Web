@@ -477,7 +477,7 @@ iconSend.addEventListener("click", function() {
 })
 
 let send = document.getElementById("send")
-let title = document.getElementById("title")
+let title = document.getElementById("title2")
 let type = document.getElementById("type")
 let text = document.getElementById("text")
 
