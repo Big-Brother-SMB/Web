@@ -1,0 +1,12 @@
+https://foyer-smb.web.app/menu/menu.html
+https://foyer-smb.web.app/index.html
+https://foyer-smb.web.app/confirmation/demande/demande.html
+https://foyer-smb.web.app/perm/perm.html
+https://foyer-smb.web.app/fin.html
+https://foyer-smb.web.app/amis/amis.html
+https://foyer-smb.web.app/confirmation/modifier/modifier.html
+https://foyer-smb.web.app/perm/demandePerm.html
+https://foyer-smb.web.app/message/message.html
+https://foyer-smb.web.app/option/option.html
+https://foyer-smb.web.app/score/score.html
+https://foyer-smb.web.app/dev/dev.html
