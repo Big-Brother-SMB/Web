@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "big-brother-ac39c"
+  },
+  "targets": {
+    "big-brother-ac39c": {
+      "hosting": {
+        "foyer-test": [
+          "public"
+        ],
+        "public": [
+          "foyer-app"
+        ]
+      }
+    }
   }
 }

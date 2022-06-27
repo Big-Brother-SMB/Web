@@ -2,8 +2,47 @@ header button{
     margin-right: 40px;
 }
 
-.msg{
+.sondage{
     background-color: #8b9fc9;
+    border-radius:8px 8px 8px 8px;
+    padding: .75rem;
+    margin: .25em;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 50px;
+    vertical-align:middle;
+    align-items: center;
+  }
+
+  .news{
+    background-color: #8b9fc9;
+    border-radius:8px 8px 8px 8px;
+    padding: .75rem;
+    margin: .25em;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 50px;
+    vertical-align:middle;
+    align-items: center;
+  }
+
+  .mymsg{
+    background-color: #d0d0d0 ;
+    border-radius:8px 8px 8px 8px;
+    padding: .75rem;
+    margin: .25em;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 50px;
+    vertical-align:middle;
+    align-items: center;
+  }
+
+  .msg{
+    background-color: #8b7fc9;
     border-radius:8px 8px 8px 8px;
     padding: .75rem;
     margin: .25em;
@@ -41,8 +80,9 @@ header button{
 }
 
 #divSend{
+    background-color: chartreuse;
     position: fixed;
-    bottom: 0px;
+    top: 300px;
     height: 40%;
     width: 100%;
 }
