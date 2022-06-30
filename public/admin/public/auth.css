@@ -1,0 +1,147 @@
+h1  {
+  font-size: 60px;
+}
+body,
+h1,
+ul {
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+header {
+  align-items: center;
+  display: flex;
+  background: #486381;
+}
+
+#logo,
+    nav {
+      flex : 1;
+    }
+    
+    .headerimg{
+      width: 170px;
+      height: 150px;
+    }
+    
+    nav  {
+      display: flex;
+      justify-content: space-around;
+      
+    }
+    header li a  {
+      text-decoration: none;
+      color: #eeeeee;
+    }
+    
+    .retour  {
+      border-radius:8px 8px 8px 8px;
+      background-color: #3d546e;
+      margin-right: 20px;
+      text-decoration: none;
+      border: none;
+      display: block;
+      text-align: center;
+      cursor: pointer;
+      outline: none;
+      overflow: hidden;
+      position: relative;
+      font-weight: 600;
+      font-size: 30px;
+      padding: 15px 40px;
+    }
+
+    .retour:hover  {
+      background:#2e3f53;
+    }
+
+
+h2  {
+  font-size: 40px;
+  color: black;
+}
+
+input[type="checkbox"]{
+  width: 30px;
+  height: 30px;
+}
+
+
+select{
+  font-size: 50px;
+  width: 500px;
+}      
+p  {
+  color: black;
+  padding-top: 15px;
+  font-size: x-large;
+  font-family: "Optima", sans-serif ;
+}
+
+a  {
+  color: black;
+}
+
+.cgu  {
+  text-align: center;
+  border: 0px;
+}
+
+
+  .button {
+  border: none;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  color: #eeeeee;
+  font-weight: 600;
+  font-size: 50px;
+  background-color: #153f00;
+  padding: 15px 50px;
+  margin: 0 auto;
+  }
+  .button span {
+  position: relative; 
+  z-index: 1;
+  }
+  .button:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 470%;
+  width: 140%;
+  background: #52b71f;
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  -webkit-transform: translateX(-100%) translateY(-25%) rotate(45deg);
+  transform: translateX(-100%) translateY(-25%) rotate(45deg);
+  }
+  .button:hover:after {
+  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  }
+
+.soustitre  {
+  text-align: center;
+  font-size: small;
+}
+
+.loader-wrap {
+  margin-top: 10%;
+}
+
+.loading-text {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 200;
+  font-size: 38px;
+  text-align: center;
+  color: rgb(167, 167, 167);
+  margin-top: 50px;
+}
+

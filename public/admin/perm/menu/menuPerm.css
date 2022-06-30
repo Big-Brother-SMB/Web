@@ -1,0 +1,404 @@
+article {
+    margin-top: 30px;
+  }
+  
+  body,
+  h1,
+  ul {
+    margin: 0;
+    padding: 0;
+    color: white;
+    z-index: 10;
+  }
+  
+  p {
+    color: black;
+  }
+  
+  header {
+    align-items: center;
+    display: flex;
+    margin: 0px;
+    background: #486381;
+    z-index: 100;
+    position: absolute;
+    position: sticky;
+  
+    top: 0px;
+  }
+  
+  #logo,
+  nav {
+    flex: 1;
+  }
+  
+  .headerimg {
+    width: 170px;
+    height: 150px;
+  }
+  
+  header ul li {
+    list-style: none;
+    font-size: 30px;
+  }
+  
+  .ulheader {
+    align-content: right;
+  }
+  #menu-demo2,
+  #menu-demo2 ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+  }
+  
+  #menu-demo2 li {
+    display: inline-block;
+    position: relative;
+    border-radius: 8px 8px 0px 0px;
+  }
+  
+  #menu-demo2 .tuto2 {
+    display: block;
+    border-radius: 8px 8px 8px 8px;
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    overflow: hidden;
+    color: #eeeeee;
+    font-weight: 600;
+    font-size: 20px;
+    background-color: grey;
+    padding: 15px 50px;
+  }
+  
+  #menu-demo2 ul li {
+    display: inherit;
+    border-radius: 0;
+  }
+  #menu-demo2 ul li:hover {
+    border-radius: 0;
+  }
+  
+  #menu-demo2 ul li:last-child {
+    border-radius: 0 0 8px 8px;
+  }
+  
+  #menu-demo2 ul {
+    position: absolute;
+    z-index: 1000;
+    max-height: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    -moz-transition: 0.8s all 0.3s;
+    -webkit-transition: 0.8s all 0.3s;
+    transition: 0.8s all 0.3s;
+  }
+  #menu-demo2 li:hover ul {
+    max-height: 15em;
+  }
+  
+  #menu-demo2 li:first-child {
+    background-color: #3d546e;
+  }
+  #menu-demo2 li:first-child li {
+    background: #3d546e;
+  }
+  #menu-demo2 li:first-child:hover,
+  #menu-demo2 li:first-child li:hover {
+    background: #2e3f53;
+  }
+  #menu-demo2 a {
+    text-decoration: none;
+    display: block;
+    padding: 8px 32px;
+    color: #fff;
+    font-family: arial;
+    font-weight: 600;
+    font-size: 35px;
+  }
+  #menu-demo2 ul a {
+    padding: 8px 0px;
+  }
+  #menu-demo2 li:hover li a {
+    color: #fff;
+    font-weight: 600;
+    font-size: 35px;
+  }
+  
+  .tuto {
+    border-radius: 8px 8px 8px 8px;
+    background-color: #3d546e;
+    margin-right: 20px;
+  }
+  
+  .tuto:hover {
+    background: #385575;
+  }
+  
+  button {
+    background-color: #b5c3e4;
+    color: rgb(0, 0, 0);
+    padding: 10px 10px;
+    width: 10%;
+    height: 100px;
+    margin: 0px 0px;
+    font-size: 20px;
+    font-family: DejaVu Sans Mono, monospace;
+    text-align: center;
+    vertical-align: text-top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .crenau {
+    background-color: #b5c3e4;
+    color: rgb(0, 0, 0);
+    padding: 10px 10px;
+    width: 10%;
+    height: 100px;
+    margin: 0px 0px;
+    font-size: 20px;
+    font-family: DejaVu Sans Mono, monospace;
+    text-align: center;
+    vertical-align: text-top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #8b9fc9;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+    height: 150px;
+  }
+  
+  .tableau {
+    height: 150px;
+  }
+  
+  p {
+    font-size: 40px;
+  }
+  
+  marquee {
+    font-size: 40px;
+    color: white;
+    z-index: 1;
+  }
+  
+  .info {
+    text-align: center;
+    color: black;
+  }
+  
+  h1 {
+    font-size: 40px;
+  }
+  
+  .scorediv {
+    text-align: center;
+  }
+  
+  .hautpage {
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+  
+  }
+  
+  .score {
+    font-size: 30dp;
+    color: black;
+    background-color: #fff;
+    width: 150px;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 30px;
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em 2em 0.25em 0.25em;
+  }
+  
+  .user {
+    width: 40%;
+    line-height: 72px;
+    height: 72px;
+    font-size: 15;
+    border: 1px solid black;
+    text-align: center;
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em 2em 0.25em 0.25em;
+  }
+  
+  input {
+    width: 500px;
+    height: 100px;
+    font-size: 50px;
+  }
+  
+  #heure {
+    font-size: 100px;
+  }
+  
+  #divPass {
+    width: 1000px;
+  }
+  
+  h2 {
+    color: rgb(255, 0, 0);
+  }
+  
+  .jours {
+    display: inline;
+    width: 15%;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .semaine {
+    background: #3d546e;
+    color: white;
+    width: 20%;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .amisdiv {
+    text-align: center;
+  }
+  .semainediv {
+    text-align: center;
+  }
+  .heurediv {
+    text-align: center;
+  }
+  .creneaudiv {
+    text-align: center;
+  }
+  .passdiv {
+    text-align: center;
+  }
+  
+  .actionamis {
+    background: #3d546e;
+    color: white;
+  
+    width: 192px;
+    height: 72px;
+  
+    font-size: 25px;
+    text-align: center;
+    /*margin-left: 50px;
+    margin-bottom: auto;
+    margin-top: auto;*/
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em 0.25em 0.25em 2em;
+  }
+  
+  .action {
+    background: #3d546e;
+    color: white;
+    padding: 10px 10px;
+    width: 25%;
+    height: 100px;
+    font-size: 25px;
+    text-align: center;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .horaire {
+    color: rgb(0, 0, 0);
+    width: 10%;
+    height: 50px;
+    font-size: 20px;
+    font-family: DejaVu Sans Mono, monospace;
+    text-align: center;
+    vertical-align: text-top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  #heure12 {
+    /*margin: 0px -4px;*/
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+    margin-left: -0.125em;
+  }
+  
+  .ferme {
+    background: #526e8f;
+    color: white;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .zero {
+    background-color: #ff0000;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .inscrit {
+    background-color: #03fa10;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .demande {
+    background-color: #80eff7;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .places {
+    background-color: #8b9fc9;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  .bloque {
+    background-color: #d3af4c;
+    border-radius: 8px 8px 8px 8px;
+    padding: 0.25rem;
+    margin: 0.25em;
+  }
+  
+  vert{
+    color: #027908;
+    font-weight: bold;
+    text-decoration: underline;     
+  }
+  
+  rouge{
+    color: #b30404;
+    font-weight: bold;
+    text-decoration: underline;     
+  }
+  .retour  {
+    border-radius:8px 8px 8px 8px;
+    background-color: #3d546e;
+    margin-right: 20px;
+  }

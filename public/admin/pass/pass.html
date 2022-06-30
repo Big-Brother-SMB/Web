@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Modo</title>
+    <link rel = "icon" href= "../Images/logo.png">
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="pass.css">
+  </head>
+  <body>
+
+    <header>
+      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
+      
+        <h1 id="logo">Modo -> Users</h1>
+        
+      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
+        
+  </header>
+  <Article style="text-align: center;">
+    
+  
+    <div id="qr-reader" style="width: 600px"></div>
+    <p id="code"></p>
+    <form autocomplete="off" action="/action_page.php">
+      <div class="autocomplete" style="width:500px;margin-top: 10px;">
+        <input id="name" type="text" placeholder="Rechercher un utilisateur">
+      </div>
+    </form>
+    <p>Code carte : <input id="code bar" type="number"></p>
+    <div id="pass" style="height: 200px;width: 200px;"></div>
+
+
+    </Article>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+</script>  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+    <script src="../common.js"></script>
+    <script src="pass.js"></script>
+
+  <footer>
+    <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+
+        <br/>
+        <hr style="width: 25%;" />
+
+        <a href="../blog/devBlog.html" style="text-decoration: none;">
+            <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version Beta</p>
+        </a>
+
+        <br/>
+        <br/>
+
+    </div>
+</footer>
+
+  </body>
+
+</html>

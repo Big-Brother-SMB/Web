@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Crenau X</title>
+    <link rel = "icon" href= "../../Images/logo.png">
+    <link rel="stylesheet" href="../../common.css">
+    <link rel="stylesheet" href="crenauPerm.css">
+  </head>
+  <body>
+
+    <header>
+      <img class="headerimg" src="../../Images/logo.png" alt="logo Lycée" >
+      <h1 id="logo">Modo</h1>
+      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
+    </header>
+    <article style="text-align: center;">
+    <p id ="info" class="info"></p>
+
+    
+    <p>
+      Mode : <br>
+      <select id="mode"></select>
+    </p>
+    
+
+    <p>Demandes en cours<br>
+    (Cliquez pour retirer)</p>
+    <div style="height:500px;width:850px;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;" id="demandes">Aucune</div>
+    
+
+    
+
+    
+    <div>
+      <button id="select all" class="selection">Tout sélectioner</button>
+      <button id="select none" class="selection">Tout retirer</button>
+      <button id="inversed" class="selection">Inverser la sélection</button>
+    </div>
+    <div id="classes"></div>
+    <div style="height:300px;width:500px;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;" id="divSpecial"></div>
+  
+    <p>Groupe spécial : <input id="input special" placeholder="special"></p>
+    <button id="add special">Ajouter</button>
+    <div id="groupes"></div>
+  </article>
+
+    
+    
+        
+    
+    
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    </script>  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="../../common.js"></script>
+    <script src="crenauPerm.js"></script>
+
+    <footer>
+      <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+
+          <br/>
+          <hr style="width: 25%;" />
+
+          <a href="../blog/devBlog.html" style="text-decoration: none;">
+              <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version Développeur</p>
+          </a>
+
+          <br/>
+          <br/>
+
+      </div>
+  </footer>
+  </body>
+
+</html>

@@ -1,5 +1,8 @@
+
 {
-  "hosting": {
+  "hosting":[
+  {
+    "site": "foyer-test",
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -7,4 +10,7 @@
       "**/node_modules/**"
     ]
   }
+
+]
+  
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Session Admin</title>
+    <link rel = "icon" href= "../Images/logo.png">
+    <link rel="stylesheet" href="message.css">
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" id="css">
+  </head>
+  <body>
+
+    <header>
+      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" > 
+      <h1 id="title">Session Admin</h1>     
+      <button type="button" class="notification" onclick="history.back()"><img src="../Images/retour.png" alt="retour"></button>
+    </header>
+
+    <div id = "LinkButtons">
+        <a id="liens" href="crenau/crenau.html" style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;padding: 10px;"><button id="githubCode">crenau</button></a>
+        <a id="liens" href="menu/menu.html" style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;padding: 10px;"><button id="githubGraphs">menu</button></a>
+    </div>
+    
+
+
+
+    <div class="loader-wrap" id="chargement">
+        <p class="loading-text">Chargement en cours</p>
+        <div class="loader">
+
+            <div class="circle-1 circle">
+              <div class="circle-2 circle">
+                <div class="circle-3 circle">
+                  <div class="circle-4 circle"></div>
+                </div>
+              </div>
+            </div>
+        
+        </div>
+    </div>
+    
+
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+    <script src="../common.js"></script>
+
+    <footer>
+      <div style="width:100%;height:auto;text-align: center;">
+        <br/>
+        <hr style="width: 25%;" />
+        <a href="../dev/dev.html" id="version" style="font-weight:500;font-size:18px;letter-spacing: 1px;"></a>
+        <br/>
+        <br/>
+      </div>
+    </footer>
+  </body>
+
+</html>

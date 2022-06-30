@@ -542,6 +542,7 @@ send.addEventListener("click", function() {
         database.ref("messages/" + user +"/"+ hashCode + "/title").set(title.value)
         database.ref("messages/" + user +"/"+ hashCode + "/type").set(listType[type.selectedIndex])
         database.ref("messages/" + user +"/"+ hashCode + "/text").set(text.value)
+        myMessage(hashCode, title.value, text.value, listType[type.selectedIndex])
         title.value = ""
         text.value = ""
         iconSend.style.visibility = "visible"

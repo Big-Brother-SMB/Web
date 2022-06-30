@@ -1,0 +1,45 @@
+button{
+    background-color: #0aacf7;
+    color: rgb(0, 0, 0);
+    padding: 10px 10px;
+    margin: 0px 0px;
+    font-size: 25px;
+    font-family: DejaVu Sans Mono, monospace; 
+    text-align: center;
+    vertical-align: text-top;
+  }
+
+
+  .name{
+    background-color: #ff053b;
+  }
+
+  .score{
+    background-color: #0cd405;
+  }
+
+  .classe{
+    background-color: #fbff00;
+  }
+
+  .per{
+    background-color: #be09af;
+  }
+
+  .prio{
+    background-color: #ffa600;
+  }
+
+  div{
+    margin: 50px 0px;
+  }
+
+  select{
+    font-size: 50px;
+    width: 1000px;
+  } 
+
+  p{
+    font-size: 30px;
+  }
+  

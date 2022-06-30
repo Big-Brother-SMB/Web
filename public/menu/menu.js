@@ -629,3 +629,11 @@ document.getElementById("logo").addEventListener("click",function(){
 
 
 
+database.ref("modo/users").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        if (child.key===user){
+            document.getElementById("admin").style.visibility="visible";
+        }
+    })
+})
+

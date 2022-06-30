@@ -1,0 +1,287 @@
+article{
+    margin-top: 30px
+  }
+  
+  body,
+  h1,
+  ul {
+    margin: 0;
+    padding: 0;
+    color: white;
+  }
+  
+  p {
+    color: black;
+  }
+  
+  
+  header {
+    align-items: center;
+    display: flex;
+    margin: 0px;
+    background: #486381;
+    position: sticky;
+    top: 0px;
+  }
+  
+  #logo,
+  nav {
+    flex : 1;
+  }
+  
+  .headerimg{
+    width: 170px;
+    height: 150px;
+  }
+  
+  header nav  {
+    display: flex;
+    justify-content: space-around;
+    
+  }
+  
+  header ul li {
+    list-style: none; 
+    font-size: 30px;
+    margin-right: 20px;
+  }
+  header nav a {
+    text-decoration:none;
+    color: white;  
+  }
+  
+  .ulheader{
+    align-content: right;
+  }
+  #menu-demo2, #menu-demo2 ul{
+    padding:0;
+    margin:0;
+    list-style:none;
+    text-align:center;
+    }
+    #menu-demo2 li{
+    display:inline-block;
+    position:relative;
+    border-radius:8px 8px 0 0;
+    }
+    #menu-demo2 ul li{
+    display:inherit;
+    border-radius:0;
+    }
+    #menu-demo2 ul li:hover{
+    border-radius:0;
+    }
+    #menu-demo2 ul li:last-child{
+    border-radius:0 0 8px 8px;
+    }
+    #menu-demo2 ul{
+    position:absolute;
+    z-index: 1000;
+    max-height:0;
+    left: 0;
+    right: 0;
+    overflow:hidden;
+    -moz-transition: .8s all .3s;
+    -webkit-transition: .8s all .3s;
+    transition: .8s all .3s;
+    }
+    #menu-demo2 li:hover ul{
+    max-height:15em;
+    }
+  
+    #menu-demo2 li:first-child{
+      background-color: #3d546e;
+      }
+    #menu-demo2 li:first-child li{
+      background:#3d546e;
+      }
+    #menu-demo2 li:first-child:hover, #menu-demo2 li:first-child li:hover{
+      background:#2e3f53;
+      }
+    #menu-demo2 a{
+      text-decoration:none;
+      display:block;
+      padding:8px 32px;
+      color:#fff;
+      font-family:arial;
+      }
+      #menu-demo2 ul a{
+      padding:8px 0;
+      }
+      #menu-demo2 li:hover li a{
+      color:#fff;
+      text-transform:inherit;
+      }
+      .tuto  {
+        border-radius:8px 8px 8px 8px;
+        background-color: #3d546e;
+        margin-right: 20px;
+      }
+  
+      .tuto:hover  {
+        background:#2e3f53;
+      }
+  
+      button {
+        border: none;
+        text-align: center;
+        text-transform: uppercase;
+        outline: none;
+        overflow: hidden;
+        color: #eeeeee;
+        font-weight: 600;
+        font-size: 20px;
+        background-color: grey;
+        padding: 15px 50px;
+        }
+  .retour  {
+    border-radius:8px 8px 8px 8px;
+    background-color: #3d546e;
+    margin-right: 20px;
+  }
+  .retour:hover  {
+    background:#2e3f53;
+  }
+
+  #classes{
+    display:inline-block;
+    width: 100%;
+  }
+
+  #groupes{
+    display:inline-block;
+    width: 100%;
+  }
+  
+  
+  p{
+    font-size: 30px;
+  }
+  
+  .info{
+    text-align: center;
+    color: black;
+  }
+  
+  h1{
+    font-size: 40px;
+  }
+  
+  input{
+    width: 500px;
+    height: 100px;
+    font-size: 50px;
+  }
+
+  input[type="checkbox"]{
+    width: 50px;
+    height: 50px;
+   
+  }
+  
+  #heure{
+    font-size: 100px;
+  }
+  
+  #divPass{
+    width: 1000px;
+  }
+  
+  h2{
+    color: rgb(255, 0, 0);
+  }
+  
+  .jours{
+    display: inline;
+    width: 150px;
+  }
+  
+  .semaine{
+    width: 313px;
+  }
+  
+  .amisdiv{
+    text-align: center;
+  }
+  .semainediv{
+    text-align: center;
+  }
+  .heurediv{
+    text-align: center;
+  }
+  .creneaudiv{
+    text-align: center;
+  }
+  .passdiv{
+    text-align: center;
+  }
+  .ask  {
+    width: 30%;
+    background-color: #8b9fc9;
+    border-radius:8px 8px 8px 8px;
+    padding: .25rem;
+    margin-left: .25em;
+    margin-right: .25em;
+    margin-bottom: .75em;
+    padding-bottom: 20px;
+    padding-top: 20px; 
+  }
+
+  .action{
+    background-color: #6b6dd4;
+    color: rgb(0, 0, 0);
+    padding: 10px 10px;
+    width: 500px;
+    height: 150px;
+    margin: 30px 200px;
+    font-size: 25px;
+    text-align: center;
+  }
+  .selection{
+    background-color: #8b9fc9;
+    border-radius:8px 8px 8px 8px;
+    padding: .25rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: .25em;
+    width: 32%;
+  }
+  .bTriNiveau{
+    background-color: #385d88;
+    border-radius:8px 8px 8px 8px;
+    padding: .25rem;
+    margin: .25em;
+    width: 125px;
+    height: 100px;
+    font-size: 15px;
+  }
+  
+  #heure11{
+    margin: 0px -4px;
+  }
+  
+  .ferme{
+    background-color: #888888;
+  }
+  
+  
+  .zero{
+    background-color: #ff0000;
+  }
+  
+  .inscrit{
+    background-color: #4bff33;
+  }
+  
+  .places{
+    background-color: #dfff6a;
+  }
+  
+  .bloque{
+    background-color: #fdba00;
+  }
+
+  select{
+    font-size: 50px;
+    width: 1000px;
+  }  

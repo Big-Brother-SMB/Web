@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Demandes le X</title>
+    <link rel = "icon" href= "../../Images/logo.png">
+    <link rel="stylesheet" href="liste.css">
+  </head>
+  <body>
+
+
+
+    <p id ="info" class="info"></p>
+
+    <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
+
+    <p>
+      Trier par : <br>
+      <select id="tri">
+        <option>Prénom</option>
+        <option>Classe</option>
+        <option>GP</option>
+        <option>% prio</option>
+        <option>nb inscription</option>
+      </select>
+    </p>
+    
+    <div style="font-size: 40px;height:1000px;width:1200px;border:solid 2px orange;overflow:scroll;overflow-x:hidden;overflow-y:scroll;" id="liste">Recherche de pers en cours</div>
+    
+
+    
+    <form>
+      <input type="button" value="Retour" onclick="history.back()">
+  </form>
+        
+    
+    
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+</script>  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="../../common.js"></script>
+  <script src="demandes.js"></script>
+
+  </body>
+
+</html>

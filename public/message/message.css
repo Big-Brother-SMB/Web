@@ -80,7 +80,7 @@ header button{
 }
 
 #divSend{
-    background-color: chartreuse;
+    background-color: #8b9fc9;
     position: fixed;
     top: 300px;
     height: 40%;
@@ -109,10 +109,6 @@ input, textarea{
     width: 80%;
 }
 
-button{
-    font-size: 40px;
-}
-
 select{
     font-size: 40px;
 }
@@ -126,3 +122,21 @@ option{
     width: 95%;
     height: 150px;
 }
+
+.notification img{
+    background-color: #486381;
+    width: 100px;
+    height: 100px;
+  }
+
+.notification {
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    overflow: hidden;
+    color: #eeeeee;
+    font-weight: 600;
+    font-size: 20px;
+    padding: 15px 50px;
+  }

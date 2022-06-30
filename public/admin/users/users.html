@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Modo</title>
+    <link rel = "icon" href= "../Images/logo.png">
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="users.css">
+  </head>
+  <body>
+
+    <header>
+      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
+      
+        <h1 id="logo">Modo -> Users</h1>
+        
+      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
+        
+  </header>
+  <Article style="text-align: center;">
+    
+  
+  <form autocomplete="off" action="/action_page.php">
+  <div class="autocomplete" style="width:500px;margin-top: 10px;">
+    <input id="search" type="text" placeholder="Rechercher un utilisateur">
+  </div>
+  </form>
+
+  <p id="info">Veuillez écrire le nom d'un utilisateur</p>
+
+  <p>
+    Classe : 
+    <select id="classe"></select>
+</p>
+
+
+
+<div id="divScore">
+  <p id="score">Score : 0pt</p>
+  <p>Timeline du score (cliquez pour retirer)</p>
+  <div style="height:300px;width:500px;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;" id="divScoreEvent"></div>
+    
+  <p>Ajouter des points : </p>
+  <p>Valeur : <input id="score value" type="number" placeholder="pts"></p>
+  <p>Nom : <input id="score name" type="text" placeholder="nom"></p>
+  <button id="score ajouter">Ajouter</button>
+</div>
+
+<p>Code carte : <input id="code carte" type="number" placeholder="XXXXX"></p>
+<p id="info code barre" style="color: red;"></p>
+
+<p>
+  Priorité : (appuyez pour retirer)
+</p>
+<div id="prio" style="height:200px;width:500px;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;"></div>
+<p>ajouter : 
+  <select id="addPrio">
+    <option>---</option>
+  </select>
+</p>
+
+
+
+</Article>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+</script>  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="../common.js"></script>
+  <script src="users.js"></script>
+
+  <footer>
+    <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
+
+        <br/>
+        <hr style="width: 25%;" />
+
+        <a href="../blog/devBlog.html" style="text-decoration: none;">
+            <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version Beta</p>
+        </a>
+
+        <br/>
+        <br/>
+
+    </div>
+</footer>
+
+  </body>
+
+</html>

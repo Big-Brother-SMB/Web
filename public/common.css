@@ -150,26 +150,6 @@ nav {
   justify-content: space-around;
 }
 
-.retour {
-  border-radius: 8px 8px 8px 8px;
-  background-color: #3d546e;
-  margin-right: 40px;
-  border: none;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: arial;
-  outline: none;
-  overflow: hidden;
-  color: #eeeeee;
-  font-weight: 600;
-  font-size: 25px;
-  padding: 23px 70px;
-}
-
-.retour:hover {
-  background: #2e3f53;
-}
-
 .switch {
   position: relative;
   display: inline-block;
