@@ -52,7 +52,7 @@ database.ref("banderole").once("value", function (snapshot) {
     if (msg != null) {
         document.getElementById("banderole").innerHTML = msg
         if (msg.length > 0) {
-            document.getElementById("banderole").style.animation = "defilement-rtl " + msg.length / 8 + "s infinite linear"
+            document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
 
         }
     }

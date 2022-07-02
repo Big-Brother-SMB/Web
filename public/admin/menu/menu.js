@@ -30,16 +30,6 @@ document.getElementById("semaineSuivante").addEventListener("click", function() 
     refreshDatabase()
 });
 
-document.getElementById("users").addEventListener("click", function() {
-    window.location.href = "../users/users.html";
-
-});
-
-document.getElementById("pass").addEventListener("click", function() {
-    window.location.href = "../pass/pass.html";
-
-});
-
 document.getElementById("add point").addEventListener("click", function() {
     let confirmation = document.createElement("button")
     confirmation.innerHTML = "confirmer"
@@ -72,7 +62,6 @@ document.getElementById("add point").addEventListener("click", function() {
 
 
 const body = document.getElementById("body");
-const jour = ["lundi", "mardi","jeudi","vendredi"];
 Date.prototype.getWeek = function() {
     console.log(this)
     var onejan = new Date(this.getFullYear(), 0, 1);
@@ -95,8 +84,8 @@ let nbAmis = []
 for(let j = 0; j < 4; j++){
     let div = document.createElement("div")
     let text = document.createElement("button")
-    text.className = "jours";
-    text.innerHTML = jour[j]
+    text.className = "jours tableau";
+    text.innerHTML = day[j]
     div.appendChild(text);
     
     bouton[j] = []
@@ -110,7 +99,7 @@ for(let j = 0; j < 4; j++){
         bouton[j][h] = document.createElement("button")
         bouton[j][h].id = "" + j + h;
         bouton[j][h].onclick = function(){select(j,h)};
-        bouton[j][h].className="places"
+        bouton[j][h].className="places tableau"
         div.appendChild(bouton[j][h]);
       
     }
@@ -122,6 +111,14 @@ for(let j = 0; j < 4; j++){
 let nbFois;
 //refreshDatabase();
 function refreshDatabase(){
+
+    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshot) {
+        let val = snapshot.val()
+        if (val == null) {
+            val = "inconnu pour le moment"
+        }
+        document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
+    });
 
     let text = "Semaine n°" + week + " du " + semaine(week)
     if (week == actualWeek) {
@@ -193,14 +190,14 @@ function updateAffichage(j,h){
     switch (ouvert[j][h]){
         case 0:
             text = "horaire non planifié"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 1:
             if(places[j][h] <= 0){
-                bouton[j][h].className="zero"
+                bouton[j][h].className="zero tableau"
                 text = "plein";
             }else{
-                bouton[j][h].className="places"
+                bouton[j][h].className="places tableau"
                 if(places[j][h] == 1){
                     text = "il reste une place";
                 }
@@ -208,36 +205,36 @@ function updateAffichage(j,h){
             break;
         case 2:
             text = "Foyer fermé"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 3:
             text = text + "<br>(pas de désinscriptions possible)";
-            bouton[j][h].className="bloque"
+            bouton[j][h].className="bloque tableau"
             break;
         case 4:
             text = text + "<br>(pas d'inscriptions possible)";
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 5:
             text = "ouvert (changements bloqués)";
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 6:
             text = "vacances"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 7:
-            bouton[j][h].className="places"
+            bouton[j][h].className="places tableau"
             
             text = demandes[j][h] + " demandes sur " + places[j][h] + " places restantes (" + inscrits[j][h] + " inscrits)"
             break;
         case 8:
             text = "calcul en cours"
-            bouton[j][h].className="ferme"
+            bouton[j][h].className="ferme tableau"
             break;
         case 9:
                 text = "fini"
-                bouton[j][h].className="ferme"
+                bouton[j][h].className="ferme tableau"
                 break;
 
     }
@@ -262,3 +259,52 @@ function loop(){
     setTimeout(loop,10000);
 }
 loop();
+
+database.ref("banderole").once("value", function (snapshot) {
+    let msg = snapshot.val()
+    if (msg != null) {
+        document.getElementById("banderole").innerHTML = msg
+        if (msg.length > 0) {
+            document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
+
+        }
+    }
+
+
+})
+
+function clickBanderole(){
+    database.ref("banderole").once("value", function(snapshot) {
+        let p=window.prompt("Message de la banderole:",snapshot.val());
+        if (p!=null){
+            database.ref("banderole").set(p);
+            document.getElementById("banderole").innerHTML = p
+        }
+    })
+}
+
+database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshot) {
+    let val = snapshot.val()
+    if (val == null) {
+        val = "inconnu pour le moment"
+    }
+    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
+});
+
+function clickMenu(){
+    database.ref("foyer_midi/semaine" + week + "/menu").once("value", function(snapshot) {
+        let p=snapshot.val()
+        if (p==null || p==""){
+            p = "inconnu pour le moment"
+        }
+        p=window.prompt("Menu de la semaine "+week+":",snapshot.val());
+        if (p==null){
+            p=snapshot.val()
+        }
+        if (p==null || p==""){
+            p = "inconnu pour le moment"
+        }
+        database.ref("foyer_midi/semaine" + week + "/menu").set(p);
+        document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + p
+    })
+}

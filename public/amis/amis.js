@@ -1,6 +1,5 @@
 
 
-let amis = []
 let divAmis = document.getElementById("amis")
 database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     divAmis.innerHTML = ""

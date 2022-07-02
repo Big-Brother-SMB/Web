@@ -215,9 +215,6 @@ function reload(){
     window.location.reload(true)
 }
 
-//modes
-let listMode = ["horaire non planifié","ouvert","fermé","uniquement inscription","uniquement désinscription","ouvert mais plus de changements","vacances","aleatoire","calcul","fini"]
-let listModePerm = ["Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
 
 //Stats
 
@@ -407,17 +404,7 @@ function randint(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-//nb pers
-function nbPers(j,h,type,func){
-    console.log(path(j,h)+"/" + type)
-    database.ref(path(j,h)+"/" + type).once("value", function(snapshot) {
-        let total = 0
-        snapshot.forEach(function(child) {
-            total++;  
-        });
-        func(total)
-    })
-}
+
 
 
 //autocomplete

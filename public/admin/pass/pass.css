@@ -1,3 +1,7 @@
+#qr-reader,#pass{
+  margin: 0 auto;
+  border-radius: 3px;
+}
 * { box-sizing: border-box; }
 body {
   font: 50px Arial;

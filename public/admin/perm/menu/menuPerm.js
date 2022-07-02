@@ -91,15 +91,13 @@ document.getElementById("semaineSuivante").addEventListener("click", function ()
 
 function refreshDatabase() {
 
-    let sn = ["28 au 1 avril", "4 au 8 avril", "11 au 15 avril"]
-
-    let text = "Semaine n°" + week + " du " + sn[week - actualWeek]
+    let text = "Semaine n°" + week + " du " + semaine(week)
     if (week == actualWeek) {
-        text = "Cette semaine"
+        text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
     }
     document.getElementById("semaine").innerHTML = text
 
-    
+
 
     for (let j = 0; j < 5; j++) {
         for (let h = 0; h < 7; h++) {
@@ -107,20 +105,23 @@ function refreshDatabase() {
             if(h >= 4){
                 heure += 1
             }
-
-
             bouton[j][h].innerHTML = "aucune info"
+            bouton[j][h].className = "crenau"
             database.ref(pathPerm(j,h) + "/ouvert").once("value", function (snapshot) {
 
-                let ouvert = snapshot.val()
-                if (ouvert == null){
-                    ouvert = 0
+                let ouv = snapshot.val()
+                if (ouv == null){
+                    ouv = 0
                 }
-                if(ouvert == 0){
+                ouvert[j][h] = ouv
+                if(ouv == 0){
                     database.ref(pathPerm(j,h) + "/classes").once("value", function (snapshot2) {
                         let str = ""
                         snapshot2.forEach(function (child) {
                             const name = child.key
+                            if(name == classe){
+                                bouton[j][h].className = "crenau inscrit"
+                            }
                             if(str != ""){
                                 str += ", "
                             }
@@ -130,29 +131,33 @@ function refreshDatabase() {
                         if(str != ""){
                             bouton[j][h].innerHTML = str
                         }
-                        
+
                     });
                 }else{
-                    switch(ouvert){
+                    switch(ouv){
                         case 1:
                             bouton[j][h].innerHTML = "fermé"
+                            bouton[j][h].className = "crenau ferme"
                             break;
                         case 2:
                             bouton[j][h].innerHTML = "ouvert à tous"
+                            bouton[j][h].className = "crenau inscrit"
                             break;
                         case 3:
                             bouton[j][h].innerHTML = "réservé"
+                            bouton[j][h].className = "crenau reserve"
                             break;
                         case 4:
                             bouton[j][h].innerHTML = "vacances"
+                            bouton[j][h].className = "crenau ferme"
                             break;
                     }
-                    
+
                 }
 
-               
 
-           })
+
+            })
 
 
         }

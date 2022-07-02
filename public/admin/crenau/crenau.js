@@ -1,5 +1,3 @@
-const menu = "../../menu/menu.html"
-
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
 console.log(path(j,h));
@@ -123,6 +121,11 @@ let cbGroupes = []
 let groupes = []
 let iG = 0
 database.ref("priorites").once("value", function(snapshot) {
+    let divG1 = document.createElement("div")
+    divG1.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+    let divG2 = document.createElement("div")
+    divG2.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+    let loop2 = 0
     snapshot.forEach(function(child) {
         const index = iG;
         groupes.push(child.key)
@@ -140,9 +143,17 @@ database.ref("priorites").once("value", function(snapshot) {
         //cbClasses[n][i].checked = true
         gr.innerHTML = groupes[index]
         gr.appendChild(cbGroupes[index]);
-        divGroupes.appendChild(gr);
+        if (loop2==0){
+            loop2=1
+            divG1.appendChild(gr);
+        } else {
+            loop2=0
+            divG2.appendChild(gr);
+        }
         iG++;
     })
+    divGroupes.appendChild(divG1);
+    divGroupes.appendChild(divG2);
 
 })
 
@@ -152,7 +163,7 @@ console.log(listNiveau)
 for(let n in listNiveau){
     cbClasses[n] = []
     let divNiveau = document.createElement("div")
-    divNiveau.style="display: inline-block;*display: inline;width:20%"
+    divNiveau.style="display: inline-block;*display: inline;width:20%;vertical-align: top;"
 
     let nSelectAll = document.createElement("button")
     nSelectAll.className = "bTriNiveau"
@@ -370,10 +381,7 @@ function algo(){
                     
                     nbEmail++
                     if(fini){
-                        document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email : " + nbEmail + "/" + (inscrits - dejaInscrit)
-                        if(nbEmail == (inscrits - dejaInscrit)){
-                            document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email : fini"
-                        }
+                        document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email envoyés : " + nbEmail
                     }
                 }
                 

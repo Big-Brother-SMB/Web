@@ -3,24 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>Modo</title>
-    <link rel = "icon" href= "../Images/logo.png">
-    <link rel="stylesheet" href="../common.css">
+    <link rel = "icon" href= "../../Images/logo.png">
     <link rel="stylesheet" href="pass.css">
+    <link rel="stylesheet" href="../../common.css">
+    <link rel="stylesheet" id="css">
   </head>
   <body>
 
     <header>
-      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
-      
-        <h1 id="logo">Modo -> Users</h1>
-        
-      <button type="button" value="Retour" class="retour" onclick="history.back()">Retour</button>
-        
-  </header>
+      <img class="headerimg" src="../../Images/logo.png" alt="logo Lycée" >
+      <h1 id="title">Pass</h1>
+      <a href="../menu/menu.html" class="notification"><img src="../../Images/retour.png" alt="retour"></a>
+    </header>
   <Article style="text-align: center;">
     
   
-    <div id="qr-reader" style="width: 600px"></div>
+    <div id="qr-reader" style="width: 600px;"></div>
     <p id="code"></p>
     <form autocomplete="off" action="/action_page.php">
       <div class="autocomplete" style="width:500px;margin-top: 10px;">
@@ -37,26 +35,27 @@
 
 
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-</script>  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
-    <script src="../common.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+    <script src="../../common.js"></script>
     <script src="pass.js"></script>
 
-  <footer>
-    <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
-
-        <br/>
+    <footer>
+      <div style="width:100%;height:auto;text-align: center;">
+  
+        <br />
         <hr style="width: 25%;" />
-
-        <a href="../blog/devBlog.html" style="text-decoration: none;">
-            <p style="font-weight:500; color:black;font-size:18px;letter-spacing: 1px;">Version Beta</p>
-        </a>
-
-        <br/>
-        <br/>
-
-    </div>
-</footer>
+  
+        <a href="../../dev/dev.html" id="version" style="font-weight:500;font-size:18px;letter-spacing: 1px;"></a>
+  
+  
+        <br />
+        <br />
+  
+      </div>
+    </footer>
 
   </body>
 
