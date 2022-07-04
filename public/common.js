@@ -292,7 +292,7 @@ function setColorMode(rootPath){
 
 
 //--------------------Big Data functions--------------------
-try{
+/*try{
     let page = window.location.pathname.split("/").pop().split(".")[0];
     console.log("analytics : " + page)
     analytics.logEvent(page);
@@ -375,7 +375,7 @@ try{
     
 }catch(Exception){
     console.log("error data",Exception)
-}
+}*/
 
 
 //--------------------database functions--------------------
@@ -867,7 +867,7 @@ function autocomplete(inp, arr) {
         /*for each item in the array...*/
         for (i = 0; i < arr.length; i++) {
           /*check if the item starts with the same letters as the text field value:*/
-          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {                // arr[i].toLowerCase().includes(val.toLowerCase())
             /*create a DIV element for each matching element:*/
             b = document.createElement("DIV");
             /*make the matching letters bold:*/

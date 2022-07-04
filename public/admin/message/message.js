@@ -68,7 +68,7 @@ const size = [
 ]
 
 
-database.ref("sondages").once('value').then(function(snapshot) {
+/*database.ref("sondages").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         let h = child.key
         database.ref("sondages/" + h + "/text").once('value').then(function(snapshot) {
@@ -78,22 +78,24 @@ database.ref("sondages").once('value').then(function(snapshot) {
                 if(mode == null){
                     mode = 0
                 }
+                if(mode < 0){
+                    database.ref("sondages/" + h + "/choices").once('value').then(function(snapshot) {
+                        let choices = []
+                        snapshot.forEach(function(child) {
+                            choices.push(child.key)
+                        })
+                        sondage(h, text, mode,reponse,choices)
+                    })
+                }
                 
                 database.ref("sondages/" + h + "/users/" + user).once('value').then(function(snapshot) {
                     let reponse = snapshot.val()
-                    if(mode < 0){
-                        database.ref("sondages/" + h + "/choices").once('value').then(function(snapshot) {
-                            let choices = []
-                            snapshot.forEach(function(child) {
-                                choices.push(child.key)
-                            })
-                            sondage(h, text, mode,reponse,choices)
-                        })
+                   
                     }else{
                         sondage(h, text, mode,reponse,null)
                     }
-                    
-                })
+                )    
+            })
                 
                 
                 
@@ -102,7 +104,7 @@ database.ref("sondages").once('value').then(function(snapshot) {
 
         
     })
-})
+})*/
 
 
 
@@ -293,31 +295,17 @@ database.ref("news").once('value').then(function(snapshot) {
             let title = snapshot.val()
             database.ref("news/" + h + "/text").once('value').then(function(snapshot) {
                 let text = snapshot.val()
-                database.ref("news/" + h + "/users/" + user).once('value').then(function(snapshot) {
-                    let lu = snapshot.val() != null
-                    news(h, title, text,lu)
-                })
+                news(h, title, text)
             })
-                
-            
         })
-
-        
     })
 })
 
 
-function news(h,title,text,lu){
+function news(h,title,text){
     let msg = document.createElement("div")
     msg.className = "news"
-    if(lu){
-        hide()               
-    }else{
-        display()
-        addNew(msg, h)
-        //divNew.appendChild(msg);
-        newMsg()
-    }
+    hide()   
 
     function hide(){
         msg.innerHTML = ""
@@ -361,27 +349,35 @@ function news(h,title,text,lu){
 
 //------------------------------my msg---------------------------------
 
-database.ref("messages/" + user).once('value').then(function(snapshot) {
+database.ref("users/").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
-        let h = child.key
-        database.ref("messages/" + user + "/" + h + "/title").once('value').then(function(snapshot) {
-            let title = snapshot.val()
-            database.ref("messages/" + user + "/" + h + "/text").once('value').then(function(snapshot) {
-                let text = snapshot.val()
-                database.ref("messages/" + user + "/" + h + "/type").once('value').then(function(snapshot) {
-                    let type = snapshot.val()
-                    myMessage(h, title, text, type)
+        let user = child.key
+        database.ref("users/" + user + "/messages").once('value').then(function(snapshot) {
+            snapshot.forEach(function(child) {
+                let h = child.key
+                database.ref("users/" + user + "/messages/" + h + "/title").once('value').then(function(snapshot) {
+                    let title = snapshot.val()
+                    database.ref("users/" + user + "/messages/" + h + "/text").once('value').then(function(snapshot) {
+                        let text = snapshot.val()
+                        database.ref("users/" + user + "/messages/" + h + "/lu").once('value').then(function(snapshot) {
+                            let lu = snapshot.val()
+                            if (lu!=true) lu=false;
+                            myMessage(h,title,text, user,lu)
+                        })
+                    })
                 })
             })
-                
-            
         })
-
-        
     })
 })
 
-function myMessage(h,title,text,type){
+function myMessage(h,title,text,user,lu){
+    let textLu
+    if(lu){
+        textLu = "lu"
+    } else {
+        textLu = "non lu"
+    }
     let msg = document.createElement("div")
     msg.className = "mymsg"
     hide()
@@ -389,7 +385,7 @@ function myMessage(h,title,text,type){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = type + " : " + title+"<br>à: modo"
+        p.innerHTML = "MP["+ textLu +"] : " + title +"<br>à: "+user
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -409,7 +405,7 @@ function myMessage(h,title,text,type){
         msg.innerHTML = ""
 
         let prive = document.createElement("p")
-        prive.innerHTML = type + " : " + title+"<br>à: modo"
+        prive.innerHTML = "MP["+ textLu +"] : " + title +"<br>à: "+user
         prive.className = "text"
         msg.appendChild(prive);
 
@@ -428,17 +424,25 @@ function myMessage(h,title,text,type){
 
 //------------------------------msg---------------------------------
 
-database.ref("users/" + user + "/messages").once('value').then(function(snapshot) {
+database.ref("messages/").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
-        let h = child.key
-        database.ref("users/" + user + "/messages/" + h + "/title").once('value').then(function(snapshot) {
-            let title = snapshot.val()
-            database.ref("users/" + user + "/messages/" + h + "/text").once('value').then(function(snapshot) {
-                let text = snapshot.val()
-                database.ref("users/" + user + "/messages/" + h + "/lu").once('value').then(function(snapshot) {
-                    let lu = snapshot.val()
-                    if (lu!=true) lu=false;
-                    message(h, title, text,lu)
+        let user = child.key
+        database.ref("messages/" + user).once('value').then(function(snapshot) {
+            snapshot.forEach(function(child) {
+                let h = child.key
+                database.ref("messages/" + user + "/" + h + "/title").once('value').then(function(snapshot) {
+                    let title = snapshot.val()
+                    database.ref("messages/" + user + "/" + h + "/text").once('value').then(function(snapshot) {
+                        let text = snapshot.val()
+                        database.ref("messages/" + user + "/" + h + "/type").once('value').then(function(snapshot) {
+                            let type = snapshot.val()
+                            database.ref("messages/" + user + "/" + h + "/lu").once('value').then(function(snapshot) {
+                                let lu = snapshot.val()
+                                if (lu!=true) lu=false;
+                                message(h, title, text, user, type,lu)
+                            })
+                        })
+                    }) 
                 })
             })
         })
@@ -446,7 +450,7 @@ database.ref("users/" + user + "/messages").once('value').then(function(snapshot
 })
 
 
-function message(h,title,text,lu){
+function message(h,title,text, user, type,lu){
     let msg = document.createElement("div")
     msg.className = "msg"
     if(lu){
@@ -460,7 +464,7 @@ function message(h,title,text,lu){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = "MP : " + title+"<br>De: modo"
+        p.innerHTML = type + " : " + title +"<br>De: "+user
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -469,7 +473,7 @@ function message(h,title,text,lu){
             display()
         }
         if(!divOld.contains(msg)){
-            database.ref("users/" + user + "/messages/" + h + "/lu").set(true)
+            database.ref("messages/" + user + "/" + h + "/lu").set(true)
             addOld(msg, h)
             newMsg()
         }
@@ -480,9 +484,8 @@ function message(h,title,text,lu){
 
     function display(){
         msg.innerHTML = ""
-
         let prive = document.createElement("p")
-        prive.innerHTML = "MP : " + title+"<br>De: modo"
+        prive.innerHTML = type+" : "+title +"<br>De: "+user
         prive.className = "text"
         msg.appendChild(prive);
 
@@ -505,48 +508,131 @@ function message(h,title,text,lu){
 
 
 let iconSend = document.getElementById("iconSend")
+let iconNews = document.getElementById("iconNews")
+let iconSondage = document.getElementById("iconSondage")
 let divSend = document.getElementById("divSend")
-
-iconSend.addEventListener("click", function() {
-    iconSend.style.visibility = "hidden"
-    divSend.style.visibility = "visible"
-    divSend.style.height = "auto"
-})
 
 let send = document.getElementById("send")
 let annuler = document.getElementById("annuler")
 let title = document.getElementById("title2")
-let type = document.getElementById("type")
 let text = document.getElementById("text")
+let destinataire = document.getElementById("as")
+let type = document.getElementById("type")
 
-const listType = ["Question","Problème","Erreur/Bug","Suggestion","Autre"]
+let destinataire2 = document.getElementById("as2")
+let type2 = document.getElementById("type2")
 
-for (let i in listType) {
-    let opt = document.createElement("option")
-    opt.innerHTML = listType[i]
-    type.appendChild(opt);
-}
+let icon
+
+iconSend.addEventListener("click", function() {
+    icon = 0
+
+    iconSend.style.visibility = "hidden"
+    iconSondage.style.visibility = "visible"
+    iconNews.style.visibility = "visible"
+
+    divSend.style.visibility = "visible"
+    divSend.style.height = "auto"
+
+    destinataire2.style.visibility = "visible"
+    type2.style.visibility = "hidden"
+})
+iconNews.addEventListener("click", function() {
+    icon = 1
+
+    iconNews.style.visibility = "hidden"
+    iconSend.style.visibility = "visible"
+    iconSondage.style.visibility = "visible"
+
+    divSend.style.visibility = "visible"
+    divSend.style.height = "auto"
+
+    destinataire2.style.visibility = "hidden"
+    type2.style.visibility = "hidden"
+})
+iconSondage.addEventListener("click", function() {
+    icon = 2
+
+    iconSondage.style.visibility = "hidden"
+    iconSend.style.visibility = "visible"
+    iconNews.style.visibility = "visible"
+
+    divSend.style.visibility = "visible"
+    divSend.style.height = "auto"
+
+    destinataire2.style.visibility = "hidden"
+    type2.style.visibility = "visible"
+})
+
+let usersList = []
+database.ref("users/").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        usersList.push(child.key)
+    })
+    autocomplete(destinataire, usersList);
+})
 
 send.addEventListener("click", function() {
     if(title.value != "" && text.value != ""){
         let hashCode = hash()
-        database.ref("messages/" + user +"/"+ hashCode + "/title").set(title.value)
-        database.ref("messages/" + user +"/"+ hashCode + "/type").set(listType[type.selectedIndex])
-        database.ref("messages/" + user +"/"+ hashCode + "/text").set(text.value)
-        myMessage(hashCode, title.value, text.value, listType[type.selectedIndex])
-        title.value = ""
-        text.value = ""
-        iconSend.style.visibility = "visible"
-        divSend.style.visibility = "hidden"
-        divSend.style.height = "0px"
+        if(icon==0 && usersList.indexOf(destinataire.value)!=-1){
+            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/title").set(title.value)
+            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/text").set(text.value)
+            myMessage(hashCode, title.value, text.value,destinataire.value,false)
+            title.value = ""
+            destinataire.value = ""
+            text.value = ""
+            iconSend.style.visibility = "visible"
+            iconNews.style.visibility = "visible"
+            iconSondage.style.visibility = "visible"
+            destinataire2.style.visibility = "hidden"
+            type2.style.visibility = "hidden"
+            divSend.style.visibility = "hidden"
+            divSend.style.height = "0px"
+        }
+        if(icon==1){
+            database.ref("news/" + hashCode + "/title").set(title.value)
+            database.ref("news/" + hashCode + "/text").set(text.value)
+            news(hashCode, title.value, text.value)
+            title.value = ""
+            destinataire.value = ""
+            text.value = ""
+            iconSend.style.visibility = "visible"
+            iconNews.style.visibility = "visible"
+            iconSondage.style.visibility = "visible"
+            destinataire2.style.visibility = "hidden"
+            type2.style.visibility = "hidden"
+            divSend.style.visibility = "hidden"
+            divSend.style.height = "0px"
+        }
+        if(icon==2){
+            /*database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/title").set(title.value)
+            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/text").set(text.value)
+            myMessage(hashCode, title.value, text.value,destinataire.value,false)
+            title.value = ""
+            destinataire.value = ""
+            text.value = ""
+            iconSend.style.visibility = "visible"
+            iconNews.style.visibility = "visible"
+            iconSondage.style.visibility = "visible"
+            destinataire2.style.visibility = "hidden"
+            type2.style.visibility = "hidden"
+            divSend.style.visibility = "hidden"
+            divSend.style.height = "0px"*/
+        }
     }
     
 })
 
 annuler.addEventListener("click", function() {
     title.value = ""
+    destinataire.value = ""
     text.value = ""
     iconSend.style.visibility = "visible"
+    iconNews.style.visibility = "visible"
+    iconSondage.style.visibility = "visible"
+    destinataire2.style.visibility = "hidden"
+    type2.style.visibility = "hidden"
     divSend.style.visibility = "hidden"
     divSend.style.height = "0px"
 })

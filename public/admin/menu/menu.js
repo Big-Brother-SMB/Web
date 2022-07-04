@@ -294,17 +294,45 @@ database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function 
 function clickMenu(){
     database.ref("foyer_midi/semaine" + week + "/menu").once("value", function(snapshot) {
         let p=snapshot.val()
-        if (p==null || p==""){
+        if (p==null || p=="" || p=="null"){
             p = "inconnu pour le moment"
         }
-        p=window.prompt("Menu de la semaine "+week+":",snapshot.val());
+        p=window.prompt("Menu de la semaine "+week+":",p);
         if (p==null){
             p=snapshot.val()
         }
-        if (p==null || p==""){
+        if (p==null || p=="" || p=="null"){
             p = "inconnu pour le moment"
         }
         database.ref("foyer_midi/semaine" + week + "/menu").set(p);
         document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + p
     })
+}
+
+//-----------sondages--------------------
+const notifMsg = document.getElementById("notif msg")
+
+let nbMsg = 0
+database.ref("messages/").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        let user = child.key
+        database.ref("messages/" + user).once('value').then(function(snapshot) {
+            snapshot.forEach(function(child) {
+                let h = child.key
+                database.ref("messages/" + user + "/" + h + "/lu").once('value').then(function(snapshot) {
+                    let lu = snapshot.val()
+                    if (lu!=true) {
+                        nbMsg++ 
+                        updateMsg()
+                    }
+                })
+            })
+        })
+    })
+})
+
+
+function updateMsg(){
+    notifMsg.style.visibility = "visible"
+    notifMsg.innerHTML = nbMsg
 }

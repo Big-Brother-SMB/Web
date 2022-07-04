@@ -68,11 +68,6 @@ body,
   display: none;
 }
 
-.autocomplete {
-  /*the container must be positioned relative:*/
-  position: relative;
-  display: inline-block;
-}
 input {
     width: 500px;
   border: 1px solid transparent;

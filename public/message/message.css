@@ -2,6 +2,13 @@ header button{
     margin-right: 40px;
 }
 
+.sendButton{
+    top: 0px;
+    width: 45%;
+    height: 40%;
+    font-size: 80%;
+}
+
 .sondage{
     background-color: #8b9fc9;
     border-radius:8px 8px 8px 8px;
@@ -71,17 +78,31 @@ header button{
 
 
 
+#iconNews{
+    position: fixed;
+    bottom: 5%;
+    right: 560px;
+
+    height: 15%;
+}
+
+#iconSondage{
+    position: fixed;
+    bottom: 5%;
+    right: 300px;
+
+    height: 15%;
+}
+
 #iconSend{
     position: fixed;
     bottom: 5%;
-    right: 5%;
+    right: 40px;
 
     height: 15%;
 }
 
 #divSend{
-    background-color: #8b9fc9;
-    position: fixed;
     top: 300px;
     height: 40%;
     width: 100%;
@@ -111,6 +132,7 @@ input, textarea{
 
 select{
     font-size: 40px;
+    width: 50%;
 }
 
 option{

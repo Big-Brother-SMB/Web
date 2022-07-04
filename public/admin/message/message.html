@@ -3,23 +3,30 @@
   <head>
     <meta charset="utf-8">
     <title>Messagerie</title>
-    <link rel = "icon" href= "../Images/logo.png">
-    <link rel="stylesheet" href="../common.css">
-    <link rel="stylesheet" href="message.css">
+    <link rel = "icon" href= "../../Images/logo.png">
+    <link rel="stylesheet" href="../../common.css">
+    <link rel="stylesheet" href="../../message/message.css">
     <link rel="stylesheet" id="css">
   </head>
   <body>
 
     <header>
-      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" > 
-      <h1 id="title">Messagerie</h1>     
-      <a href="../menu/menu.html" class="notification"><img src="../Images/retour.png" alt="retour"></a>
+      <img class="headerimg" src="../../Images/logo.png" alt="logo Lycée" > 
+      <h1 id="title">Messagerie admin</h1>     
+      <a href="../menu/menu.html" class="notification"><img src="../../Images/retour.png" alt="retour"></a>
     </header>
 
     <article id="article" style="text-align: center;display: none;">
       <div id="divSend" class="same" style="visibility: hidden;height: 0px;">
         <p>Titre : <input id="title2" type="text"></p>
-        <p>Type : <select id="type"></select></p>
+        <div id="as2" class="asclasse">
+          <p>Destinataire : 
+          <div class="autocomplete" style="width:500px;margin-top: 10px;">
+            <input id="as" type="text" name="myCountry" style="text-align: center; border-radius:10px;margin-top: 30px;">
+          </div>
+          </p>
+        </div>
+        <p id="type2">Type : <select id="type"></select></p>
         <textarea id="text" type="text" placeholder="écrire ici"></textarea>
         <br>
         <button id="send" class="sendButton">Envoyer</button>
@@ -31,7 +38,9 @@
       <p>Anciens messages</p>
       <div id="old msg"></div>
 
-      <img id="iconSend" src="../Images/write.png" alt="send">
+      <img id="iconSondage" src="../../Images/sondage.png" alt="send">
+      <img id="iconNews" src="../../Images/news.png" alt="send">
+      <img id="iconSend" src="../../Images/write.png" alt="send">
     
     </article>
 
@@ -54,14 +63,14 @@
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
-    <script src="../common.js"></script>
+    <script src="../../common.js"></script>
     <script src="message.js"></script>
 
     <footer>
       <div style="width:100%;height:auto;text-align: center;">
         <br/>
         <hr style="width: 25%;" />
-        <a href="../dev/dev.html" id="version" style="font-weight:500;font-size:18px;letter-spacing: 1px;"></a>
+        <a href="../../dev/dev.html" id="version" style="font-weight:500;font-size:18px;letter-spacing: 1px;"></a>
         <br/>
         <br/>
       </div>
