@@ -332,6 +332,7 @@ function news(h,title,text,lu){
         }
         if(!divOld.contains(msg)){
             addOld(msg, h)
+            database.ref("news/" + h + "/users/" + user).set(true)
             //divOld.appendChild(msg);
             newMsg()
         }
