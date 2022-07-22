@@ -40,6 +40,9 @@ database.ref("users").once("value", function(snapshot) {
     })
     autocomplete(inputName, utilisateurs,function(val){
         searchName(val)
+        database.ref("users/"+val+"/code barre/").once("value", function(snapshot) {
+            inputCodeBar.value = snapshot.val()
+        });
     });
 })
 

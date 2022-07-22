@@ -2,26 +2,23 @@
 <html lang="fr" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Inscrits le X</title>
+    <title>Inscrits</title>
     <link rel = "icon" href= "../../Images/logo.png">
     <link rel="stylesheet" href="liste.css">
+    <link rel="stylesheet" href="../../../common.css">
     <link rel="stylesheet" id="css">
   </head>
   <body>
-
-
+    <header>
+      <img class="headerimg" src="../../../Images/logo.png" alt="logo Lycée" >
+      <h1 id="title">Inscrits</h1>
+      <a href="../crenau.html" class="notification"><img src="../../../Images/retour.png" alt="retour"></a>
+    </header>
 
     <p id ="info" class="info"></p>
 
-    <button type="button" value="Retour" class="retour" style="height: 200px;width: 500px;" onclick="history.back()">Retour</button>
 
-    <div style="font-size: 40px;height:1000px;width:1200px;border:solid 2px orange;overflow:scroll;overflow-x:hidden;overflow-y:scroll;display: block;" id="liste">Recherche de pers en cours</div>
-    
-
-    
-    <form>
-      <input type="button" value="Retour" onclick="history.back()">
-  </form>
+    <div id="liste">Recherche de pers en cours</div>
         
     
     
@@ -32,6 +29,21 @@
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
   <script src="../../../common.js"></script>
   <script src="inscrits.js"></script>
+
+  <footer>
+    <div style="width:100%;height:auto;text-align: center;">
+
+      <br />
+      <hr style="width: 25%;" />
+
+      <a href="../../../dev/dev.html" id="version" style="font-weight:500;font-size:18px;letter-spacing: 1px;"></a>
+
+
+      <br />
+      <br />
+
+    </div>
+  </footer>
 
   </body>
 

@@ -102,7 +102,13 @@ function reload(){
 
 function deco(){
     delCookie("user");
-    window.location.href = "../index.html";
+    let str = window.location.pathname.split("/")
+    let str2 = ""
+    for(let i = 0;i<str.length-2;i++){
+        str2+="../"
+    }
+    str2+="index.html"
+    window.location.href = str2;    
 }
 
 //--------------------var--------------------
@@ -279,7 +285,7 @@ function setColorMode(rootPath){
         }else{
             document.body.style.backgroundColor = "";
             document.body.style.color = "";
-            document.getElementById("css").href = rootPath + "/css/" + name + ".css"
+            if(name!="") document.getElementById("css").href = rootPath + "/css/" + name + ".css";
         }
         
         
@@ -847,7 +853,7 @@ function getDayText(j){
     return text
 }
 
-function autocomplete(inp, arr) {
+function autocomplete(inp, arr, func) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
     var currentFocus;
@@ -879,6 +885,7 @@ function autocomplete(inp, arr) {
                 b.addEventListener("click", function(e) {
                 /*insert the value for the autocomplete text field:*/
                 inp.value = this.getElementsByTagName("input")[0].value;
+                func(this.getElementsByTagName("input")[0].value);
                 /*close the list of autocompleted values,
                 (or any other open lists of autocompleted values:*/
                 closeAllLists();

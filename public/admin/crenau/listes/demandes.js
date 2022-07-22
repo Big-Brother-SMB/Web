@@ -1,8 +1,3 @@
-const jour = ["1lundi", "2mardi","3jeudi","4vendredi"];
-
-const menu = "../../menu/menu.html"
-
-let user = sessionStorage.getItem("user");
 let j = sessionStorage.getItem("j");
 let h = parseInt(sessionStorage.getItem("h"));
 console.log("hello2");
