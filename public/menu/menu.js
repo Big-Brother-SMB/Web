@@ -623,10 +623,12 @@ function handleTouchMove(evt) {
 
 
 document.getElementById("logo").addEventListener("click",function(){
-    console.log("click")
     document.querySelectorAll("nav")[0].style.visibility = "visible"
 })
 
+document.getElementById("nav hide").addEventListener("click",function(){
+    document.querySelectorAll("nav")[0].style.visibility = "hidden"
+})
 
 
 database.ref("modo/users").once('value').then(function(snapshot) {
