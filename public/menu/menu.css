@@ -195,6 +195,15 @@ h1 {
   margin: 0.2em 0.25em 0.25em 0.25em;
   vertical-align: auto;
 }
+.edit {
+  width: 65px;
+  height : 65px ;
+  position: absolute;
+  top : 193px;
+  left: 95%;
+  z-index: 0;
+  cursor: pointer;
+}
 
 input {
   width: 500px;
@@ -348,13 +357,13 @@ h2 {
 vert{
   color: #28812e;
   font-weight: bold;
-  text-decoration: underline;     
+  text-decoration: underline;
 }
 
 rouge{
   color: #b30404;
   font-weight: bold;
-  text-decoration: underline;     
+  text-decoration: underline;
 }
 
 

@@ -30,34 +30,34 @@ document.getElementById("semaineSuivante").addEventListener("click", function() 
     refreshDatabase()
 });
 
-document.getElementById("add point").addEventListener("click", function() {
-    let confirmation = document.createElement("button")
-    confirmation.innerHTML = "confirmer"
-    confirmation.addEventListener("click", function() {
-        confirmation.innerHTML = "en cours"
-        let nb = 0
-        let hashCode = hash()
-        console.log(hashCode)
-        database.ref("users").once("value", function(snapshot) {
+document.getElementById("add point").addEventListener("click",function(){
+	var nbpts=prompt("Nombre de point(s) à ajouter :","1")
+  if (nbpts!==null){
+    var nomgain=prompt("Nom du gain :", "gain de la semaine" + actualWeek)
+    if (nomgain!==null){
+      	var conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
+    }
+  }
+	let hashCode= hash()
+  let nb=0
+	let confirmation=document.getElementById("conf count")
+	if (conf==="OUI"){
+	database.ref("users").once("value", function(snapshot) {
             let total = snapshot.numChildren()
             console.log("nb total : " + total)
             confirmation.innerHTML = "0/" + total
             snapshot.forEach(function(child) {
               let name = child.key
-              database.ref("users/" + name + "/score/" + hashCode + "/name").set("gain de la semaine " + actualWeek)
-              database.ref("users/" + name + "/score/" + hashCode + "/value").set(1)
+              database.ref("users/" + name + "/score/" + hashCode + "/name").set(nomgain)
+              database.ref("users/" + name + "/score/" + hashCode + "/value").set(parseInt(nbpts))
               nb++
               confirmation.innerHTML = nb + "/" + total + " (" + name + ")"
               if(nb == total){
-                confirmation.innerHTML = "fini, reload"
-                confirmation.addEventListener("click", function() {
-                    reload()
-                })
-              }
+		              alert("Ajout de points effectués")
+                }
+              })
             })
-        })
-    })
-    document.getElementById("confirmation point").appendChild(confirmation)
+          }
 });
 
 
@@ -87,7 +87,7 @@ for(let j = 0; j < 4; j++){
     text.className = "jours tableau";
     text.innerHTML = day[j]
     div.appendChild(text);
-    
+
     bouton[j] = []
     total[j] = []
     places[j] = []
@@ -101,10 +101,10 @@ for(let j = 0; j < 4; j++){
         bouton[j][h].onclick = function(){select(j,h)};
         bouton[j][h].className="places tableau"
         div.appendChild(bouton[j][h]);
-      
+
     }
     body.appendChild(div);
-   
+
 }
 
 
@@ -134,8 +134,8 @@ function refreshDatabase(){
                 total[j][h] = snapshot.val();
                 update(j, h);
             });
-      
-            
+
+
             ouvert[j][h] = 0
             database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
                 if(snapshot.val() == null){
@@ -146,9 +146,9 @@ function refreshDatabase(){
                 update(j, h);
             });
 
-         
+
             demandes[j][h] = 0
-      
+
             database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     demandes[j][h] = demandes[j][h] + 1
@@ -157,7 +157,7 @@ function refreshDatabase(){
             });
 
             inscrits[j][h] = 0
-      
+
             database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
                 snapshot.forEach(function(child) {
                     inscrits[j][h] = inscrits[j][h] + 1
@@ -165,7 +165,7 @@ function refreshDatabase(){
                 });
             });
 
-        
+
         }
     }
 }
@@ -186,7 +186,7 @@ function updateAffichage(j,h){
     }else{
         text = "il reste " + places[j][h] + " places";
     }
-              
+
     switch (ouvert[j][h]){
         case 0:
             text = "horaire non planifié"
@@ -225,7 +225,7 @@ function updateAffichage(j,h){
             break;
         case 7:
             bouton[j][h].className="places tableau"
-            
+
             text = demandes[j][h] + " demandes sur " + places[j][h] + " places restantes (" + inscrits[j][h] + " inscrits)"
             break;
         case 8:
@@ -242,7 +242,7 @@ function updateAffichage(j,h){
 }
 
 function select(j,h){
-    
+
     sessionStorage.setItem("j", j);
     sessionStorage.setItem("h", h);
     window.location.href = "../crenau/crenau.html";
@@ -322,7 +322,7 @@ database.ref("messages/").once('value').then(function(snapshot) {
                 database.ref("messages/" + user + "/" + h + "/lu").once('value').then(function(snapshot) {
                     let lu = snapshot.val()
                     if (lu!=true) {
-                        nbMsg++ 
+                        nbMsg++
                         updateMsg()
                     }
                 })
