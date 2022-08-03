@@ -123,18 +123,18 @@ database.ref("users").once("value", function(snapshot) {
                 codeBar = snapshot.val()
                 codeCarte.value = codeBar
                 codeCarte.addEventListener("change", function() {
+                    console.log("ok")
+
                     infoCodeCarte.innerHTML = ""
                     let val = codeCarte.value
                     if(String(val).length  == 5 && val != codeBar){
-                        database.ref("codes barres/" + val).once('value',function(snapshot) {
-                            if(snapshot.val() == null){
-                                database.ref("codes barres/" + codeBar).remove()
-                                codeBar = val
-                                database.ref("codes barres/" + codeBar).set(utilisateur)
-                                database.ref("users/" + utilisateur + "/code barre").set(codeBar)
-                            }else{
-                                infoCodeCarte.innerHTML = "ce code barre est déjà attribué"
-                            }
+                        database.ref("users").once("value", function(snapshot){
+                            snapshot.forEach(function(child) {
+                                codeBar=val
+                                if(child.key === utilisateur){
+                                    database.ref("users/" + utilisateur + "/code barre").set(val)
+                                }
+                            })
                         })
                     }
                 });

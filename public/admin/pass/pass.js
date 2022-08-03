@@ -47,24 +47,31 @@ database.ref("users").once("value", function(snapshot) {
 })
 
 let code = 0
+users_code= new Map();
+database.ref("users").once("value", function(snapshot){
+    snapshot.forEach(function(child) {
+        database.ref("users/"+child.key+"/code barre").once("value", function(snapshot){
+            users_code.set(snapshot.val(),child.key)
+        })
+    })
+})
 function search(c){
     if(code == c){
         return;
     }
     code = c
     inputCodeBar.value = code
-    database.ref("codes barres/" + code).once("value", function(snapshot) {
-        let name = snapshot.val()
-        document.getElementById("name").value = name
-        if(name != null){
-            searchName(name)
-        }else{
-            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/innexistant.jpg\" />"  
-        }
-                
-            
-    })
+    
+    let name = users_code.get(code)
+    document.getElementById("name").value = name
+    if(name!=null){
+        searchName(name)
+        return;
+    }else{
+        document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/innexistant.jpg\" />"  
+    }
 }
+
 
 
 function searchName(name){

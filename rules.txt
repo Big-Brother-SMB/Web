@@ -1,86 +1,100 @@
-".read" : "auth != null",
-".write": "auth != null && auth.uid == 'DpVhY0nSeCe0BMcbqHOuaWmFA7E3' || auth.uid == '5GjNgGlM5nQmY0qgSkAtXPUKrIs1'",
-"foyer_midi":{
-    "$s":{
-    "$j":{
-        "$h":{
-        "demandes":{
-            "$name":{
-            ".write": "$name === auth.token.name",
+{
+    "rules": {
+        ".read" : "auth != null",
+        ".write": "root.child('modo').child('users').child(auth.token.name).val()===0",
+        
+        "banderole":{
+            ".read": "auth != null"
+        },
+        
+        "foyer_midi":{
+            "$s":{
+                "$j":{
+                    "$h":{
+                        "demandes":{
+                            "$name":{
+                                ".write": "$name == auth.token.name",
+                            }
+                        },
+                        "users":{
+                            "$name":{
+                                ".write": "$name == auth.token.name",
+                            }
+                        },
+                    },
+                },
+            },
+        },
 
+        "messages":{
+      	    "$name":{
+                ".write": "$name == auth.token.name",
             }
         },
+
+        "modo":{
+            ".read": "auth != null"
+        },
+
+        "news":{
+            "$date":{
+                "users":{
+                    "$name":{
+                		".write": "$name == auth.token.name",
+                    }
+                }
+            }
+        },
+
+        "perm":{
+            "$s":{
+                "$j":{
+                    "$h":{
+                        "demandes":{
+                            ".write":"auth!=null",
+                        },
+                    },
+                },
+            },
+        },
+
+        "priorites":{
+            ".read": "auth != null"
+        },
+
+        "sondages":{
+            "$date":{
+                "users":{
+                    "$name":{
+                        ".write": "$name == auth.token.name",
+                    }
+                }
+            }
+        },
+
         "users":{
             "$name":{
-            ".write": "$name === auth.token.name",
+                "amis": {
+                    ".write": "$name == auth.token.name",
+                },
+                "messages": {
+              	    "$m":{
+                        "lu": {
+                		    ".write": "$name == auth.token.name"
+                	    }
+                    }
+                },
+                "email": {
+                    ".write": "$name == auth.token.name",
+                },
+                "send mail": {
+                    ".write": "$name == auth.token.name",
+                }
             }
         },
-        },
-    },
-    },
-},
-    
-"messages":{
-    ".write":"auth!=null",
-},
 
-"news":{
-    "$date":{
-    "users":{
-        "$name":{
-        ".write": "$name === auth.token.name",
+        "version":{
+            ".read": "auth != null"
         }
-    }
-    
-    }
-},
-    
-"perm":{
-    "$s":{
-    "$j":{
-        "$h":{
-        "demandes":{
-            ".write":"auth!=null",
-        },
-        },
-    },
-    },
-},
-    
-"sondages":{
-    "$date":{
-    "users":{
-        "$name":{
-        ".write": "$name === auth.token.name",
-        }
-    }
-    
-    }
-},
-    
-"users":{
-    "$name":{
-    "amis": {
-        ".write": "$name === auth.token.name",
-    },
-    "email": {
-        ".write": "$name === auth.token.name",
-    },
-    "send mail": {
-        ".write": "$name === auth.token.name",
-    },
-    "classe": {
-        ".write": "$name === auth.token.name",
-    },
-    "code barre": {
-        ".write": "$name === auth.token.name",
-    },
-    }
-},
-    
-"codes barres":{
-    ".write" : "auth!=null",
-},
-
-
-
+    } 
+}

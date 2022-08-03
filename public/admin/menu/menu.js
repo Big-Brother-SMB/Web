@@ -32,34 +32,32 @@ document.getElementById("semaineSuivante").addEventListener("click", function() 
 
 document.getElementById("add point").addEventListener("click",function(){
 	var nbpts=prompt("Nombre de point(s) à ajouter :","1")
-  if (nbpts!==null){
-    var nomgain=prompt("Nom du gain :", "gain de la semaine" + actualWeek)
-    if (nomgain!==null){
-      	var conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
+    if (nbpts!==null){
+        var nomgain=prompt("Nom du gain :", "gain de la semaine" + actualWeek)
+        if (nomgain!==null){
+      	    var conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
+        }
     }
-  }
 	let hashCode= hash()
-  let nb=0
-	let confirmation=document.getElementById("conf count")
+    let nb=0
+    console.log(conf)
 	if (conf==="OUI"){
-	database.ref("users").once("value", function(snapshot) {
+        console.log("ok")
+	    database.ref("users").once("value", function(snapshot) {
             let total = snapshot.numChildren()
             console.log("nb total : " + total)
-            confirmation.innerHTML = "0/" + total
             snapshot.forEach(function(child) {
-              let name = child.key
-              database.ref("users/" + name + "/score/" + hashCode + "/name").set(nomgain)
-              database.ref("users/" + name + "/score/" + hashCode + "/value").set(parseInt(nbpts))
-              nb++
-              confirmation.innerHTML = nb + "/" + total + " (" + name + ")"
-              if(nb == total){
-		              alert("Ajout de points effectués")
+                let name = child.key
+                database.ref("users/" + name + "/score/" + hashCode + "/name").set(nomgain)
+                database.ref("users/" + name + "/score/" + hashCode + "/value").set(parseInt(nbpts))
+                nb++
+                if(nb == total){
+                    alert("Ajout de points effectués")
                 }
-              })
             })
-          }
+        })
+    }
 });
-
 
 const body = document.getElementById("body");
 Date.prototype.getWeek = function() {
