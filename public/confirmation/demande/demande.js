@@ -15,7 +15,7 @@ database.ref("version").once("value", function (snapshot) {
     })
 
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
-    if(snapshot.val() != 7){
+    if(snapshot.val() != 2){
         window.location.href = menu;
     }
     charged()

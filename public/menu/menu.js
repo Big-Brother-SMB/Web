@@ -325,6 +325,8 @@ function update(j, h) {
 function updateAffichage(j, h) {
     let coutPourcentage = round((cout[j][h] - 1) * 100)
     let textcout = ""
+    let text = "horaire non planifié";
+
     if(coutPourcentage != 0){
 
         if(coutPourcentage > 0){
@@ -336,107 +338,89 @@ function updateAffichage(j, h) {
 
     }
 
-    let text;
-    if (places[j][h] <= 0) {
-        text = "Plein";
-    } else if (places[j][h] == 1) {
-        text = "Il reste une place";
-    } else {
-        text = "Il reste " + places[j][h] + " places";
-    }
-
     switch (ouvert[j][h]) {
         case 0:
-            text = "Horaire non planifié"
-            bouton[j][h].className = "ferme tableau"
+            text = "horaire non planifié"
+            bouton[j][h].className="ferme tableau"
             break;
         case 1:
+            text = "ouvert à tous";
+            bouton[j][h].className="inscrit tableau"
+            break;
+        case 2:
+            bouton[j][h].className = "places tableau"
             if (places[j][h] <= 0) {
                 bouton[j][h].className = "zero tableau"
                 text = "Plein";
             } else {
                 bouton[j][h].className = "places tableau"
-                if (places[j][h] == 1) {
-                    text = "Il reste une place";
-                }
+                text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
             }
             break;
-        case 2:
-            text = "Foyer fermé"
-            bouton[j][h].className = "ferme tableau"
-            break;
         case 3:
-            text = text + "<br>(pas de désinscriptions possible)";
-            bouton[j][h].className = "bloque tableau"
+            bouton[j][h].className="bloque tableau"
+            if (places[j][h] <= 0) {
+                text = "Plein";
+            } else {
+                text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
+            }
             break;
         case 4:
-            text = text + "<br>(pas d'inscriptions possible)";
-            bouton[j][h].className = "ferme tableau"
+            text = "Foyer fermé"
+            bouton[j][h].className="zero tableau"
             break;
         case 5:
-            text = "Ouvert (changements bloqués)";
-            bouton[j][h].className = "ferme tableau"
+            text = "Fini"
+            bouton[j][h].className="zero tableau"
             break;
         case 6:
             text = "Vacances"
-            bouton[j][h].className = "ferme tableau"
+            bouton[j][h].className="ferme tableau"
             break;
-        case 7:
-            bouton[j][h].className = "places tableau"
-
-            text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
-            break;
-        case 8:
-            text = "Calcul en cours"
-            bouton[j][h].className = "ferme tableau"
-            break;
-        case 9:
-            text = "Fini"
-            bouton[j][h].className = "ferme tableau"
-            break;
-
     }
-    if (demande[j][h]) {
-        bouton[j][h].className = "demande tableau"
-        if (nbAmis[j][h] == 0) {
-            text = "Demande enregistrée sans amis"
-        }
-        else if (nbAmis[j][h] == 1) {
-            text = "Demande enregistrée avec 1 ami<br>"
-            if (nbAmisDemande[j][h] == 0) {
-                text += "qui n'a pas fait de demande"
-            } else {
-                text += "qui a fait une demande"
+    if(ouvert[j][h]===2 || ouvert[j][h]===3){
+        if (demande[j][h]) {
+            bouton[j][h].className = "demande tableau"
+            if (nbAmis[j][h] == 0) {
+                text = "Demande enregistrée sans amis"
             }
-        }
-        else {
-            text = "Demande enregistrée avec " + nbAmis[j][h] + " amis<br>"
-            if (nbAmisDemande[j][h] == 0) {
-                text += "qui n'ont pas fait de demandes"
-            } else if (nbAmis[j][h] == nbAmisDemande[j][h]) {
-                text += "qui ont tous fait une demande"
-            } else if (nbAmisDemande[j][h] == 1) {
-                text += "dont un seul a fait une demande"
-            } else {
-                text += "dont " + nbAmisDemande[j][h] + " ont fait une demande"
+            else if (nbAmis[j][h] == 1) {
+                text = "Demande enregistrée avec 1 ami<br>"
+                if (nbAmisDemande[j][h] == 0) {
+                    text += "qui n'a pas fait de demande"
+                } else {
+                    text += "qui a fait une demande"
+                }
             }
-
+            else {
+                text = "Demande enregistrée avec " + nbAmis[j][h] + " amis<br>"
+                if (nbAmisDemande[j][h] == 0) {
+                    text += "qui n'ont pas fait de demandes"
+                } else if (nbAmis[j][h] == nbAmisDemande[j][h]) {
+                    text += "qui ont tous fait une demande"
+                } else if (nbAmisDemande[j][h] == 1) {
+                    text += "dont un seul a fait une demande"
+                } else {
+                    text += "dont " + nbAmisDemande[j][h] + " ont fait une demande"
+                }
+    
+            }
+    
         }
-
-    }
-
-    if (inscrit[j][h]) {
-        bouton[j][h].className = "inscrit tableau"
-        if (nbAmis[j][h] == 0) {
-            text = text + "<br>Vous êtes inscrit"
+    
+        if (inscrit[j][h]) {
+            bouton[j][h].className = "inscrit tableau"
+            if (nbAmis[j][h] == 0) {
+                text = text + "<br>Vous êtes inscrit"
+            }
+            else if (nbAmis[j][h] == 1) {
+                text = text + "<br>Vous êtes inscrit avec 1 ami"
+            }
+            else {
+                text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " amis"
+            }
+    
         }
-        else if (nbAmis[j][h] == 1) {
-            text = text + "<br>Vous êtes inscrit avec 1 ami"
-        }
-        else {
-            text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " amis"
-        }
-
     }
     bouton[j][h].innerHTML = text;
 }
@@ -450,7 +434,7 @@ function select(j, h) {
     if (demande[j][h]) {
         window.location.href = "../confirmation/modifier/modifier.html";
     } else {
-        if (ouvert[j][h] == 7 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]) { //verrou : nbFois < 1
+        if (ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]) { //verrou : nbFois < 1
             window.location.href = "../confirmation/demande/demande.html";
         }
     }
