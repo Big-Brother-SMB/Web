@@ -5,9 +5,9 @@ let divScoreEvent = document.getElementById("divScoreEvent")
 let bAddScore = document.getElementById("score ajouter")
 let valScore = document.getElementById("score value")
 let nameScore = document.getElementById("score name")
-
-let codeCarte = document.getElementById("code carte")
 let infoCodeCarte = document.getElementById("info code barre")
+let codeCarte = document.getElementById("code carte")
+let adminBox = document.getElementById("admin")
 
 for(i in listClasse){
     let opt = document.createElement("option")
@@ -31,12 +31,27 @@ database.ref("priorites").once("value", function(snapshot) {
 
 })
 
+function stop(){
+    divClasse.removeEventListener("change",fu1)
+    bAddScore.removeEventListener("click",fu2)
+    adminBox.removeEventListener("change",fu3)
+    codeCarte.removeEventListener("input",fu4)
+    addPrio.removeEventListener("click",fu5)
+}
+
+let fu1=function(){return}
+let fu2=function(){return}
+let fu3=function(){return}
+let fu4=function(){return}
+let fu5=function(){return}
+
 let utilisateurs = []
 database.ref("users").once("value", function(snapshot) {
     snapshot.forEach(function(child) {
         utilisateurs.push(child.key) 
     })
     autocomplete(document.getElementById("search"), utilisateurs,function(val){
+        stop()
         setTimeout(function() {
             let utilisateur = document.getElementById("search").value
             console.log(utilisateur)
@@ -46,7 +61,7 @@ database.ref("users").once("value", function(snapshot) {
                 document.getElementById("info").innerHTML = "Page de "+utilisateur
                 database.ref("users/" + utilisateur + "/classe").once('value').then(function(snapshot) {
                 divClasse.selectedIndex = listClasse.indexOf(snapshot.val());
-                divClasse.addEventListener("change", function() {
+                divClasse.addEventListener("change", fu1=function() {
                     database.ref("users/" + utilisateur + "/classe").set(listClasse[this.selectedIndex])
                 });
             });
@@ -104,7 +119,7 @@ database.ref("users").once("value", function(snapshot) {
                 })     
             }
     
-            bAddScore.addEventListener("click", function() {
+            bAddScore.addEventListener("click", fu2=function() {
                 let val = parseFloat(valScore.value)
                 let name = nameScore.value
                 if(!isNaN(val) && name != ""){
@@ -113,27 +128,48 @@ database.ref("users").once("value", function(snapshot) {
                     database.ref("users/" + utilisateur + "/score/" + h + "/value").set(val)
                     valScore.value = ""
                     nameScore.value = ""
-    
+            
                     addScoreEvent(h)
                 }
                 
             });
-            let codeBar
-            database.ref("users/" + utilisateur + "/code barre").once('value').then(function(snapshot) {
-                codeBar = snapshot.val()
-                codeCarte.value = codeBar
-                codeCarte.addEventListener("change", function() {
-                    console.log("ok")
 
+            database.ref("modo/users/" + utilisateur).once('value').then(function(snapshot) {
+                if(snapshot.val()===0){
+                    adminBox.checked=true
+                } else {
+                    adminBox.checked=false
+                }
+                adminBox.addEventListener("change", fu3=function() {
+                    if (adminBox.checked == true){
+                        database.ref("modo/users/" + utilisateur).set(0)
+                    } else {
+                        database.ref("modo/users/" + utilisateur).remove()
+                    }
+                })
+
+            })
+            database.ref("users/" + utilisateur + "/code barre").once('value').then(function(snapshot) {
+                let codeBar = snapshot.val()
+                codeCarte.value = codeBar
+                codeCarte.addEventListener("input", fu4=function() {
+                    codeBar = snapshot.val()
                     infoCodeCarte.innerHTML = ""
                     let val = codeCarte.value
                     if(String(val).length  == 5 && val != codeBar){
+                        let test= true;
                         database.ref("users").once("value", function(snapshot){
                             snapshot.forEach(function(child) {
-                                codeBar=val
-                                if(child.key === utilisateur){
-                                    database.ref("users/" + utilisateur + "/code barre").set(val)
-                                }
+                                database.ref("users/"+child.key+"/code barre").once("value", function(snapshot){
+                                    if (val===snapshot.val()&&child.key!=utilisateur) {
+                                        infoCodeCarte.innerHTML += "déjà utiliser par: " + child.key
+                                        test=false
+                                        database.ref("users/" + utilisateur + "/code barre").set(codeBar)
+                                    }
+                                    if(child.key === utilisateur && test){
+                                        database.ref("users/" + utilisateur + "/code barre").set(val)
+                                    }
+                                })
                             })
                         })
                     }
@@ -159,7 +195,7 @@ database.ref("users").once("value", function(snapshot) {
                 }
             });
             
-            addPrio.addEventListener("click", function() {
+            addPrio.addEventListener("click", fu5=function() {
                 const index = this.selectedIndex - 1
                 addPrio.selectedIndex = 0
                 if(index != -1 && !bPrio[index]){
@@ -171,8 +207,6 @@ database.ref("users").once("value", function(snapshot) {
                     }
                     addButPrio(name)
                 }
-                
-    
             });
             function addButPrio(name){
                 let prio = document.createElement("button")
@@ -188,13 +222,12 @@ database.ref("users").once("value", function(snapshot) {
                 });
                 divPrio.appendChild(prio);
             }
-        }
-        
+        }        
         },100);
     });
 })
     
-    
+
 
 
 let charge = 1

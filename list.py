@@ -18,6 +18,7 @@ database = pyrebase.initialize_app(config).database()
 with open("liste.csv") as file:
     data_reader = csv.reader(file)
     for line in data_reader:
+        print(line[2]+" "+line[1])
         database.child("users/"+line[2]+" "+line[1]+"/code barre").set(line[0])
         database.child("users/"+line[2]+" "+line[1]+"/classe").set(line[3])
 print("fin")

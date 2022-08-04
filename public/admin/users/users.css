@@ -113,6 +113,11 @@ input[type=number]{
   width: 200px;
 }
 
+input[type=checkbox] {
+  width: 30px;
+  height: 30px;
+}
+
 #divScore{
   align-items: center;
   border: 1px solid black;

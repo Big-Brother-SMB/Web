@@ -27,7 +27,15 @@ firebase.auth().onAuthStateChanged(function(user) {
     } else {
         deco()
         console.log("log out")
-    } 
+    }
+    if(window.location.pathname.includes("admin")){
+        let userName=readCookie("user")
+        database.ref("modo/users/"+ userName).once('value',function(snapshot){
+            if(snapshot.val()!=0){
+                deco()
+            }
+        })
+    }
 });
 
 //--------------------
