@@ -40,9 +40,9 @@ document.getElementById("add point").addEventListener("click",function(){
     }
 	let hashCode= hash()
     let nb=0
-    console.log(conf)
 	if (conf==="OUI"){
-        console.log("ok")
+        database.ref("histPoint/" + hashCode + "/name").set(nomgain)
+        database.ref("histPoint/" + hashCode + "/value").set(parseInt(nbpts))
 	    database.ref("users").once("value", function(snapshot) {
             let total = snapshot.numChildren()
             console.log("nb total : " + total)
@@ -52,12 +52,28 @@ document.getElementById("add point").addEventListener("click",function(){
                 database.ref("users/" + name + "/score/" + hashCode + "/value").set(parseInt(nbpts))
                 nb++
                 if(nb == total){
+                    plus()
                     alert("Ajout de points effectués")
                 }
             })
         })
     }
 });
+
+plus()
+function plus(){
+    document.getElementById("notif plus").style.visibility = "visible"
+    database.ref("histPoint").once("value", function(snapshot) {
+        snapshot.forEach(function(child){
+            database.ref("histPoint/"+child.key+"/name").once("value", function(snapshot) {
+                if(snapshot.val()==="gain de la semaine" + actualWeek){
+                    document.getElementById("notif plus").style.visibility = "hidden"
+                }
+            })
+        })
+    })
+}
+
 
 const body = document.getElementById("body");
 Date.prototype.getWeek = function() {
