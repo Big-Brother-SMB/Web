@@ -215,9 +215,11 @@ function sondage(h, text, mode, reponse,choices){
                 function otherText(){
                     let textarea = document.createElement("textarea")
                     textarea.id = "textarea"
+                    divOther.innerHTML=""
                     divOther.appendChild(textarea);
                     let valider = document.createElement("button")
                     valider.innerHTML = "Valider"
+                    valider.className="rep"
                     divOther.appendChild(valider);
                     if(checked == -2){
                         textarea.value = reponse
@@ -233,10 +235,7 @@ function sondage(h, text, mode, reponse,choices){
                 }
 
                 divRep.appendChild(bRep);
-                divRep.appendChild(divOther);
-        
-                
-                
+                divRep.appendChild(divOther); 
             }
 
         }else{
@@ -251,7 +250,7 @@ function sondage(h, text, mode, reponse,choices){
                 bRep.style.height = size[mode][1]
         
                 bRep.addEventListener("mouseup", function() {
-                    reponse = i
+                    reponse = parseInt(i)
                     database.ref("sondages/" + h + "/users/" + user).set(parseInt(i))
                     hide()
                 })
@@ -273,11 +272,6 @@ function sondage(h, text, mode, reponse,choices){
         })
     
         msg.appendChild(jsp);
-
-        msg.addEventListener("click",event)
-        function event(){
-            hide()
-        }
     }
     
     

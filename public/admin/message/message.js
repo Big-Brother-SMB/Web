@@ -89,7 +89,6 @@ database.ref("sondages").once('value').then(function(snapshot) {
                             snapshot.forEach(function(child) {
                                 choices.push(child.key)
                             })
-                            console.log(choices)
                             sondage(h, text, mode,reponse,choices)
                         })
                     }else{
@@ -101,17 +100,18 @@ database.ref("sondages").once('value').then(function(snapshot) {
     })
 })
 
-let numRadio = 0
 function sondage(h, text, mode, reponse,choices){
     let msg = document.createElement("div")
     msg.className = "sondage"
     
     let reponseList=[]
     let moyen=0
+    let tour=0
     if(mode==0) {
         reponseList=[0,0]
         for(let loop in reponse){
             if(reponse[loop]!=-1 && reponse[loop]>=0 && reponse[loop]<=1){
+                tour++
                 reponseList[reponse[loop]]++
             }
         }
@@ -119,12 +119,12 @@ function sondage(h, text, mode, reponse,choices){
         reponseList=[0,0,0,0]
         for(let loop in reponse){
             if(reponse[loop]!=-1 && reponse[loop]>=0 && reponse[loop]<=3){
+                tour++
                 reponseList[reponse[loop]]++
             }
         }
     } else if(mode==2) {
         reponseList=[0,0,0,0,0,0,0,0,0,0]
-        let tour=0
         let total=0
         for(let loop in reponse){
             if(reponse[loop]!=-1 && reponse[loop]>=0 && reponse[loop]<=9){
@@ -139,19 +139,15 @@ function sondage(h, text, mode, reponse,choices){
         for(let loop in choices){
             reponseList.set(choices[loop],0)
         }
-        let tour=0
-        let x=""
+        let x=0
         for(let loop in reponse){
             if(reponse[loop]!=-1){
                 tour++
                 x=reponseList.get(reponse[loop])
-                reponseList.set(reponse[loop]+1)
+                reponseList.set(reponse[loop],x+1)
             }
         }
     }
-    console.log(reponseList)
-    console.log(moyen)
-
 
     hide()
     function hide(){
@@ -160,9 +156,21 @@ function sondage(h, text, mode, reponse,choices){
 
         if(reponse.length!=0){
             if(mode==0) {
-                nameRep="voir plus"
+                if(reponseList[0]>reponseList[1]){
+                    nameRep="oui"
+                } else if(reponseList[0]<reponseList[1]) {
+                    nameRep="non"
+                } else {
+                    nameRep="="
+                }
             } else if(mode==1) {
-                nameRep="voir plus"
+                if(reponseList[0]+reponseList[1]>reponseList[2]+reponseList[3]){
+                    nameRep="satisfait"
+                } else if(reponseList[0]+reponseList[1]<reponseList[2]+reponseList[3]) {
+                    nameRep="non satisfait"
+                } else {
+                    nameRep="="
+                }
             } else if(mode==2) {
                 nameRep=moyen+"/10"
             }  else if(mode==3) {
@@ -192,124 +200,42 @@ function sondage(h, text, mode, reponse,choices){
     function display(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = text + "<br><br>Propositions : "
+        p.innerHTML = text + "</br><br>Propositions(" +tour+" voie): "
         p.className = "text"
         msg.appendChild(p);
     
        
         let divRep = document.createElement("div")
+        divRep.className = "divVerticale"
         
         if(mode == 3){
-            let num = numRadio
-            numRadio++
-            divRep.className = "divVerticale"
-            let other = false
-            if(choices.indexOf("other") != -1){
-                other = true
-            }
-
-            let checked = -1
-            if(reponse != -1 && reponse != null){
-                checked = choices.indexOf(reponse)
-                if(checked == -1){
-                    checked--
-                }
-            }
-
             for(let i in choices){
                 if(choices[i] != "other"){
                     let bRep = document.createElement("p")
-                    bRep.innerHTML = "<p><input type=\"radio\" name=\"choices" + num + "\"" + (i == checked?"checked":"") +"> " + choices[i] + "</p>"
-                    
-            
-                    bRep.addEventListener("mouseup", function() {
-                        reponse = choices[i]
-                        //database.ref("sondages/" + h + "/users/" + user).set(choices[i])
-                        hide()
-                    })
-            
+                    bRep.innerHTML = "<p>"+choices[i]+" : "+(round(reponseList.get(choices[i])/tour)*100)+"%</p>"            
                     divRep.appendChild(bRep);
                 }
-                
             }
 
-            if(other){
-                let bRep = document.createElement("p")
-                bRep.innerHTML = "<p><input type=\"radio\" name=\"choices" + num + "\"" + (checked == -2?"checked":"") +"> Autre (écrire sa proposition)</p>"
-                let divOther = document.createElement("div")
-                
-                
-
-                //divOther.innerHTML = "<textarea id=\"textarea\"></textarea><button id=\"valider\">Valider</button>"
-                bRep.addEventListener("click", function() {
-                    otherText()
-                })
-
-                if(checked == -2){
-                    otherText()
+            let bRep = document.createElement("p")
+            let textOther=""
+            for(let i in reponse){
+                if(choices.indexOf(reponse[i])==-1){
+                    textOther+="<p> >>>"+reponse[i]+"</p>"
                 }
-
-                function otherText(){
-                    let textarea = document.createElement("textarea")
-                    textarea.id = "textarea"
-                    divOther.appendChild(textarea);
-                    let valider = document.createElement("button")
-                    valider.innerHTML = "Valider"
-                    divOther.appendChild(valider);
-                    if(checked == -2){
-                        textarea.value = reponse
-                    }
-                    valider.addEventListener("mouseup", function() {
-                        const text = textarea.value
-                        if(text != ""){
-                            reponse = text
-                            //database.ref("sondages/" + h + "/users/" + user).set(text)
-                            hide()
-                        }
-                    })
-                }
-
-                divRep.appendChild(bRep);
-                divRep.appendChild(divOther);
-        
-                
-                
             }
+            bRep.innerHTML = textOther
+            divRep.appendChild(bRep);
 
         }else{
-            divRep.className = "divRep"
             for(let i in rep[mode]){
-
-                let bRep = document.createElement("button")
-                bRep.innerHTML = rep[mode][i]
-                bRep.className = "rep"
-                bRep.style.backgroundColor = color[mode][i]
-                bRep.style.width = size[mode][0]
-                bRep.style.height = size[mode][1]
-        
-                bRep.addEventListener("mouseup", function() {
-                    reponse = i
-                    //database.ref("sondages/" + h + "/users/" + user).set(i)
-                    hide()
-                })
-        
+                let bRep = document.createElement("p")
+                bRep.innerHTML = "<p>"+rep[mode][i]+" : "+(round(reponseList[i]/tour)*100)+"%</p>"            
                 divRep.appendChild(bRep);
             }
         }
         
         msg.appendChild(divRep);
-    
-        let jsp = document.createElement("button")
-        jsp.innerHTML = "Pas de réponse"
-        jsp.className = "rep"
-    
-        jsp.addEventListener("mouseup", function() {
-            reponse = -1
-            //database.ref("sondages/" + h + "/users/" + user).set(-1)
-            hide()
-        })
-    
-        msg.appendChild(jsp);
 
         msg.addEventListener("click",event)
         function event(){
@@ -559,6 +485,14 @@ let type2 = document.getElementById("type2")
 
 let icon
 
+const listType = ["Oui/Non","Satisfait","Echelle 1 à 10","Customiser"]
+
+for (let i in listType) {
+    let opt = document.createElement("option")
+    opt.innerHTML = listType[i]
+    type.appendChild(opt);
+}
+
 iconSend.addEventListener("click", function() {
     icon = 0
 
@@ -608,14 +542,15 @@ database.ref("users/").once('value').then(function(snapshot) {
 })
 
 send.addEventListener("click", function() {
-    if(title.value != "" && text.value != ""){
+    if(title.value != ""){
         let hashCode = hash()
-        if(icon==0 && usersList.indexOf(destinataire.value)!=-1){
+        if(icon==0 && usersList.indexOf(destinataire.value)!=-1 && text.value != ""){
             database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/title").set(title.value)
             database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/text").set(text.value)
             myMessage(hashCode, title.value, text.value,destinataire.value,false)
             title.value = ""
             destinataire.value = ""
+            type.selectedIndex = 0
             text.value = ""
             iconSend.style.visibility = "visible"
             iconNews.style.visibility = "visible"
@@ -625,12 +560,13 @@ send.addEventListener("click", function() {
             divSend.style.visibility = "hidden"
             divSend.style.height = "0px"
         }
-        if(icon==1){
+        if(icon==1 && text.value != ""){
             database.ref("news/" + hashCode + "/title").set(title.value)
             database.ref("news/" + hashCode + "/text").set(text.value)
             news(hashCode, title.value, text.value)
             title.value = ""
             destinataire.value = ""
+            type.selectedIndex = 0
             text.value = ""
             iconSend.style.visibility = "visible"
             iconNews.style.visibility = "visible"
@@ -641,11 +577,16 @@ send.addEventListener("click", function() {
             divSend.style.height = "0px"
         }
         if(icon==2){
-            /*database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/title").set(title.value)
-            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/text").set(text.value)
-            myMessage(hashCode, title.value, text.value,destinataire.value,false)
+            database.ref("sondages/" + hashCode +"/text").set(title.value)
+            database.ref("sondages/" + hashCode +"/mode").set(type.selectedIndex)
+            let choices=text.value.split('/')
+            for(let i in choices){
+                database.ref("sondages/" + hashCode +"/choices/"+choices[i]).set(0)
+            }
+            sondage(hashCode, title.value, type.selectedIndex,[],choices)
             title.value = ""
             destinataire.value = ""
+            type.selectedIndex = 0
             text.value = ""
             iconSend.style.visibility = "visible"
             iconNews.style.visibility = "visible"
@@ -653,15 +594,15 @@ send.addEventListener("click", function() {
             destinataire2.style.visibility = "hidden"
             type2.style.visibility = "hidden"
             divSend.style.visibility = "hidden"
-            divSend.style.height = "0px"*/
+            divSend.style.height = "0px"
         }
     }
-    
 })
 
 annuler.addEventListener("click", function() {
     title.value = ""
     destinataire.value = ""
+    type.selectedIndex = 0
     text.value = ""
     iconSend.style.visibility = "visible"
     iconNews.style.visibility = "visible"
