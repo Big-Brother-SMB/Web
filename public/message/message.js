@@ -81,7 +81,7 @@ database.ref("sondages").once('value').then(function(snapshot) {
                 
                 database.ref("sondages/" + h + "/users/" + user).once('value').then(function(snapshot) {
                     let reponse = snapshot.val()
-                    if(mode < 0){
+                    if(mode == 3){
                         database.ref("sondages/" + h + "/choices").once('value').then(function(snapshot) {
                             let choices = []
                             snapshot.forEach(function(child) {
@@ -125,7 +125,7 @@ function sondage(h, text, mode, reponse,choices){
     function hide(){
         msg.innerHTML = ""
         let nameRep = "Pas de réponse"
-        if(isNaN(parseInt(reponse))){
+        if("number"!=typeof reponse){
             nameRep = reponse
         }else if(reponse != -1){
             nameRep = rep[mode][reponse]
@@ -162,7 +162,7 @@ function sondage(h, text, mode, reponse,choices){
        
         let divRep = document.createElement("div")
         
-        if(mode < 0){
+        if(mode == 3){
             let num = numRadio
             numRadio++
             divRep.className = "divVerticale"
@@ -252,7 +252,7 @@ function sondage(h, text, mode, reponse,choices){
         
                 bRep.addEventListener("mouseup", function() {
                     reponse = i
-                    database.ref("sondages/" + h + "/users/" + user).set(i)
+                    database.ref("sondages/" + h + "/users/" + user).set(parseInt(i))
                     hide()
                 })
         

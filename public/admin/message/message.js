@@ -68,7 +68,7 @@ const size = [
 ]
 
 
-/*database.ref("sondages").once('value').then(function(snapshot) {
+database.ref("sondages").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         let h = child.key
         database.ref("sondages/" + h + "/text").once('value').then(function(snapshot) {
@@ -78,65 +78,100 @@ const size = [
                 if(mode == null){
                     mode = 0
                 }
-                if(mode < 0){
-                    database.ref("sondages/" + h + "/choices").once('value').then(function(snapshot) {
-                        let choices = []
-                        snapshot.forEach(function(child) {
-                            choices.push(child.key)
-                        })
-                        sondage(h, text, mode,reponse,choices)
+                let reponse=[]
+                database.ref("sondages/" + h + "/users").once('value').then(function(snapshot) {
+                    snapshot.forEach(function(child){
+                        reponse.push(snapshot.child(child.key).val())
                     })
-                }
-                
-                database.ref("sondages/" + h + "/users/" + user).once('value').then(function(snapshot) {
-                    let reponse = snapshot.val()
-                   
+                    if(mode == 3){
+                        database.ref("sondages/" + h + "/choices").once('value').then(function(snapshot) {
+                            let choices = []
+                            snapshot.forEach(function(child) {
+                                choices.push(child.key)
+                            })
+                            console.log(choices)
+                            sondage(h, text, mode,reponse,choices)
+                        })
                     }else{
                         sondage(h, text, mode,reponse,null)
                     }
-                )    
-            })
-                
-                
-                
+                })
             })
         })
-
-        
     })
-})*/
-
-
-
-
+})
 
 let numRadio = 0
 function sondage(h, text, mode, reponse,choices){
     let msg = document.createElement("div")
     msg.className = "sondage"
-
-    if(reponse != null){
-        hide()     
-    }else{
-        display()
-        addNew(msg, h)
-        //divNew.appendChild(msg);
-        newMsg()
-    }
-
-    function hide(){
-        msg.innerHTML = ""
-        let nameRep = "Pas de réponse"
-        if(isNaN(parseInt(reponse))){
-            nameRep = reponse
-        }else if(reponse != -1){
-            nameRep = rep[mode][reponse]
-            if(mode == 2){
-                nameRep += "/10"
+    
+    let reponseList=[]
+    let moyen=0
+    if(mode==0) {
+        reponseList=[0,0]
+        for(let loop in reponse){
+            if(reponse[loop]!=-1 && reponse[loop]>=0 && reponse[loop]<=1){
+                reponseList[reponse[loop]]++
             }
         }
+    } else if(mode==1) {
+        reponseList=[0,0,0,0]
+        for(let loop in reponse){
+            if(reponse[loop]!=-1 && reponse[loop]>=0 && reponse[loop]<=3){
+                reponseList[reponse[loop]]++
+            }
+        }
+    } else if(mode==2) {
+        reponseList=[0,0,0,0,0,0,0,0,0,0]
+        let tour=0
+        let total=0
+        for(let loop in reponse){
+            if(reponse[loop]!=-1 && reponse[loop]>=0 && reponse[loop]<=9){
+                tour++
+                total+=reponse[loop]+1
+                reponseList[reponse[loop]]++
+            }
+        }
+        moyen=round(total/tour)
+    }  else if(mode==3) {
+        reponseList=new Map();
+        for(let loop in choices){
+            reponseList.set(choices[loop],0)
+        }
+        let tour=0
+        let x=""
+        for(let loop in reponse){
+            if(reponse[loop]!=-1){
+                tour++
+                x=reponseList.get(reponse[loop])
+                reponseList.set(reponse[loop]+1)
+            }
+        }
+    }
+    console.log(reponseList)
+    console.log(moyen)
+
+
+    hide()
+    function hide(){
+        msg.innerHTML = ""
+        let nameRep = "aucune"
+
+        if(reponse.length!=0){
+            if(mode==0) {
+                nameRep="voir plus"
+            } else if(mode==1) {
+                nameRep="voir plus"
+            } else if(mode==2) {
+                nameRep=moyen+"/10"
+            }  else if(mode==3) {
+                nameRep="voir plus"
+            }
+        }
+        
         let p = document.createElement("p")
-        p.innerHTML = "Sondage (" + text + ")<br>réponse : " + nameRep
+        p.innerHTML = "Sondage (" + text + ")<br>réponses : " + nameRep
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -164,7 +199,7 @@ function sondage(h, text, mode, reponse,choices){
        
         let divRep = document.createElement("div")
         
-        if(mode < 0){
+        if(mode == 3){
             let num = numRadio
             numRadio++
             divRep.className = "divVerticale"
@@ -189,7 +224,7 @@ function sondage(h, text, mode, reponse,choices){
             
                     bRep.addEventListener("mouseup", function() {
                         reponse = choices[i]
-                        database.ref("sondages/" + h + "/users/" + user).set(choices[i])
+                        //database.ref("sondages/" + h + "/users/" + user).set(choices[i])
                         hide()
                     })
             
@@ -228,7 +263,7 @@ function sondage(h, text, mode, reponse,choices){
                         const text = textarea.value
                         if(text != ""){
                             reponse = text
-                            database.ref("sondages/" + h + "/users/" + user).set(text)
+                            //database.ref("sondages/" + h + "/users/" + user).set(text)
                             hide()
                         }
                     })
@@ -254,7 +289,7 @@ function sondage(h, text, mode, reponse,choices){
         
                 bRep.addEventListener("mouseup", function() {
                     reponse = i
-                    database.ref("sondages/" + h + "/users/" + user).set(i)
+                    //database.ref("sondages/" + h + "/users/" + user).set(i)
                     hide()
                 })
         
@@ -270,7 +305,7 @@ function sondage(h, text, mode, reponse,choices){
     
         jsp.addEventListener("mouseup", function() {
             reponse = -1
-            database.ref("sondages/" + h + "/users/" + user).set(-1)
+            //database.ref("sondages/" + h + "/users/" + user).set(-1)
             hide()
         })
     

@@ -229,26 +229,7 @@ function updateAffichage(j,h){
         case 6:
             text = "Vacances"
             bouton[j][h].className="ferme tableau"
-            break;/*
-        case 1:
-            if(places[j][h] <= 0){
-                bouton[j][h].className="zero tableau"
-                text = "plein";
-            }else{
-                bouton[j][h].className="places tableau"
-                if(places[j][h] == 1){
-                    text = "il reste une place";
-                }
-            }
             break;
-        case 3:
-            text = text + "<br>(pas de désinscriptions possible)";
-            bouton[j][h].className="bloque tableau"
-            break;
-        case 4:
-            text = text + "<br>(pas d'inscriptions possible)";
-            bouton[j][h].className="ferme tableau"
-            break;*/
     }
     bouton[j][h].innerHTML = text;
 }
