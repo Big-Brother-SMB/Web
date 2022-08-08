@@ -56,11 +56,6 @@ select{
   margin: 10px;
 }
 
-.notification img{
-  width: 100px;
-  height: 100px;
-}
-
 
 .notification .badge {
   position: absolute;
@@ -184,9 +179,10 @@ select{
 
 .notification img{
   background-color: #486381;
-  width: 100px;
+  width: 100%;
   height: 100px;
 }
+
 header button{
   background-color: #486381;
 }
