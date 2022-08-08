@@ -185,11 +185,14 @@ function sondage(h, text, mode, reponse,choices){
                     bRep.innerHTML = "<p><input type=\"radio\" name=\"choices" + num + "\"" + (i == checked?"checked":"") +"> " + choices[i] + "</p>"
                     
             
-                    bRep.addEventListener("mouseup", function() {
+                    bRep.addEventListener("mouseup",event)
+                    
+                    function event() {
+                        bRep.removeEventListener("mouseup",event)
                         reponse = choices[i]
                         database.ref("sondages/" + h + "/users/" + user).set(choices[i])
                         hide()
-                    })
+                    }
             
                     divRep.appendChild(bRep);
                 }
@@ -204,9 +207,12 @@ function sondage(h, text, mode, reponse,choices){
                 
 
                 //divOther.innerHTML = "<textarea id=\"textarea\"></textarea><button id=\"valider\">Valider</button>"
-                bRep.addEventListener("click", function() {
+                bRep.addEventListener("click",event)
+                
+                function event() {
+                    bRep.removeEventListener("click", event)
                     otherText()
-                })
+                }
 
                 if(checked == -2){
                     otherText()
@@ -224,14 +230,16 @@ function sondage(h, text, mode, reponse,choices){
                     if(checked == -2){
                         textarea.value = reponse
                     }
-                    valider.addEventListener("mouseup", function() {
+                    valider.addEventListener("mouseup",event2)
+                    function event2() {
+                        valider.removeEventListener("mouseup", event2)
                         const text = textarea.value
                         if(text != ""){
                             reponse = text
                             database.ref("sondages/" + h + "/users/" + user).set(text)
                             hide()
                         }
-                    })
+                    }
                 }
 
                 divRep.appendChild(bRep);
@@ -249,11 +257,13 @@ function sondage(h, text, mode, reponse,choices){
                 bRep.style.width = size[mode][0]
                 bRep.style.height = size[mode][1]
         
-                bRep.addEventListener("mouseup", function() {
+                bRep.addEventListener("mouseup",event)
+                function event() {
+                    bRep.removeEventListener("mouseup", event)
                     reponse = parseInt(i)
                     database.ref("sondages/" + h + "/users/" + user).set(parseInt(i))
                     hide()
-                })
+                }
         
                 divRep.appendChild(bRep);
             }
@@ -265,11 +275,13 @@ function sondage(h, text, mode, reponse,choices){
         jsp.innerHTML = "Pas de réponse"
         jsp.className = "rep"
     
-        jsp.addEventListener("mouseup", function() {
+        jsp.addEventListener("mouseup",event3)
+        function event3() {
+            jsp.removeEventListener("mouseup", event3)
             reponse = -1
             database.ref("sondages/" + h + "/users/" + user).set(-1)
             hide()
-        })
+        }
     
         msg.appendChild(jsp);
     }
@@ -349,6 +361,7 @@ function news(h,title,text,lu){
     
         msg.addEventListener("click",event)
         function event(){
+            msg.removeEventListener("click", event)
             hide()
         }
     }
@@ -527,8 +540,8 @@ send.addEventListener("click", function() {
         let hashCode = hash()
         database.ref("messages/" + user +"/"+ hashCode + "/title").set(title.value)
         database.ref("messages/" + user +"/"+ hashCode + "/type").set(listType[type.selectedIndex])
-        database.ref("messages/" + user +"/"+ hashCode + "/text").set(text.value)
-        myMessage(hashCode, title.value, text.value, listType[type.selectedIndex])
+        database.ref("messages/" + user +"/"+ hashCode + "/text").set(text.value.replaceAll('\n',"</br>"))
+        myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"), listType[type.selectedIndex])
         title.value = ""
         text.value = ""
         iconSend.style.visibility = "visible"

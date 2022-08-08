@@ -7,6 +7,7 @@ let table = document.getElementById("tbody")
 let cout
 let snapshotUser
 
+
 users = [];
 database.ref(path(j,h)).once("value",function(snapshot){
     database.ref("users").once("value",function(snap){
@@ -26,42 +27,74 @@ database.ref(path(j,h)).once("value",function(snapshot){
         users.sort((a, b) => (a.name > b.name) ? 1 : -1)
         for(let i in users){
             let ligne = document.createElement("tr")
-            let col= document.createElement("td")
-            col.innerHTML=new String(users[i].name)
-            ligne.appendChild(col)
-
-            col= document.createElement("td")
-            col.innerHTML=new String(users[i].classe)
-            ligne.appendChild(col)
-
-            col= document.createElement("td")
-            if(!users[i].DorI){
-                col.innerHTML="demande"
-            } else {
-                col.innerHTML="X"
-            }
-            ligne.appendChild(col)
-
-            col= document.createElement("td")
-            if(users[i].DorI){
-                col.innerHTML="inscrit"
-            } else {
-                col.innerHTML="X"
-            }
-            ligne.appendChild(col)
-
-            col= document.createElement("td")
-            col.innerHTML=new String(users[i].pass)
-            ligne.appendChild(col)
-
-            col= document.createElement("td")
-            col.innerHTML=new String(users[i].carte)
-            ligne.appendChild(col)
-
+            reloadLigne(ligne,i)
             table.appendChild(ligne)
         }
     })
 })
+
+function reloadLigne(ligne,i){
+    ligne.innerHTML=""
+    let col= document.createElement("td")
+    col.innerHTML=new String(users[i].name)
+    ligne.appendChild(col)
+
+    col= document.createElement("td")
+    col.innerHTML=new String(users[i].classe)
+    ligne.appendChild(col)
+
+    let colD= document.createElement("td")
+    let colI= document.createElement("td")
+    if(!users[i].DorI){
+        colD.innerHTML="demande"
+        colD.addEventListener("click",event)
+        function event(){
+            colD.removeEventListener("click",event)
+            table.removeChild(ligne)
+            database.ref(path(j,h)+"/demandes/"+users[i].name).remove()
+        }
+    } else {
+        colD.innerHTML="X"
+        colD.addEventListener("click",event)
+        function event(){
+            colD.removeEventListener("click",event)
+            database.ref(path(j,h)+"/demandes/"+users[i].name).set(0)
+            database.ref(path(j,h)+"/inscrits/"+users[i].name).remove()
+            users[i].DorI=false
+            reloadLigne(ligne,i)
+        }
+    }
+    ligne.appendChild(colD)
+
+    if(users[i].DorI){
+        colI.innerHTML="inscrit"
+        colI.addEventListener("click",event)
+        function event(){
+            colI.removeEventListener("click",event)
+            table.removeChild(ligne)
+            database.ref(path(j,h)+"/inscrits/"+users[i].name).remove()
+        }
+    } else {
+        colI.innerHTML="X"
+        colI.addEventListener("click",event)
+        function event(){
+            colI.removeEventListener("click",event)
+            database.ref(path(j,h)+"/demandes/"+users[i].name).remove()
+            database.ref(path(j,h)+"/inscrits/"+users[i].name).set(0)
+            users[i].DorI=true
+            reloadLigne(ligne,i)
+        }
+    }
+    ligne.appendChild(colI)
+
+    col= document.createElement("td")
+    col.innerHTML=new String(users[i].pass)
+    ligne.appendChild(col)
+
+    col= document.createElement("td")
+    col.innerHTML=new String(users[i].carte)
+    ligne.appendChild(col)
+}
 
 function searchUser(name,DorI,pass){
     let code = snapshotUser.child(name+"/code barre").val()

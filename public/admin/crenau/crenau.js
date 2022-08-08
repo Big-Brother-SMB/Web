@@ -478,6 +478,8 @@ function algo(){
             document.getElementById("start algo").addEventListener("click", function() {
                 reload()
             })
+            nbPers(j,h,"demandes",nbPersDemande)
+            nbPers(j,h,"inscrits",nbPersInscrit)
         });
         
         

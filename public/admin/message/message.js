@@ -239,6 +239,7 @@ function sondage(h, text, mode, reponse,choices){
 
         msg.addEventListener("click",event)
         function event(){
+            msg.removeEventListener("click",event)
             hide()
         }
     }
@@ -303,6 +304,7 @@ function news(h,title,text){
     
         msg.addEventListener("click",event)
         function event(){
+            msg.removeEventListener("click", event)
             hide()
         }
     }
@@ -546,8 +548,8 @@ send.addEventListener("click", function() {
         let hashCode = hash()
         if(icon==0 && usersList.indexOf(destinataire.value)!=-1 && text.value != ""){
             database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/title").set(title.value)
-            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/text").set(text.value)
-            myMessage(hashCode, title.value, text.value,destinataire.value,false)
+            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/text").set(text.value.replaceAll('\n',"</br>"))
+            myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"),destinataire.value,false)
             title.value = ""
             destinataire.value = ""
             type.selectedIndex = 0
@@ -562,8 +564,8 @@ send.addEventListener("click", function() {
         }
         if(icon==1 && text.value != ""){
             database.ref("news/" + hashCode + "/title").set(title.value)
-            database.ref("news/" + hashCode + "/text").set(text.value)
-            news(hashCode, title.value, text.value)
+            database.ref("news/" + hashCode + "/text").set(text.value.replaceAll('\n',"</br>"))
+            news(hashCode, title.value, text.value.replaceAll('\n',"</br>"))
             title.value = ""
             destinataire.value = ""
             type.selectedIndex = 0
