@@ -101,7 +101,7 @@ function nbPersDemande(nb){
 nbPers(j,h,"demandes",nbPersDemande)
 
 document.getElementById("demandes").addEventListener("click", function() {
-    window.location.href = "listes/demandes.html";
+    window.location.href = "listes/liste.html";
 });
 
 let inscrits
@@ -112,7 +112,7 @@ function nbPersInscrit(nb){
 nbPers(j,h,"inscrits",nbPersInscrit)
 
 document.getElementById("inscrits").addEventListener("click", function() {
-    window.location.href = "listes/inscrits.html";
+    window.location.href = "listes/liste.html";
 });
 
 let divGroupes = document.getElementById("groupes")

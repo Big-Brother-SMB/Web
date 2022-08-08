@@ -52,7 +52,7 @@ document.getElementById("add point").addEventListener("click",function(){
                 database.ref("users/" + name + "/score/" + hashCode + "/value").set(parseInt(nbpts))
                 nb++
                 if(nb == total){
-                    plus()
+                    document.getElementById("notif plus").style.visibility = "hidden"
                     alert("Ajout de points effectués")
                 }
             })
@@ -60,19 +60,20 @@ document.getElementById("add point").addEventListener("click",function(){
     }
 });
 
-plus()
-function plus(){
-    document.getElementById("notif plus").style.visibility = "visible"
-    database.ref("histPoint").once("value", function(snapshot) {
-        snapshot.forEach(function(child){
-            database.ref("histPoint/"+child.key+"/name").once("value", function(snapshot) {
-                if(snapshot.val()==="gain de la semaine" + actualWeek){
-                    document.getElementById("notif plus").style.visibility = "hidden"
-                }
-            })
-        })
+
+
+database.ref("histPoint").once("value", function(snapshot) {
+    let test=true
+    snapshot.forEach(function(child){
+        console.log(snapshot.child(child.key+"/name").val())
+        if(snapshot.child(child.key+"/name").val()==="gain de la semaine" + actualWeek){
+            test = false
+        }
     })
-}
+    if(test){
+        document.getElementById("notif plus").style.visibility = "visible"
+    }
+})
 
 
 const body = document.getElementById("body");
