@@ -11,7 +11,6 @@ for(let i in listMode){
 }
 
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
-    
     divMode.selectedIndex = snapshot.val();
     divMode.addEventListener("change", function() {
         let hashCode = hash()
@@ -607,12 +606,16 @@ function algo(){
                                     if(gratuit && (commonElement(prio, usersPriorites[p]) != 0 || prio.indexOf(usersClasse[p]) != -1) ){
                                         console.log("gratis")
                                     }else{
-                                        database.ref("users/" + name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                        database.ref("users/" + name + "/score/" + hashCode + "/value").set(-cout)
+                                        if(divMode.selectedIndex==2||divMode.selectedIndex==3){
+                                            database.ref("users/" + name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                            database.ref("users/" + name + "/score/" + hashCode + "/value").set(-cout)
+                                        }
                                     }
                                    
                                     database.ref(path(j,h) + "/inscrits/" + name+ "/user").set(0)
-                                    database.ref(path(j,h) + "/inscrits/" + name+ "/amis").set(amis[p]) 
+                                    for(let loop in amis[p]){
+                                        database.ref(path(j,h) + "/inscrits/" + name+ "/amis/"+amis[p][loop]).set(0)
+                                    } 
                                     database.ref(path(j,h) + "/demandes/" + name).remove()
                                     try{
                                         database.ref("users/" + users[p] + "/email").once("value",function(snapshot){

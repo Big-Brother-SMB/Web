@@ -14,14 +14,14 @@ let table = document.getElementById("tbody")
 
 let cout
 let snapshotUser
-
-
-users = [];
+let ouvert
 database.ref(path(j,h)).once("value",function(snapshot){
     database.ref("users").once("value",function(snap){
+        users = [];
         snapshotUser=snap
 
         cout = snapshot.child("cout").val();
+        ouvert = snapshot.child("ouvert").val();
         snapshot.child("demandes").forEach(function(child){
             searchUser(child.key,false,null)
         })
@@ -54,16 +54,22 @@ function reloadLigne(ligne,i){
         colD.innerHTML="demande"
         colI.addEventListener("click",eventI)
         function eventI(){
+            i=[...table.children].indexOf(ligne)
             colD.removeEventListener("click",eventD)
             colI.removeEventListener("click",eventI)
             colS.removeEventListener("click",event2)
-            database.ref(path(j,h)+"/demandes/"+users[i].name).remove()
-            database.ref(path(j,h)+"/inscrits/"+users[i].name).set(0)
+            database.ref(path(j,h)+"/demandes/"+users[i].name).once('value').then(function(snapshot){
+                database.ref(path(j,h)+"/inscrits/"+users[i].name).set(snapshot.val())
+                database.ref(path(j,h)+"/demandes/"+users[i].name).remove()
+            })
+
             users[i].DorI=true
 
-            let hashCode = hash()
-            database.ref("users/" + users[i].name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-            database.ref("users/" + users[i].name + "/score/" + hashCode + "/value").set(-cout)
+            if(ouvert==2||ouvert==3){
+                let hashCode = hash()
+                database.ref("users/" + users[i].name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                database.ref("users/" + users[i].name + "/score/" + hashCode + "/value").set(-cout)
+            }
 
             reloadLigne(ligne,i)
         }
@@ -72,11 +78,15 @@ function reloadLigne(ligne,i){
         colD.innerHTML="-------"
         colD.addEventListener("click",eventD)
         function eventD(){
+            i=[...table.children].indexOf(ligne)
             colD.removeEventListener("click",eventD)
             colI.removeEventListener("click",eventI)
             colS.removeEventListener("click",event2)
-            database.ref(path(j,h)+"/demandes/"+users[i].name).set(0)
-            database.ref(path(j,h)+"/inscrits/"+users[i].name).remove()
+
+            database.ref(path(j,h)+"/inscrits/"+users[i].name).once('value').then(function(snapshot){
+                database.ref(path(j,h)+"/demandes/"+users[i].name).set(snapshot.val())
+                database.ref(path(j,h)+"/inscrits/"+users[i].name).remove()
+            })
             users[i].DorI=false
 
             database.ref("users/"+users[i].name+"/score/").once('value').then(function(snapshot){
@@ -108,11 +118,20 @@ function reloadLigne(ligne,i){
     colS.innerHTML="suppr"
     colS.addEventListener("click",event2)
     function event2(){
+        i=[...table.children].indexOf(ligne)
         colD.removeEventListener("click",eventD)
         colI.removeEventListener("click",eventI)
         colS.removeEventListener("click",event2)
         database.ref(path(j,h)+"/inscrits/"+users[i].name).remove()
         database.ref(path(j,h)+"/demandes/"+users[i].name).remove()
+        database.ref("users/"+users[i].name+"/score/").once('value').then(function(snapshot){
+            snapshot.forEach(function(hash){
+                if(snapshot.child(hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
+                    database.ref("users/"+users[i].name+"/score/"+hash.key).remove()
+                }
+            })
+        })
+        users.splice([...table.children].indexOf(ligne),1)
         table.removeChild(ligne)
     }
     ligne.appendChild(colS)
@@ -132,13 +151,78 @@ function userObject(name,classe,DorI,pass,carte) {
     this.carte=carte
 }
 
-
+let search = document.getElementById("search")
 database.ref("users").once("value", function(snapshot) {
     let utilisateurs=[]
+    let utilisateurs2=[]
     snapshot.forEach(function(child) {
         utilisateurs.push(child.key) 
     })
-    autocomplete(document.getElementById("search"), utilisateurs,function(val){
-        console.log("test")
+    autocomplete(search, utilisateurs,function(val){})
+    let demande=document.getElementById("demande")
+    let inscrit=document.getElementById("inscrit")
+    demande.addEventListener("click",function(){
+        /*if(utilisateurs.indexOf(search.value)!=-1){
+            utilisateurs2=[]
+            for(let loop in users){
+                utilisateurs2.push(users[loop].name)
+            }
+
+            
+            if(utilisateurs2.indexOf(search.value)===-1){
+                searchUser(search.value,false,null)
+                users.sort((a, b) => (a.name > b.name) ? 1 : -1)
+                utilisateurs2=[]
+                for(let loop in users){
+                    utilisateurs2.push(users[loop].name)
+                }
+                let ligne=table.insertRow(utilisateurs2.indexOf(search.value))
+                reloadLigne(ligne,utilisateurs2.indexOf(search.value))
+            }else{
+                users[utilisateurs2.indexOf(search.value)].DorI=false
+                let ligne=table.children[utilisateurs2.indexOf(search.value)]
+                reloadLigne(ligne,utilisateurs2.indexOf(search.value))
+            }
+        }*/
+    })
+    inscrit.addEventListener("click",function(){
+        if(utilisateurs.indexOf(search.value)!=-1){
+            utilisateurs2=[]
+            for(let loop in users){
+                utilisateurs2.push(users[loop].name)
+            }
+
+            let hashCode = hash()
+            if(utilisateurs2.indexOf(search.value)===-1){
+                searchUser(search.value,true,null)
+                users.sort((a, b) => (a.name > b.name) ? 1 : -1)
+                utilisateurs2=[]
+                for(let loop in users){
+                    utilisateurs2.push(users[loop].name)
+                }
+
+                if(ouvert==2||ouvert==3){
+                    database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                    database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
+                }
+                database.ref(path(j,h)+"/inscrits/"+search.value+"/user").set(0)
+
+                table.insertRow(utilisateurs2.indexOf(search.value))
+                let ligne=table.children[utilisateurs2.indexOf(search.value)]
+                reloadLigne(ligne,utilisateurs2.indexOf(search.value))
+            }else if(users[utilisateurs2.indexOf(search.value)].DorI===false){
+                users[utilisateurs2.indexOf(search.value)].DorI=true
+                database.ref(path(j,h)+"/demandes/"+search.value).once('value').then(function(snapshot){
+                    database.ref(path(j,h)+"/inscrits/"+search.value).set(snapshot.val())
+                    database.ref(path(j,h)+"/demandes/"+search.value).remove()
+                })
+                if(ouvert==2||ouvert==3){
+                    database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                    database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
+                }
+                let ligne=table.children[utilisateurs2.indexOf(search.value)]
+                reloadLigne(ligne,utilisateurs2.indexOf(search.value))
+            }
+        }
     })
 })

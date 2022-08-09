@@ -389,18 +389,18 @@ function updateAffichage(j, h) {
         if (demande[j][h]) {
             bouton[j][h].className = "demande tableau"
             if (nbAmis[j][h] == 0) {
-                text = "Demande enregistrée sans amis"
+                text += "</br>Demande enregistrée sans amis"
             }
             else if (nbAmis[j][h] == 1) {
-                text = "Demande enregistrée avec 1 ami<br>"
+                text += "</br>Demande enregistrée avec 1 ami"
                 if (nbAmisDemande[j][h] == 0) {
-                    text += "qui n'a pas fait de demande"
+                    text += "</br>qui n'a pas fait de demande"
                 } else {
-                    text += "qui a fait une demande"
+                    text += "</br>qui a fait une demande"
                 }
             }
             else {
-                text = "Demande enregistrée avec " + nbAmis[j][h] + " amis<br>"
+                text += "</br>Demande enregistrée avec " + nbAmis[j][h] + " amis<br>"
                 if (nbAmisDemande[j][h] == 0) {
                     text += "qui n'ont pas fait de demandes"
                 } else if (nbAmis[j][h] == nbAmisDemande[j][h]) {

@@ -70,6 +70,10 @@ body,
     }
 
     button {
+      margin-top: 10px;
+      margin-right: 20px;
+      margin-left: 20px;
+      margin-bottom: 10px;
       border: none;
       text-align: center;
       text-transform: uppercase;
