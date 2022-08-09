@@ -96,6 +96,7 @@ body,
   position: relative;
   display: inline-block;
 }
+
 input {
     width: 500px;
   border: 1px solid transparent;

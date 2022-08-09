@@ -113,7 +113,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
         i++
     })
 
-    database.ref(path(j,h) + "/users/" + user + "/amis").once("value", function(snapshot) {
+    database.ref(path(j,h) + "/demandes/" + user + "/amis").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
             let name = child.key
             let index = amis.indexOf(name)
@@ -232,7 +232,7 @@ let horaire = 0
 
 
 if(h == 1){
-    database.ref(path(j,h) + "/users/" + user + "/horaire").once('value').then(function(snapshot) {
+    database.ref(path(j,h) + "/demandes/" + user + "/horaire").once('value').then(function(snapshot) {
         horaire = snapshot.val()
         charged()
     });
@@ -267,7 +267,6 @@ function charged(){
     + " demandes en cours<br>Votre score: " + textScore
 
     document.getElementById("retirer").addEventListener("click", function() {
-        database.ref(path(j,h) + "/users/" + user).remove()
         database.ref(path(j,h) + "/demandes/" + user).remove()
 
         database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
@@ -296,9 +295,9 @@ function charged(){
         for(let a in initBoolAmis){
             if(initBoolAmis[a] != boolAmis[a]){
                 if(boolAmis[a]){
-                    database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).set(0);
+                    database.ref(path(j,h) + "/demandes/" + user + "/amis/" + amis[a]).set(0);
                 }else{
-                    database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).remove()
+                    database.ref(path(j,h) + "/demandes/" + user + "/amis/" + amis[a]).remove()
                 }
             }
             if(boolAmis[a]){

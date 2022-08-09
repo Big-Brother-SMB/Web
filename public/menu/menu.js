@@ -291,8 +291,15 @@ function refreshDatabase() {
             nbAmis[j][h] = 0
             nbAmisDemande[j][h] = 0
 
-            database.ref(path(j, h) + "/users/" + user + "/amis").once("value", function (snapshot) {
-                snapshot.forEach(function (child) {
+            database.ref(path(j, h)).once("value", function (snapshot) {
+                snapshot.child("/demandes/" + user + "/amis").forEach(function (child) {
+                    nbAmis[j][h] = nbAmis[j][h] + 1
+                    if (demandes[j][h].indexOf(child.key) != -1) {
+                        nbAmisDemande[j][h]++
+                    }
+                    update(j, h);
+                });
+                snapshot.child("/inscrits/" + user + "/amis").forEach(function (child) {
                     nbAmis[j][h] = nbAmis[j][h] + 1
                     if (demandes[j][h].indexOf(child.key) != -1) {
                         nbAmisDemande[j][h]++
@@ -351,7 +358,7 @@ function updateAffichage(j, h) {
             bouton[j][h].className = "places tableau"
             if (places[j][h] <= 0) {
                 bouton[j][h].className = "zero tableau"
-                text = "Plein";
+                text = "Plein"+ textcout;
             } else {
                 bouton[j][h].className = "places tableau"
                 text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
@@ -360,7 +367,7 @@ function updateAffichage(j, h) {
         case 3:
             bouton[j][h].className="bloque tableau"
             if (places[j][h] <= 0) {
-                text = "Plein";
+                text = "Plein"+ textcout;
             } else {
                 text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
             }
