@@ -11,11 +11,28 @@ for(let i in listMode){
 }
 
 database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
-    
     divMode.selectedIndex = snapshot.val();
     divMode.addEventListener("change", function() {
-        database.ref(path(j,h) + "/ouvert").set(this.selectedIndex)
-      });
+        let hashCode = hash()
+        database.ref("users").once('value').then(function(snapshot){
+            database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
+                snapshot.forEach(function(u){
+                    snapshot.child(u.key+"/score").forEach(function(hash){
+                        if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
+                            database.ref("users/"+u.key+"/score/"+hash.key).remove()
+                        }
+                    })
+                })
+                if(divMode.selectedIndex==2||divMode.selectedIndex==3){
+                    snapshot2.forEach(function(child){
+                        database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                        database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
+                    })
+                }
+                database.ref(path(j,h) + "/ouvert").set(divMode.selectedIndex)
+            })
+        })
+    });
 });
 
 let inPlaces = document.getElementById("places")
@@ -36,8 +53,17 @@ database.ref(path(j,h) + "/cout").once('value').then(function(snapshot) {
     cout = snapshot.val();
     inCout.value = cout
     inCout.addEventListener("change", function() {
-        cout = Math.abs(this.value);
-        database.ref(path(j,h) + "/cout").set(cout)
+        database.ref("users").once('value').then(function(snapshot){
+            snapshot.forEach(function(u){
+                snapshot.child(u.key+"/score").forEach(function(hash){
+                    if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
+                        database.ref("users/"+u.key+"/score/"+hash.key+"/value").set(-Math.abs(inCout.value))
+                    }
+                })
+            })
+            cout = Math.abs(inCout.value);
+            database.ref(path(j,h) + "/cout").set(cout)
+        })
     });
     if(snapshot.val() == null){
         database.ref(path(j,h) + "/cout").set(1)
@@ -327,163 +353,320 @@ document.getElementById("start algo").addEventListener("click", function() {
     algo()
 })
 
+
+
+
+//Stats
+
+let amisTag = []
+
+let gScore = []
+let usersScore = []
+
+let usersPriorites = []
+
+let classes = []
+let usersClasse = []
+
+let addLinkTag = []
+let linkedTag = []
+let delLinkTag = []
+
+
+
+
+
 function algo(){
     document.getElementById("start algo").innerHTML = "veuillez patienter"
     let places
-    database.ref(path(j,h) + "/places").once('value', function(snapshot) {
-        places = snapshot.val();
-    });
     let inscrits = 0
     let dejaInscrit
-    database.ref(path(j,h) + "/inscrits").once('value').then(function(snapshot) {
-        snapshot.forEach(function(child) {
+    let cout
+    let prio = []
+
+    database.ref(path(j,h)).once('value', function(snapshot) {
+        places = snapshot.child("places").val();
+        snapshot.child("inscrits").forEach(function(child) {
             inscrits++
         })
         dejaInscrit = inscrits
-    });
-
-    let cout
-    database.ref(path(j,h) + "/cout").once('value').then(function(snapshot) {
-        cout = snapshot.val();
-    });
-
-
-    let prio = []
-    database.ref(path(j,h) + "/prioritaires").once("value", function(snapshot) {
-        snapshot.forEach(function(child) {
+        cout = snapshot.child("cout").val();
+        snapshot.child("prioritaires").forEach(function(child) {
             prio.push(child.key)
         })
-    })
-    
-    getStat(j,h,"demandes")
-    setTimeout(function() {
-        let tag = []
-        for(let u in users){
-            tag[u] = false
-        }
-
-        function sendEmail(prenom,email){
-            Email.send({
-                Host: "smtp.gmail.com",
-                Username: "foyer.beaucamps@gmail.com",
-                Password: "beaucamps",
-                To: email,
-                From: "foyer.beaucamps@gmail.com",
-                Subject: "Inscription validée",
-                Body: "Bonjour " + prenom + ", ton inscription au foyer le " + day[j] + " à " + (h+11) + "h a été validée",
-            })
-            .then(function (message) {
-                console.log(message)
-                if(message != "OK"){
-                    sendEmail(prenom,email)
-                }else{
-                    console.log("mail sent successfully to " + email)
+        database.ref(path(j,h)+"/demandes").once("value", function(snapshotType) {
+            database.ref("users").once("value", function(snapshotUser) {
+                let i = 0
+                snapshotType.forEach(function(child) {
+                    let user = child.key
                     
-                    nbEmail++
-                    if(fini){
-                        document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email envoyés : " + nbEmail
+                    users.push(user)
+                    amis[i] = []
+                    amisTag[i] = []
+                    addLinkTag[i] = []
+                    linkedTag[i] = []
+                    delLinkTag[i] = []
+                    
+                    let num = i
+                    snapshotType.child(user+"/amis").forEach(function(child) {
+                        let ami = child.key
+                        amis[num].push(ami)
+                    })
+                    i++
+                    
+                    
+                });
+                
+                
+                for(let u in users){
+                    let name = users[u]
+                    usersScore.push(0)
+                        snapshotUser.child(name+"/score").forEach(function(child) {
+                            let snap=snapshotUser.child(name + "/score/" + child.key + "/value")
+                            usersScore[u] += parseFloat(snap.val())
+                            usersScore[u] =  Math.round(usersScore[u]*100)/100
+                        })
+                    let prios = []
+                    snapshotUser.child(name + "/priorites").forEach(function(child) {
+                        prios.push(child.key)
+                    })
+                    usersPriorites[u] = prios
+                }
+        
+                for(let u in users){
+                    let user = users[u]
+                    let c = snapshotUser.child(user + "/classe").val()
+                    if(c == null){
+                        usersClasse.push("none")
+                    }else{
+                        if(classes[c] == null){
+                            classes[c] = []
+                        }
+                        classes[c].push(u)
+                        usersClasse.push(c)
                     }
                 }
-                
-            });
-        }
-        
-        let alea = randint(0, users.length - 1)
-        let base = alea
-        let nbEmail = 0
-        let fini = false
-        var maxScore = Math.max(...gScore);
-        let bPrio = true;
-        let hashCode = hash()
-        console.log("max score : " + maxScore)
-        while(places > inscrits && maxScore >= 0){
-            console.log("inscrit",inscrits)
-            let nbPrio = 0
-            for(let a in addLinkTag[alea]){
-                const tag = addLinkTag[alea][a]
-                if(prio.indexOf(usersClasse[tag]) != -1 || commonElement(prio, usersPriorites[tag]) != 0){
-                    nbPrio++
-                }
-                
-            }
-            let perPrio = Math.round(nbPrio / addLinkTag[alea].length * 100)
-            if(!tag[alea] && gScore[alea] >= maxScore && addLinkTag[alea].length <= places - inscrits && (!bPrio || perPrio >= perMin) ){ 
-                console.log(users[alea] + " -> per prio : " + perPrio + "% (" + usersClasse[alea] + ")")
-                for(let pers in addLinkTag[alea]){
-                    let p = addLinkTag[alea][pers]
-                    if(!tag[p]){
-                        let name = users[p]
-                        console.log("inscrit : " + name)
-                        let score = usersScore[p]
-                        if(score == null){
-                            score = 0
-                        }
-                        database.ref(path(j,h) + "/inscrits/" + name).set(score)
-                        if(gratuit && (commonElement(prio, usersPriorites[p]) != 0 || prio.indexOf(usersClasse[p]) != -1) ){
-                            console.log("gratis")
-                        }else{
+                setTimeout(function() {
+                    console.log("start")
+                    console.log(amis)
+                    for(let u in users){
+                        amisTag[u] = []
+                        for(let a in amis[u]){
+                            let index = users.indexOf(amis[u][a])
+                            if(index != -1){
+                                amisTag[u].push(index)
+                            }
                             
-                            
-                            database.ref("users/" + name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                            database.ref("users/" + name + "/score/" + hashCode + "/value").set(-cout)
                         }
-                       
+                    }
+            
+                    
+                    for(let u in users){
+                        linkedTag[u] = []
+                    }
+                    for(let u in users){
+                        for(let a in amisTag[u]){
+                            linkedTag[amisTag[u][a]].push(parseInt(u))
+                            
+                        }
                         
-                        database.ref(path(j,h) + "/demandes/" + name).remove()
-                        try{
-                            database.ref("users/" + users[p] + "/email").once("value",function(snapshot){
-                                let email = snapshot.val()
-                                let prenom = users[p].split(" ")[0]
-                                console.log(email)
+                    }
+                    
+                    //adding link -> users needed to add if you add this user
+            
+                    
+                    let actUser
+                    function searchAmis(u){
+                        if(addLinkTag[actUser].indexOf(u) == -1){
+                            addLinkTag[actUser].push(u)
+                            for(a in amisTag[u]){
+                                searchAmis(amisTag[u][a])
+                            }
+                        }
+                        
+                    }
+            
+                    for(let u in users){
+                        actUser = parseInt(u)
+                        addLinkTag[actUser] = []
+                        searchAmis(actUser)
+                    }
+            
+                    //del link -> users needed to delete if you delete this user
+            
+                    
+                    function searchLink(u){
+                        if(delLinkTag[actUser].indexOf(u) == -1){
+                            delLinkTag[actUser].push(u)
+                            for(l in linkedTag[u]){
+                                searchLink(linkedTag[u][l])
+                            }
+                        }
+                        
+                    }
+            
+                    for(let u in users){
+                        actUser = parseInt(u)
+                        delLinkTag[actUser] = []
+                        searchLink(actUser)
+                    }
+            
+                    //gScore -> score of the group by add link
+                    for(let u in users){
+                        gScore[u] = usersScore[u]
+                        for(a in addLinkTag[u]){
+                            const num = addLinkTag[u][a]
+                            if(usersScore[num] < gScore[u]){
+                                gScore[u] = usersScore[num]
+                            }
+                        }
+                        gScore[u] = Math.floor(gScore[u])
+                    }
+            
+            
+            
+                    console.log("users",users)
+                    console.log("amis",amis)
+                    console.log(amisTag)
+                    console.log("addLinkTag",addLinkTag)
+                    console.log(linkedTag)
+                    console.log("delLinkTag",delLinkTag)
+                    console.log("classes",classes)
+                    console.log(usersClasse)
+                    console.log("group score", gScore)
+                    console.log("users score",usersScore)
+                    console.log("users prio",usersPriorites)
+
+
+
+
+
+                    let tag = []
+                    for(let u in users){
+                        tag[u] = false
+                    }
+            
+                    function sendEmail(prenom,email){
+                        Email.send({
+                            Host: "smtp.gmail.com",
+                            Username: "foyer.beaucamps@gmail.com",
+                            Password: "beaucamps",
+                            To: email,
+                            From: "foyer.beaucamps@gmail.com",
+                            Subject: "Inscription validée",
+                            Body: "Bonjour " + prenom + ", ton inscription au foyer le " + day[j] + " à " + (h+11) + "h a été validée",
+                        })
+                        .then(function (message) {
+                            console.log(message)
+                            if(message != "OK"){
                                 sendEmail(prenom,email)
-                            })
+                            }else{
+                                console.log("mail sent successfully to " + email)
+                                
+                                nbEmail++
+                                if(fini){
+                                    document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email envoyés : " + nbEmail
+                                }
+                            }
                             
-                        }catch(exception){
-                            console.log(exception)
-                        }
-                        
-                        tag[p] = true
-                        inscrits++
+                        });
                     }
                     
-                }
-                alea = randint(0, users.length - 1)
-                base = alea
-            }else{
-                alea++  
-                if(alea > users.length - 1){
-                    alea = 0
-                }
-                if(alea == base){
-                    maxScore--
-                    console.log("plus de possibilité pour ce score, nouveau : " + maxScore)
-                }
-                if(maxScore < 0 && bPrio && !only){
-                    console.log("passage au non prioritaires")
-                    maxScore = Math.max(...gScore);
-                    bPrio = false
-                }
-                
-            }
-        }
-        console.log("plus de places")
-        database.ref("version").once("value", function(snapshot) {
-            fini = true
-            if(snapshot.val() != null){
-                document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email envoyés : " + nbEmail
-            }else{
-                document.getElementById("start algo").innerHTML = "Une erreur a eu lieu,<br>appuyer pour reload<br>(" + (inscrits - dejaInscrit) + " inscrits, reste " + (places - inscrits) + " places)"
-                
-            }
-            document.getElementById("start algo").addEventListener("click", function() {
-                reload()
+                    let alea = randint(0, users.length - 1)
+                    let base = alea
+                    let nbEmail = 0
+                    let fini = false
+                    var maxScore = Math.max(...gScore);
+                    let bPrio = true;
+                    let hashCode = hash()
+                    console.log(gScore)
+                    console.log("max score : " + maxScore)
+                    while(places > inscrits && maxScore >= 0){
+                        console.log("inscrit",inscrits)
+                        let nbPrio = 0
+                        for(let a in addLinkTag[alea]){
+                            const tag = addLinkTag[alea][a]
+                            if(prio.indexOf(usersClasse[tag]) != -1 || commonElement(prio, usersPriorites[tag]) != 0){
+                                nbPrio++
+                            }
+                            
+                        }
+                        let perPrio = Math.round(nbPrio / addLinkTag[alea].length * 100)
+                        if(!tag[alea] && gScore[alea] >= maxScore && addLinkTag[alea].length <= places - inscrits && (!bPrio || perPrio >= perMin) ){ 
+                            console.log(users[alea] + " -> per prio : " + perPrio + "% (" + usersClasse[alea] + ")")
+                            for(let pers in addLinkTag[alea]){
+                                let p = addLinkTag[alea][pers]
+                                if(!tag[p]){
+                                    let name = users[p]
+                                    console.log("inscrit : " + name)
+                                    let score = usersScore[p]
+                                    if(score == null){
+                                        score = 0
+                                    }
+                                    if(gratuit && (commonElement(prio, usersPriorites[p]) != 0 || prio.indexOf(usersClasse[p]) != -1) ){
+                                        console.log("gratis")
+                                    }else{
+                                        if(divMode.selectedIndex==2||divMode.selectedIndex==3){
+                                            database.ref("users/" + name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                            database.ref("users/" + name + "/score/" + hashCode + "/value").set(-cout)
+                                        }
+                                    }
+                                   
+                                    database.ref(path(j,h) + "/inscrits/" + name+ "/user").set(0)
+                                    for(let loop in amis[p]){
+                                        database.ref(path(j,h) + "/inscrits/" + name+ "/amis/"+amis[p][loop]).set(0)
+                                    } 
+                                    database.ref(path(j,h) + "/demandes/" + name).remove()
+                                    try{
+                                        database.ref("users/" + users[p] + "/email").once("value",function(snapshot){
+                                            let email = snapshot.val()
+                                            let prenom = users[p].split(" ")[0]
+                                            console.log(email)
+                                            sendEmail(prenom,email)
+                                        })
+                                        
+                                    }catch(exception){
+                                        console.log(exception)
+                                    }
+                                    
+                                    tag[p] = true
+                                    inscrits++
+                                }
+                                
+                            }
+                            alea = randint(0, users.length - 1)
+                            base = alea
+                        }else{
+                            alea++  
+                            if(alea > users.length - 1){
+                                alea = 0
+                            }
+                            if(alea == base){
+                                maxScore--
+                                console.log("plus de possibilité pour ce score, nouveau : " + maxScore)
+                            }
+                            if(maxScore < 0 && bPrio && !only){
+                                console.log("passage au non prioritaires")
+                                maxScore = Math.max(...gScore);
+                                bPrio = false
+                            }
+                            
+                        }
+                    }
+                    console.log("plus de places")
+                    fini = true
+                    if(snapshot.val() != null){
+                        document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email envoyés : " + nbEmail
+                    }else{
+                        document.getElementById("start algo").innerHTML = "Une erreur a eu lieu,<br>appuyer pour reload<br>(" + (inscrits - dejaInscrit) + " inscrits, reste " + (places - inscrits) + " places)"     
+                    }
+                    document.getElementById("start algo").addEventListener("click", function() {
+                        reload()
+                    })
+                    nbPers(j,h,"demandes",nbPersDemande)
+                    nbPers(j,h,"inscrits",nbPersInscrit)
+                })
             })
-            nbPers(j,h,"demandes",nbPersDemande)
-            nbPers(j,h,"inscrits",nbPersInscrit)
         });
-        
-        
-    },1000);
+    });
 }
-
-

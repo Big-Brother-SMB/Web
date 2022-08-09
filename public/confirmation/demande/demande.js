@@ -247,8 +247,6 @@ function charged(){
 
 
     document.getElementById("oui").addEventListener("click", function() {
-        database.ref(path(j,h) + "/users/" + user + "/score").set(score);
-        database.ref(path(j,h) + "/users/" + user + "/classe").set(classe);
         /*for(let a in amis){
             database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[a]).set(0);
         }*/
@@ -256,7 +254,7 @@ function charged(){
         for(let i in boolAmis){
             if(boolAmis[i]){
                 str += amis[i] + "/"
-                database.ref(path(j,h) + "/users/" + user + "/amis/" + amis[i]).set(0);
+                database.ref(path(j,h) + "/demandes/" + user + "/amis/" + amis[i]).set(0);
             }
 
         }
@@ -268,16 +266,15 @@ function charged(){
             let fini = document.getElementById("12h20").checked
             let commence = document.getElementById("12h50").checked
             if(fini || commence){
-                database.ref(path(j,h) + "/users/" + user + "/horaire").set((fini?1:0) + (commence?2:0));
+                database.ref(path(j,h) + "/demandes/" + user + "/horaire").set((fini?1:0) + (commence?2:0));
             }
         }
-        database.ref(path(j,h) + "/demandes/" + user).set(score);
+        database.ref(path(j,h) + "/demandes/" + user + "/user").set(0);
         database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
-            if(snapshot.val() == score){
+            if(snapshot.val() != null){
                 setTimeout(function() {
                     window.location.href = menu;
                 },1000);
-
             }
         });
 
