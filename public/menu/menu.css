@@ -378,3 +378,8 @@ nav{
   display: block;
   border-right: 20px solid black ;
 }
+
+#adminscore{
+  position : absolute;
+  right: 0%;
+}

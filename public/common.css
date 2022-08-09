@@ -43,7 +43,7 @@ input,select{
 select{
   font-size: 50px;
   width: 1000px;
-} 
+}
 
 .notification {
   color: white;
@@ -61,7 +61,7 @@ select{
   position: absolute;
   bottom: 10px;
   right: 10px;
-  
+
   border-radius: 50%;
   background-color: red;
   color: white;

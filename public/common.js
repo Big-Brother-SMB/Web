@@ -22,7 +22,7 @@ const analytics = firebase.analytics();
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        var uid = user.uid; 
+        var uid = user.uid;
         console.log(uid)
     } else {
         deco()
@@ -56,7 +56,7 @@ for(let i in tablecookie){
 }
 
 function writeCookie(key, value){
-    document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";  
+    document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
 }
 
 function readCookie(key){
@@ -87,7 +87,7 @@ function readBoolCookie(key,ifNone){
     }else{
         return ifNone;
     }
-    
+
 }
 
 function delCookie(key){
@@ -100,7 +100,7 @@ function existCookie(key){
     }else{
         return false
     }
-    
+
 }
 
 //--------------------reload--------------------
@@ -116,7 +116,7 @@ function deco(){
         str2+="../"
     }
     str2+="index.html"
-    window.location.href = str2;    
+    window.location.href = str2;
 }
 
 //--------------------var--------------------
@@ -140,7 +140,7 @@ let textColor = readCookie("color text")
 database.ref("users/" + user + "/classe").once("value", function(snapshot) {
     classe = snapshot.val()
     if(classe != null){
-        
+
         writeCookie("classe",classe)
     }
 })
@@ -149,7 +149,7 @@ database.ref("users/" + user + "/code barre").once("value", function(snapshot) {
     codeBar = snapshot.val()
     if(codeBar != null){
         console.log(codeBar)
-        
+
         writeCookie("code bar",codeBar)
     }else{
         console.log("err code bar")
@@ -178,7 +178,7 @@ Date.prototype.getWeek = function() {
     return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
                           - 3 + (week1.getDay() + 6) % 7) / 7);
   }
-  
+
   // Returns the four-digit year corresponding to the ISO week of the date.
   Date.prototype.getWeekYear = function() {
     var date = new Date(this.getTime());
@@ -295,12 +295,12 @@ function setColorMode(rootPath){
             document.body.style.color = "";
             if(name!="") document.getElementById("css").href = rootPath + "/css/" + name + ".css";
         }
-        
-        
+
+
     }catch(Exception){
         console.log("error with color mode")
     }
-    
+
 }
 //    mix-blend-mode: difference;
 
@@ -320,14 +320,14 @@ try{
     let lastMonth = readIntCookieDefault("last month")
     let actualDay = date.getDate()
     let actualMonth = date.getMonth() + 1;
-    
+
     console.log("date : " + actualDay + "/" + actualMonth)
     console.log("old date : " + lastDay + "/" + lastMonth)
     let time = readIntCookieDefault("time")
-    
+
     console.log("time : "+ time);
 
-    
+
 
     var page = window.location.pathname.split("/").pop().split(".");
     page.pop()
@@ -354,10 +354,10 @@ try{
                     database.ref("data/" + date + "/" + hashCode +  "/pages/" + pages[i] + "/vues").set(val)
                     database.ref("data/" + date + "/" + hashCode +  "/pages/" + pages[i] + "/time").set(t)
                 }
-                
+
             }
         }
-        
+
         lastDay = actualDay
         lastMonth = actualMonth
         writeCookie("last day",lastDay)
@@ -369,12 +369,12 @@ try{
     }
 
     writeCookie(pageName,nbPageRead)
-    
-    
-    
 
-    
-    
+
+
+
+
+
     function loopTime() {
         time++
         writeCookie("time", time)
@@ -384,9 +384,9 @@ try{
         setTimeout(loopTime, 1000);
     }
     loopTime();
-    
-    
-    
+
+
+
 }catch(Exception){
     console.log("error data",Exception)
 }*/
@@ -398,7 +398,7 @@ function getUserData(path,onValue){
     readDatabase(path,onValue)
     database.ref("users/" + user + "/" + path).once("value", function(snapshot) {
         onValue(snapshot.val())
-        
+
     });
 }
 
@@ -433,7 +433,7 @@ function writeDatabase(path,value,onEnd){
         } )
     }
     done();
- 
+
 }
 
 
@@ -491,11 +491,21 @@ function getSlotFriendsList(user,onEnd){
     getChildsList(slotPath + "/users/" + user + "/amis",onEnd)
 }
 
+database.ref("banderole").once("value", function (snapshot) {
+    let msg = snapshot.val()
+    if (msg != null && document.getElementById("banderole")!=null) {
+        document.getElementById("banderole").innerHTML = msg
+        if (msg.length > 0) {
+            document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
+
+        }
+    }
+})
 
 //-----------------------------------Stats--------------------------
 
 function getDemandesStat(onEnd){
-    
+
     getDemandesUsersList(function(users){
         let usersFriends = []
         let usersScore = []
@@ -511,12 +521,12 @@ function getDemandesStat(onEnd){
                     suite()
                 })
             })
-            
+
         }
         let progress = 0
         function suite(){
             console.log("suite" + progress)
-            
+
             progress++
             if(progress < users.length){
                 return
@@ -533,7 +543,7 @@ function getDemandesStat(onEnd){
                     if(index != -1){
                         usersFriendsTag[u].push(index)
                     }
-                    
+
                 }
             }
 
@@ -547,7 +557,7 @@ function getDemandesStat(onEnd){
                         searchFriends(usersFriendsTag[u][a])
                     }
                 }
-                
+
             }
 
             for(let u in users){
@@ -573,7 +583,7 @@ function getDemandesStat(onEnd){
 
         }
     })
-    
+
 }
 
 
@@ -595,8 +605,8 @@ try{
         if (msg != null) {
             document.getElementById("version").innerHTML = "Version " + msg
         }
-    
-    
+
+
     })
 }catch{}
 
@@ -608,7 +618,7 @@ function nbPers(j,h,type,func){
     database.ref(path(j,h)+"/" + type).once("value", function(snapshot) {
         let total = 0
         snapshot.forEach(function(child) {
-            total++;  
+            total++;
         });
         func(total)
     })
@@ -620,7 +630,7 @@ nomNiveau = ["secondes","premières","terminales","adultes"]
 
 
 //randint
-function randint(min, max) { // min and max included 
+function randint(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -640,9 +650,9 @@ function indexOf2dArray(array2d, itemtofind) {
     if(!found){
         return -1
     }else{
-        return [row, col]; 
+        return [row, col];
     }
-    
+
 }
 
 function commonElement(l1,l2){
