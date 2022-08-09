@@ -71,7 +71,7 @@ for(i = 0; i < ele.length; i++) {
     })
     if(index == colorMode){
         ele[index].checked = true
-        
+
     }
 
 }
@@ -91,7 +91,7 @@ selectText.value = textColor
 selectText.addEventListener("input", function () {
     writeCookie("color text", this.value)
     textColor = this.value
-    setColorMode("..") 
+    setColorMode("..")
 })
 
 
@@ -111,3 +111,11 @@ function charged() {
     document.getElementById("article").style.display = "block"
     document.getElementById("chargement").style.display = "none"
 }
+
+database.ref("modo/users").once('value').then(function(snapshot) {
+    snapshot.forEach(function(child) {
+        if (child.key===user){
+            document.getElementById("admin").style.visibility="visible";
+        }
+    })
+})

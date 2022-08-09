@@ -4,126 +4,155 @@
     <meta charset="utf-8">
     <title>Foyer</title>
     <link rel="stylesheet" href="tuto.css">
+    <link rel = "icon" href= "../../Images/logo.png">
+    <link rel="stylesheet" href="../../common.css">
+    <link rel="stylesheet" id="css">
   </head>
-  
- <body> 
+
+ <body>
   <header>
     <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
-    
-      <h1 id="title">Tutoriel rapide</h1>
+
+      <h1 id="title">Fonctionnement du site</h1>
       <a href="../menu/menu.html" class="notification"><img src="../Images/retour.png" alt="retour"></a>
 </header>
 
-<h2>Manger au Foyer</h2>
-	
+<h3>Manger au Foyer :</h3>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+<script src="../../common.js"></script>
+<script src="tuto.js"></script>
+<div id="MangerAuFoyer">
+  <div id="Amis">
 	<h2>
         Etape 1 : Configurer ses amis
     </h2>
-    
+
     <p>
-        1) Cliquer dans le menu sur le bouton "amis"<br>
-        2) Commencer a écrire le nom de votre ami dans la zone de texte ("Rechercher un ami")<br>
-        3) Dès que vous voyez apparaitre sont nom dans la liste déroulante appuyez dessus puis cliquez sur le bouton "Ajouter"<br>
-        4)Répéter les étapes 2 et 3 pour chacuns de vos amis<br><br>
-
-        <b>ATTENTION</b>, vous ne pouvez pas mettre en ami une personne qui ne s'est jamais connecté au site
-
-        
+        1) Cliquer dans le menu sur le bouton "amis".<br>
+        2) Commencer a écrire le nom de votre ami dans la zone de texte ("Rechercher un ami").<br>
+        3) Dès que vous voyez apparaitre sont nom dans la liste déroulante appuyez dessus puis cliquez sur le bouton "Ajouter".<br>
+        4) Répéter les étapes 2 et 3 pour chacuns de vos amis.<br><br>
     </p>
+  </div>
 
     <h2>
       Etape 2 : Inscription
     </h2>
       <p>
-        1) Sélectionner la bonne semaine (la semaine actuelle correspond à la semaine encours)<br>
-        2) Cliquer sur le créneau qui vous intéresse<br>
-        3) Sélectionner les amis avec lesquels vous souhaitez manger à cette horaire<br>
-        4) Attendez quelques secondes pour que le site prennes en compte vos choix puis validez<br><br>
+        1) Sélectionner la bonne semaine (la semaine actuelle correspond à la semaine encours).<br>
+        2) Cliquer sur le créneau qui vous intéresse.<br>
+        3) Sélectionner les
+        <a href="#Amis" onclick="miseenavant('Amis',1000)" style="color:#0">amis</a>
+         avec lesquels vous souhaitez manger à cet horaire.<br>
+        4) Votre compte sera débité du nombre de point nécessaire (ce nombre de point est par défaut 1 mais
+        il peu y avoir des réductions qui seront indiqué sur la page d'accueil).<br>
+        5) Vous pouvez alors valider en appuyant sur le boutton <b>OUI</b>.<br>
+        <br>
+        Il sera toujours possible de modifier votre inscription par la suite.<br>
+        <br>
 
-        <b>ATTENTION</b>, pour manger avec des Amis, <u>CHACUN</u> de vos amis doit s'inscire au crénau voulu et mettre les sélectionnez les autres<br>
+        <b>ATTENTION</b>
+        , pour manger avec des amis, <u>CHACUN</u> de vos amis doit s'inscire au crénau voulu et mettre les sélectionnez les autres<br>
         Si l'un de vous n'es pas pris, tout le monde le sera aussi.<br>
-        En contre parti, vous obtiendrez un point de score.
-        
+        Si vous n'êtes pas pris vous ne perdez pas de point.<br>
+
+
     </p>
 
     <h2>
         Etape 3 : Aller au foyer
       </h2>
         <p>
-          1) Vérifier le lundi de chaque semaine si votre requète pour aller manger au foyer a été retenu<br>
-          1 bis) Si ce n'est pas le cas, certain crénau seront ouvert en  mode individuelle, Vous pourrez alors vous inscrire<br><br>
-          2) Rendez vous au foyer au crénau indiqué puis appuyez sur le bouton "Pass".<br>
-             Le GIF de validation vous sert de ticket d'entrée
-          
+          1) Avant de vous rendre au foyer verifier si vous êtes inscrit pour cela regarder si le créneau demandé est devenu vert.<br>
+          2) Si vous êtes accepté rendez-vous le jour J au foyer et presentez votre <a href=../pass/pass.html>Pass</a>.<br>
+          2 bis) Sinon vous regagnez les points utilisés pour l'inscription.<br>
+          <br>
+
+          <b>ATTENTION</b>
+          , il est <b>STRICTEMENT INTERDIT </b> de falsifier son <a href=../pass/pass.html>Pass</a> et il est inutile de se presenter au foyer sans avoir été accepté.<br>
+
+
       </p>
   </h2>
+</div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<br>
-<br>
-<br>
-<br>
-<br>
+  <h3>
+    Annexe :
+  </h3>
 
   <h2>
-      Annexe
-  </h2>
-
-  <h2>
-    Retirer un amis
+    Signaler sa presence en permance :
   </h2>
     <p>
-        1) Cliquer dans le menu sur le bouton amis<br>
-        2) Cliquez sur son nom dans la liste des amis pour le retirer<br>
-      
+        1) Rendez vous sur la page d'accueil et appuyé sur <a href=../perm/perm.html><b>Planing Foyer(Permanence).</b></a><br>
+        2) Cliquez sur semaine actuelle.<br>
+        3) Cliquez sur le crénau voulu.<br>
+        4) Assurez vous que personne dans votre classe n'a déja fait de demande dans votre groupe/classe.<br>
+        5) Remplissez les champs et validez cela ne coute pas de points.<br>
+
   </p>
 
   <h2>
-    Se désinscrire
+    Retirer un amis :
   </h2>
     <p>
-        1) Cliquer dans le menu sur le crénau où vous êtes inscrit<br>
-        2) appuyez sur oui pour vous désinscrire<br>
-      
+        1) Cliquer dans le menu sur le bouton <a href=../amis/amis.html><b>amis</b></a>.<br>
+        2) Cliquez sur son nom dans la liste des amis pour le retirer.<br>
+
   </p>
 
   <h2>
-   Rajouter une personne avec qui manger
+    Se désinscrire :
   </h2>
     <p>
-        1) Désinscrivez vous<br>
-        2) Puis réinscrivez vous avec les anciens amis ainsi que celui que vous vouliez ajouter<br>
-      
+        1) Cliquer dans le menu sur le crénau où vous êtes inscrit.<br>
+        2) Appuyez sur <b>OUI</b> pour vous désinscrire.<br>
+
   </p>
 
   <h2>
-    Enlever une personne avec qui manger
+   Rajouter une personne avec qui manger :
+  </h2>
+    <p>
+        1) Appuyez sur le créneau.<br>
+        2) Apporter les modifications souhaités.<br>
+
+  </p>
+
+  <h2>
+    Enlever une personne avec qui manger :
    </h2>
      <p>
-         1) Cliquer dans le menu sur le crénau où vous êtes inscrit<br>
-         2) Cliquez sur son nom dans la liste des amis avec qui vous voulez manger pour le retirer<br>
-       
+         1) Cliquer dans le menu sur le crénau où vous êtes inscrit.<br>
+         2) Cliquez sur son nom dans la liste des amis avec qui vous voulez manger pour le retirer.<br>
+
    </p>
 
-	
+
 	<footer>
         <div style="background:#ffffff;width:100%;height:auto;text-align: center;">
 
             <br/>
             <hr style="width: 25%;" />
 
-            <a href="" target="_blank" style="text-decoration: none;">
-                <p style="font-weight:500; color:black;font-size:16px;letter-spacing: 1px;">Version Beta</p>
-            </a>
+              <a id="version" href="../../dev/dev.html" style="font-weight:500;font-size:18px;letter-spacing: 1px;"></a>
 
             <br/>
             <br/>
-            
+
 
         </div>
     </footer>
-	
-	
+
+
   </body>
 
 </html>

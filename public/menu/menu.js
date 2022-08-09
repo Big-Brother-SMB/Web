@@ -20,7 +20,7 @@ if (user == null || String(user).length < 5) {
     setTimeout(function () {
         deco()
     }, 2000);
-    
+
 }
 
 
@@ -403,11 +403,11 @@ function updateAffichage(j, h) {
                 } else {
                     text += "dont " + nbAmisDemande[j][h] + " ont fait une demande"
                 }
-    
+
             }
-    
+
         }
-    
+
         if (inscrit[j][h]) {
             bouton[j][h].className = "inscrit tableau"
             if (nbAmis[j][h] == 0) {
@@ -419,7 +419,7 @@ function updateAffichage(j, h) {
             else {
                 text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " amis"
             }
-    
+
         }
     }
     bouton[j][h].innerHTML = text;
@@ -613,13 +613,3 @@ document.getElementById("logo").addEventListener("click",function(){
 document.getElementById("nav hide").addEventListener("click",function(){
     document.querySelectorAll("nav")[0].style.visibility = "hidden"
 })
-
-
-database.ref("modo/users").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        if (child.key===user){
-            document.getElementById("admin").style.visibility="visible";
-        }
-    })
-})
-

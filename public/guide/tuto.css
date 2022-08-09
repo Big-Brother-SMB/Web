@@ -1,20 +1,36 @@
 h1  {
+    font-size: 20px;
+    white-space: wrap;
+  }
+p{
+  position: relative;
+  padding-left: 70px;
+  text-justify: auto;
+}
+
+h2{
+  font size: 30px;
+  color : white;
+  background-color: rgb(80,100,132);
+  white-space :wrap;
+  position: relative;
+  padding-left: 60px;
+}
+
+  h3  {
     font-size: 60px;
+    color: white;
+    background-color: rgb(80,100,132);
     white-space: wrap;
+    position: relative;
+    padding-left: 30px;
   }
-  
-  h2  {
-    font-size: 40px;
-    color: black;
-    background-color: rgb(131, 135, 143);
-    white-space: wrap;
-  }
-  
+
   input{
     width: 30px;
-      height: 30px;
+    height: 30px;
   }
-  
+
   body,
     h1,
     ul {
@@ -22,33 +38,33 @@ h1  {
       padding: 0;
       color: white;
     }
-    
+
     header {
       align-items: center;
       display: flex;
       background: #486381;
     }
-    
+
     #logo,
     nav {
       flex : 1;
     }
-    
+
     .headerimg{
       width: 170px;
       height: 150px;
     }
-    
+
     nav  {
       display: flex;
       justify-content: space-around;
-      
+
     }
     header li a  {
       text-decoration: none;
       color: #eeeeee;
     }
-    
+
     .retour  {
       color:#ffffff;
       border-radius:8px 8px 8px 8px;
@@ -71,24 +87,24 @@ h1  {
     .retour:hover  {
       background:#2e3f53;
     }
-        
+
   p  {
     color: black;
     padding-top: 15px;
     font-size: x-large;
     font-family: "Optima", sans-serif ;
   }
-  
+
   a  {
     color: black;
   }
-  
+
   .cgu  {
     text-align: center;
     border: 0px;
   }
-  
-  
+
+
     .button {
     border: none;
     display: block;
@@ -107,7 +123,7 @@ h1  {
     margin: 0 auto;
     }
     .button span {
-    position: relative; 
+    position: relative;
     z-index: 1;
     }
     .button:after {
@@ -127,10 +143,8 @@ h1  {
     -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
     transform: translateX(-9%) translateY(-25%) rotate(45deg);
     }
-  
+
   .soustitre  {
     text-align: center;
     font-size: small;
   }
-  
-  
