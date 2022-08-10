@@ -22,8 +22,6 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
 console.log(j);
 console.log(h);
 
-j = dayWithMer[1];
-
 let inputCodeBar = document.getElementById("code bar")
 inputCodeBar.addEventListener("input",function(){
     let val = inputCodeBar.value
