@@ -1,4 +1,4 @@
-let scanB=document.createElement("scanB")
+let scanB=document.getElementById("scanB")
 
 function onScanSuccess(decodedText, decodedResult) {
     console.log(`Code scanned = ${decodedText}`, decodedResult);
@@ -21,6 +21,8 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
 }
 console.log(j);
 console.log(h);
+
+j = dayWithMer[1];
 
 let inputCodeBar = document.getElementById("code bar")
 inputCodeBar.addEventListener("input",function(){
@@ -58,6 +60,8 @@ database.ref("users").once("value", function(snapshot){
     })
 })
 function search(c,scan){
+    scanB.style.visibility="hidden";
+
     if(code == c){
         return;
     }
@@ -77,17 +81,30 @@ function search(c,scan){
 
 
 function searchName(name,scan){
+    scanB.style.visibility="hidden";
+
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name).once("value", function(snapshot) {
-        if(scan==true){
-            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name+"/scan").set(hash())
-        }
         if(snapshot.val() != null){
+            if(scan==true){
+                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name+"/scan").set(hash())
+            }else{
+                scanB.style.visibility="visible";
+            }
             document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok.png\" />"
         }else{
             document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/croix.png\" />"   
         }
     })
 }
+
+scanB.addEventListener("click",function(){
+    scanB.style.visibility="hidden";
+    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value).once("value", function(snapshot) {
+        if(snapshot.val() != null){
+            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value + "/scan").set(hash())
+        }
+    })
+})
 
 
 function loop(){
