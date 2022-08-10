@@ -4,14 +4,6 @@ let h = parseInt(sessionStorage.getItem("h"));
 let charge = 1
 const nbCharge = 8;
 
-database.ref("version").once("value", function (snapshot) {
-    let msg = snapshot.val()
-    if (msg != null) {
-      document.getElementById("version").innerHTML ="Version "+msg
-      }
-
-    })
-
 database.ref(path(j,h) + "/demandes/" +user).once('value').then(function(snapshot) {
     if(snapshot.val() == null){
         window.location.href = menu;

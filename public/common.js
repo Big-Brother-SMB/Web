@@ -137,19 +137,17 @@ let backgroundColor = readCookie("color background")
 let textColor = readCookie("color text")
 
 
-database.ref("users/" + user + "/classe").once("value", function(snapshot) {
-    classe = snapshot.val()
+let snapUsers
+database.ref("users").once("value", function(snapshot) {
+    snapUsers=snapshot
+    classe = snapshot.child(user + "/classe").val()
     if(classe != null){
-
         writeCookie("classe",classe)
     }
-})
 
-database.ref("users/" + user + "/code barre").once("value", function(snapshot) {
-    codeBar = snapshot.val()
+    codeBar = snapshot.child(user + "/code barre").val()
     if(codeBar != null){
         console.log(codeBar)
-
         writeCookie("code bar",codeBar)
     }else{
         console.log("err code bar")
@@ -396,10 +394,7 @@ try{
 
 function getUserData(path,onValue){
     readDatabase(path,onValue)
-    database.ref("users/" + user + "/" + path).once("value", function(snapshot) {
-        onValue(snapshot.val())
-
-    });
+    onValue(snapUsers.child(user + "/" + path).val())
 }
 
 function setUserData(path,value){

@@ -134,9 +134,9 @@ function reloadLigne(ligne,i){
                     database.ref("users/"+users[i].name+"/score/"+hash.key).remove()
                 }
             })
+            users.splice([...table.children].indexOf(ligne),1)
+            table.removeChild(ligne)
         })
-        users.splice([...table.children].indexOf(ligne),1)
-        table.removeChild(ligne)
     }
     ligne.appendChild(colS)
 }

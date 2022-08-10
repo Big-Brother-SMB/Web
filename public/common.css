@@ -42,7 +42,7 @@ input,select{
 
 select{
   font-size: 50px;
-  width: 1000px;
+  width: 90%;
 }
 
 .notification {

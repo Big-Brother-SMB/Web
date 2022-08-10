@@ -13,15 +13,6 @@ if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=49)){
     h = "/12h";
 }
 
-database.ref("version").once("value", function (snapshot) {
-  let msg = snapshot.val()
-  if (msg != null) {
-    document.getElementById("version").innerHTML ="Version "+msg
-    }
-
-
-})
-
 console.log(j);
 console.log(h);
 
