@@ -1,5 +1,6 @@
 .firebaserc
 firebase.json
+*.csv
 
 
 # Logs

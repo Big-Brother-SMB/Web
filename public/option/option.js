@@ -112,10 +112,8 @@ function charged() {
     document.getElementById("chargement").style.display = "none"
 }
 
-database.ref("modo/users").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        if (child.key===user){
-            document.getElementById("admin").style.visibility="visible";
-        }
-    })
+database.ref("modo/users/"+user).once('value').then(function(snapshot) {
+    if (snapshot.val()===0){
+        document.getElementById("admin").style.visibility="visible";
+    }
 })

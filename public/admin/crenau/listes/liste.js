@@ -23,10 +23,10 @@ database.ref(path(j,h)).once("value",function(snapshot){
         cout = snapshot.child("cout").val();
         ouvert = snapshot.child("ouvert").val();
         snapshot.child("demandes").forEach(function(child){
-            searchUser(child.key,false,null)
+            searchUser(child.key,false,"---")
         })
         snapshot.child("inscrits").forEach(function(child){
-            searchUser(child.key,true,null)
+            searchUser(child.key,true,snapshot.child("inscrits/"+child.key+"/scan").val())
         })
         users.sort((a, b) => (a.name > b.name) ? 1 : -1)
         for(let i in users){
@@ -63,6 +63,7 @@ function reloadLigne(ligne,i){
                 database.ref(path(j,h)+"/demandes/"+users[i].name).remove()
             })
 
+            users[i].pass="Non scan"
             users[i].DorI=true
 
             if(ouvert==2||ouvert==3){
@@ -85,8 +86,11 @@ function reloadLigne(ligne,i){
 
             database.ref(path(j,h)+"/inscrits/"+users[i].name).once('value').then(function(snapshot){
                 database.ref(path(j,h)+"/demandes/"+users[i].name).set(snapshot.val())
+                database.ref(path(j,h)+"/demandes/"+users[i].name+"/scan").remove()
                 database.ref(path(j,h)+"/inscrits/"+users[i].name).remove()
             })
+
+            users[i].pass="---"
             users[i].DorI=false
 
             database.ref("users/"+users[i].name+"/score/").once('value').then(function(snapshot){
@@ -147,7 +151,11 @@ function userObject(name,classe,DorI,pass,carte) {
     this.name=name
     this.classe=classe
     this.DorI=DorI
-    this.pass=pass
+    if(pass!=null){
+        this.pass=pass
+    }else{
+        this.pass="Non scan"
+    }
     this.carte=carte
 }
 
@@ -162,28 +170,44 @@ database.ref("users").once("value", function(snapshot) {
     let demande=document.getElementById("demande")
     let inscrit=document.getElementById("inscrit")
     demande.addEventListener("click",function(){
-        /*if(utilisateurs.indexOf(search.value)!=-1){
+        if(utilisateurs.indexOf(search.value)!=-1){
             utilisateurs2=[]
             for(let loop in users){
                 utilisateurs2.push(users[loop].name)
             }
 
-            
             if(utilisateurs2.indexOf(search.value)===-1){
-                searchUser(search.value,false,null)
+                searchUser(search.value,false,"---")
                 users.sort((a, b) => (a.name > b.name) ? 1 : -1)
                 utilisateurs2=[]
                 for(let loop in users){
                     utilisateurs2.push(users[loop].name)
                 }
-                let ligne=table.insertRow(utilisateurs2.indexOf(search.value))
+
+                database.ref(path(j,h)+"/demandes/"+search.value+"/user").set(0)
+
+                table.insertRow(utilisateurs2.indexOf(search.value))
+                let ligne=table.children[utilisateurs2.indexOf(search.value)]
                 reloadLigne(ligne,utilisateurs2.indexOf(search.value))
-            }else{
+            }else if(users[utilisateurs2.indexOf(search.value)].DorI===true){
                 users[utilisateurs2.indexOf(search.value)].DorI=false
+                users[utilisateurs2.indexOf(search.value)].pass="---"
+                database.ref(path(j,h)+"/inscrits/"+search.value).once('value').then(function(snapshot){
+                    database.ref(path(j,h)+"/demandes/"+search.value).set(snapshot.val())
+                    database.ref(path(j,h)+"/demandes/"+search.value+"/scan").remove()
+                    database.ref(path(j,h)+"/inscrits/"+search.value).remove()
+                })
+                database.ref("users/"+search.value+"/score/").once('value').then(function(snapshot){
+                    snapshot.forEach(function(hash){
+                        if(snapshot.child(hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
+                            database.ref("users/"+search.value+"/score/"+hash.key).remove()
+                        }
+                    })
+                })
                 let ligne=table.children[utilisateurs2.indexOf(search.value)]
                 reloadLigne(ligne,utilisateurs2.indexOf(search.value))
             }
-        }*/
+        }
     })
     inscrit.addEventListener("click",function(){
         if(utilisateurs.indexOf(search.value)!=-1){
@@ -194,7 +218,7 @@ database.ref("users").once("value", function(snapshot) {
 
             let hashCode = hash()
             if(utilisateurs2.indexOf(search.value)===-1){
-                searchUser(search.value,true,null)
+                searchUser(search.value,true,snapshot.child("inscrits/"+search.value+"/scan").val())
                 users.sort((a, b) => (a.name > b.name) ? 1 : -1)
                 utilisateurs2=[]
                 for(let loop in users){
@@ -212,6 +236,7 @@ database.ref("users").once("value", function(snapshot) {
                 reloadLigne(ligne,utilisateurs2.indexOf(search.value))
             }else if(users[utilisateurs2.indexOf(search.value)].DorI===false){
                 users[utilisateurs2.indexOf(search.value)].DorI=true
+                users[utilisateurs2.indexOf(search.value)].pass="No scan"
                 database.ref(path(j,h)+"/demandes/"+search.value).once('value').then(function(snapshot){
                     database.ref(path(j,h)+"/inscrits/"+search.value).set(snapshot.val())
                     database.ref(path(j,h)+"/demandes/"+search.value).remove()
