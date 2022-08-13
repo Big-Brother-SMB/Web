@@ -1,6 +1,7 @@
 .firebaserc
 firebase.json
 *.csv
+PyScan/key.json
 
 
 # Logs
