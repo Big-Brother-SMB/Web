@@ -19,10 +19,18 @@
     <a href="../admin/menu/menu.html" class="notification" id="admin" style="visibility: hidden;">
       <img src="../Images/admin.png" alt="notif">
     </a>
-    <a href="../menu/menu.html" class="notification"><img src="../Images/retour.png" alt="retour"></a>
+    <a id="retour" class="notification"><img src="../Images/retour.png" alt="retour"></a>
   </header>
 
   <article id="article" style="text-align: center;display: none;">
+    <p id="adminP" style="visibility: hidden;height: 0px;">Admin permanent
+      <label class="switch">
+        <input type="checkbox" id="admin switch">
+        <span class="slider round"></span>
+      </label>
+    </p>
+
+
     <p>Ajouter automatiquement tous les amis
       <label class="switch">
         <input type="checkbox" id="allAmis">
@@ -36,7 +44,6 @@
         <span class="slider round"></span>
       </label>
     </p>
-
 
 
     <p>Arrière plan : <input type="color" id="color back">

@@ -21,7 +21,13 @@ database.ref("users/" + user + "/classe").once("value", function(snapshot) {
 })
 
 setTimeout(function() {
-    window.location.href = "menu/menu.html";
+    database.ref("modo/users/"+ user).once('value',function(snapshot){
+        if(snapshot.val()===1){
+          window.location.href = "/admin/menu/menu.html";
+        } else {
+          window.location.href = "/menu/menu.html";
+        }
+    })
 },1000);
 
 

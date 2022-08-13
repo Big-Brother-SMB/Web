@@ -24,7 +24,8 @@ console.log("cookie", cookie)
 
 if (cookie["user"] != null && cookie["email"] != null) {
   sessionStorage.setItem("user", cookie["user"]);
-  window.location.href = "menu/menu.html";
+  sessionStorage.setItem("email", cookie["email"])
+  window.location.href = "fin.html";
 }
 
 

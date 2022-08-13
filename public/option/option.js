@@ -112,8 +112,39 @@ function charged() {
     document.getElementById("chargement").style.display = "none"
 }
 
-database.ref("modo/users/"+user).once('value').then(function(snapshot) {
-    if (snapshot.val()===0){
-        document.getElementById("admin").style.visibility="visible";
+let admin=document.getElementById("admin")
+let adminS=document.getElementById("admin switch")
+let adminP=document.getElementById("adminP")
+let retour=document.getElementById("retour")
+let adminVal=-1
+retour.addEventListener("click",function(){
+    if(adminVal===1){
+        window.location.href="../admin/menu/menu.html"
+    } else {
+        window.location.href="../menu/menu.html"
     }
+})
+database.ref("modo/users/"+user).once('value').then(function(snapshot) {
+    adminVal=snapshot.val()
+    if (snapshot.val()===0){
+        admin.style.visibility="visible";
+    }
+    if (snapshot.val()===1){
+        adminS.checked=true
+    }
+    if (snapshot.val()===0 || snapshot.val()===1){
+        adminP.style.visibility="visible";
+        adminP.style.height="auto";
+    }
+    adminS.addEventListener("change", function () {
+        if(adminS.checked){
+            database.ref("modo/users/"+user).set(1)
+            admin.style.visibility="hidden";
+            adminVal=1
+        } else {
+            database.ref("modo/users/"+user).set(0)
+            admin.style.visibility="visible";
+            adminVal=0
+        }
+    })
 })

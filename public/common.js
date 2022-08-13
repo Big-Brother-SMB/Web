@@ -28,14 +28,23 @@ firebase.auth().onAuthStateChanged(function(user) {
         deco()
         console.log("log out")
     }
-    if(window.location.pathname.includes("admin")){
-        let userName=readCookie("user")
-        database.ref("modo/users/"+ userName).once('value',function(snapshot){
-            if(snapshot.val()!=0){
+    let userName=readCookie("user")
+    database.ref("modo/users/"+ userName).once('value',function(snapshot){
+        if(window.location.pathname.includes("admin")){
+            if(snapshot.val()!=0 && snapshot.val()!=1){
                 deco()
             }
-        })
-    }
+        }
+        if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option") && snapshot.val()===1){
+            let str = window.location.pathname.split("/")
+            let str2 = ""
+            for(let i = 0;i<str.length-2;i++){
+                str2+="../"
+            }
+            str2+="admin/menu/menu.html"
+            window.location.href = str2;
+        }
+    })
 });
 
 //--------------------
@@ -234,7 +243,7 @@ const listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL",
 
 //--------------------path--------------------
 
-const menu = window.location.origin + "/menu/menu.html"
+const menu = window.location.origin + "/admin/menu/menu.html"
 
 function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"

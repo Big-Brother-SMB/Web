@@ -330,3 +330,21 @@ function updateMsg(){
     notifMsg.style.visibility = "visible"
     notifMsg.innerHTML = nbMsg
 }
+
+
+let retourImg=document.getElementById("retourImg")
+let retour=document.getElementById("retour")
+database.ref("modo/users/"+user).once('value').then(function(snapshot) {
+    if(snapshot.val()===1){
+        retourImg.src="../../Images/option.png"
+    } else {
+        retourImg.src="../../Images/retour.png"
+    }
+    retour.addEventListener("click",function(){
+        if(snapshot.val()===1){
+            window.location.href="../../option/option.html"
+        } else {
+            window.location.href="../../menu/menu.html"
+        }
+    })
+})

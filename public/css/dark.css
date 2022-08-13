@@ -142,3 +142,15 @@ vert {
     background-color: #104312;
 }
 
+td {
+      border: 1px solid #FFF;
+      color: #FFF;
+  }
+
+  
+  
+  thead,
+  tfoot {
+      background-color: #FFF;
+      color: #333;
+  }
