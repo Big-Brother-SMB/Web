@@ -36,13 +36,7 @@ firebase.auth().onAuthStateChanged(function(user) {
             }
         }
         if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option") && snapshot.val()===1){
-            let str = window.location.pathname.split("/")
-            let str2 = ""
-            for(let i = 0;i<str.length-2;i++){
-                str2+="../"
-            }
-            str2+="admin/menu/menu.html"
-            window.location.href = str2;
+            window.location.href = window.location.origin + "/admin/menu/menu.html"
         }
     })
 });
@@ -119,13 +113,7 @@ function reload(){
 
 function deco(){
     delCookie("user");
-    let str = window.location.pathname.split("/")
-    let str2 = ""
-    for(let i = 0;i<str.length-2;i++){
-        str2+="../"
-    }
-    str2+="index.html"
-    window.location.href = str2;
+    window.location.href = window.location.origin + "/index.html";
 }
 
 //--------------------var--------------------
@@ -243,7 +231,7 @@ const listClasse = ["SA","SB","SC","SD","SE","SF","SG","SH","SI","SJ","SK","SL",
 
 //--------------------path--------------------
 
-const menu = window.location.origin + "/admin/menu/menu.html"
+const menu = window.location.origin + "/menu/menu.html"
 
 function path(j,h){
     return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
