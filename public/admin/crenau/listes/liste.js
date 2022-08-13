@@ -66,7 +66,7 @@ function reloadLigne(ligne,i){
             users[i].pass="Non scan"
             users[i].DorI=true
 
-            if(ouvert==2||ouvert==3){
+            if(ouvert==2||ouvert==3||ouvert==5){
                 let hashCode = hash()
                 database.ref("users/" + users[i].name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
                 database.ref("users/" + users[i].name + "/score/" + hashCode + "/value").set(-cout)
@@ -225,7 +225,7 @@ database.ref("users").once("value", function(snapshot) {
                     utilisateurs2.push(users[loop].name)
                 }
 
-                if(ouvert==2||ouvert==3){
+                if(ouvert==2||ouvert==3||ouvert==5){
                     database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
                     database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
                 }
@@ -241,7 +241,7 @@ database.ref("users").once("value", function(snapshot) {
                     database.ref(path(j,h)+"/inscrits/"+search.value).set(snapshot.val())
                     database.ref(path(j,h)+"/demandes/"+search.value).remove()
                 })
-                if(ouvert==2||ouvert==3){
+                if(ouvert==2||ouvert==3||ouvert==5){
                     database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
                     database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
                 }

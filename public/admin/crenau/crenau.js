@@ -23,7 +23,7 @@ database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
                         }
                     })
                 })
-                if(divMode.selectedIndex==2||divMode.selectedIndex==3){
+                if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
                     snapshot2.forEach(function(child){
                         database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
                         database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
@@ -606,7 +606,7 @@ function algo(){
                                     if(gratuit && (commonElement(prio, usersPriorites[p]) != 0 || prio.indexOf(usersClasse[p]) != -1) ){
                                         console.log("gratis")
                                     }else{
-                                        if(divMode.selectedIndex==2||divMode.selectedIndex==3){
+                                        if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
                                             database.ref("users/" + name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
                                             database.ref("users/" + name + "/score/" + hashCode + "/value").set(-cout)
                                         }
