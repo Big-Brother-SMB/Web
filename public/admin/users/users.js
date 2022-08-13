@@ -135,7 +135,7 @@ database.ref("users").once("value", function(snapshot) {
             });
 
             database.ref("modo/users/" + utilisateur).once('value').then(function(snapshot) {
-                if(snapshot.val()===0){
+                if(snapshot.val()===0 || snapshot.val()===1){
                     adminBox.checked=true
                 } else {
                     adminBox.checked=false

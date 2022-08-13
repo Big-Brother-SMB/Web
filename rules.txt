@@ -55,7 +55,7 @@
                     "$h":{
                         "demandes":{
                           	"$name":{
-                              	".write":"auth!=null",
+                              	".write": "$name == auth.token.name",
                             },
                         },
                     },

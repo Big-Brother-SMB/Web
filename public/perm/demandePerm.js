@@ -32,7 +32,7 @@ database.ref(pathPerm(j,h) + "/demandes").once('value').then(function(snapshot) 
                 if(u == user){
                     but.addEventListener("click", function(){
                         but.remove()
-                        database.ref(pathPerm(j,h) + "/demandes/" + hashCode).remove()
+                        database.ref(pathPerm(j,h) + "/demandes/" + u).remove()
                     })
                 }
 
