@@ -34,24 +34,21 @@ database.ref(pathPerm(j,h) + "/demandes").once('value').then(function(snapshot) 
         divDemandes.innerHTML = ""
     }
     snapshot.forEach(function(child) {
-        let hashCode = child.key
-        database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/name").once('value').then(function(snapshot) {
+        let u = child.key
+        database.ref(pathPerm(j,h) + "/demandes/" + u + "/name").once('value').then(function(snapshot) {
             let name = snapshot.val()
-            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/nb").once('value').then(function(snapshot) {
+            database.ref(pathPerm(j,h) + "/demandes/" + u + "/nb").once('value').then(function(snapshot) {
                 let nb = snapshot.val()
-                database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/user").once('value').then(function(snapshot) {
-                    let user = snapshot.val()
-                    but = document.createElement("button")
-                    but.classList.add("amis")
-                    but.innerHTML = name +  " : " + nb +" (" + user + ")"
+                but = document.createElement("button")
+                but.classList.add("amis")
+                but.innerHTML = name +  " : " + nb +" (" + u + ")"
 
-                    but.addEventListener("click", function(){
-                        but.remove()
-                        database.ref(pathPerm(j,h) + "/demandes/" + hashCode).remove()
-                    })
-
-                    divDemandes.appendChild(but);
+                but.addEventListener("click", function(){
+                    but.remove()
+                    database.ref(pathPerm(j,h) + "/demandes/" + u).remove()
                 })
+
+                divDemandes.appendChild(but);
             })
         })
         

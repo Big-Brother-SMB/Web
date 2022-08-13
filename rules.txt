@@ -1,10 +1,9 @@
 {
     "rules": {
         ".read" : "auth != null",
-        ".write": "root.child('modo').child('users').child(auth.token.name).val()===0",
-        
+        ".write": "root.child('modo').child('users').child(auth.token.name).val()===0 || root.child('modo').child('users').child(auth.token.name).val()===1",
         "banderole":{
-            ".read": "auth != null"
+          
         },
         
         "foyer_midi":{
@@ -13,17 +12,21 @@
                     "$h":{
                         "demandes":{
                             "$name":{
-                                ".write": "$name == auth.token.name",
+                              	"user":{
+                                  	".write": "$name == auth.token.name",
+                                },
+                                "amis":{
+                                  	".write": "$name == auth.token.name",
+                                },
                             }
-                        },
-                        "users":{
-                            "$name":{
-                                ".write": "$name == auth.token.name",
-                            }
-                        },
+                        }
                     },
                 },
             },
+        },
+          
+        "hist_point":{
+          	
         },
 
         "messages":{
@@ -33,14 +36,14 @@
         },
 
         "modo":{
-            ".read": "auth != null"
+            
         },
 
         "news":{
             "$date":{
                 "users":{
                     "$name":{
-                		".write": "$name == auth.token.name",
+                		    ".write": "$name == auth.token.name",
                     }
                 }
             }
@@ -51,7 +54,9 @@
                 "$j":{
                     "$h":{
                         "demandes":{
-                            ".write":"auth!=null",
+                          	"$name":{
+                              	".write":"auth!=null",
+                            },
                         },
                     },
                 },
@@ -59,7 +64,7 @@
         },
 
         "priorites":{
-            ".read": "auth != null"
+            
         },
 
         "sondages":{
@@ -94,7 +99,7 @@
         },
 
         "version":{
-            ".read": "auth != null"
+            
         }
     } 
 }

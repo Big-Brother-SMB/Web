@@ -20,26 +20,23 @@ database.ref(pathPerm(j,h) + "/demandes").once('value').then(function(snapshot) 
         divDemandes.innerHTML = ""
     }
     snapshot.forEach(function(child) {
-        let hashCode = child.key
-        database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/name").once('value').then(function(snapshot) {
+        let u = child.key
+        database.ref(pathPerm(j,h) + "/demandes/" + u + "/name").once('value').then(function(snapshot) {
             let name = snapshot.val()
-            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/nb").once('value').then(function(snapshot) {
+            database.ref(pathPerm(j,h) + "/demandes/" + u + "/nb").once('value').then(function(snapshot) {
                 let nb = snapshot.val()
-                database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/user").once('value').then(function(snapshot) {
-                    let u = snapshot.val()
-                    but = document.createElement("button")
-                    but.classList.add("amis")
-                    but.innerHTML = name +  " : " + nb +" (" + u + ")"
+                but = document.createElement("button")
+                but.classList.add("amis")
+                but.innerHTML = name +  " : " + nb +" (" + u + ")"
 
-                    if(u == user){
-                        but.addEventListener("click", function(){
-                            but.remove()
-                            database.ref(pathPerm(j,h) + "/demandes/" + hashCode).remove()
-                        })
-                    }
+                if(u == user){
+                    but.addEventListener("click", function(){
+                        but.remove()
+                        database.ref(pathPerm(j,h) + "/demandes/" + hashCode).remove()
+                    })
+                }
 
-                    divDemandes.appendChild(but);
-                })
+                divDemandes.appendChild(but);
             })
         })
         /*let name = child.key
@@ -69,9 +66,8 @@ function charged(){
         let nb = document.getElementById("nb").value
         if(val.lenght != 0 && nb != ""){
             let hashCode = hash()
-            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/name").set(val)
-            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/nb").set(nb)
-            database.ref(pathPerm(j,h) + "/demandes/" + hashCode + "/user").set(user)
+            database.ref(pathPerm(j,h) + "/demandes/" + user + "/name").set(val)
+            database.ref(pathPerm(j,h) + "/demandes/" + user + "/nb").set(nb)
             setTimeout(function() {
             window.location.href = "perm.html";
             },1000)
