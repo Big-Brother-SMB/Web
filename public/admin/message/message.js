@@ -71,32 +71,23 @@ const size = [
 database.ref("sondages").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         let h = child.key
-        database.ref("sondages/" + h + "/text").once('value').then(function(snapshot) {
-            let text = snapshot.val()
-            database.ref("sondages/" + h + "/mode").once('value').then(function(snapshot) {
-                let mode = snapshot.val()
-                if(mode == null){
-                    mode = 0
-                }
-                let reponse=[]
-                database.ref("sondages/" + h + "/users").once('value').then(function(snapshot) {
-                    snapshot.forEach(function(child){
-                        reponse.push(snapshot.child(child.key).val())
-                    })
-                    if(mode == 3){
-                        database.ref("sondages/" + h + "/choices").once('value').then(function(snapshot) {
-                            let choices = []
-                            snapshot.forEach(function(child) {
-                                choices.push(child.key)
-                            })
-                            sondage(h, text, mode,reponse,choices)
-                        })
-                    }else{
-                        sondage(h, text, mode,reponse,null)
-                    }
-                })
-            })
+        let text = snapshot.child(h+"/text").val()
+        let mode = snapshot.child(h+"/mode").val()
+        if(mode == null){
+            mode = 0
+        }
+        let reponse=[]
+        snapshot.child(h + "/users/").forEach(function(child){
+            reponse.push(snapshot.child(h + "/users/"+child.key).val())
         })
+        if(mode == 3){
+            let choices = []
+            snapshot.child(h + "/choices").forEach(function(child) {
+                choices.push(child.key)
+            })
+        }else{
+            sondage(h, text, mode,reponse,null)
+        }
     })
 })
 
@@ -253,13 +244,9 @@ function sondage(h, text, mode, reponse,choices){
 database.ref("news").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         let h = child.key
-        database.ref("news/" + h + "/title").once('value').then(function(snapshot) {
-            let title = snapshot.val()
-            database.ref("news/" + h + "/text").once('value').then(function(snapshot) {
-                let text = snapshot.val()
-                news(h, title, text)
-            })
-        })
+        let title = snapshot.child(h+"/title").val()
+        let text = snapshot.child(h+"/text").val()
+        news(h, title, text)         
     })
 })
 
@@ -311,25 +298,21 @@ function news(h,title,text){
 }
 
 //------------------------------my msg---------------------------------
-
-database.ref("users/").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
+let usersList = []
+database.ref("users/").once('value').then(function(snapshot1) {
+    snapshot1.forEach(function(child) {
+        usersList.push(child.key)
+    })
+    autocomplete(destinataire, usersList);
+    snapshot1.forEach(function(child) {
         let user = child.key
-        database.ref("users/" + user + "/messages").once('value').then(function(snapshot) {
-            snapshot.forEach(function(child) {
-                let h = child.key
-                database.ref("users/" + user + "/messages/" + h + "/title").once('value').then(function(snapshot) {
-                    let title = snapshot.val()
-                    database.ref("users/" + user + "/messages/" + h + "/text").once('value').then(function(snapshot) {
-                        let text = snapshot.val()
-                        database.ref("users/" + user + "/messages/" + h + "/lu").once('value').then(function(snapshot) {
-                            let lu = snapshot.val()
-                            if (lu!=true) lu=false;
-                            myMessage(h,title,text, user,lu)
-                        })
-                    })
-                })
-            })
+        let snapshot=snapshot1.child(user + "/messages")
+        snapshot.forEach(function(child) {
+            let h = child.key
+            let title = snapshot.child(h+"/title").val()
+            let text = snapshot.child(h+"/text").val()
+            let lu = snapshot.child(h+"/lu").val()
+            myMessage(h, title, text, user, lu)
         })
     })
 })
@@ -387,27 +370,17 @@ function myMessage(h,title,text,user,lu){
 
 //------------------------------msg---------------------------------
 
-database.ref("messages/").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
+database.ref("messages/").once('value').then(function(snapshot1) {
+    snapshot1.forEach(function(child) {
         let user = child.key
-        database.ref("messages/" + user).once('value').then(function(snapshot) {
-            snapshot.forEach(function(child) {
-                let h = child.key
-                database.ref("messages/" + user + "/" + h + "/title").once('value').then(function(snapshot) {
-                    let title = snapshot.val()
-                    database.ref("messages/" + user + "/" + h + "/text").once('value').then(function(snapshot) {
-                        let text = snapshot.val()
-                        database.ref("messages/" + user + "/" + h + "/type").once('value').then(function(snapshot) {
-                            let type = snapshot.val()
-                            database.ref("messages/" + user + "/" + h + "/lu").once('value').then(function(snapshot) {
-                                let lu = snapshot.val()
-                                if (lu!=true) lu=false;
-                                message(h, title, text, user, type,lu)
-                            })
-                        })
-                    }) 
-                })
-            })
+        let snapshot=snapshot1.child(user)
+        snapshot.forEach(function(child) {
+            let h = child.key
+            let title = snapshot.child(h+"/title").val()
+            let text = snapshot.child(h+"/text").val()
+            let type = snapshot.child(h+"/type").val()
+            let lu = snapshot.child(h+"/lu").val()
+            message(h, title, text, user, type, lu)
         })
     })
 })
@@ -533,14 +506,6 @@ iconSondage.addEventListener("click", function() {
 
     destinataire2.style.visibility = "hidden"
     type2.style.visibility = "visible"
-})
-
-let usersList = []
-database.ref("users/").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        usersList.push(child.key)
-    })
-    autocomplete(destinataire, usersList);
 })
 
 send.addEventListener("click", function() {
