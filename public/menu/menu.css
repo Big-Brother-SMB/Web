@@ -118,6 +118,7 @@ header ul li {
 }
 
 button {
+  cursor : pointer;
   background-color: #b5c3e4;
   color: rgb(0, 0, 0);
   padding: 10px 10px;
@@ -200,7 +201,7 @@ h1 {
   height : 65px ;
   position: absolute;
   top : 193px;
-  left: 95%;
+  right: 1%;
   z-index: 0;
   cursor: pointer;
 }
@@ -377,9 +378,4 @@ nav{
   background-color: black;
   display: block;
   border-right: 20px solid black ;
-}
-
-#adminscore{
-  position : absolute;
-  right: 0%;
 }

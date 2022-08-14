@@ -13,6 +13,7 @@ article {
   }
 
   button {
+    cursor : pointer;
     background-color: #b5c3e4;
     color: rgb(0, 0, 0);
     padding: 10px 10px;
@@ -298,4 +299,8 @@ article {
 
   #non{
     color:white;
+  }
+
+  #retirerDemande{
+    font-size: 30px;
   }
