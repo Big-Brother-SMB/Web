@@ -36,6 +36,30 @@ document.getElementById("add point").addEventListener("click",function(){
         var nomgain=prompt("Nom du gain :", "gain de la semaine" + actualWeek)
         if (nomgain!==null){
       	    var conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
+            namePoint=[]
+            valuePoint=[]
+            hashPoint=[]
+            database.ref("histPoint").once("value", function(snapshot) {
+                snapshot.forEach(function(child){
+                    namePoint.push(snapshot.child(child.key+"/name").val())
+                    valuePoint.push(snapshot.child(child.key+"/value").val())
+                    hashPoint.push(child.key)
+                })
+            })
+            database.ref("users").once("value", function(snapshot) {
+                snapshot.forEach(function(child){
+                    namePointU=[]
+                    snapshot.child(child.key+"/score").forEach(function(child2){
+                        namePointU.push(snapshot.child(child.key+"/score/"+child2.key+"/name").val())
+                    })
+                    for (let loop in namePoint){
+                        if(!namePointU.includes(namePoint[loop])){
+                            database.ref("users/"+child.key+"/score/"+hashPoint[loop]+"/name").set(namePoint[loop])
+                            database.ref("users/"+child.key+"/score/"+hashPoint[loop]+"/value").set(valuePoint[loop])
+                        }
+                    }
+                })
+            })
         }
     }
 	let hashCode= hash()
