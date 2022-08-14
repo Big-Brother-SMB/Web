@@ -94,6 +94,9 @@
                 },
                 "send mail": {
                     ".write": "$name == auth.token.name",
+                },
+                "tuto": {
+                    ".write": "$name == auth.token.name",
                 }
             }
         },
