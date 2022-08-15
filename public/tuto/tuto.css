@@ -1,20 +1,19 @@
 h2{
-  font-size: 30px;
-  color : white;
-  background-color: rgb(100,120,152);
-  white-space :wrap;
-  position: relative;
-  padding-left: 60px;
-}
-
-h3{
-  font-size: 60px;
+  font-size: 300%;
   color: white;
   background-color: rgb(60,80,112);
   white-space: wrap;
   position: relative;
   padding-left: 30px;
-  font-family: Impact, 'Arial Narrow Bold';
+}
+
+h3{
+  font-size: 150%;
+  color : white;
+  background-color: rgb(100,120,152);
+  white-space :wrap;
+  position: relative;
+  padding-left: 60px;
 }
 
 p{
@@ -23,7 +22,7 @@ p{
   text-justify: auto;
   color: black;
   padding-top: 15px;
-  font-size: x-large;
+  font-size: 80%;
   font-family: "Optima", sans-serif ;
 }
 
