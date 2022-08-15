@@ -23,7 +23,6 @@ setTimeout(function() {
         window.location.href = "/admin/menu/menu.html";
       } else if (snapshot1.child("tuto").val()!=true) {
         window.location.href = "/tuto/tuto.html";
-        database.ref("users/" + user + "/tuto").set(true)
       } else {
         window.location.href = "/menu/menu.html";
       }
