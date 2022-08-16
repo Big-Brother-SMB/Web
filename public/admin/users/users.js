@@ -226,16 +226,3 @@ database.ref("users").once("value", function(snapshot) {
         },100);
     });
 })
-    
-
-
-
-let charge = 1
-function charged(){
-    if(charge < 7){
-        charge++
-        return
-    }
-    console.log("charged")
-
-}
