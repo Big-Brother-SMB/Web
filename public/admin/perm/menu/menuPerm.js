@@ -107,76 +107,72 @@ function refreshDatabase() {
             }
             let nbDemandesPerm = 0
             database.ref(pathPerm(j,h)+"/demandes").once("value", function(snapshot){
-              snapshot.forEach(function(child){
-                nbDemandesPerm++
-                console.log(nbDemandesPerm)
-              })
-              if (nbDemandesPerm==1){
-              bouton[j][h].innerHTML = "aucune info <br>("+nbDemandesPerm.toString()+" demande en cours)"
-              }
-              else if (nbDemandesPerm>1)
-              bouton[j][h].innerHTML = "aucune info <br>("+nbDemandesPerm.toString()+" demandes en cours)"
-              else {
-              bouton[j][h].innerHTML="aucune info"
-              }
-            })
-            bouton[j][h].className = "crenau"
-            database.ref(pathPerm(j,h) + "/ouvert").once("value", function (snapshot) {
-
-                let ouv = snapshot.val()
-                if (ouv == null){
-                    ouv = 0
+                snapshot.forEach(function(child){
+                    nbDemandesPerm++
+                })
+                if (nbDemandesPerm==1){
+                    bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demande en cours"
+                }else if (nbDemandesPerm>1){
+                    bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demandes en cours"
+                }else {
+                    bouton[j][h].innerHTML="aucune info"
                 }
-                ouvert[j][h] = ouv
-                if(ouv == 0){
-                    database.ref(pathPerm(j,h) + "/classes").once("value", function (snapshot2) {
-                        let str = ""
-                        snapshot2.forEach(function (child) {
-                            const name = child.key
-                            if(name == classe){
-                                bouton[j][h].className = "crenau inscrit"
-                            }
-                            if(str != ""){
-                                str += ", "
-                            }
-                            str += name
+                bouton[j][h].className = "crenau"
 
-                        });
-                        if(str != ""){
-                            bouton[j][h].innerHTML = str
-                        }
 
-                    });
-                }else{
-                    switch(ouv){
-                        case 1:
-                            bouton[j][h].innerHTML = "fermé"
-                            bouton[j][h].className = "crenau ferme"
-                            break;
-                        case 2:
-                            bouton[j][h].innerHTML = "ouvert à tous"
-                            bouton[j][h].className = "crenau inscrit"
-                            break;
-                        case 3:
-                            bouton[j][h].innerHTML = "réservé"
-                            bouton[j][h].className = "crenau reserve"
-                            break;
-                        case 4:
-                            bouton[j][h].innerHTML = "vacances"
-                            bouton[j][h].className = "crenau ferme"
-                            break;
+                database.ref(pathPerm(j,h) + "/ouvert").once("value", function (snapshot) {
+                    let ouv = snapshot.val()
+                    if (ouv == null){
+                        ouv = 0
                     }
-
-                }
-
-
-
+                    ouvert[j][h] = ouv
+                    if(ouv == 0){
+                        database.ref(pathPerm(j,h) + "/classes").once("value", function (snapshot2) {
+                            let str = ""
+                            snapshot2.forEach(function (child) {
+                                const name = child.key
+                                if(name == classe){
+                                    bouton[j][h].className = "crenau inscrit"
+                                }
+                                if(str != ""){
+                                    str += ", "
+                                }
+                                str += name
+    
+                            });
+                            if(str != ""){
+                                bouton[j][h].innerHTML = str
+                            }
+    
+                        });
+                    }else{
+                        switch(ouv){
+                            case 1:
+                                bouton[j][h].innerHTML = "fermé"
+                                bouton[j][h].className = "crenau ferme"
+                                break;
+                            case 2:
+                                bouton[j][h].innerHTML = "ouvert à tous"
+                                bouton[j][h].className = "crenau inscrit"
+                                break;
+                            case 3:
+                                bouton[j][h].innerHTML = "réservé"
+                                bouton[j][h].className = "crenau reserve"
+                                break;
+                            case 4:
+                                bouton[j][h].innerHTML = "vacances"
+                                bouton[j][h].className = "crenau ferme"
+                                break;
+                        }
+    
+                    }
+    
+    
+    
+                })
             })
-
-
         }
     }
-
 }
 
 
