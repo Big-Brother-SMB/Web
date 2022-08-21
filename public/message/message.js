@@ -44,7 +44,7 @@ function newMsg(){
     }else{
         pNew.innerHTML = nbNew + " nouveaux messages"
     }
-    
+
 }
 
 //----------------------sondages---------------------
@@ -99,7 +99,7 @@ function sondage(h, text, mode, reponse,choices){
     msg.className = "sondage"
 
     if(reponse != null){
-        hide()     
+        hide()
     }else{
         display()
         addNew(msg, h)
@@ -132,10 +132,10 @@ function sondage(h, text, mode, reponse,choices){
             //divOld.appendChild(msg);
             newMsg()
         }
-        
+
     }
 
-    
+
 
     function display(){
         msg.innerHTML = ""
@@ -143,10 +143,10 @@ function sondage(h, text, mode, reponse,choices){
         p.innerHTML = text + "<br><br>Propositions : "
         p.className = "text"
         msg.appendChild(p);
-    
-       
+
+
         let divRep = document.createElement("div")
-        
+
         if(mode == 3){
             let num = numRadio
             numRadio++
@@ -168,32 +168,32 @@ function sondage(h, text, mode, reponse,choices){
                 if(choices[i] != "other"){
                     let bRep = document.createElement("p")
                     bRep.innerHTML = "<p><input type=\"radio\" name=\"choices" + num + "\"" + (i == checked?"checked":"") +"> " + choices[i] + "</p>"
-                    
-            
+
+
                     bRep.addEventListener("mouseup",event)
-                    
+
                     function event() {
                         bRep.removeEventListener("mouseup",event)
                         reponse = choices[i]
                         database.ref("sondages/" + h + "/users/" + user).set(choices[i])
                         hide()
                     }
-            
+
                     divRep.appendChild(bRep);
                 }
-                
+
             }
 
             if(other){
                 let bRep = document.createElement("p")
                 bRep.innerHTML = "<p><input type=\"radio\" name=\"choices" + num + "\"" + (checked == -2?"checked":"") +"> Autre (écrire sa proposition)</p>"
                 let divOther = document.createElement("div")
-                
-                
+
+
 
                 //divOther.innerHTML = "<textarea id=\"textarea\"></textarea><button id=\"valider\">Valider</button>"
                 bRep.addEventListener("click",event)
-                
+
                 function event() {
                     bRep.removeEventListener("click", event)
                     otherText()
@@ -228,7 +228,7 @@ function sondage(h, text, mode, reponse,choices){
                 }
 
                 divRep.appendChild(bRep);
-                divRep.appendChild(divOther); 
+                divRep.appendChild(divOther);
             }
 
         }else{
@@ -241,7 +241,7 @@ function sondage(h, text, mode, reponse,choices){
                 bRep.style.backgroundColor = color[mode][i]
                 bRep.style.width = size[mode][0]
                 bRep.style.height = size[mode][1]
-        
+
                 bRep.addEventListener("mouseup",event)
                 function event() {
                     bRep.removeEventListener("mouseup", event)
@@ -249,17 +249,17 @@ function sondage(h, text, mode, reponse,choices){
                     database.ref("sondages/" + h + "/users/" + user).set(parseInt(i))
                     hide()
                 }
-        
+
                 divRep.appendChild(bRep);
             }
         }
-        
+
         msg.appendChild(divRep);
-    
+
         let jsp = document.createElement("button")
         jsp.innerHTML = "Pas de réponse"
         jsp.className = "rep"
-    
+
         jsp.addEventListener("mouseup",event3)
         function event3() {
             jsp.removeEventListener("mouseup", event3)
@@ -267,11 +267,11 @@ function sondage(h, text, mode, reponse,choices){
             database.ref("sondages/" + h + "/users/" + user).set(-1)
             hide()
         }
-    
+
         msg.appendChild(jsp);
     }
-    
-    
+
+
 }
 
 
@@ -283,7 +283,7 @@ database.ref("news").once('value').then(function(snapshot) {
         let title = snapshot.child(h+"/title").val()
         let text = snapshot.child(h+"/text").val()
         let lu = snapshot.child(h + "/users/" + user).val() != null
-        news(h, title, text,lu)         
+        news(h, title, text,lu)
     })
 })
 
@@ -292,7 +292,7 @@ function news(h,title,text,lu){
     let msg = document.createElement("div")
     msg.className = "news"
     if(lu){
-        hide()               
+        hide()
     }else{
         display()
         addNew(msg, h)
@@ -317,10 +317,10 @@ function news(h,title,text,lu){
             //divOld.appendChild(msg);
             newMsg()
         }
-        
+
     }
 
-    
+
 
     function display(){
         msg.innerHTML = ""
@@ -333,7 +333,7 @@ function news(h,title,text,lu){
         main.innerHTML = text
         main.className = "text"
         msg.appendChild(main);
-    
+
         msg.addEventListener("click",event)
         function event(){
             msg.removeEventListener("click", event)
@@ -373,10 +373,10 @@ function myMessage(h,title,text,type){
         if(!divOld.contains(msg)){
             addOld(msg, h)
         }
-        
+
     }
 
-    
+
 
     function display(){
         msg.innerHTML = ""
@@ -390,7 +390,7 @@ function myMessage(h,title,text,type){
         main.innerHTML = text
         main.className = "text"
         msg.appendChild(main);
-    
+
         msg.addEventListener("click",event)
         function event(){
             msg.removeEventListener("click",event)
@@ -416,7 +416,7 @@ function message(h,title,text,lu){
     let msg = document.createElement("div")
     msg.className = "msg"
     if(lu){
-        hide()               
+        hide()
     }else{
         display()
         addNew(msg, h)
@@ -439,10 +439,10 @@ function message(h,title,text,lu){
             addOld(msg, h)
             newMsg()
         }
-        
+
     }
 
-    
+
 
     function display(){
         msg.innerHTML = ""
@@ -472,11 +472,23 @@ function message(h,title,text,lu){
 
 let iconSend = document.getElementById("iconSend")
 let divSend = document.getElementById("divSend")
+let modal = document.getElementById('modal')
+let overlay = document.getElementById('overlay')
+
+function openModal(modal) {
+  if (modal == null) return
+  modal.classList.add('active')
+  overlay.classList.add('active')
+}
+
+function closeModal(modal) {
+  if (modal == null) return
+  modal.classList.remove('active')
+  overlay.classList.remove('active')
+}
 
 iconSend.addEventListener("click", function() {
-    iconSend.style.visibility = "hidden"
-    divSend.style.visibility = "visible"
-    divSend.style.height = "auto"
+  openModal(modal)
 })
 
 let send = document.getElementById("send")
@@ -502,21 +514,22 @@ send.addEventListener("click", function() {
         myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"), listType[type.selectedIndex])
         title.value = ""
         text.value = ""
-        iconSend.style.visibility = "visible"
-        divSend.style.visibility = "hidden"
-        divSend.style.height = "0px"
+        closeModal(modal)
     }
-    
+
 })
 
 annuler.addEventListener("click", function() {
     title.value = ""
     text.value = ""
-    iconSend.style.visibility = "visible"
-    divSend.style.visibility = "hidden"
-    divSend.style.height = "0px"
+    closeModal(modal)
 })
 
-
+overlay.addEventListener('click', () => {
+  const modals = document.querySelectorAll('.modal.active')
+  modals.forEach(modal => {
+    closeModal(modal)
+  })
+})
 
 charged(true)

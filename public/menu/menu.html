@@ -11,6 +11,21 @@
 </head>
 
 <body id="b">
+  <div class='modal' id='modal'>
+    <div class='modal-header'>
+      <img src="../Images/logo.png" alt="logo Lycée">
+      <div class="modal-title"><b>Bienvenue sur le site du Foyer !</b></div>
+    </div>
+    <div class='modal-body'>
+      Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée et d'y passer leurs heures de permanences.
+      Avant de pouvoir naviguer sur ce site vous devez comprendre comment il fonctionne pour cela vous devez :
+    </div>
+    <div class='modal-option'>
+      <button id='option-droite'><a href="../tuto/tuto.html" style="text-decoration : none; color :black;">Lire le mode d'emploi</a></button>
+    </div>
+  </div>
+  <div id="overlay"></div>
+
   <header>
     <img id="logo" class="headerimg" src="../Images/logo.png" alt="logo Lycée">
     <h1 id="title" style="font-size: 50px;">Accueil</h1>
@@ -51,7 +66,7 @@
       <button id="planing" class="planing">Planning Foyer (Permanence)</button>
     </div>
 
-    <div class="semainediv">
+    <div class="semainediv" >
       <button id="semainePrecedente" class="semaine">Semaine précédente</button>
       <button id="semaineActuelle" class="semaine">Semaine actuelle</button>
       <button id="semaineSuivante" class="semaine">Semaine suivante</button>
@@ -77,7 +92,7 @@
   </article>
 
 
-  <nav>
+  <!--<nav>
     <a href="#" class="notification" id="nav hide">
       <img src="../Images/menu.png" alt="repas">
     </a>
@@ -87,7 +102,7 @@
     <a href="../perm/perm.html" class="notification">
       <img src="../Images/perm.png" alt="repas">
     </a>
-  </nav>
+  </nav>-->
 
 
 
@@ -98,6 +113,9 @@
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
   <script src="../common.js"></script>
   <script src="menu.js"></script>
+  <script src="welcome.js"></script>
+
+  </script>
 
   <footer>
     <div style="width:100%;height:auto;text-align: center;">

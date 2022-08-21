@@ -21,16 +21,10 @@ setTimeout(function() {
     database.ref("modo/users/"+ user).once('value',function(snapshot2){
       if(snapshot2.val()===1){
         window.location.href = "/admin/menu/menu.html";
-      } else if (snapshot1.child("tuto").val()!=true) {
-        window.location.href = "/tuto/tuto.html";
-      } else {
+      }
+      else {
         window.location.href = "/menu/menu.html";
       }
     })
   })
 },1000);
-
-
-
-
-

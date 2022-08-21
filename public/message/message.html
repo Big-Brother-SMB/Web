@@ -10,29 +10,39 @@
   </head>
   <body>
 
+    <div class='modal' id='modal'>
+      <div class='modal-header'>
+        <img src="../Images/message.png" alt="logo Lycée">
+        <div class="modal-title"><b>Envoyer un message</b></div>
+      </div>
+      <div class='modal-body'>
+        <div id="divSend" class="same" >
+          <p>Titre : <input id="title2" type="text"></p>
+          <p>Type : <select id="type"></select></p>
+          <textarea id="text" type="text" placeholder="écrire ici"></textarea>
+          <div class="Button">
+            <button id="send" class="sendButton">Envoyer</button>
+            <button id="annuler" class="sendButton">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="overlay"></div>
+
     <header>
-      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" > 
-      <h1 id="title">Messagerie</h1>     
+      <img class="headerimg" src="../Images/logo.png" alt="logo Lycée" >
+      <h1 id="title">Messagerie</h1>
       <a href="../menu/menu.html" class="notification"><img src="../Images/retour.png" alt="retour"></a>
     </header>
 
     <article id="article" style="text-align: center;display: none;">
-      <div id="divSend" class="same" style="visibility: hidden;height: 0px;">
-        <p>Titre : <input id="title2" type="text"></p>
-        <p>Type : <select id="type"></select></p>
-        <textarea id="text" type="text" placeholder="écrire ici"></textarea>
-        <br>
-        <button id="send" class="sendButton">Envoyer</button>
-        <button id="annuler" class="sendButton">Annuler</button>
-        <hr style="width: 99%;margin-bottom: 40px;margin-top: 100px;height: 10px;background-color: black;" />
-      </div>
       <p id="p new"></p>
       <div id="new msg"></div>
       <p>Anciens messages</p>
       <div id="old msg"></div>
 
       <img id="iconSend" src="../Images/write.png" alt="send">
-    
+
     </article>
 
     <div class="loader-wrap" id="chargement">
@@ -46,10 +56,10 @@
                 </div>
               </div>
             </div>
-        
+
         </div>
     </div>
-    
+
 
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
