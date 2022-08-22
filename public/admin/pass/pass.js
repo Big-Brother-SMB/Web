@@ -11,16 +11,13 @@ html5QrcodeScanner.render(onScanSuccess);
 let d = new Date();
 
 let j = dayWithMer[d.getDay() - 1];
+document.getElementById("day").innerHTML = allDay[d.getDay()]
 let h;
-console.log("heure : " + d.getHours())
-console.log("min : " + d.getMinutes())
-if(d.getHours() < 11 || (d.getHours() == 11 && d.getMinutes() <=55)){
+if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
     h = "/11h";
 }else{
     h = "/12h";
 }
-console.log(j);
-console.log(h);
 
 let inputCodeBar = document.getElementById("code bar")
 inputCodeBar.addEventListener("input",function(){
@@ -36,26 +33,18 @@ inputCodeBar.addEventListener("input",function(){
 let inputName = document.getElementById("name")
 
 let utilisateurs = []
-database.ref("users").once("value", function(snapshot) {
-    snapshot.forEach(function(child) {
-        utilisateurs.push(child.key) 
-    })
-    autocomplete(inputName, utilisateurs,function(val){
-        searchName(val,false)
-        database.ref("users/"+val+"/code barre/").once("value", function(snapshot) {
-            inputCodeBar.value = snapshot.val()
-        });
-    });
-})
 
 let code = 0
 users_code= new Map();
 database.ref("users").once("value", function(snapshot){
     snapshot.forEach(function(child) {
-        database.ref("users/"+child.key+"/code barre").once("value", function(snapshot){
-            users_code.set(snapshot.val(),child.key)
-        })
+        utilisateurs.push(child.key)
+        users_code.set(snapshot.child(child.key+"/code barre").val(),child.key)
     })
+    autocomplete(inputName, utilisateurs,function(val){
+        searchName(val,false)
+        inputCodeBar.value = snapshot.child(val+"/code barre/").val()
+    });
 })
 function search(c,scan){
     scanB.style.visibility="hidden";
@@ -85,6 +74,8 @@ function searchName(name,scan){
         if(snapshot.val() != null){
             if(scan==true){
                 database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name+"/scan").set(hash())
+                NBscan++
+                affichagePassages()
             }else{
                 scanB.style.visibility="visible";
             }
@@ -100,17 +91,51 @@ scanB.addEventListener("click",function(){
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value).once("value", function(snapshot) {
         if(snapshot.val() != null){
             database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value + "/scan").set(hash())
+            NBscan++
+            affichagePassages()
         }
     })
 })
 
 
 function loop(){
+    let d2 = new Date();
+    if((((d2.getMinutes() >= 54 && d2.getHours() == 11) ||
+    (d2.getHours() >= 12)) 
+    && h == "/11h") ||
+    (((d2.getMinutes() < 54 && d2.getHours() == 11) ||
+    (d2.getHours() < 11)) 
+    && h == "/12h") ||
+    d2.getWeek() != d.getWeek() ||
+    d2.getDay() != d.getDay()){
+        window.location.href = window.location.href;
+    }
 
+    document.getElementById("heure").innerHTML = getHour()
     document.getElementById("code").innerHTML = hashDate()
-
-
-    setTimeout(loop,100);
-
+    setTimeout(loop,500);
 }
 loop();
+
+
+let NBinscrit=0;
+let NBscan=0;
+function affichagePassages(){
+    document.getElementById("NBpassage").innerHTML= NBscan+"/"+NBinscrit +" (" + (Math.floor(NBscan/NBinscrit*100)) +"%)"
+}
+function loop2(){
+    NBinscrit=0;
+    NBscan=0;
+    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/").once("value", function(snapshot) {
+        snapshot.forEach(function(child){
+            NBinscrit++;
+            if(snapshot.child(child.key+"/scan").val()!=null){
+                NBscan++
+            }
+        })
+        affichagePassages()
+    })
+
+    setTimeout(loop2,30000);
+}
+loop2();
