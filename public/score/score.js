@@ -38,18 +38,13 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 type: 'line',
                 data: {
                     labels: histogramNames,
-                    datasets: [{
-                        borderColor: "rgba(100,155,155,1)",
-                        label: 'Total',
-                        data: histogramValues,
-                        borderWidth: 3
-                    },
+                    datasets: [
                     {
                         borderColor: "rgba(70,155,100,1)",
                         lineTension: 0,
                         fill: false,
                         label: 'Gain',
-                        data: histogramGain,
+                        data: histogramValues,
                         borderWidth: 3
                     }
                     ]
@@ -66,5 +61,6 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
         total += eventScore
         total = Math.round(total*100)/100
     })
-    charged(true)
+    document.getElementById("article").style.display = "block"
+    document.getElementById("chargement").style.display = "none"
 });
