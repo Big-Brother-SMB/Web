@@ -2,7 +2,6 @@
 /* inspired by Web Dev Simplified */
 
 const overlay = document.getElementById('overlay')
-const buttonTuto = document.getElementById('option-gauche')
 
 function openModal(modal) {
   if (modal == null) return
@@ -18,7 +17,7 @@ function closeModal(modal) {
 
 database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
     tuto = snapshot.val()
-    if(tuto == false){
+    if(tuto != true){
       const modal = document.getElementById('modal')
       openModal(modal)
     }
