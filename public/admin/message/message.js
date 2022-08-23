@@ -495,7 +495,7 @@ iconSend.addEventListener("click", function() {
     type2.style.height= "0px"
 
     logoUp.src="../../Images/write.png"
-    titleUp.innerHTML="<b>Envoyer un message privé</b>"
+    titleUp.innerHTML="<b>Envoyer un message</b>"
 
     openModal(modal)
 })
