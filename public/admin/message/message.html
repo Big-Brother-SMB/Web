@@ -10,6 +10,31 @@
   </head>
   <body>
 
+    <div class='modal' id='modal'>
+      <div class='modal-header'>
+        <img id="logo pop up" src="../../Images/message.png" alt="logo Lycée">
+        <div id="title pop up" class="modal-title"><b>Envoyer un message</b></div>
+      </div>
+      <div class='modal-body'>
+        <div id="divSend" class="same">
+          <p style="margin-top:10px;margin-bottom: 10px;">Titre : <input id="title2" type="text"></p>
+          <div id="as2" class="asclasse" style="margin-top:10px;margin-bottom: 10px;">
+            <p>Destinataire : 
+            <div class="autocomplete" style="width:500px;">
+              <input id="as" type="text" name="myCountry" style="text-align: center; border-radius:10px;margin-top: 40px;">
+            </div>
+            </p>
+          </div>
+          <p id="type2" style="margin-top:10px;margin-bottom: 10px;">Type : <select id="type"></select></p>
+          <textarea id="text" type="text" placeholder="écrire ici"></textarea>
+          <br>
+          <button id="send" class="sendButton">Envoyer</button>
+          <button id="annuler" class="sendButton">Annuler</button>
+        </div>
+      </div>
+    </div>
+    <div id="overlay"></div>
+
     <header>
       <img class="headerimg" src="../../Images/logo.png" alt="logo Lycée" > 
       <h1 id="title">Messagerie Admin</h1>     
@@ -17,22 +42,6 @@
     </header>
 
     <article id="article" style="text-align: center;display: none;">
-      <div id="divSend" class="same" style="visibility: hidden;height: 0px;">
-        <p>Titre : <input id="title2" type="text"></p>
-        <div id="as2" class="asclasse">
-          <p>Destinataire : 
-          <div class="autocomplete" style="width:500px;margin-top: 10px;">
-            <input id="as" type="text" name="myCountry" style="text-align: center; border-radius:10px;margin-top: 30px;">
-          </div>
-          </p>
-        </div>
-        <p id="type2">Type : <select id="type"></select></p>
-        <textarea id="text" type="text" placeholder="écrire ici"></textarea>
-        <br>
-        <button id="send" class="sendButton">Envoyer</button>
-        <button id="annuler" class="sendButton">Annuler</button>
-        <hr style="width: 99%;margin-bottom: 40px;margin-top: 100px;height: 10px;background-color: black;" />
-      </div>
       <p id="p new"></p>
       <div id="new msg"></div>
       <p>Anciens messages</p>

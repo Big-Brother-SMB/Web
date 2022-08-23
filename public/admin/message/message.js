@@ -448,6 +448,24 @@ let iconNews = document.getElementById("iconNews")
 let iconSondage = document.getElementById("iconSondage")
 let divSend = document.getElementById("divSend")
 
+let modal = document.getElementById('modal')
+let overlay = document.getElementById('overlay')
+let titleUp = document.getElementById('title pop up')
+let logoUp = document.getElementById('logo pop up')
+
+function openModal(modal) {
+  if (modal == null) return
+  modal.classList.add('active')
+  overlay.classList.add('active')
+}
+
+function closeModal(modal) {
+  if (modal == null) return
+  modal.classList.remove('active')
+  overlay.classList.remove('active')
+}
+
+
 let send = document.getElementById("send")
 let annuler = document.getElementById("annuler")
 let title = document.getElementById("title2")
@@ -471,41 +489,42 @@ for (let i in listType) {
 iconSend.addEventListener("click", function() {
     icon = 0
 
-    iconSend.style.visibility = "hidden"
-    iconSondage.style.visibility = "visible"
-    iconNews.style.visibility = "visible"
-
-    divSend.style.visibility = "visible"
-    divSend.style.height = "auto"
-
     destinataire2.style.visibility = "visible"
+    destinataire2.style.height= "auto"
     type2.style.visibility = "hidden"
+    type2.style.height= "0px"
+
+    logoUp.src="../../Images/write.png"
+    titleUp.innerHTML="<b>Envoyer un message privé</b>"
+
+    openModal(modal)
 })
 iconNews.addEventListener("click", function() {
     icon = 1
 
-    iconNews.style.visibility = "hidden"
-    iconSend.style.visibility = "visible"
-    iconSondage.style.visibility = "visible"
-
-    divSend.style.visibility = "visible"
-    divSend.style.height = "auto"
-
     destinataire2.style.visibility = "hidden"
+    destinataire2.style.height= "0px"
     type2.style.visibility = "hidden"
+    type2.style.height= "0px"
+
+
+    logoUp.src="../../Images/news.png"
+    titleUp.innerHTML="<b>Envoyer une news</b>"
+
+    openModal(modal)
 })
 iconSondage.addEventListener("click", function() {
     icon = 2
 
-    iconSondage.style.visibility = "hidden"
-    iconSend.style.visibility = "visible"
-    iconNews.style.visibility = "visible"
-
-    divSend.style.visibility = "visible"
-    divSend.style.height = "auto"
-
     destinataire2.style.visibility = "hidden"
+    destinataire2.style.height= "0px"
     type2.style.visibility = "visible"
+    type2.style.height= "auto"
+
+    logoUp.src="../../Images/sondage.png"
+    titleUp.innerHTML="<b>Envoyer un sondage</b>"
+
+    openModal(modal)
 })
 
 send.addEventListener("click", function() {
@@ -519,13 +538,7 @@ send.addEventListener("click", function() {
             destinataire.value = ""
             type.selectedIndex = 0
             text.value = ""
-            iconSend.style.visibility = "visible"
-            iconNews.style.visibility = "visible"
-            iconSondage.style.visibility = "visible"
-            destinataire2.style.visibility = "hidden"
-            type2.style.visibility = "hidden"
-            divSend.style.visibility = "hidden"
-            divSend.style.height = "0px"
+            closeModal(modal)
         }
         if(icon==1 && text.value != ""){
             database.ref("news/" + hashCode + "/title").set(title.value)
@@ -535,13 +548,7 @@ send.addEventListener("click", function() {
             destinataire.value = ""
             type.selectedIndex = 0
             text.value = ""
-            iconSend.style.visibility = "visible"
-            iconNews.style.visibility = "visible"
-            iconSondage.style.visibility = "visible"
-            destinataire2.style.visibility = "hidden"
-            type2.style.visibility = "hidden"
-            divSend.style.visibility = "hidden"
-            divSend.style.height = "0px"
+            closeModal(modal)
         }
         if(icon==2){
             database.ref("sondages/" + hashCode +"/text").set(title.value)
@@ -555,13 +562,7 @@ send.addEventListener("click", function() {
             destinataire.value = ""
             type.selectedIndex = 0
             text.value = ""
-            iconSend.style.visibility = "visible"
-            iconNews.style.visibility = "visible"
-            iconSondage.style.visibility = "visible"
-            destinataire2.style.visibility = "hidden"
-            type2.style.visibility = "hidden"
-            divSend.style.visibility = "hidden"
-            divSend.style.height = "0px"
+            closeModal(modal)
         }
     }
 })
@@ -571,15 +572,18 @@ annuler.addEventListener("click", function() {
     destinataire.value = ""
     type.selectedIndex = 0
     text.value = ""
-    iconSend.style.visibility = "visible"
-    iconNews.style.visibility = "visible"
-    iconSondage.style.visibility = "visible"
-    destinataire2.style.visibility = "hidden"
-    type2.style.visibility = "hidden"
-    divSend.style.visibility = "hidden"
-    divSend.style.height = "0px"
+    closeModal(modal)
 })
 
 
+overlay.addEventListener('click', () => {
+    const modals = document.querySelectorAll('.modal.active')
+    modals.forEach(modal => {
+      closeModal(modal)
+    })
+  })
 
+
+
+/* inspired by Web Dev Simplified */
 charged(true)
