@@ -32,8 +32,10 @@ document.getElementById("semaineSuivante").addEventListener("click", function() 
 
 document.getElementById("add point").addEventListener("click",function(){
 	var nbpts=prompt("Nombre de point(s) à ajouter :","1")
-    if (nbpts!==null){
-        var nomgain=prompt("Nom du gain :", "gain de la semaine" + actualWeek)
+    nbpts = parseFloat(nbpts.replaceAll(",","."))
+    let nomgain
+    if (nbpts!==null && !isNaN(nbpts)){
+        nomgain=prompt("Nom du gain :", "gain de la semaine" + actualWeek)
         if (nomgain!==null){
       	    var conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
             namePoint=[]
@@ -66,17 +68,16 @@ document.getElementById("add point").addEventListener("click",function(){
     let nb=0
 	if (conf==="OUI"){
         database.ref("histPoint/" + hashCode + "/name").set(nomgain)
-        database.ref("histPoint/" + hashCode + "/value").set(parseInt(nbpts))
+        database.ref("histPoint/" + hashCode + "/value").set(nbpts)
 	    database.ref("users").once("value", function(snapshot) {
             let total = snapshot.numChildren()
-            console.log("nb total : " + total)
             snapshot.forEach(function(child) {
                 let name = child.key
                 database.ref("users/" + name + "/score/" + hashCode + "/name").set(nomgain)
-                database.ref("users/" + name + "/score/" + hashCode + "/value").set(parseInt(nbpts))
+                database.ref("users/" + name + "/score/" + hashCode + "/value").set(nbpts)
                 nb++
                 if(nb == total){
-                    document.getElementById("notif plus").style.visibility = "hidden"
+                    if(nomgain=="gain de la semaine" + actualWeek) document.getElementById("notif plus").style.visibility = "hidden"
                     alert("Ajout de points effectués")
                 }
             })
@@ -89,7 +90,6 @@ document.getElementById("add point").addEventListener("click",function(){
 database.ref("histPoint").once("value", function(snapshot) {
     let test=true
     snapshot.forEach(function(child){
-        console.log(snapshot.child(child.key+"/name").val())
         if(snapshot.child(child.key+"/name").val()==="gain de la semaine" + actualWeek){
             test = false
         }
