@@ -38,13 +38,18 @@ database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
                 type: 'line',
                 data: {
                     labels: histogramNames,
-                    datasets: [
+                    datasets: [{
+                        borderColor: "rgba(100,155,155,1)",
+                        label: 'Total',
+                        data: histogramValues,
+                        borderWidth: 3
+                    },
                     {
                         borderColor: "rgba(70,155,100,1)",
                         lineTension: 0,
                         fill: false,
                         label: 'Gain',
-                        data: histogramValues,
+                        data: histogramGain,
                         borderWidth: 3
                     }
                     ]

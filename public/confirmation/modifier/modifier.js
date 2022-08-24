@@ -74,6 +74,7 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     divAmisAjoute.appendChild(butAmis[num]);
                 }
                 boolAmis[num] = !boolAmis[num]
+                updateConfirmation()
             })
             i++
         })
