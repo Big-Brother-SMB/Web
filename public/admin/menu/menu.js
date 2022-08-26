@@ -118,6 +118,7 @@ let places = [];
 let inscrits = []
 let ouvert = []
 let nbAmis = []
+let cout = []
 
 
 for(let j = 0; j < 4; j++){
@@ -134,6 +135,7 @@ for(let j = 0; j < 4; j++){
     nbAmis[j] = []
     inscrits[j] = []
     ouvert[j] = [0,0]
+    cout[j] = []
     for(let h = 0; h < 2; h++){
         bouton[j][h] = document.createElement("button")
         bouton[j][h].id = "" + j + h;
@@ -147,77 +149,74 @@ for(let j = 0; j < 4; j++){
 }
 
 
-let nbFois;
-//refreshDatabase();
-function refreshDatabase(){
+function refreshDatabase() {
+    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshotM) {
+        let text = "Semaine n°" + week + " du " + semaine(week)
+        if (week == actualWeek) {
+            text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
+        }
+        document.getElementById("semaine").innerHTML = text
 
-    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshot) {
-        let val = snapshot.val()
+        let val = snapshotM.val()
         if (val == null) {
             val = "inconnu pour le moment"
         }
         document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
-    });
+    
 
-    let text = "Semaine n°" + week + " du " + semaine(week)
-    if (week == actualWeek) {
-        text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
-    }
-    document.getElementById("semaine").innerHTML = text
+        for (let j = 0; j < 4; j++) {
+            for (let h = 0; h < 2; h++) {
+                database.ref(path(j, h)).once('value').then(function (snapshotP) {
+                    total[j][h] = snapshotP.child("places").val();
 
-    nbFois = 0;
-    for(let j = 0; j < 4; j++){
-        for(let h = 0; h < 2; h++){
-            total[j][h] = 0
-            database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
-                total[j][h] = snapshot.val();
-                update(j, h);
-            });
+                    if (snapshotP.child("ouvert").val() == null) {
+                        ouvert[j][h] = 0
+                    } else {
+                        ouvert[j][h] = snapshotP.child("ouvert").val()
+                    }
 
+                    if (snapshotP.child("cout").val() != null) {
+                        cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
+                    }
+        
+                    //demande en cours
+        
+                    demandes[j][h] = 0
 
-            ouvert[j][h] = 0
-            database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
-                if(snapshot.val() == null){
-                    ouvert[j][h] = 0
-                }else{
-                    ouvert[j][h] = snapshot.val()
-                }
-                update(j, h);
-            });
+                    snapshotP.child("demandes").forEach(function (child) {
+                        demandes[j][h]++
+                    });
+        
+                    //inscrits
 
-
-            demandes[j][h] = 0
-
-            database.ref(path(j,h) + "/demandes").once("value", function(snapshot) {
-                snapshot.forEach(function(child) {
-                    demandes[j][h] = demandes[j][h] + 1
+                    inscrits[j][h] = 0
+        
+                    snapshotP.child("inscrits").forEach(function (child) {
+                        inscrits[j][h]++
+                    });
                     update(j, h);
-                });
-            });
-
-            inscrits[j][h] = 0
-
-            database.ref(path(j,h) + "/inscrits").once("value", function(snapshot) {
-                snapshot.forEach(function(child) {
-                    inscrits[j][h] = inscrits[j][h] + 1
-                    update(j, h);
-                });
-            });
-
-
+                })
+            }
         }
-    }
+    });
 }
 
 
 function update(j,h){
-
     places[j][h] = total[j][h] - inscrits[j][h];
-    setTimeout(updateAffichage(j,h),1000);
-}
+    
+    let coutPourcentage = round((cout[j][h] - 1) * 100)
+    let textcout = ""
+    let text = "horaire non planifié";
 
-function updateAffichage(j,h){
-    let text;
+    if(coutPourcentage != 0){
+        if(coutPourcentage > 0){
+            textcout += "<br><rouge>Cout en point : " + "+" + coutPourcentage + "%</rouge>"
+        }else{
+            textcout = "<br><vert>Cout en point : " + coutPourcentage + "%</vert>"
+        }
+    }
+
     switch (ouvert[j][h]){
         case 0:
             text = "horaire non planifié"
@@ -233,7 +232,7 @@ function updateAffichage(j,h){
             if(inscrits[j][h]>=total[j][h]){
                 text+="<rouge></br>PLEIN</rouge>"
             }
-            text+="</br>("+demandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"
+            text+="</br>("+demandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
             break;
         case 3:
             bouton[j][h].className="bloque tableau"
@@ -241,7 +240,7 @@ function updateAffichage(j,h){
             if(inscrits[j][h]>=total[j][h]){
                 text+="<rouge></br>PLEIN</rouge>"
             }
-            text+="</br>("+demandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"
+            text+="</br>("+demandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
             break;
         case 4:
             text = "Foyer fermé"

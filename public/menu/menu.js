@@ -285,14 +285,11 @@ function update(j, h) {
     let text = "horaire non planifié";
 
     if(coutPourcentage != 0){
-
         if(coutPourcentage > 0){
             textcout += "<br><rouge>Cout en point : " + "+" + coutPourcentage + "%</rouge>"
         }else{
             textcout = "<br><vert>Cout en point : " + coutPourcentage + "%</vert>"
         }
-
-
     }
 
     switch (ouvert[j][h]) {
