@@ -167,7 +167,6 @@ for (let j = 0; j < 4; j++) {
         bouton[j][h].onclick = function () { select(j, h) };
         bouton[j][h].className = "places tableau"
         div.appendChild(bouton[j][h]);
-
     }
     body.appendChild(div);
 
@@ -175,145 +174,107 @@ for (let j = 0; j < 4; j++) {
 
 //refreshDatabase();
 function refreshDatabase() {
-
-    let score = 0
-    database.ref("users/" + user + "/score").once('value').then(function(snapshot) {
-        snapshot.forEach(function(child) {
-            database.ref("users/" + user + "/score/" + child.key + "/value").once('value').then(function(snapshot) {
-                score += parseFloat(snapshot.val())
+    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshotM) {
+        database.ref("users/" + user + "/score").once('value').then(function(snapshotS) {
+            let score = 0
+            snapshotS.forEach(function(child) {
+                score += parseFloat(snapshotS.child(child.key + "/value").val())
                 score = round(score)
-                if (score <2) {
+                if (score < 2) {
                     document.getElementById("score").innerHTML = score + " pt"
                 }else{
                     document.getElementById("score").innerHTML = score + " pts"
                 }
             })
-        })
-    });
+            let text = "Semaine n°" + week + " du " + semaine(week)
+            if (week == actualWeek) {
+                text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
+            }
+            document.getElementById("semaine").innerHTML = text
+    
+            let val = snapshotM.val()
+            if (val == null) {
+                val = "inconnu pour le moment"
+            }
+            document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
+        
 
-    let text = "Semaine n°" + week + " du " + semaine(week)
-    if (week == actualWeek) {
-        text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
-    }
-    document.getElementById("semaine").innerHTML = text
+            for (let j = 0; j < 4; j++) {
+                for (let h = 0; h < 2; h++) {
+                    database.ref(path(j, h)).once('value').then(function (snapshotP) {
+                        placesTotal[j][h] = snapshotP.child("places").val();
 
-    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshot) {
-        let val = snapshot.val()
-        if (val == null) {
-            val = "inconnu pour le moment"
-        }
-        document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
-    });
-
-    for (let j = 0; j < 4; j++) {
-        for (let h = 0; h < 2; h++) {
-            placesTotal[j][h] = 0
-            database.ref(path(j, h) + "/places").once('value').then(function (snapshot) {
-                placesTotal[j][h] = snapshot.val();
-                update(j, h);
-            });
-
-            ouvert[j][h] = 0
-            database.ref(path(j, h) + "/ouvert").once('value').then(function (snapshot) {
-                if (snapshot.val() == null) {
-                    ouvert[j][h] = 0
-                } else {
-                    ouvert[j][h] = snapshot.val()
+                        if (snapshotP.child("ouvert").val() == null) {
+                            ouvert[j][h] = 0
+                        } else {
+                            ouvert[j][h] = snapshotP.child("ouvert").val()
+                        }
+    
+                        if (snapshotP.child("cout").val() != null) {
+                            cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
+                        }
+            
+                        //demande en cours
+            
+                        nbDemandes[j][h] = 0
+                        demandes[j][h] = []
+                        demande[j][h] = false;
+            
+                        snapshotP.child("demandes").forEach(function (child) {
+                            const name = child.key
+                            nbDemandes[j][h]++
+                            if (name == user) {
+                                demande[j][h] = true;
+                            } else {
+                                demandes[j][h].push(name)
+                            }
+                        });
+            
+                        //inscrits
+            
+                        nbInscrits[j][h] = 0
+                        inscrits[j][h] = []
+                        inscrit[j][h] = false;
+            
+                        snapshotP.child("inscrits").forEach(function (child) {
+                            const name = child.key
+                            nbInscrits[j][h]++
+                            if (name == user) {
+                                inscrit[j][h] = true;
+                            } else {
+                                inscrits[j][h].push(name)
+                            }
+                        });
+            
+            
+                        nbAmis[j][h] = 0
+                        nbAmisDemande[j][h] = 0
+                        nbAmisInscrit[j][h] = 0
+            
+                        snapshotP.child("/demandes/" + user + "/amis").forEach(function (child) {
+                            nbAmis[j][h]++
+                            if (demandes[j][h].indexOf(child.key) != -1) {
+                                nbAmisDemande[j][h]++
+                            }
+                            if (inscrits[j][h].indexOf(child.key) != -1) {
+                                nbAmisInscrit[j][h]++
+                            }
+                        });
+                        snapshotP.child("/inscrits/" + user + "/amis").forEach(function (child) {
+                            nbAmis[j][h]++
+                            if (demandes[j][h].indexOf(child.key) != -1) {
+                                nbAmisDemande[j][h]++
+                            }
+                            if (inscrits[j][h].indexOf(child.key) != -1) {
+                                nbAmisInscrit[j][h]++
+                            }
+                        });
+                        update(j, h);
+                    })
                 }
-                update(j, h);
-            });
-
-            database.ref(path(j, h) + "/cout").once('value').then(function (snapshot) {
-                if (snapshot.val() != null) {
-                    cout[j][h] = Math.abs(parseFloat(snapshot.val()))
-                }
-                update(j, h);
-            });
-
-
-
-            //demande en cours
-
-            nbDemandes[j][h] = 0
-            demandes[j][h] = []
-            demande[j][h] = false;
-
-
-            database.ref(path(j, h) + "/demandes").once("value", function (snapshot) {
-                snapshot.forEach(function (child) {
-                    const name = child.key
-                    nbDemandes[j][h]++
-                    if (name == user) {
-                        demande[j][h] = true;
-                    } else {
-                        demandes[j][h].push(name)
-                    }
-                });
-                update(j, h);
-            });
-
-
-
-
-            //inscrits
-
-            nbInscrits[j][h] = 0
-            inscrits[j][h] = []
-            inscrit[j][h] = false;
-
-            database.ref(path(j, h) + "/inscrits").once("value", function (snapshot) {
-                snapshot.forEach(function (child) {
-                    const name = child.key
-                    nbInscrits[j][h]++
-                    if (name == user) {
-                        inscrit[j][h] = true;
-                    } else {
-                        inscrits[j][h].push(name)
-                    }
-                });
-                update(j, h);
-            });
-
-
-
-
-            nbAmis[j][h] = 0
-            nbAmisDemande[j][h] = 0
-            nbAmisInscrit[j][h] = 0
-
-            database.ref(path(j, h)).once("value", function (snapshot) {
-                snapshot.child("/demandes/" + user + "/amis").forEach(function (child) {
-                    nbAmis[j][h]++
-                    if (demandes[j][h].indexOf(child.key) != -1) {
-                        nbAmisDemande[j][h]++
-                    }
-                    if (inscrits[j][h].indexOf(child.key) != -1) {
-                        nbAmisInscrit[j][h]++
-                    }
-                });
-                snapshot.child("/inscrits/" + user + "/amis").forEach(function (child) {
-                    nbAmis[j][h]++
-                    if (demandes[j][h].indexOf(child.key) != -1) {
-                        nbAmisDemande[j][h]++
-                    }
-                    if (inscrits[j][h].indexOf(child.key) != -1) {
-                        nbAmisInscrit[j][h]++
-                    }
-                });
-                update(j, h);
-            });
-        }
-    }
-
-    //get utilisation time
-    /*database.ref("users/" + user + "/time").once("value", function(snapshot) {
-        let time = snapshot.val()
-        if(time == null){
-            time = "0"
-        }
-        database.ref("users/" + user + "/time").set(time + 1)
-    });*/
-
+            }
+        });
+    });
 }
 
 
@@ -406,7 +367,6 @@ function update(j, h) {
                 } else if(nbAmisDemande[j][h]>1){
                     text += " dont " + nbAmisDemande[j][h] + " ont fait une demande"
                 }
-                console.log(nbAmisDemande[j][h]+" "+nbAmisInscrit[j][h])
                 if(nbAmisDemande[j][h] != 0 && nbAmisInscrit[j][h] != 0){
                     text += " et"
                 }
