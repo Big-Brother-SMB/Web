@@ -132,7 +132,9 @@ let ouvert = []
 let cout = []
 let nbAmis = []
 let nbAmisDemande = []
+let nbAmisInscrit = []
 
+let nbInscrits = []
 let inscrits = [];
 let inscrit = []
 
@@ -149,10 +151,12 @@ for (let j = 0; j < 4; j++) {
 
     nbAmis[j] = []
     nbAmisDemande[j] = []
+    nbAmisInscrit[j] = []
     nbDemandes[j] = []
     demandes[j] = []
     demande[j] = [false, false]
 
+    nbInscrits[j] = []
     inscrits[j] = []
     inscrit[j] = [false, false]
     ouvert[j] = [0, 0]
@@ -169,7 +173,6 @@ for (let j = 0; j < 4; j++) {
 
 }
 
-let nbFois;
 //refreshDatabase();
 function refreshDatabase() {
 
@@ -202,7 +205,6 @@ function refreshDatabase() {
         document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
     });
 
-    nbFois = 0;
     for (let j = 0; j < 4; j++) {
         for (let h = 0; h < 2; h++) {
             placesTotal[j][h] = 0
@@ -240,14 +242,12 @@ function refreshDatabase() {
             database.ref(path(j, h) + "/demandes").once("value", function (snapshot) {
                 snapshot.forEach(function (child) {
                     const name = child.key
-                    nbDemandes[j][h] = nbDemandes[j][h] + 1
+                    nbDemandes[j][h]++
                     if (name == user) {
-                        nbFois++;
                         demande[j][h] = true;
                     } else {
                         demandes[j][h].push(name)
                     }
-
                 });
                 update(j, h);
             });
@@ -257,18 +257,21 @@ function refreshDatabase() {
 
             //inscrits
 
-            inscrits[j][h] = 0
+            nbInscrits[j][h] = 0
+            inscrits[j][h] = []
             inscrit[j][h] = false;
 
             database.ref(path(j, h) + "/inscrits").once("value", function (snapshot) {
                 snapshot.forEach(function (child) {
-                    inscrits[j][h] = inscrits[j][h] + 1
-                    if (child.key == user) {
-                        nbFois++;
+                    const name = child.key
+                    nbInscrits[j][h]++
+                    if (name == user) {
                         inscrit[j][h] = true;
+                    } else {
+                        inscrits[j][h].push(name)
                     }
-                    update(j, h);
                 });
+                update(j, h);
             });
 
 
@@ -276,25 +279,29 @@ function refreshDatabase() {
 
             nbAmis[j][h] = 0
             nbAmisDemande[j][h] = 0
+            nbAmisInscrit[j][h] = 0
 
             database.ref(path(j, h)).once("value", function (snapshot) {
                 snapshot.child("/demandes/" + user + "/amis").forEach(function (child) {
-                    nbAmis[j][h] = nbAmis[j][h] + 1
+                    nbAmis[j][h]++
                     if (demandes[j][h].indexOf(child.key) != -1) {
                         nbAmisDemande[j][h]++
                     }
-                    update(j, h);
+                    if (inscrits[j][h].indexOf(child.key) != -1) {
+                        nbAmisInscrit[j][h]++
+                    }
                 });
                 snapshot.child("/inscrits/" + user + "/amis").forEach(function (child) {
-                    nbAmis[j][h] = nbAmis[j][h] + 1
+                    nbAmis[j][h]++
                     if (demandes[j][h].indexOf(child.key) != -1) {
                         nbAmisDemande[j][h]++
                     }
-                    update(j, h);
+                    if (inscrits[j][h].indexOf(child.key) != -1) {
+                        nbAmisInscrit[j][h]++
+                    }
                 });
+                update(j, h);
             });
-
-
         }
     }
 
@@ -311,11 +318,7 @@ function refreshDatabase() {
 
 
 function update(j, h) {
-    places[j][h] = placesTotal[j][h] - inscrits[j][h];
-    setTimeout(updateAffichage(j, h), 1000);
-}
-
-function updateAffichage(j, h) {
+    places[j][h] = placesTotal[j][h] - nbInscrits[j][h];
     let coutPourcentage = round((cout[j][h] - 1) * 100)
     let textcout = ""
     let text = "horaire non planifié";
@@ -372,47 +375,47 @@ function updateAffichage(j, h) {
             break;
     }
     if(ouvert[j][h]===2 || ouvert[j][h]===3){
-        if (demande[j][h]) {
-            bouton[j][h].className = "demande tableau"
-            if (nbAmis[j][h] == 0) {
-                text += "</br>Demande enregistrée sans amis"
-            }
-            else if (nbAmis[j][h] == 1) {
-                text += "</br>Demande enregistrée avec 1 ami"
-                if (nbAmisDemande[j][h] == 0) {
-                    text += "</br>qui n'a pas fait de demande"
-                } else {
-                    text += "</br>qui a fait une demande"
-                }
-            }
-            else {
-                text += "</br>Demande enregistrée avec " + nbAmis[j][h] + " amis<br>"
-                if (nbAmisDemande[j][h] == 0) {
-                    text += "qui n'ont pas fait de demandes"
-                } else if (nbAmis[j][h] == nbAmisDemande[j][h]) {
-                    text += "qui ont tous fait une demande"
-                } else if (nbAmisDemande[j][h] == 1) {
-                    text += "dont un seul a fait une demande"
-                } else {
-                    text += "dont " + nbAmisDemande[j][h] + " ont fait une demande"
-                }
-
-            }
-
-        }
-
         if (inscrit[j][h]) {
             bouton[j][h].className = "inscrit tableau"
-            if (nbAmis[j][h] == 0) {
-                text = text + "<br>Vous êtes inscrit"
-            }
-            else if (nbAmis[j][h] == 1) {
-                text = text + "<br>Vous êtes inscrit avec 1 ami"
-            }
-            else {
-                text = text + "<br>Vous êtes inscrit avec " + nbAmis[j][h] + " amis"
-            }
+            text = "Vous êtes inscrit"
+        } else if (demande[j][h]) {
+            bouton[j][h].className = "demande tableau"
+            text = "Demande enregistrée"
+        }
 
+        if (nbAmis[j][h] == 1) {
+            text += "avec 1 ami"
+            if (nbAmisDemande[j][h] == 1) {
+                text += " qui a fait une demande"
+            } else if (nbAmisInscrit[j][h] == 1) {
+                text += " qui a été inscrit"
+            }else{
+                text += " qui n'a pas fait de demande"
+            }
+        } else if (nbAmis[j][h] > 1) {
+            text += " avec " + nbAmis[j][h] + " amis"
+            if(nbAmis[j][h] == nbAmisDemande[j][h]){
+                text += " qui ont tous fait une demande"
+            }else if(nbAmis[j][h] == nbAmisInscrit[j][h]){
+                text += " qui ont tous été inscrit"
+            }else if(0 == nbAmisDemande[j][h] && 0 == nbAmisInscrit[j][h]){
+                text += " qui n'ont pas fait de demandes"
+            }else {
+                if (nbAmisDemande[j][h] == 1) {
+                    text += " dont un seul a fait une demande"
+                } else if(nbAmisDemande[j][h]>1){
+                    text += " dont " + nbAmisDemande[j][h] + " ont fait une demande"
+                }
+                console.log(nbAmisDemande[j][h]+" "+nbAmisInscrit[j][h])
+                if(nbAmisDemande[j][h] != 0 && nbAmisInscrit[j][h] != 0){
+                    text += " et"
+                }
+                if (nbAmisInscrit[j][h] == 1) {
+                    text += " dont un seul a été inscrit"
+                } else if(nbAmisInscrit[j][h]>1){
+                    text += " dont " + nbAmisInscrit[j][h] + " ont fait une demande"
+                }
+            }
         }
     }
     bouton[j][h].innerHTML = text;
@@ -427,60 +430,13 @@ function select(j, h) {
     if (demande[j][h]) {
         window.location.href = "../confirmation/modifier/modifier.html";
     } else {
-        if (ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]) { //verrou : nbFois < 1
+        if (ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]) {
             window.location.href = "../confirmation/demande/demande.html";
         }
     }
-
-
-
-    /*console.log(places[j][h])
-    let inscription = false;
-    let desinscription = false;
-    let placesRestantes = places[j][h] > 0;
-    if(ouvert[j][h] ==7){
-        placesRestantes = true;
-    }
-    switch (ouvert[j][h]){
-        case 1:
-        case 3:
-        case 7:
-            inscription = true;
-    }
-    switch(ouvert[j][h]){
-        case 1:
-        case 4:
-        case 0:
-        case 6:
-        case 2:
-        case 7:
-            desinscription = true;
-    }
-    if(demande[j][h] && desinscription){
-        //database.ref(path(j,h) + "/demandes/" + user).remove();
-        //reload();
-        sessionStorage.setItem("j", j);
-        sessionStorage.setItem("h", h);
-        //window.location.href = "../confirmation/desinscription/desinscription.html";
-        window.location.href = "../confirmation/modifier/modifier.html";
-
-    }else if(nbFois < 1 && placesRestantes > 0 && inscription){
-        //database.ref(path(j,h) + "/demandes/" + user + "/carte").set(12345);
-        //reload();
-        sessionStorage.setItem("j", j);
-        sessionStorage.setItem("h", h);
-        //window.location.href = "../confirmation/inscription/inscription.html";
-        window.location.href = "../confirmation/demande/demande.html";
-    }*/
-
 }
 
 
-
-
-/*function path(j,h){
-    return "foyer_midi/semaine"+ week + "/" + dayNum[j] + "/" + (11 + h) + "h"
-}*/
 
 function loop() {
     console.log("update database")
@@ -491,7 +447,7 @@ loop();
 
 
 
-//-----------sondages--------------------
+//-----------messagerie--------------------
 const notifMsg = document.getElementById("notif msg")
 
 let nbMsg = 0
