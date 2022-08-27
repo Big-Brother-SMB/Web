@@ -68,10 +68,28 @@ function reloadLigne(ligne,i){
 
             if(ouvert==2||ouvert==3||ouvert==5){
                 let hashCode = hash()
-                database.ref("users/" + users[i].name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                database.ref("users/" + users[i].name + "/score/" + hashCode + "/value").set(-cout)
-            }
 
+                database.ref("users").once('value').then(function(snapshot){
+                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
+                        let hashCode = hash()
+                        let classeUser = snapshot.child(users[i].name+"/classe").val()
+                        let prioUser = []
+                        snapshot.child(users[i].name+"/priorites").forEach(function(child2){
+                            prioUser.push(child2.key)
+                        })
+                        let prio = []
+                        snapshotP.child("prioritaires").forEach(function(child2){
+                            prio.push(child2.key)
+                        })
+                        if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
+                            
+                        } else {
+                            database.ref("users/" + users[i].name + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                            database.ref("users/" + users[i].name + "/score/" + hashCode + "/value").set(-cout)
+                        }
+                    })
+                })
+            }
             reloadLigne(ligne,i)
         }
     } else {
@@ -225,9 +243,27 @@ database.ref("users").once("value", function(snapshot) {
                     utilisateurs2.push(users[loop].name)
                 }
 
-                if(ouvert==2||ouvert==3||ouvert==5){
-                    database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                    database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
+                if(ouvert==2||ouvert==3||ouvert==5){    
+                    database.ref("users").once('value').then(function(snapshot){
+                        database.ref(path(j,h)).once('value').then(function(snapshotP) {
+                            let hashCode = hash()
+                            let classeUser = snapshot.child(search.value+"/classe").val()
+                            let prioUser = []
+                            snapshot.child(search.value+"/priorites").forEach(function(child2){
+                                prioUser.push(child2.key)
+                            })
+                            let prio = []
+                            snapshotP.child("prioritaires").forEach(function(child2){
+                                prio.push(child2.key)
+                            })
+                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
+                                
+                            } else {
+                                database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
+                            }
+                        })
+                    })
                 }
                 database.ref(path(j,h)+"/inscrits/"+search.value+"/user").set(0)
 
@@ -241,9 +277,29 @@ database.ref("users").once("value", function(snapshot) {
                     database.ref(path(j,h)+"/inscrits/"+search.value).set(snapshot.val())
                     database.ref(path(j,h)+"/demandes/"+search.value).remove()
                 })
-                if(ouvert==2||ouvert==3||ouvert==5){
-                    database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                    database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
+
+                
+                if(ouvert==2||ouvert==3||ouvert==5){    
+                    database.ref("users").once('value').then(function(snapshot){
+                        database.ref(path(j,h)).once('value').then(function(snapshotP) {
+                            let hashCode = hash()
+                            let classeUser = snapshot.child(search.value+"/classe").val()
+                            let prioUser = []
+                            snapshot.child(search.value+"/priorites").forEach(function(child2){
+                                prioUser.push(child2.key)
+                            })
+                            let prio = []
+                            snapshotP.child("prioritaires").forEach(function(child2){
+                                prio.push(child2.key)
+                            })
+                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
+                                
+                            } else {
+                                database.ref("users/" + search.value + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                database.ref("users/" + search.value + "/score/" + hashCode + "/value").set(-cout)
+                            }
+                        })
+                    })
                 }
                 let ligne=table.children[utilisateurs2.indexOf(search.value)]
                 reloadLigne(ligne,utilisateurs2.indexOf(search.value))

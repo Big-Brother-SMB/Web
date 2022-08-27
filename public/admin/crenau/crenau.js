@@ -24,9 +24,24 @@ database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
                     })
                 })
                 if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                    snapshot2.forEach(function(child){
-                        database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                        database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
+                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
+                        snapshot2.forEach(function(child){
+                            let classeUser = snapshot.child(child.key+"/classe").val()
+                            let prioUser = []
+                            snapshot.child(child.key+"/priorites").forEach(function(child2){
+                                prioUser.push(child2.key)
+                            })
+                            let prio = []
+                            snapshotP.child("prioritaires").forEach(function(child2){
+                                prio.push(child2.key)
+                            })
+                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
+                                
+                            } else {
+                                database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
+                            }
+                        })
                     })
                 }
                 database.ref(path(j,h) + "/ouvert").set(divMode.selectedIndex)
@@ -111,8 +126,41 @@ database.ref(path(j,h) + "/gratuit prioritaires").once('value').then(function(sn
     sGratuit.checked = gratuit
     sGratuit.addEventListener("change", function() {
         gratuit = this.checked
-        console.log("gratuit : " + gratuit)
         database.ref(path(j,h) + "/gratuit prioritaires").set(gratuit)
+
+        database.ref("users").once('value').then(function(snapshot){
+            database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
+                let hashCode = hash()
+                snapshot.forEach(function(u){
+                    snapshot.child(u.key+"/score").forEach(function(hash){
+                        if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
+                            database.ref("users/"+u.key+"/score/"+hash.key).remove()
+                        }
+                    })
+                })
+                if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
+                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
+                        snapshot2.forEach(function(child){
+                            let classeUser = snapshot.child(child.key+"/classe").val()
+                            let prioUser = []
+                            snapshot.child(child.key+"/priorites").forEach(function(child2){
+                                prioUser.push(child2.key)
+                            })
+                            let prio = []
+                            snapshotP.child("prioritaires").forEach(function(child2){
+                                prio.push(child2.key)
+                            })
+                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
+                                
+                            } else {
+                                database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
+                            }
+                        })
+                    })
+                }
+            })
+        })
     });
     if(snapshot.val() == null){
         database.ref(path(j,h) + "/gratuit prioritaires").set(false)
@@ -164,7 +212,42 @@ database.ref("priorites").once("value", function(snapshot) {
             }else{
                 database.ref(path(j,h) + "/prioritaires/" + groupes[index]).remove()
             }
-           
+
+
+
+            database.ref("users").once('value').then(function(snapshot){
+                database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
+                    let hashCode = hash()
+                    snapshot.forEach(function(u){
+                        snapshot.child(u.key+"/score").forEach(function(hash){
+                            if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
+                                database.ref("users/"+u.key+"/score/"+hash.key).remove()
+                            }
+                        })
+                    })
+                    if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
+                        database.ref(path(j,h)).once('value').then(function(snapshotP) {
+                            snapshot2.forEach(function(child){
+                                let classeUser = snapshot.child(child.key+"/classe").val()
+                                let prioUser = []
+                                snapshot.child(child.key+"/priorites").forEach(function(child2){
+                                    prioUser.push(child2.key)
+                                })
+                                let prio = []
+                                snapshotP.child("prioritaires").forEach(function(child2){
+                                    prio.push(child2.key)
+                                })
+                                if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
+                                    
+                                } else {
+                                    database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                    database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
+                                }
+                            })
+                        })
+                    }
+                })
+            })
         })
         //cbClasses[n][i].checked = true
         gr.innerHTML = groupes[index]
@@ -180,7 +263,6 @@ database.ref("priorites").once("value", function(snapshot) {
     })
     divGroupes.appendChild(divG1);
     divGroupes.appendChild(divG2);
-
 })
 
 let divClasses = document.getElementById("classes")
@@ -249,7 +331,42 @@ for(let n in listNiveau){
             }else{
                 database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).remove()
             }
-           
+            
+
+
+            database.ref("users").once('value').then(function(snapshot){
+                database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
+                    let hashCode = hash()
+                    snapshot.forEach(function(u){
+                        snapshot.child(u.key+"/score").forEach(function(hash){
+                            if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
+                                database.ref("users/"+u.key+"/score/"+hash.key).remove()
+                            }
+                        })
+                    })
+                    if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
+                        database.ref(path(j,h)).once('value').then(function(snapshotP) {
+                            snapshot2.forEach(function(child){
+                                let classeUser = snapshot.child(child.key+"/classe").val()
+                                let prioUser = []
+                                snapshot.child(child.key+"/priorites").forEach(function(child2){
+                                    prioUser.push(child2.key)
+                                })
+                                let prio = []
+                                snapshotP.child("prioritaires").forEach(function(child2){
+                                    prio.push(child2.key)
+                                })
+                                if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
+                                    
+                                } else {
+                                    database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
+                                    database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
+                                }
+                            })
+                        })
+                    }
+                })
+            })
         })
         divNiveau.appendChild(opt);
     }
@@ -603,7 +720,7 @@ function algo(){
                                     if(score == null){
                                         score = 0
                                     }
-                                    if(gratuit && (commonElement(prio, usersPriorites[p]) != 0 || prio.indexOf(usersClasse[p]) != -1) ){
+                                    if(gratuit && (commonElement(prio, usersPriorites[p]) != 0 || prio.indexOf(usersClasse[p]) != -1)){
                                         console.log("gratis")
                                     }else{
                                         if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){

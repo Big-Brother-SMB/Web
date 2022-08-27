@@ -3,12 +3,6 @@ console.log(cookie)
 
 console.log("read : " + readCookie("user"))
 
-/*if (existCookie("user")){
-    console.log("user exist")
-}else{
-    //deco()
-}*/
-
 
 
 
@@ -34,11 +28,6 @@ console.log("classe : " + classe);
 document.getElementById("user").innerHTML = user + " " + classe
 
 
-/*database.ref("users/" + user + "/score").once("value", function(snapshot) {
-    if(snapshot.val() == null){
-        deco()
-    }
-})*/
 
 database.ref("users/" + user + "/email").once("value", function (snapshot) {
     if (snapshot.val() == null) {
@@ -48,19 +37,9 @@ database.ref("users/" + user + "/email").once("value", function (snapshot) {
 
 
 
-
-
-
-
-
-
 document.getElementById("pass").addEventListener("click", function () {
     window.location.href = "../pass/pass.html";
 });
-
-/*document.getElementById("groupe").addEventListener("click", function() {
-    window.location.href = "../groupe/groupe.html";
-});*/
 
 document.getElementById("amis").addEventListener("click", function () {
     window.location.href = "../amis/amis.html";
@@ -74,7 +53,6 @@ document.getElementById("planing").addEventListener("click", function () {
     window.location.href = "../perm/perm.html";
 });
 
-//(new Date()).getWeek();
 console.log("week : " + week)
 console.log("actual week : " + actualWeek)
 
@@ -169,10 +147,9 @@ for (let j = 0; j < 4; j++) {
         div.appendChild(bouton[j][h]);
     }
     body.appendChild(div);
-
 }
 
-//refreshDatabase();
+
 function refreshDatabase() {
     database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshotM) {
         database.ref("users/" + user + "/score").once('value').then(function(snapshotS) {
