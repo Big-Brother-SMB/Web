@@ -85,6 +85,7 @@ database.ref("sondages").once('value').then(function(snapshot) {
             snapshot.child(h + "/choices").forEach(function(child) {
                 choices.push(child.key)
             })
+            sondage(h, text, mode,reponse,choices)
         }else{
             sondage(h, text, mode,reponse,null)
         }
@@ -211,7 +212,7 @@ function sondage(h, text, mode, reponse,choices){
             let bRep = document.createElement("p")
             let textOther=""
             for(let i in reponse){
-                if(choices.indexOf(reponse[i])==-1){
+                if(choices.indexOf(reponse[i])==-1 && reponse[i]!=-1){
                     textOther+="<p> >>>"+reponse[i]+"</p>"
                 }
             }
