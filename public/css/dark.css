@@ -143,6 +143,14 @@ vert {
     background-color: #104312;
 }
 
+.crenau.reserve {
+    background-color: #d3af4c;
+}
+
+.fermeR{
+    background: #ff0000;
+}
+
 td {
       border: 1px solid #FFF;
       color: #FFF;

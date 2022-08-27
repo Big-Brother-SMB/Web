@@ -229,7 +229,11 @@ article {
   }
 
   .reserve{
-    background: #ff9d00;
+    background: #d3af4c;
+  }
+
+  .fermeR{
+    background: #ff0000;
   }
 
   .demande {

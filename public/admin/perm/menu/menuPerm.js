@@ -149,7 +149,7 @@ function refreshDatabase() {
                         switch(ouv){
                             case 1:
                                 bouton[j][h].innerHTML = "fermé"
-                                bouton[j][h].className = "crenau ferme"
+                                bouton[j][h].className = "crenau fermeR"
                                 break;
                             case 2:
                                 bouton[j][h].innerHTML = "ouvert à tous"
