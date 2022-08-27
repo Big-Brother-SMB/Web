@@ -32,6 +32,7 @@ header, header button, .notification img, nav {
 
 button {
     background-color: rgb(45, 45, 45);
+    color : white;
 }
 
 
@@ -147,8 +148,8 @@ td {
       color: #FFF;
   }
 
-  
-  
+
+
   thead,
   tfoot {
       background-color: #FFF;
