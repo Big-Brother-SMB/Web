@@ -53,33 +53,31 @@ def refreshTime():
 
 def refreshPassages():
   textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
-
-  nbPassages11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "11" + "h/passages").get()
-  if(nbPassages11 == None):
-    nbPassages11 = 0
-  else:
-    nbPassages11 = len(nbPassages11)
-  nbInscrits11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "11" + "h/inscrits").get()
-  if(nbInscrits11 == None):
-    nbInscrits11 = 0
-  else:
+  #aaaaaaa
+  nbPassages11 = 0
+  nbInscrits11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/11h/inscrits").get()
+  if nbInscrits11!=None:
+    for inscritU in nbInscrits11:
+      if nbInscrits11.get(inscritU).get("scan")!=None:
+        nbPassages11+=1
     nbInscrits11 = len(nbInscrits11)
-  passage11.set("Élèves inscrit à 11h : " + str(nbPassages11) + " / " + str(nbInscrits11))
-
-  textH.set("semaine n°" + str(week) + " " + days[day] + " à " + "12" + "h")
-  nbPassages12 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "12" + "h/passages").get()
-  if(nbPassages12 == None):
-    nbPassages12 = 0
   else:
-    nbPassages12 = len(nbPassages12)
-  nbInscrits12 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "12" + "h/inscrits").get()
-  if(nbInscrits12 == None):
-    nbInscrits12 = 0
-  else:
+    nbInscrits11 = 0
+  nbPassages12 = 0
+  nbInscrits12 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/12h/inscrits").get()
+  if nbInscrits12!=None:
+    for inscritU in nbInscrits12:
+      if nbInscrits12.get(inscritU).get("scan")!=None:
+        nbPassages12+=1
     nbInscrits12 = len(nbInscrits12)
+  else:
+    nbInscrits12 = 0
+  passage11.set("Élèves inscrit à 11h : " + str(nbPassages11) + " / " + str(nbInscrits11))
   passage12.set("Élèves inscrit à 12h : " + str(nbPassages12) + " / " + str(nbInscrits12))
 
   passage.set("Élèves inscrits aujourd'hui : " + str(nbPassages11+nbPassages12) + " / " + str(nbInscrits11+nbInscrits12))
+  #aaaaaaa
+  #aaaaaaa
 
 
 days = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"]
@@ -93,6 +91,7 @@ def show(key):
   #global name
   global number
   global userName
+  userName="None"
   print(key)
   try:
     if(str(key) == "Key.backspace"):
@@ -214,7 +213,7 @@ class App(threading.Thread):
             listener.join()
 
 fenetre = Tk()
-fenetre.geometry("256x700+0+0")
+fenetre.geometry("400x700+0+0")
 fenetre.title("Scanner")
 #fenetre.iconbitmap('logo.ico')
 def on_closing():
