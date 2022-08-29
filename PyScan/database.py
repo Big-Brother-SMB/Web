@@ -5,7 +5,7 @@ from pynput.keyboard import Key, Listener
 import threading,os
 
 
-from tkinter import * 
+from tkinter import *
 
 from datetime import date,datetime
 
@@ -48,23 +48,38 @@ def refreshTime():
       heure = 12
     case _:
         pass
-  
+
   threading.Timer(10, refreshTime).start()
 
 def refreshPassages():
   textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
-  print(day)
-  nbPassages = 0
-  nbInscrits = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits").get()
-  if nbInscrits!=None:
-    for inscritU in nbInscrits:
-      if nbInscrits.get(inscritU).get("scan")!=None:
-        nbPassages+=1
-    if(nbInscrits == None):
-      nbInscrits = 0
-    else:
-      nbInscrits = len(nbInscrits)
-  passage.set(str(nbPassages) + " / " + str(nbInscrits))
+
+  nbPassages11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "11" + "h/passages").get()
+  if(nbPassages11 == None):
+    nbPassages11 = 0
+  else:
+    nbPassages11 = len(nbPassages11)
+  nbInscrits11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "11" + "h/inscrits").get()
+  if(nbInscrits11 == None):
+    nbInscrits11 = 0
+  else:
+    nbInscrits11 = len(nbInscrits11)
+  passage11.set("Élèves inscrit à 11h : " + str(nbPassages11) + " / " + str(nbInscrits11))
+
+  textH.set("semaine n°" + str(week) + " " + days[day] + " à " + "12" + "h")
+  nbPassages12 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "12" + "h/passages").get()
+  if(nbPassages12 == None):
+    nbPassages12 = 0
+  else:
+    nbPassages12 = len(nbPassages12)
+  nbInscrits12 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + "12" + "h/inscrits").get()
+  if(nbInscrits12 == None):
+    nbInscrits12 = 0
+  else:
+    nbInscrits12 = len(nbInscrits12)
+  passage12.set("Élèves inscrit à 12h : " + str(nbPassages12) + " / " + str(nbInscrits12))
+
+  passage.set("Élèves inscrits aujourd'hui : " + str(nbPassages11+nbPassages12) + " / " + str(nbInscrits11+nbInscrits12))
 
 
 days = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"]
@@ -85,25 +100,25 @@ def show(key):
         number = 0
       else:
         number = int(str(number)[:-1])
-      
+
     else:
       nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
       if(nb >= 96):
         nb = nb - 96
-      
+
       if(number >= 10000):
         number = 0
-      
+
       if(number == 0):
         number = nb
       else:
         number = int(str(number) + str(nb))
-    
+
     if(number != 0):
       text.set(number)
     else:
       text.set("")
-    
+
     if(number >=10000):
       canvas.itemconfig(image_container,image=imgLoading)
 
@@ -118,7 +133,7 @@ def show(key):
       info.set("classe : " + classe)
       ref = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName)
       if(ref.get() != None):
-        canvas.itemconfig(image_container,image=imgOk) 
+        canvas.itemconfig(image_container,image=imgOk)
         db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/scan").set(hash())
         refreshPassages()
       else:
@@ -128,8 +143,8 @@ def show(key):
       canvas.itemconfig(image_container,image=imgUnknown)
       name.set("")
       info.set("")
-    
-      
+
+
   except ValueError:
     pass
 
@@ -177,7 +192,7 @@ def export():
     if(inscrits.index(user) != -1):
       inscrits.remove(user)
 
-  f.write("\n----------Pas passes----------\n\n")    
+  f.write("\n----------Pas passes----------\n\n")
   for user in inscrits:
     f.write(user + "\n")
   f.close()
@@ -205,7 +220,7 @@ fenetre.title("Scanner")
 def on_closing():
   print("exit")
   os._exit(1)
-  
+
 fenetre.protocol("WM_DELETE_WINDOW", on_closing)
 
 imgOk= PhotoImage(file="ok.png")
@@ -245,6 +260,13 @@ passage = StringVar()
 labelPassage = Label(fenetre, textvariable=passage, font=("Arial", 20))
 labelPassage.pack()
 
+passage11 = StringVar()
+labelPassage11 = Label(fenetre, textvariable=passage11, font=("Arial", 20))
+labelPassage11.pack()
+
+passage12 = StringVar()
+labelPassage12 = Label(fenetre, textvariable=passage12, font=("Arial", 20))
+labelPassage12.pack()
 
 
 menubar = Menu(fenetre)
@@ -259,4 +281,3 @@ APP = App(fenetre,text,name)
 refreshTime()
 refreshPassages()
 fenetre.mainloop()
-
