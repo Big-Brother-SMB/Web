@@ -1,4 +1,5 @@
-let scanB=document.getElementById("scanB")
+let scanB = document.getElementById("scanB")
+let dayP = document.getElementById("day")
 
 function onScanSuccess(decodedText, decodedResult) {
     console.log(`Code scanned = ${decodedText}`, decodedResult);
@@ -9,15 +10,28 @@ var html5QrcodeScanner = new Html5QrcodeScanner(
 html5QrcodeScanner.render(onScanSuccess);
 
 let d = new Date();
-
-let j = dayWithMer[d.getDay() - 1];
-document.getElementById("day").innerHTML = allDay[d.getDay()]
 let h;
+let j = dayWithMer[d.getDay() - 1];
+let actualisation = true
 if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
     h = "/11h";
+    dayP.innerHTML = allDay[d.getDay()]+" 11h"
 }else{
     h = "/12h";
+    dayP.innerHTML = allDay[d.getDay()]+" 12h"
 }
+
+dayP.addEventListener("click",function(){
+    actualisation = false
+    if("/11h"===h){
+        h = "/12h";
+        dayP.innerHTML = allDay[d.getDay()]+" 12h"
+    }else{
+        h = "/11h";
+        dayP.innerHTML = allDay[d.getDay()]+" 11h"
+    }
+    actualiserPassages()
+})
 
 let inputCodeBar = document.getElementById("code bar")
 inputCodeBar.addEventListener("input",function(){
@@ -25,7 +39,6 @@ inputCodeBar.addEventListener("input",function(){
     if(String(val).length  == 5){
         search(val,false)
     }
-    
 })
 
 
@@ -100,14 +113,14 @@ scanB.addEventListener("click",function(){
 
 function loop(){
     let d2 = new Date();
-    if((((d2.getMinutes() >= 54 && d2.getHours() == 11) ||
+    if(((((d2.getMinutes() >= 54 && d2.getHours() == 11) ||
     (d2.getHours() >= 12)) 
     && h == "/11h") ||
     (((d2.getMinutes() < 54 && d2.getHours() == 11) ||
     (d2.getHours() < 11)) 
     && h == "/12h") ||
     d2.getWeek() != d.getWeek() ||
-    d2.getDay() != d.getDay()){
+    d2.getDay() != d.getDay()) && actualisation){
         window.location.href = window.location.href;
     }
 
@@ -123,7 +136,8 @@ let NBscan=0;
 function affichagePassages(){
     document.getElementById("NBpassage").innerHTML= NBscan+"/"+NBinscrit +" (" + (Math.floor(NBscan/NBinscrit*100)) +"%)"
 }
-function loop2(){
+
+function actualiserPassages(){
     NBinscrit=0;
     NBscan=0;
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/").once("value", function(snapshot) {
@@ -135,7 +149,12 @@ function loop2(){
         })
         affichagePassages()
     })
+}
 
+
+
+function loop2(){
+    actualiserPassages()
     setTimeout(loop2,30000);
 }
 loop2();
