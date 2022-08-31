@@ -8,6 +8,7 @@ writeCookie("email",email)
 writeCookie("week",week)
 writeCookie("RGPD",true)
 
+database.ref("names/" + user).set(0);
 database.ref("users/" + user + "/email").set(email);
 database.ref("users/" + user + "/send mail").set(true)
 

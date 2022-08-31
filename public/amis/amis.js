@@ -21,13 +21,11 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 function suite1(){
     console.log(amis)
     let users = []
-    database.ref("users").once("value", function(snapshot) {
+    database.ref("names").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
             if(child.key != user && amis.indexOf(child.key) == -1){
                 users.push(child.key)
             }
-
-
         })
         autocomplete(document.getElementById("addAmi"), users);
     })

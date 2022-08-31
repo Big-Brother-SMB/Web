@@ -1,12 +1,13 @@
 {
     "rules": {
-        ".read" : "auth != null",
+        ".read" : "root.child('modo').child('users').child(auth.token.name).val()===0 || root.child('modo').child('users').child(auth.token.name).val()===1",
         ".write": "root.child('modo').child('users').child(auth.token.name).val()===0 || root.child('modo').child('users').child(auth.token.name).val()===1",
         "banderole":{
-          
+          	".read" : "auth != null",
         },
         
         "foyer_midi":{
+          	".read" : "auth != null",
             "$s":{
                 "$j":{
                     "$h":{
@@ -26,20 +27,29 @@
         },
           
         "hist_point":{
-          	
+          	".read" : "auth != null",
         },
 
         "messages":{
+          	".read" : "auth != null",
       	    "$name":{
                 ".write": "$name == auth.token.name",
             }
         },
 
         "modo":{
-            
+            ".read" : "auth != null",
+        },
+          
+        "names":{
+          	".read" : "auth != null",
+            "$name":{
+              	".write" : "auth != null",
+            }
         },
 
         "news":{
+          	".read" : "auth != null",
             "$date":{
                 "users":{
                     "$name":{
@@ -50,6 +60,7 @@
         },
 
         "perm":{
+          	".read" : "auth != null",
             "$s":{
                 "$j":{
                     "$h":{
@@ -64,10 +75,11 @@
         },
 
         "priorites":{
-            
+            ".read" : "auth != null",
         },
 
         "sondages":{
+          	".read" : "auth != null",
             "$date":{
                 "users":{
                     "$name":{
@@ -79,6 +91,7 @@
 
         "users":{
             "$name":{
+              	".read" : "auth != null",
                 "amis": {
                     ".write": "$name == auth.token.name",
                 },
@@ -102,7 +115,7 @@
         },
 
         "version":{
-            
+            ".read" : "auth != null",
         }
     } 
 }

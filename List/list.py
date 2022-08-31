@@ -17,6 +17,7 @@ with open("list.csv") as file:
   for line in data_reader:
     i+=1
     print(line)
+    db.reference("names/"+line[1]+" "+line[0]).set(0)
     #db.reference("users/"+line[1]+" "+line[0]+"/classe").set(line[2])
     #db.reference("users/"+line[1]+" "+line[0]+"/code barre").set(line[3])
     #for loop in range(4,len(line)):
