@@ -319,7 +319,7 @@ function update(j, h) {
         }
 
         if (nbAmis[j][h] == 1) {
-            text += "avec 1 ami"
+            text += " avec 1 ami"
             if (nbAmisDemande[j][h] == 1) {
                 text += " qui a fait une demande"
             } else if (nbAmisInscrit[j][h] == 1) {

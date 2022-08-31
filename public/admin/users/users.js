@@ -153,28 +153,25 @@ database.ref("users").once("value", function(snapshot) {
                 let codeBar = snapshot.val()
                 codeCarte.value = codeBar
                 codeCarte.addEventListener("input", fu4=function() {
-                    codeBar = snapshot.val()
                     infoCodeCarte.innerHTML = ""
                     let val = codeCarte.value
                     if(String(val).length  == 5 && val != codeBar){
                         let test= true;
                         database.ref("users").once("value", function(snapshot){
                             snapshot.forEach(function(child) {
-                                database.ref("users/"+child.key+"/code barre").once("value", function(snapshot){
-                                    if (val===snapshot.val()&&child.key!=utilisateur) {
-                                        infoCodeCarte.innerHTML += "déjà utiliser par: " + child.key
-                                        test=false
-                                        database.ref("users/" + utilisateur + "/code barre").set(codeBar)
-                                    }
-                                    if(child.key === utilisateur && test){
-                                        database.ref("users/" + utilisateur + "/code barre").set(val)
-                                    }
-                                })
+                                let codeBar2 = snapshot.child(child.key+"/code barre").val()
+                                if(codeBar2===val && child.key!=utilisateur){
+                                    test=false
+                                    infoCodeCarte.innerHTML += "déjà utiliser par: " + child.key
+                                }
                             })
+                            if(test){
+                                database.ref("users/" + utilisateur + "/code barre").set(val)
+                                codeBar=val
+                            }
                         })
                     }
                 });
-                
             });
             
     
