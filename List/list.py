@@ -18,10 +18,10 @@ with open("list.csv") as file:
     i+=1
     print(line)
     db.reference("names/"+line[1]+" "+line[0]).set(0)
-    #db.reference("users/"+line[1]+" "+line[0]+"/classe").set(line[2])
-    #db.reference("users/"+line[1]+" "+line[0]+"/code barre").set(line[3])
-    #for loop in range(4,len(line)):
-      #db.reference("users/"+line[1]+" "+line[0]+"/priorites/"+line[loop]).set(0)
-      #db.reference("priorites/"+line[loop]).set(0)
-      #pass
+    db.reference("users/"+line[1]+" "+line[0]+"/classe").set(line[2])
+    db.reference("users/"+line[1]+" "+line[0]+"/code barre").set(line[3])
+    for loop in range(4,len(line)):
+      if line[loop]!="":
+        db.reference("users/"+line[1]+" "+line[0]+"/priorites/"+line[loop]).set(0)
+        db.reference("priorites/"+line[loop]).set(0)
 print("fin "+str(i))

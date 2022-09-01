@@ -223,7 +223,7 @@ const dayNumMer = ["1lundi", "2mardi","3mercredi","4jeudi","5vendredi"];
 const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
 
 //modes
-let listMode = ["horaire non planifié","ouvert à tous","ouvert au inscrit","ouvert au inscrit (demandes fermé)","fermé","fini","vacances"]
+let listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
 let listModePerm = ["Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
 
 //--------------------classe--------------------
