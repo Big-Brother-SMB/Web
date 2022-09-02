@@ -101,7 +101,11 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             let index = amis.indexOf(name)
             boolAmis[index] = true
             initBoolAmis[index] = true
-            divAmisAjoute.appendChild(butAmis[index]);
+            if(index!=-1){
+                divAmisAjoute.appendChild(butAmis[index]);
+            } else {
+                database.ref(path(j,h) + "/demandes/" + user + "/amis/" + name).remove()
+            }
         })
     
         places = snapshot.child("places").val()

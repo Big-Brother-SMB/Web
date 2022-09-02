@@ -1,6 +1,35 @@
 let scanB = document.getElementById("scanB")
 let dayP = document.getElementById("day")
 
+
+
+let barcodeLaser = '';
+function laserEvent(evt) {
+    console.log(evt)
+    if (evt.key != 'Shift') {
+        barcodeLaser += evt.key;
+    }
+    console.log(barcodeLaser)
+    if (isNaN(parseInt(barcodeLaser))){
+        barcodeLaser = '';
+    }
+    inputCodeBar.value = barcodeLaser;
+    if (barcodeLaser.length==5) {
+        search(barcodeLaser,true)
+        barcodeLaser = '';
+    }
+}
+let laser = document.getElementById("laser");
+laser.addEventListener("change",function(){
+    if(laser.checked){
+        document.addEventListener('keydown', laserEvent);
+    }else{
+        document.removeEventListener('keydown', laserEvent);
+    }
+})
+
+
+
 function onScanSuccess(decodedText, decodedResult) {
     console.log(`Code scanned = ${decodedText}`, decodedResult);
     search(decodedText,true)
@@ -79,34 +108,56 @@ function search(c,scan){
 }
 
 
-
+let h2=h
 function searchName(name,scan){
+    h2=h
     scanB.style.visibility="hidden";
 
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name).once("value", function(snapshot) {
         if(snapshot.val() != null){
             if(scan==true){
+                if(snapshot.child('scan').val()==null){
+                    NBscan++
+                }
                 database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name+"/scan").set(hash())
-                NBscan++
                 affichagePassages()
             }else{
                 scanB.style.visibility="visible";
             }
             document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok.png\" />"
         }else{
-            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/croix.png\" />"   
+            if(h=="/11h"){
+                h2= "/12h"
+            }else{
+                h2= "/11h"
+            }
+            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + name).once("value", function(snapshot) {
+                if(snapshot.val() != null){
+                    if(h2=="/11h"){
+                        document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok11.png\" />"
+                    }else{
+                        document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok12.png\" />"
+                    }
+                    scanB.style.visibility="visible";
+                }else{
+                    document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/croix.png\" />"
+                }
+            })
         }
     })
 }
 
 scanB.addEventListener("click",function(){
     scanB.style.visibility="hidden";
-    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value).once("value", function(snapshot) {
+    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + document.getElementById("name").value).once("value", function(snapshot) {
         if(snapshot.val() != null){
-            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value + "/scan").set(hash())
-            NBscan++
+            if(snapshot.child('scan').val()==null && h2==h){
+                NBscan++
+            }
+            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + document.getElementById("name").value + "/scan").set(hash())
             affichagePassages()
         }
+        h2=h
     })
 })
 
