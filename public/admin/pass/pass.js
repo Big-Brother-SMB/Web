@@ -91,9 +91,6 @@ database.ref("users").once("value", function(snapshot){
     });
 })
 function search(c,scan){
-    if(code == c){
-        return;
-    }
     code = c
     inputCodeBar.value = code
     
