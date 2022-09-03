@@ -11,7 +11,7 @@ function laserEvent(evt) {
         barcodeLaser += evt.key;
     }
     console.log(barcodeLaser)
-    if (isNaN(parseInt(barcodeLaser))){
+    if (isNaN(parseInt(barcodeLaser)) || barcodeLaser.length>5){
         barcodeLaser = '';
     }
     inputCodeBar.value = barcodeLaser;
@@ -85,7 +85,6 @@ database.ref("users").once("value", function(snapshot){
         users_code.set(snapshot.child(child.key+"/code barre").val(),child.key)
     })
     autocomplete(inputName, utilisateurs,function(val){
-        
         searchName(val,false)
         inputCodeBar.value = snapshot.child(val+"/code barre/").val()
     });
