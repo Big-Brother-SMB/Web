@@ -35,7 +35,7 @@ document.getElementById("add point").addEventListener("click",function(){
     nbpts = parseFloat(nbpts.replaceAll(",","."))
     let nomgain
     if (nbpts!==null && !isNaN(nbpts)){
-        nomgain=prompt("Nom du gain :", "gain de la semaine" + actualWeek)
+        nomgain=prompt("Nom du gain :", "gain de la semaine " + actualWeek)
         if (nomgain!==null){
       	    var conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
             namePoint=[]
@@ -77,7 +77,7 @@ document.getElementById("add point").addEventListener("click",function(){
                 database.ref("users/" + name + "/score/" + hashCode + "/value").set(nbpts)
                 nb++
                 if(nb == total){
-                    if(nomgain=="gain de la semaine" + actualWeek) document.getElementById("notif plus").style.visibility = "hidden"
+                    if(nomgain=="gain de la semaine " + actualWeek) document.getElementById("notif plus").style.visibility = "hidden"
                     alert("Ajout de points effectués")
                 }
             })
@@ -90,7 +90,7 @@ document.getElementById("add point").addEventListener("click",function(){
 database.ref("histPoint").once("value", function(snapshot) {
     let test=true
     snapshot.forEach(function(child){
-        if(snapshot.child(child.key+"/name").val()==="gain de la semaine" + actualWeek){
+        if(snapshot.child(child.key+"/name").val()==="gain de la semaine " + actualWeek){
             test = false
         }
     })
