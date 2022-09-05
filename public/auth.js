@@ -28,8 +28,6 @@ if (cookie["user"] != null && cookie["email"].split("@")[1]=="stemariebeaucamps.
   window.location.href = "fin.html";
 }
 
-console.log(cookie["email"].split("@")[1]=="stemariebeaucamps.fr")
-
 
 if (cookie["RGPD"]) {
   document.getElementById("checkbox").checked = true
