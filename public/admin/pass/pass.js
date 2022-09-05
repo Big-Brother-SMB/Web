@@ -21,7 +21,7 @@ document.addEventListener('keydown', function(evt) {
     if (evt.key != 'Shift'){
         barcodeLaser += evt.key;
     }
-    interval = setInterval(() => barcodeLaser = '', 2000);
+    interval = setInterval(() => barcodeLaser = '', 20);
 })
 
 
