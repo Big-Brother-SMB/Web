@@ -3,30 +3,25 @@ let inscB = document.getElementById("inscB")
 let dayP = document.getElementById("day")
 
 
-
+var interval;
 let barcodeLaser = '';
-function laserEvent(evt) {
-    console.log(evt)
-    if (evt.key != 'Shift') {
+document.addEventListener('keydown', function(evt) {
+    console.log(evt.key)
+    if (interval){
+        clearInterval(interval);
+    }
+    if (evt.code == 'Enter') {
+        if (barcodeLaser){
+            search(barcodeLaser,true)
+            inputCodeBar.value = barcodeLaser;
+        }
+        barcodeLaser = '';
+        return;
+    }
+    if (evt.key != 'Shift'){
         barcodeLaser += evt.key;
     }
-    console.log(barcodeLaser)
-    if (isNaN(parseInt(barcodeLaser)) || barcodeLaser.length>5){
-        barcodeLaser = '';
-    }
-    inputCodeBar.value = barcodeLaser;
-    if (barcodeLaser.length==5) {
-        search(barcodeLaser,true)
-        barcodeLaser = '';
-    }
-}
-let laser = document.getElementById("laser");
-laser.addEventListener("change",function(){
-    if(laser.checked){
-        document.addEventListener('keydown', laserEvent);
-    }else{
-        document.removeEventListener('keydown', laserEvent);
-    }
+    interval = setInterval(() => barcodeLaser = '', 2000);
 })
 
 
