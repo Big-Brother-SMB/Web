@@ -22,13 +22,13 @@ for (let i in tablecookie) {
 }
 console.log("cookie", cookie)
 
-if (cookie["user"] != null && cookie["email"] != null) {
+if (cookie["user"] != null && cookie["email"].split("@")[1]=="stemariebeaucamps.fr") {
   sessionStorage.setItem("user", cookie["user"]);
   sessionStorage.setItem("email", cookie["email"])
   window.location.href = "fin.html";
 }
 
-
+console.log(cookie["email"].split("@")[1]=="stemariebeaucamps.fr")
 
 
 if (cookie["RGPD"]) {
@@ -55,8 +55,8 @@ const auth = getAuth()
 //setPersistence(auth, browserSessionPersistence)
 
 auth.onAuthStateChanged(function(user) {
-  if (user) {
-      var uid = user.uid; 
+  if (user && cookie["email"].split("@")[1]=="stemariebeaucamps.fr") {
+      var uid = user.uid;
       console.log(user.displayName)
       document.getElementById("continue text").innerHTML = user.displayName
       document.getElementById("continue").style.display = "block"
@@ -67,7 +67,7 @@ auth.onAuthStateChanged(function(user) {
       })
   } else {
       console.log("log out")
-  } 
+  }
 });
 
 let err = sessionStorage.getItem("auth err");
@@ -146,6 +146,7 @@ getRedirectResult(auth)
       document.getElementById("body").style = "display:block"
       document.getElementById("chargement").style = "display:none"
       document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
+      alert("Veuillez utiliser une adresse mail Beaucamps.")
 
       console.log("Merci de prendre une adresse mail beaucamps")
 
