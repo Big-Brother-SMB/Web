@@ -56,7 +56,7 @@ document.getElementById("tout retirer").addEventListener("click", function() {
 database.ref(path(j,h)).once('value').then(function(snapshot) {
     database.ref("users/" + user).once('value').then(function(snapshot1) {
         snapshot1.child("score").forEach(function(child) {
-            score += parseFloat(snapshot1.child(child.key + "/value").val())
+            score += parseFloat(snapshot1.child("score/"+child.key + "/value").val())
             score = round(score)
         })
         if (score <2) {

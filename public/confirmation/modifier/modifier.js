@@ -158,9 +158,11 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             database.ref(path(j,h) + "/demandes/" + user).remove()
     
             database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
-                if(snapshot.val() == null){
-                    window.location.href = menu;
-                }
+                database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshotO) {
+                    if(snapshot.val() == null && snapshotO.val() != null){
+                        window.location.href = menu;
+                    }
+                })
             });
         });
     
