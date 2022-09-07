@@ -347,7 +347,7 @@ function update(j, h) {
                 if (nbAmisInscrit[j][h] == 1) {
                     text += " dont un seul a été inscrit"
                 } else if(nbAmisInscrit[j][h]>1){
-                    text += " dont " + nbAmisInscrit[j][h] + " ont fait une demande"
+                    text += " dont " + nbAmisInscrit[j][h] + " ont été inscrits"
                 }
             }
         }
