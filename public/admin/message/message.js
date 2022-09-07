@@ -289,8 +289,8 @@ function news(h,title,text){
         main.innerHTML = text
         main.className = "text"
         msg.appendChild(main);
-    
         msg.addEventListener("click",event)
+
         function event(){
             msg.removeEventListener("click", event)
             hide()
@@ -360,10 +360,10 @@ function myMessage(h,title,text,user,lu){
         main.innerHTML = text
         main.className = "text"
         msg.appendChild(main);
-    
         msg.addEventListener("click",event)
+
         function event(){
-            msg.removeEventListener("click",event)
+            msg.removeEventListener("click", event)
             hide()
         }
     }
@@ -430,10 +430,23 @@ function message(h,title,text, user, type,lu){
         main.innerHTML = text
         main.className = "text"
         msg.appendChild(main);
-
         msg.addEventListener("click",event)
+        
+        let btn
+        if(lu!=true){
+            btn = document.createElement("button")
+            btn.innerHTML = "marquer lu"
+            btn.className = "rep"
+            msg.appendChild(btn);
+            btn.addEventListener("mouseup",event)
+        }
+
         function event(){
-            msg.removeEventListener("click",event)
+            if(lu!=true){
+                btn.removeEventListener("mouseup", event)
+            }
+            lu=true
+            msg.removeEventListener("click", event)
             hide()
         }
     }
