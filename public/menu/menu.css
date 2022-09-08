@@ -251,6 +251,16 @@ h2 {
   margin: 0.25em;
 }
 
+
+.menuBnt {
+  background: #7290b3;
+  color: black;
+  width: 40%;
+  border-radius: 8px 8px 8px 8px;
+  padding: 0.25rem;
+  margin: 0.25em;
+}
+
 .amisdiv {
   text-align: center;
 }
