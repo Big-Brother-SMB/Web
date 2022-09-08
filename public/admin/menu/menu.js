@@ -340,7 +340,8 @@ database.ref("messages/").once('value').then(function(snapshot) {
                     let lu = snapshot.val()
                     if (lu!=true) {
                         nbMsg++
-                        updateMsg()
+                        notifMsg.style.visibility = "visible"
+                        notifMsg.innerHTML = nbMsg
                     }
                 })
             })
@@ -348,11 +349,6 @@ database.ref("messages/").once('value').then(function(snapshot) {
     })
 })
 
-
-function updateMsg(){
-    notifMsg.style.visibility = "visible"
-    notifMsg.innerHTML = nbMsg
-}
 
 
 let retourImg=document.getElementById("retourImg")

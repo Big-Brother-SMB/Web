@@ -381,61 +381,6 @@ loop();
 
 
 
-//-----------messagerie--------------------
-const notifMsg = document.getElementById("notif msg")
-
-let nbMsg = 0
-database.ref("sondages").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        database.ref("sondages/" + child.key + "/users/" + user).once('value').then(function(snapshot) {
-            if(snapshot.val() == null){
-                nbMsg++
-                updateMsg()
-            }
-        })
-    })
-})
-
-database.ref("news").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        database.ref("news/" + child.key + "/users/" + user).once('value').then(function(snapshot) {
-            if(snapshot.val() == null){
-                nbMsg++
-                updateMsg()
-            }
-        })
-    })
-})
-
-database.ref("users/" + user + "/messages").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        database.ref("users/" + user + "/messages/" + child.key + "/lu").once('value').then(function(snapshot) {
-            if(snapshot.val() == null){
-                nbMsg++
-                updateMsg()
-            }
-        })
-    })
-})
-
-
-function updateMsg(){
-    notifMsg.style.visibility = "visible"
-    notifMsg.innerHTML = nbMsg
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 document.getElementById("semaine").addEventListener('touchstart', handleTouchStart, false);
 document.getElementById("semaine").addEventListener('touchmove', handleTouchMove, false);
@@ -499,7 +444,7 @@ document.getElementById("nav hide").addEventListener("click",function(){
 
 
 
-//-------------------------------Pop-Up---------------------------------------------
+//-------------------------------Pop-Up------------messagerie---------------------------------
 
 const overlay = document.getElementById('overlay')
 
@@ -520,5 +465,61 @@ database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
     if(tuto != true){
       const modal = document.getElementById('modal')
       openModal(modal)
+    } else {
+        database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
+            tuto = snapshot.val()
+            if(tuto != true){
+                openModal(modal)
+            } else {
+                database.ref("sondages").once('value').then(function(snapshotS) {
+                    database.ref("news").once('value').then(function(snapshotN) {
+                        database.ref("users/" + user + "/messages").once('value').then(function(snapshotM) {
+                            snapshotS.forEach(function(child) {
+                                if(snapshotS.child(child.key + "/users/" + user).val() == null){
+                                    nbMsg++
+                                }
+                            })
+                            snapshotN.forEach(function(child) {
+                                if(snapshotN.child(child.key + "/users/" + user).val() == null){
+                                    nbMsg++
+                                }
+                            })
+                            snapshotM.forEach(function(child) {
+                                if(snapshotM.child(child.key + "/lu").val() == null){
+                                    nbMsg++
+                                }
+                            })
+                            if(nbMsg!=0){
+                                updateMsg()
+                            }
+                        })
+                    })
+                })
+            }
+        })
     }
 })
+
+
+
+const notifMsg = document.getElementById("notif msg")
+
+let nbMsg = 0
+function updateMsg(){
+    notifMsg.style.visibility = "visible"
+    notifMsg.innerHTML = nbMsg
+    let msg=readCookie("msg")
+    let hD=hashDay()
+    if(msg!=hD){
+        const modal = document.getElementById('modal')
+        document.getElementById("modal-title").innerHTML="<b>Messagerie</b>"
+        document.getElementById("modal-body").innerHTML="Vous avez des massages non lu."
+        document.getElementById("modal-option").innerHTML="<button id=\"option-droite\" onclick=\"bntMsgOnclick()\" style=\"text-decoration : none; color :black;\">Messagerie</button>"
+        openModal(modal)
+    }
+}
+
+function bntMsgOnclick(){
+    window.location.href ="../message/message.html"
+    writeCookie("msg",hashDay())
+}

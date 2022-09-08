@@ -257,6 +257,13 @@ function hashDate(){
     return (d.getHours() + d.getMinutes() +Math.floor(d.getSeconds()/10))**3 %1000
 }
 
+function hashDay(){
+    let d =  new Date()
+    return d.getFullYear()
+    + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
+    + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
+}
+
 function hash(){
     let d =  new Date()
     return d.getFullYear()
