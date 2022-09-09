@@ -1,5 +1,8 @@
-user = sessionStorage.getItem("user");
 email = sessionStorage.getItem("email");
+let userT = email.split("@")[0].replaceAll('.', ' ');
+userT[1].toUpperCase();
+//userT[0].capitalize();
+user = userT[0]+userT[1]
 
 week = actualWeek
 
@@ -10,7 +13,6 @@ writeCookie("RGPD",true)
 
 database.ref("names/" + user).set(0);
 database.ref("users/" + user + "/email").set(email);
-database.ref("users/" + user + "/send mail").set(true)
 
 
 setTimeout(function() {

@@ -34,6 +34,8 @@ with open("2.csv") as file:
         row.append(rowB[5])
         row.append(rowB[6])
         row.append(rowB[7])
+
+        row.append(rowB[9])
         rows.append(row)
 with open("1.csv") as file:
     data_reader = csv.reader(file)
@@ -55,6 +57,8 @@ with open("1.csv") as file:
         row.append(rowB[8])
         row.append("")
         row.append("")
+
+        row.append(rowB[10])
         rows.append(row)
 with open("T.csv") as file:
     data_reader = csv.reader(file)
@@ -76,6 +80,8 @@ with open("T.csv") as file:
         row.append(rowB[7])
         row.append(rowB[8])
         row.append("")
+
+        row.append(rowB[10])
         rows.append(row)
 
 

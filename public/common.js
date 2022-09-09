@@ -20,10 +20,15 @@ const analytics = firebase.analytics();
 
 //--------------auth--------------
 
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        var uid = user.uid;
-        console.log(uid)
+let user;
+let email;
+firebase.auth().onAuthStateChanged(function(userX) {
+    if (userX) {
+        userT = userX.email.split("@")[0].replaceAll('.', ' ');
+        userT[1].toUpperCase();
+        //userT[0].capitalize();
+        user = userT[0]+userT[1]
+        email = userX.email;
     } else {
         deco()
         console.log("log out")
@@ -117,8 +122,6 @@ function deco(){
 }
 
 //--------------------var--------------------
-let user = readCookie("user")
-let email = readCookie("email")
 let classe = readCookie("classe")
 let week = readIntCookie("week")
 let bollAllAmis = readBoolCookie("allAmis",true)
