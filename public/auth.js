@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithCredential, getRedirectResult,setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import { getAuth,signInWithPopup ,onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signInWithCredential, getRedirectResult,setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
 
 
 document.getElementById("body").style = "display:none"
@@ -103,7 +103,48 @@ switch (err) {
 document.getElementById("change").onclick = () => {
   if (document.getElementById("checkbox").checked) {
     sessionStorage.setItem("auth err", 0);
-    signInWithRedirect(auth, provider)
+    signInWithPopup(auth, provider).then((result) => {
+
+      const credential = GoogleAuthProvider.credentialFromResult(result)
+      console.log("ok1")
+  
+      const token = credential.accessToken
+  
+      const user = result.user
+  
+      if (user.email.split("@")[1] == "stemariebeaucamps.fr") {
+        console.log(user)
+  
+        /*signInWithCredential(auth, credential).catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        });*/
+  
+  
+        sessionStorage.setItem("user", user.displayName);
+        sessionStorage.setItem("email", user.email)
+        window.location.href = "fin.html";
+      } else {
+        document.getElementById("body").style = "display:block"
+        document.getElementById("chargement").style = "display:none"
+        document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
+        alert("Veuillez utiliser une adresse mail Beaucamps.")
+  
+        console.log("Merci de prendre une adresse mail beaucamps")
+  
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+      document.getElementById("body").style = "display:block"
+      document.getElementById("chargement").style = "display:none"
+      const err = error
+    })
   } else {
     document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies"
   }
