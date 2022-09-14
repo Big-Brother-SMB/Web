@@ -607,17 +607,15 @@ function charged(bool){
     }
 }
 
-try{
+/*try{
     database.ref("version").once("value", function (snapshot) {
         let msg = snapshot.val()
         if (msg != null) {
             document.getElementById("version").innerHTML = "Version " + msg
         }
-
-
     })
-}catch{}
-
+}catch{}*/
+document.getElementById("version").innerHTML = "Credit"
 
 
 //nb pers
