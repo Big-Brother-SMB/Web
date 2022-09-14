@@ -612,6 +612,8 @@ function charged(bool){
         let msg = snapshot.val()
         if (msg != null) {
             document.getElementById("version").innerHTML = "Version " + msg
+        } else {
+            document.getElementById("version").innerHTML = "Crédit"
         }
     })
 }catch{}*/
