@@ -304,7 +304,7 @@ database.ref("users/").once('value').then(function(snapshot1) {
     snapshot1.forEach(function(child) {
         usersList.push(child.key)
     })
-    autocomplete(destinataire, usersList);
+    autocomplete(destinataire, usersList,function(val){});
     snapshot1.forEach(function(child) {
         let user = child.key
         let snapshot=snapshot1.child(user + "/messages")

@@ -36,7 +36,7 @@ database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + us
 
 
 
-document.getElementById("user").innerHTML = user + " " + classe
+document.getElementById("user").innerHTML = userName + " " + classe
 
 function loop(){
     let d2 = new Date();

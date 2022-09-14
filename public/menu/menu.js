@@ -25,16 +25,7 @@ console.log("lenght : " + String(user).length)
 console.log(user);
 console.log("classe : " + classe);
 
-document.getElementById("user").innerHTML = user + " " + classe
-
-
-
-database.ref("users/" + user + "/email").once("value", function (snapshot) {
-    if (snapshot.val() == null) {
-        deco()
-    }
-})
-
+document.getElementById("user").innerHTML = userName + " " + classe
 
 
 document.getElementById("pass").addEventListener("click", function () {

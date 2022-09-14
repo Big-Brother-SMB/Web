@@ -29,29 +29,31 @@ let divDemandes = document.getElementById("demandes")
 
 
 database.ref(pathPerm(j,h) + "/demandes").once('value').then(function(snapshot) {
-    console.log(pathPerm(j,h) + "/demandes")
-    if(snapshot.val() != null){
-        divDemandes.innerHTML = ""
-    }
-    snapshot.forEach(function(child) {
-        let u = child.key
-        database.ref(pathPerm(j,h) + "/demandes/" + u + "/name").once('value').then(function(snapshot) {
-            let name = snapshot.val()
-            database.ref(pathPerm(j,h) + "/demandes/" + u + "/nb").once('value').then(function(snapshot) {
-                let nb = snapshot.val()
-                but = document.createElement("button")
-                but.classList.add("amis")
-                but.innerHTML = name +  " : " + nb +" (" + u + ")"
-
-                but.addEventListener("click", function(){
-                    but.remove()
-                    database.ref(pathPerm(j,h) + "/demandes/" + u).remove()
+    database.ref("names").once('value').then(function(snapshotNames) {
+        console.log(pathPerm(j,h) + "/demandes")
+        if(snapshot.val() != null){
+            divDemandes.innerHTML = ""
+        }
+        snapshot.forEach(function(child) {
+            let u = child.key
+            database.ref(pathPerm(j,h) + "/demandes/" + u + "/name").once('value').then(function(snapshot) {
+                let name = snapshot.val()
+                database.ref(pathPerm(j,h) + "/demandes/" + u + "/nb").once('value').then(function(snapshot) {
+                    let nb = snapshot.val()
+                    but = document.createElement("button")
+                    but.classList.add("amis")
+                    but.innerHTML = name +  " : " + nb +" (" + snapshotNames.child(u).val() + ")"
+    
+                    but.addEventListener("click", function(){
+                        but.remove()
+                        database.ref(pathPerm(j,h) + "/demandes/" + u).remove()
+                    })
+    
+                    divDemandes.appendChild(but);
                 })
-
-                divDemandes.appendChild(but);
             })
+            
         })
-        
     })
 });
 

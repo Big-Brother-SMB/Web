@@ -6,12 +6,15 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     snapshot.forEach(function(child) {
         let ami = document.createElement("button")
         ami.classList.add("amis")
-        ami.innerHTML = child.key
+
+        database.ref("names/" + child.key).once("value", function(snapshot) {
+            ami.innerHTML = snapshot.val()
+        })
         ami.addEventListener("click", function() {
-            console.log("remove")
             database.ref("users/" + user + "/amis/" + child.key).remove();
             reload()
         })
+
         divAmis.appendChild(ami);
         amis.push(child.key)
     })
@@ -21,13 +24,15 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 function suite1(){
     console.log(amis)
     let users = []
+    let usersNames = []
     database.ref("names").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
             if(child.key != user && amis.indexOf(child.key) == -1){
                 users.push(child.key)
+                usersNames.push(snapshot.child(child.key).val())
             }
         })
-        autocomplete(document.getElementById("addAmi"), users);
+        autocomplete(document.getElementById("addAmi"), usersNames,function(){});
     })
 
     document.getElementById("ajout").addEventListener("click", function() {
@@ -35,11 +40,9 @@ function suite1(){
 
         let ami = document.getElementById("addAmi").value
 
-        if(users.indexOf(ami) != -1){
-            console.log(ami)
-            database.ref("users/" + user + "/amis/" + ami).set(0);
+        if(usersNames.indexOf(ami) != -1){
+            database.ref("users/" + user + "/amis/" + users[usersNames.indexOf(ami)]).set(0);
         }
         reload()
-
     })
 }

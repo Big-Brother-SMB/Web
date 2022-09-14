@@ -11,17 +11,13 @@ cred = credentials.Certificate('key.json')
 firebase_admin.initialize_app(cred, {
   'databaseURL': "https://big-brother-ac39c-default-rtdb.europe-west1.firebasedatabase.app/"
 })
-i=0
-with open("list.csv") as file:
-  data_reader = csv.reader(file)
-  for line in data_reader:
-    i+=1
-    print(line)
-    db.reference("users/"+line[1]+" "+line[0]+"/classe").set(line[2])
-    db.reference("users/"+line[1]+" "+line[0]+"/verifier").set(True)
-    db.reference("users/"+line[1]+" "+line[0]+"/code barre").set(line[3])
-    for loop in range(4,len(line)):
-      if line[loop]!="":
-        db.reference("users/"+line[1]+" "+line[0]+"/priorites/"+line[loop]).set(0)
-        db.reference("priorites/"+line[loop]).set(0)
-print("fin "+str(i))
+
+x=db.reference("users").get()
+for n in x:
+  s=x.get(n).get("score")
+  if s!=None:
+    for so in s:
+      sn=s.get(so).get("name")
+      if sn=="gain de la semaine 37":
+        #print(db.reference("users/"+n+"/score/"+so).get())
+        #db.reference("users/"+n+"/score/"+so).delete()

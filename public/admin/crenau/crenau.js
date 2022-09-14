@@ -662,32 +662,6 @@ function algo(){
                     for(let u in users){
                         tag[u] = false
                     }
-            
-                    function sendEmail(prenom,email){
-                        Email.send({
-                            Host: "smtp.gmail.com",
-                            Username: "foyer.beaucamps@gmail.com",
-                            Password: "beaucamps",
-                            To: email,
-                            From: "foyer.beaucamps@gmail.com",
-                            Subject: "Inscription validée",
-                            Body: "Bonjour " + prenom + ", ton inscription au foyer le " + day[j] + " à " + (h+11) + "h a été validée",
-                        })
-                        .then(function (message) {
-                            console.log(message)
-                            if(message != "OK"){
-                                sendEmail(prenom,email)
-                            }else{
-                                console.log("mail sent successfully to " + email)
-                                
-                                nbEmail++
-                                if(fini){
-                                    document.getElementById("start algo").innerHTML = "fini, " + (inscrits - dejaInscrit) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload<br>Email envoyés : " + nbEmail
-                                }
-                            }
-                            
-                        });
-                    }
                     
                     let alea = randint(0, users.length - 1)
                     let base = alea
@@ -739,7 +713,6 @@ function algo(){
                                             let email = snapshot.val()
                                             let prenom = users[p].split(" ")[0]
                                             console.log(email)
-                                            sendEmail(prenom,email)
                                         })
                                         
                                     }catch(exception){

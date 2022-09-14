@@ -1,8 +1,8 @@
 {
     "rules": {
-        ".read" : "(root.child('modo').child('users').child(auth.token.name).val()===0 || root.child('modo').child('users').child(auth.token.name).val()===1 ) && auth.token.email.contains('@stemariebeaucamps.fr')===true",
-        ".write": "(root.child('modo').child('users').child(auth.token.name).val()===0 || root.child('modo').child('users').child(auth.token.name).val()===1 ) && auth.token.email.contains('@stemariebeaucamps.fr')===true",
-        "banderole":{
+      	".read" : "(root.child('modo').child('users').child(auth.token.email.replace('.','µ')).val()===0 || root.child('modo').child('users').child(auth.token.email.replace('.','µ')).val()===1 ) && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+        ".write": "(root.child('modo').child('users').child(auth.token.email.replace('.','µ')).val()===0 || root.child('modo').child('users').child(auth.token.email.replace('.','µ')).val()===1 ) && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+      	"banderole":{
           	".read" : "auth.token.email.contains('@stemariebeaucamps.fr')===true",
         },
         
@@ -13,12 +13,7 @@
                     "$h":{
                         "demandes":{
                             "$name":{
-                              	"user":{
-                                  	".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
-                                },
-                                "amis":{
-                                  	".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
-                                },
+                              	".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                             }
                         }
                     },
@@ -33,7 +28,7 @@
         "messages":{
           	".read" : "auth.token.email.contains('@stemariebeaucamps.fr')===true",
       	    "$name":{
-                ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
             }
         },
 
@@ -44,7 +39,8 @@
         "names":{
           	".read" : "auth.token.email.contains('@stemariebeaucamps.fr')===true",
             "$name":{
-              	".write" : "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+              	".write" : "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+              	".validate" : "newData.isString() && !data.exists()",
             }
         },
 
@@ -53,7 +49,7 @@
             "$date":{
                 "users":{
                     "$name":{
-                		    ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                		    ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                     }
                 }
             }
@@ -66,7 +62,7 @@
                     "$h":{
                         "demandes":{
                           	"$name":{
-                              	".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                              	".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                             },
                         },
                     },
@@ -83,7 +79,7 @@
             "$date":{
                 "users":{
                     "$name":{
-                        ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                        ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                     }
                 }
             }
@@ -93,23 +89,23 @@
             "$name":{
               	".read" : "auth.token.email.contains('@stemariebeaucamps.fr')===true",
                 "amis": {
-                    ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                    ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                 },
                 "messages": {
               	    "$m":{
                         "lu": {
-                		    ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true"
+                		    ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true"
                 	    }
                     }
                 },
                 "email": {
-                    ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                    ".write": "$name ==auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                 },
                 "send mail": {
-                    ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                    ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                 },
                 "tuto": {
-                    ".write": "$name == auth.token.name && auth.token.email.contains('@stemariebeaucamps.fr')===true",
+                    ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                 }
             }
         },

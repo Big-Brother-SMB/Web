@@ -20,15 +20,20 @@ const analytics = firebase.analytics();
 
 //--------------auth--------------
 
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        var uid = user.uid;
-        console.log(uid)
+firebase.auth().onAuthStateChanged(function(userX) {
+    if (userX) {
+        userT = userX.email.split("@")[0].split(".");
+        userT[0]=userT[0][0].toUpperCase()+userT[0].slice(1)
+        userT[1]=userT[1].toUpperCase();
+        userName = userT[0]+" "+userT[1]
+        user = userX.email.replaceAll('.','µ')
+        email = userX.email;
+        writeCookie("user",user)
+        writeCookie("name",userName)
+        writeCookie("email",email)
     } else {
         deco()
-        console.log("log out")
     }
-    let userName=readCookie("user")
     database.ref("modo/users/"+ userName).once('value',function(snapshot){
         if(window.location.pathname.includes("admin")){
             if(snapshot.val()!=0 && snapshot.val()!=1){
@@ -118,6 +123,7 @@ function deco(){
 
 //--------------------var--------------------
 let user = readCookie("user")
+let userName = readCookie("name")
 let email = readCookie("email")
 let classe = readCookie("classe")
 let week = readIntCookie("week")
@@ -137,7 +143,6 @@ let textColor = readCookie("color text")
 database.ref("users/" + user + "/classe").once("value", function(snapshot) {
     classe = snapshot.val()
     if(classe != null){
-
         writeCookie("classe",classe)
     }
 })
@@ -146,7 +151,6 @@ database.ref("users/" + user + "/code barre").once("value", function(snapshot) {
     codeBar = snapshot.val()
     if(codeBar != null){
         console.log(codeBar)
-
         writeCookie("code bar",codeBar)
     }else{
         console.log("err code bar")

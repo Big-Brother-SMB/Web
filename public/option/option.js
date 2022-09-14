@@ -1,5 +1,4 @@
 let switchAllAmis = document.getElementById("allAmis")
-let switchEmail = document.getElementById("switch email")
 //let inputCodeBar = document.getElementById("code bar")
 
 switchAllAmis.checked = bollAllAmis
@@ -7,22 +6,6 @@ switchAllAmis.addEventListener("change", function () {
     writeCookie("allAmis", this.checked)
 })
 
-database.ref("users/" + user + "/send mail").once('value', function (snapshot) {
-    getUserData("send mail", function (value) {
-        bollEmail = value
-        let val=snapshot.val()
-        if(val==true||val==false){
-            switchEmail.checked = val
-        }else{
-            switchEmail.checked = bollEmail
-        }
-    })
-})
-
-switchEmail.addEventListener("change", function () {
-    writeCookie("bEmail", this.checked)
-    database.ref("users/" + user + "/send mail").set(this.checked)
-})
 
 var ele = document.getElementsByName("color");
 

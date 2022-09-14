@@ -69,27 +69,40 @@ inputCodeBar.addEventListener("input",function(){
 
 
 let inputName = document.getElementById("name")
+let inputNameId = null
 
 let utilisateurs = []
+let utilisateursNames = []
 
 let code = 0
 users_code= new Map();
 database.ref("users").once("value", function(snapshot){
-    snapshot.forEach(function(child) {
-        utilisateurs.push(child.key)
-        users_code.set(snapshot.child(child.key+"/code barre").val(),child.key)
+    database.ref("names").once("value", function(snapshotNames){
+        snapshot.forEach(function(child) {
+            utilisateurs.push(child.key)
+            users_code.set(snapshot.child(child.key+"/code barre").val(),child.key)
+            if(typeof snapshotNames.child(child.key).val() === "string"){
+                utilisateursNames.push(snapshotNames.child(child.key).val())
+            } else {
+                database.ref("names/"+child.key).set(child.key)
+                utilisateursNames.push(child.key)
+            }
+        })
+        autocomplete(inputName, utilisateursNames,function(val){
+            val = utilisateurs[utilisateursNames.indexOf(val)]
+            inputNameId=val
+            searchName(val,false)
+            inputCodeBar.value = snapshot.child(val+"/code barre/").val()
+        });  
     })
-    autocomplete(inputName, utilisateurs,function(val){
-        searchName(val,false)
-        inputCodeBar.value = snapshot.child(val+"/code barre/").val()
-    });
 })
 function search(c,scan){
     code = c
     inputCodeBar.value = code
     
     let name = users_code.get(code)
-    document.getElementById("name").value = name
+    inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
+    inputNameId = name
     if(name!=null){
         searchName(name,scan)
         return;
@@ -146,12 +159,12 @@ function searchName(name,scan){
 scanB.addEventListener("click",function(){
     scanB.style.visibility="hidden";
     inscB.style.visibility="hidden";
-    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + document.getElementById("name").value).once("value", function(snapshot) {
+    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + inputNameId).once("value", function(snapshot) {
         if(snapshot.val() != null){
             if(snapshot.child('scan').val()==null && h2==h){
                 NBscan++
             }
-            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + document.getElementById("name").value + "/scan").set(hash())
+            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + inputNameId + "/scan").set(hash())
             affichagePassages()
         }
         h2=h
@@ -161,15 +174,15 @@ scanB.addEventListener("click",function(){
 inscB.addEventListener("click",function(){
     scanB.style.visibility="hidden";
     inscB.style.visibility="hidden";
-    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value).once("value", function(snapshot) {
+    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + inputNameId).once("value", function(snapshot) {
         if(snapshot.val()==null){
             NBinscrit++
         }
         if(snapshot.child('scan').val()==null){
             NBscan++
         }
-        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value + "/user").set(0)
-        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + document.getElementById("name").value + "/scan").set(hash())
+        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + inputNameId + "/user").set(0)
+        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + inputNameId + "/scan").set(hash())
         document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok.png\" />"
         affichagePassages()
         h2=h
