@@ -607,7 +607,7 @@ function charged(bool){
     }
 }
 
-/*try{
+try{
     database.ref("version").once("value", function (snapshot) {
         let msg = snapshot.val()
         if (msg != null) {
@@ -616,8 +616,7 @@ function charged(bool){
             document.getElementById("version").innerHTML = "Crédit"
         }
     })
-}catch{}*/
-document.getElementById("version").innerHTML = "Credit"
+}catch{}
 
 
 //nb pers
