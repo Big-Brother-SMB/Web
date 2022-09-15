@@ -34,7 +34,8 @@ firebase.auth().onAuthStateChanged(function(userX) {
     } else {
         deco()
     }
-    database.ref("modo/users/"+ userName).once('value',function(snapshot){
+    console.log(user)
+    database.ref("modo/users/"+ user).once('value',function(snapshot){
         if(window.location.pathname.includes("admin")){
             if(snapshot.val()!=0 && snapshot.val()!=1){
                 deco()

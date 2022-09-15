@@ -454,39 +454,31 @@ function closeModal(modal) {
 database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
     tuto = snapshot.val()
     if(tuto != true){
-      const modal = document.getElementById('modal')
-      openModal(modal)
+        openModal(modal)
     } else {
-        database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
-            tuto = snapshot.val()
-            if(tuto != true){
-                openModal(modal)
-            } else {
-                database.ref("sondages").once('value').then(function(snapshotS) {
-                    database.ref("news").once('value').then(function(snapshotN) {
-                        database.ref("users/" + user + "/messages").once('value').then(function(snapshotM) {
-                            snapshotS.forEach(function(child) {
-                                if(snapshotS.child(child.key + "/users/" + user).val() == null){
-                                    nbMsg++
-                                }
-                            })
-                            snapshotN.forEach(function(child) {
-                                if(snapshotN.child(child.key + "/users/" + user).val() == null){
-                                    nbMsg++
-                                }
-                            })
-                            snapshotM.forEach(function(child) {
-                                if(snapshotM.child(child.key + "/lu").val() == null){
-                                    nbMsg++
-                                }
-                            })
-                            if(nbMsg!=0){
-                                updateMsg()
-                            }
-                        })
+        database.ref("sondages").once('value').then(function(snapshotS) {
+            database.ref("news").once('value').then(function(snapshotN) {
+                database.ref("users/" + user + "/messages").once('value').then(function(snapshotM) {
+                    snapshotS.forEach(function(child) {
+                        if(snapshotS.child(child.key + "/users/" + user).val() == null){
+                            nbMsg++
+                        }
                     })
+                    snapshotN.forEach(function(child) {
+                        if(snapshotN.child(child.key + "/users/" + user).val() == null){
+                            nbMsg++
+                        }
+                    })
+                    snapshotM.forEach(function(child) {
+                        if(snapshotM.child(child.key + "/lu").val() == null){
+                            nbMsg++
+                        }
+                    })
+                    if(nbMsg!=0){
+                        updateMsg()
+                    }
                 })
-            }
+            })
         })
     }
 })
