@@ -9,13 +9,13 @@ console.log("read : " + readCookie("user"))
 
 
 
-if (user == null || String(user).length < 5) {
+/*if (user == null || String(user).length < 5) {
     sessionStorage.setItem("auth err", 2);
     setTimeout(function () {
         deco()
     }, 2000);
 
-}
+}*/
 
 
 
