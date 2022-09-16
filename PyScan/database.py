@@ -19,12 +19,19 @@ firebase_admin.initialize_app(cred, {
   'databaseURL': "https://big-brother-ac39c-default-rtdb.europe-west1.firebasedatabase.app/"
 })
 
-today = date.today()
+try:
+  j=int(input("jour:"))
+  m=int(input("mois:"))
+  a=int(input("année:"))
+  today = date(a, m, j)
+except ValueError:
+  today = date.today()
+
+
 week = today.isocalendar().week
 day = today.weekday()
 if day>4:
   day=0
-
 
 
 def parseTime(h,m):
@@ -53,7 +60,6 @@ def refreshTime():
 
 def refreshPassages():
   textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
-  #aaaaaaa
   nbPassages11 = 0
   nbInscrits11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/11h/inscrits").get()
   if nbInscrits11!=None:
@@ -100,6 +106,10 @@ def show(key):
       else:
         number = int(str(number)[:-1])
     elif str(key) == "Key.enter":
+      strLen=5-len(str(number))
+      for loop in range(strLen):
+        number=int(str(number)+"0")
+    elif str(key) == "Key.shift":
       pass
     else:
       try:
@@ -164,8 +174,8 @@ def add():
   now = datetime.now()
   db.reference("users/" + userName + "/score/" + h + "/value").set(cout)
   db.reference("users/" + userName + "/score/" + h + "/name").set("Repas du " + days[day] +  " " + str(now.day) + " " + month[now.month - 1] + " à " + str(heure) + "h")
-  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/scan").set(hash())
   db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/user").set(0)
+  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/scan").set(hash())
   canvas.itemconfig(image_container,image=imgOk)
   refreshPassages()
 
@@ -264,9 +274,15 @@ imgCroix= PhotoImage(file="croix.png")
 imgUnknown= PhotoImage(file="unknown.png")
 imgLoading= PhotoImage(file="loading.png")
 
-
+def hFunc():
+  global heure
+  if heure==11:
+    heure=12
+  else:
+    heure=11
+  textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
 textH = StringVar()
-labelH = Label(fenetre, textvariable=textH, font=("Arial", 15))
+labelH = Button(fenetre, textvariable=textH, command=hFunc, font=("Arial", 15))
 labelH.pack()
 
 
