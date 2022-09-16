@@ -300,20 +300,43 @@ function news(h,title,text){
 
 //------------------------------my msg---------------------------------
 let usersList = []
-database.ref("users/").once('value').then(function(snapshot1) {
-    snapshot1.forEach(function(child) {
-        usersList.push(child.key)
-    })
-    autocomplete(destinataire, usersList,function(val){});
-    snapshot1.forEach(function(child) {
-        let user = child.key
-        let snapshot=snapshot1.child(user + "/messages")
-        snapshot.forEach(function(child) {
-            let h = child.key
-            let title = snapshot.child(h+"/title").val()
-            let text = snapshot.child(h+"/text").val()
-            let lu = snapshot.child(h+"/lu").val()
-            myMessage(h, title, text, user, lu)
+let usersIdList = []
+database.ref("users").once("value", function(snapshot1){
+    database.ref("names").once("value", function(snapshotNames){
+        database.ref("messages/").once('value').then(function(snapshot2) {
+            snapshot1.forEach(function(child) {
+                usersIdList.push(child.key)
+                if(typeof snapshotNames.child(child.key).val() === "string"){
+                    usersList.push(snapshotNames.child(child.key).val())
+                } else {
+                    database.ref("names/"+child.key).set(child.key)
+                    usersList.push(child.key)
+                }
+            })
+            autocomplete(destinataire, usersList,function(val){});
+            snapshot1.forEach(function(child) {
+                let user = child.key
+                let snapshot=snapshot1.child(user + "/messages")
+                snapshot.forEach(function(child) {
+                    let h = child.key
+                    let title = snapshot.child(h+"/title").val()
+                    let text = snapshot.child(h+"/text").val()
+                    let lu = snapshot.child(h+"/lu").val()
+                    myMessage(h, title, text, user, lu)
+                })
+            })
+            snapshot2.forEach(function(child) {
+                let user = child.key
+                let snapshot=snapshot2.child(user)
+                snapshot.forEach(function(child) {
+                    let h = child.key
+                    let title = snapshot.child(h+"/title").val()
+                    let text = snapshot.child(h+"/text").val()
+                    let type = snapshot.child(h+"/type").val()
+                    let lu = snapshot.child(h+"/lu").val()
+                    message(h, title, text, user, type, lu)
+                })
+            })
         })
     })
 })
@@ -332,7 +355,7 @@ function myMessage(h,title,text,user,lu){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = "MP["+ textLu +"] : " + title +"<br>à: "+user
+        p.innerHTML = "MP["+ textLu +"] : " + title +"<br>à: "+ usersList[usersIdList.indexOf(user)]
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -352,7 +375,7 @@ function myMessage(h,title,text,user,lu){
         msg.innerHTML = ""
 
         let prive = document.createElement("p")
-        prive.innerHTML = "MP["+ textLu +"] : " + title +"<br>à: "+user
+        prive.innerHTML = "MP["+ textLu +"] : " + title +"<br>à: "+ usersList[usersIdList.indexOf(user)]
         prive.className = "text"
         msg.appendChild(prive);
 
@@ -371,21 +394,6 @@ function myMessage(h,title,text,user,lu){
 
 //------------------------------msg---------------------------------
 
-database.ref("messages/").once('value').then(function(snapshot1) {
-    snapshot1.forEach(function(child) {
-        let user = child.key
-        let snapshot=snapshot1.child(user)
-        snapshot.forEach(function(child) {
-            let h = child.key
-            let title = snapshot.child(h+"/title").val()
-            let text = snapshot.child(h+"/text").val()
-            let type = snapshot.child(h+"/type").val()
-            let lu = snapshot.child(h+"/lu").val()
-            message(h, title, text, user, type, lu)
-        })
-    })
-})
-
 
 function message(h,title,text, user, type,lu){
     let msg = document.createElement("div")
@@ -401,7 +409,7 @@ function message(h,title,text, user, type,lu){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = type + " : " + title +"<br>De: "+user
+        p.innerHTML = type + " : " + title +"<br>De: "+ usersList[usersIdList.indexOf(user)]
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -422,7 +430,7 @@ function message(h,title,text, user, type,lu){
     function display(){
         msg.innerHTML = ""
         let prive = document.createElement("p")
-        prive.innerHTML = type+" : "+title +"<br>De: "+user
+        prive.innerHTML = type+" : "+title +"<br>De: "+usersList[usersIdList.indexOf(user)]
         prive.className = "text"
         msg.appendChild(prive);
 
@@ -545,8 +553,9 @@ send.addEventListener("click", function() {
     if(title.value != ""){
         let hashCode = hash()
         if(icon==0 && usersList.indexOf(destinataire.value)!=-1 && text.value != ""){
-            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/title").set(title.value)
-            database.ref("users/" + destinataire.value +"/messages/"+ hashCode + "/text").set(text.value.replaceAll('\n',"</br>"))
+            let at=usersIdList[usersList.indexOf(destinataire.value)]
+            database.ref("users/" + at +"/messages/"+ hashCode + "/title").set(title.value)
+            database.ref("users/" + at +"/messages/"+ hashCode + "/text").set(text.value.replaceAll('\n',"</br>"))
             myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"),destinataire.value,false)
             title.value = ""
             destinataire.value = ""

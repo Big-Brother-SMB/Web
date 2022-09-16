@@ -168,6 +168,9 @@ function refreshDatabase() {
             for (let h = 0; h < 2; h++) {
                 database.ref(path(j, h)).once('value').then(function (snapshotP) {
                     total[j][h] = snapshotP.child("places").val();
+                    if(total[j][h]==null || total[j][h]==""){
+                        total[j][h]=0
+                    }
 
                     if (snapshotP.child("ouvert").val() == null) {
                         ouvert[j][h] = 0
