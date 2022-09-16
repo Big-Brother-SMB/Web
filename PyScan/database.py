@@ -58,8 +58,9 @@ def refreshPassages():
   nbInscrits11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/11h/inscrits").get()
   if nbInscrits11!=None:
     for inscritU in nbInscrits11:
-      if nbInscrits11.get(inscritU).get("scan")!=None:
-        nbPassages11+=1
+      if nbInscrits11.get(inscritU)!=None:
+        if nbInscrits11.get(inscritU).get("scan")!=None:
+          nbPassages11+=1
     nbInscrits11 = len(nbInscrits11)
   else:
     nbInscrits11 = 0
@@ -67,8 +68,9 @@ def refreshPassages():
   nbInscrits12 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/12h/inscrits").get()
   if nbInscrits12!=None:
     for inscritU in nbInscrits12:
-      if nbInscrits12.get(inscritU).get("scan")!=None:
-        nbPassages12+=1
+      if nbInscrits12.get(inscritU)!=None:
+        if nbInscrits12.get(inscritU).get("scan")!=None:
+          nbPassages12+=1
     nbInscrits12 = len(nbInscrits12)
   else:
     nbInscrits12 = 0
@@ -76,8 +78,6 @@ def refreshPassages():
   passage12.set("Élèves inscrit à 12h : " + str(nbPassages12) + " / " + str(nbInscrits12))
 
   passage.set("Élèves inscrits aujourd'hui : " + str(nbPassages11+nbPassages12) + " / " + str(nbInscrits11+nbInscrits12))
-  #aaaaaaa
-  #aaaaaaa
 
 
 days = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"]
@@ -99,19 +99,24 @@ def show(key):
         number = 0
       else:
         number = int(str(number)[:-1])
-
+    elif str(key) == "Key.enter":
+      pass
     else:
-      nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
-      if(nb >= 96):
-        nb = nb - 96
+      try:
+        nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
+        if(nb >= 96):
+          nb = nb - 96
 
-      if(number >= 10000):
-        number = 0
+        if(number >= 10000):
+          number = 0
 
-      if(number == 0):
-        number = nb
-      else:
-        number = int(str(number) + str(nb))
+        if(number == 0):
+          number = nb
+        else:
+          number = int(str(number) + str(nb))
+      except ValueError:
+          number = 0
+          pass
 
     if(number != 0):
       text.set(number)
@@ -127,7 +132,7 @@ def show(key):
         userName = userN
     buttonInscrire.pack_forget()
     if(userName != "None"):
-      name.set(userName)
+      name.set(db.reference("names/" + userName).get())
       classe = str(db.reference("users/" + userName + "/classe").get())
       info.set("classe : " + classe)
       ref = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName)
@@ -142,7 +147,6 @@ def show(key):
       canvas.itemconfig(image_container,image=imgUnknown)
       name.set("")
       info.set("")
-
 
   except ValueError:
     pass
@@ -160,40 +164,73 @@ def add():
   now = datetime.now()
   db.reference("users/" + userName + "/score/" + h + "/value").set(cout)
   db.reference("users/" + userName + "/score/" + h + "/name").set("Repas du " + days[day] +  " " + str(now.day) + " " + month[now.month - 1] + " à " + str(heure) + "h")
-  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "inscrits/" + userName+"/scan").set(hash())
-  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName).set(0)
+  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/scan").set(hash())
+  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/user").set(0)
   canvas.itemconfig(image_container,image=imgOk)
   refreshPassages()
 
 def export():
   now = datetime.now()
   f = open("Liste de passage du " + days[day] +  " " + str(now.day) + " " + month[now.month - 1] + " à " + str(heure) + "h.txt", "w")
-  passagesD = 0
-  inscritsD = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits").get()
-  passages = []
-  inscrits = []
-  if(inscritsD != None):
-    for cle, valeur in inscritsD.items():
-      inscrits.append(cle)
+  inscritsD11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/11h/inscrits").get()
+  passages11 = []
+  inscrits11 = []
+  inscritsD12 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/12h/inscrits").get()
+  passages12 = []
+  inscrits12 = []
+  if(inscritsD11 != None):
+    for cle, valeur in inscritsD11.items():
+      inscrits11.append(cle)
       if valeur.get("scan")!=None:
-        passages.append(cle)
-  print(passages)
-  print(inscrits)
-  f.write("inscrits : " + str(len(inscrits)) + "\n")
+        passages11.append(cle)
+  if(inscritsD12 != None):
+    for cle, valeur in inscritsD12.items():
+      inscrits12.append(cle)
+      if valeur.get("scan")!=None:
+        passages12.append(cle)
+  print(passages11)
+  print(inscrits11)
+  print(passages12)
+  print(inscrits12)
+
+
+  f.write("\n-----------11h------------\n\n")
+  f.write("inscrits : " + str(len(inscrits11)) + "\n")
   pourcent = ""
-  if(len(inscrits) != 0):
-    pourcent = " (" + str(int(len(passages) / len(inscrits) * 100)) + "%)"
-  f.write("passes : " + str(len(passages)) + pourcent + "\n")
+  if(len(inscrits11) != 0):
+    pourcent = " (" + str(int(len(passages11) / len(inscrits11) * 100)) + "%)"
+  f.write("passes : " + str(len(passages11)) + pourcent + "\n")
 
   f.write("\n----------Passes----------\n\n")
-  for user in passages:
-    f.write(user + "\n")
-    if(inscrits.index(user) != -1):
-      inscrits.remove(user)
+  for user in passages11:
+    f.write(db.reference("names/" + user).get() + "\n")
+    if(inscrits11.index(user) != -1):
+      inscrits11.remove(user)
 
   f.write("\n----------Pas passes----------\n\n")
-  for user in inscrits:
-    f.write(user + "\n")
+  for user in inscrits11:
+    f.write(db.reference("names/" + user).get() + "\n")
+
+
+
+
+  f.write("\n-----------12h------------\n\n")
+  f.write("inscrits : " + str(len(inscrits12)) + "\n")
+  pourcent = ""
+  if(len(inscrits12) != 0):
+    pourcent = " (" + str(int(len(passages12) / len(inscrits12) * 100)) + "%)"
+  f.write("passes : " + str(len(passages12)) + pourcent + "\n")
+
+  f.write("\n----------Passes----------\n\n")
+  for user in passages12:
+    f.write(db.reference("names/" + user).get() + "\n")
+    if(inscrits12.index(user) != -1):
+      inscrits12.remove(user)
+
+  f.write("\n----------Pas passes----------\n\n")
+  for user in inscrits12:
+    f.write(db.reference("names/" + user).get() + "\n")
+  
   f.close()
 
 
@@ -213,7 +250,7 @@ class App(threading.Thread):
             listener.join()
 
 fenetre = Tk()
-fenetre.geometry("400x700+0+0")
+fenetre.geometry("450x700+0+0")
 fenetre.title("Scanner")
 #fenetre.iconbitmap('logo.ico')
 def on_closing():

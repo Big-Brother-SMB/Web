@@ -87,7 +87,7 @@
 
         "users":{
             "$name":{
-              	".read" : "auth.token.email.contains('@stemariebeaucamps.fr')===true",
+              	".read" : "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                 "amis": {
                     ".write": "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
                 },
