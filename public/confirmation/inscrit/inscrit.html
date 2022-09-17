@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
   <head>
-    <title>Modifier</title>
+    <title>Inscrit</title>
     <meta charset="utf-8">
 
     <link rel = "icon" href= "../../Images/logo.png">
-    <link rel="stylesheet" href="modifier.css">
+    <link rel="stylesheet" href="inscrit.css">
     <link rel="stylesheet" href="../../common.css">
     <link rel="stylesheet" id="css">
   </head>
@@ -13,7 +13,7 @@
 
     <header>
       <img class="headerimg" src="../../Images/logo.png" alt="logo Lycée" >
-      <h1 id="title">Modifier</h1>
+      <h1 id="title">Inscrit</h1>
       <a href="../../menu/menu.html" class="notification"><img src="../../Images/retour.png" alt="retour"></a>
     </header>
 
@@ -21,39 +21,15 @@
     <article id="article" style="text-align: center;display: none;">
     <p id ="info" class="info"></p>
 
-    <div id="col" style="display:flex;align-items: center; ">
-      <div style="width:90%;">
-        <p>Liste d'amis</p>
-        <button id="tout ajouter">Tout ajouter</button>
-        <div class="zonecadre" style="font-size: 40px;height:500px;width:90%;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;display:block;" id="liste d'amis"></div>
-      </div>
-      <div style="width:90%;">
-        <p>Je mange avec :</p>
-        <button id="tout retirer">Tout retirer</button>
-        <div class="zonecadre" style="font-size: 40px;height:500px;width:90%;border:solid 2px rgb(38, 61, 92);overflow:scroll;overflow-x:hidden;overflow-y:scroll;margin-left: auto;margin-right: auto;display:block;" id="amis ajoutés"></div>
-      </div>
+    <div style="width:70%;margin-left: auto;margin-right: auto;">
+      <p>Je mange avec :</p>
+      <div class="zonecadre"  id="amis ajoutés"></div>
     </div>
-
-    <p id="attention amis" style="color: red;"></p>
-
-
-    <div id="opt" style="display: none;">
-      <p>Je termine à 12h20 :</a><input id="12h20" type="checkbox"/></p>
-    <p>Je reprends à 12h50 :</a><input id="12h50" type="checkbox"/></p>
-  </div>
 
     <div>
-        <button id="modif" class="envoyer">enregistrer les modifications</button>
-        <button id="non" class="envoyer">Retour sans enregistrer</button>
+      <br><br>
+      <button id="pass">Pass</button>
     </div>
-
-
-        <p>Se désinscrire ?</p>
-        <div>
-            <button id="retirer" class="envoyer">Oui</button>
-        </div>
-
-    <br>
 
     </article>
 
@@ -77,7 +53,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
     <script src="../../common.js"></script>
-    <script src="modifier.js"></script>
+    <script src="inscrit.js"></script>
 
     <footer>
       <div style="width:100%;height:auto;text-align: center;">

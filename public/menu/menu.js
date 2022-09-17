@@ -355,12 +355,12 @@ function select(j, h) {
     writeCookie("jour", j)
     writeCookie("heure", h)
     const hInv = h==0?1:0
-    if (demande[j][h]) {
+    if (ouvert[j][h] == 2 && demande[j][h]) {
         window.location.href = "../confirmation/modifier/modifier.html";
-    } else {
-        if (ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]) {
-            window.location.href = "../confirmation/demande/demande.html";
-        }
+    }else if(ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]){
+        window.location.href = "../confirmation/demande/demande.html";
+    }else if((ouvert[j][h] == 2 || ouvert[j][h] == 3) && inscrit[j][h]){
+        window.location.href = "../confirmation/inscrit/inscrit.html";
     }
 }
 

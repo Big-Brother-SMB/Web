@@ -153,7 +153,8 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             document.getElementById("chargement").style.display = "none"
             let reste = places - inscrits
         
-            document.getElementById("info").innerHTML = "Demande enregistrée<br>" + reste + " places restantes<br>("
+            document.getElementById("info").innerHTML = "Demande enregistrée<br>pour le "+ day[j]  +  " à " + (h+11)+"h<br>"
+            + reste + " places restantes<br>("
             + inscrits + " acceptées pour " + places + " places)<br>" + demandes
             + " demandes en cours<br>Votre score: " + textScore
         
@@ -207,6 +208,14 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                         },1000);
                     }
                 });
+                if(h == 1){
+                    let fini = document.getElementById("12h20").checked
+                    let commence = document.getElementById("12h50").checked
+                    database.ref(path(j,h) + "/demandes/" + user + "/horaire").remove();
+                    if(fini || commence){
+                        database.ref(path(j,h) + "/demandes/" + user + "/horaire").set((fini?1:0) + (commence?2:0));
+                    }
+                }
             });
         
             document.getElementById("non").addEventListener("click", function() {

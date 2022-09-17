@@ -556,7 +556,7 @@ send.addEventListener("click", function() {
             let at=usersIdList[usersList.indexOf(destinataire.value)]
             database.ref("users/" + at +"/messages/"+ hashCode + "/title").set(title.value)
             database.ref("users/" + at +"/messages/"+ hashCode + "/text").set(text.value.replaceAll('\n',"</br>"))
-            myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"),destinataire.value,false)
+            myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"),at,false)
             title.value = ""
             destinataire.value = ""
             type.selectedIndex = 0

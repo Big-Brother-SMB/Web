@@ -1,5 +1,8 @@
-body{
+body, .modal-body , .modal-option, .modal, .same{
     background-color: rgb(20, 20, 20);
+}
+.modal{
+    color: #FFFFFF;
 }
 
 p,u,a,h1,.info,.heurediv{
@@ -10,15 +13,11 @@ p,u,a,h1,.info,.heurediv{
     color: white;
 }
 
-.same{
-    background-color: rgb(40, 40, 40);
-}
-
 .opposed{
     background-color: white;
 }
 
-header, header button, .notification img, nav {
+header, header button, .notification img, nav , .modal-header{
     background-color: rgb(45, 45, 45);
 }
 
@@ -58,8 +57,9 @@ input:checked + .slider {
     border-bottom: 2px solid gray;
 }
 
-.actionamis, .planing {
+.actionamis, .planing , .menuBnt{
     background-color: rgb(50, 50, 50);
+    color:#FFFFFF;
 }
 
 .semaine, .action {
@@ -112,8 +112,8 @@ vert {
 /*Page Sondages*/
 
 
-.msg {
-    background-color: rgb(60, 60, 60);
+.text{
+    color: black;
 }
 
 
@@ -163,3 +163,5 @@ td {
       background-color: #FFF;
       color: #333;
   }
+
+
