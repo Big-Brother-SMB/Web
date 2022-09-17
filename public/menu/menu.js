@@ -509,3 +509,11 @@ function bntMsgOnclick(){
     window.location.href ="../message/message.html"
     writeCookie("msg",hashDay())
 }
+
+
+document.getElementById("menu semaine").addEventListener("click",function(){
+    document.getElementById("menu self").style.visibility="visible"
+    document.getElementById("menu self").style.height="auto"
+    document.getElementById("menu self").style.margin="30px"
+    document.getElementById("menu self").innerHTML = "&darr;&darr;&darr;<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>Menu self:<br><iframe src='https://drive.google.com/file/d/1ymF5Q53oe9ugwPFpjCg0Uwj0SaYbem5L/preview' style='width: 90%;height: 600px;' allow='autoplay'></iframe>"
+})
