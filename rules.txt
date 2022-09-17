@@ -39,8 +39,7 @@
         "names":{
           	".read" : "auth.token.email.contains('@stemariebeaucamps.fr')===true",
             "$name":{
-              	".write" : "$name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
-              	".validate" : "newData.isString() && !data.exists()",
+              	".write" : "newData.isString() && !data.exists() && $name == auth.token.email.replace('.','µ') && auth.token.email.contains('@stemariebeaucamps.fr')===true",
             }
         },
 

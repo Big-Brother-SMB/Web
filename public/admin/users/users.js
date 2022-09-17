@@ -1,4 +1,5 @@
 let divClasse = document.getElementById("classe")
+let dName = document.getElementById("name")
 
 let pScore = document.getElementById("score")
 let divScoreEvent = document.getElementById("divScoreEvent")
@@ -32,6 +33,7 @@ database.ref("priorites").once("value", function(snapshot) {
 })
 
 function stop(){
+    dName.removeEventListener("input",fuName)
     divClasse.removeEventListener("change",fu1)
     bAddScore.removeEventListener("click",fu2)
     adminBox.removeEventListener("change",fu3)
@@ -39,6 +41,7 @@ function stop(){
     addPrio.removeEventListener("click",fu5)
 }
 
+let fuName=function(){return}
 let fu1=function(){return}
 let fu2=function(){return}
 let fu3=function(){return}
@@ -69,12 +72,22 @@ database.ref("users").once("value", function(snapshot) {
                     utilisateur = utilisateurs[utilisateursNames.indexOf(utilisateur)]
                     document.getElementById("info").innerHTML = "Page de "+utilisateur.replaceAll('µ','.')
                     database.ref("users/" + utilisateur + "/classe").once('value').then(function(snapshot) {
-                    divClasse.selectedIndex = listClasse.indexOf(snapshot.val());
-                    divClasse.addEventListener("change", fu1=function() {
+                        divClasse.selectedIndex = listClasse.indexOf(snapshot.val());
+                        divClasse.addEventListener("change", fu1=function() {
                         database.ref("users/" + utilisateur + "/classe").set(listClasse[this.selectedIndex])
                     });
                 });
-    
+                
+                database.ref("names/" + utilisateur).once('value').then(function(snapshot2) {
+                    dName.value=snapshot2.val()
+                    dName.addEventListener("input",fuName=function(){
+                        if(utilisateursNames.indexOf(dName.value) == -1){
+                            database.ref("names/" + utilisateur).set(dName.value)
+                        }
+                    })
+                })
+
+
                 divScoreEvent.innerHTML = null
                 divPrio.innerHTML = null
     
