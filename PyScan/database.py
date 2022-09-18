@@ -176,7 +176,7 @@ def add():
   db.reference("users/" + userName + "/score/" + h + "/name").set("Repas du " + days[day] +  " " + str(now.day) + " " + month[now.month - 1] + " à " + str(heure) + "h")
   db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/user").set(0)
   db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/scan").set(hash())
-  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName).delete()
+  db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/demandes/" + userName).delete()
   canvas.itemconfig(image_container,image=imgOk)
   refreshPassages()
 
