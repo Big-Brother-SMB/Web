@@ -181,7 +181,8 @@ def add():
 
 def export():
   now = datetime.now()
-  f = open("Liste de passage du " + days[day] +  " " + str(now.day) + " " + month[now.month - 1] + " à " + str(heure) + "h.txt", "w")
+  f = open("Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt", "w")
+  names = db.reference("names/").get()
   inscritsD11 = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/11h/inscrits").get()
   passages11 = []
   inscrits11 = []
@@ -204,6 +205,9 @@ def export():
   print(inscrits12)
 
 
+  f.write("Liste de passage du " + days[day] +" de la semaine n°" + str(week) +"\n\n")
+
+
   f.write("\n-----------11h------------\n\n")
   f.write("inscrits : " + str(len(inscrits11)) + "\n")
   pourcent = ""
@@ -213,13 +217,13 @@ def export():
 
   f.write("\n----------Passes----------\n\n")
   for user in passages11:
-    f.write(db.reference("names/" + user).get() + "\n")
+    f.write(names.get(user) + "\n")
     if(inscrits11.index(user) != -1):
       inscrits11.remove(user)
 
   f.write("\n----------Pas passes----------\n\n")
   for user in inscrits11:
-    f.write(db.reference("names/" + user).get() + "\n")
+    f.write(names.get(user) + "\n")
 
 
 
@@ -233,15 +237,16 @@ def export():
 
   f.write("\n----------Passes----------\n\n")
   for user in passages12:
-    f.write(db.reference("names/" + user).get() + "\n")
+    f.write(names.get(user) + "\n")
     if(inscrits12.index(user) != -1):
       inscrits12.remove(user)
 
   f.write("\n----------Pas passes----------\n\n")
   for user in inscrits12:
-    f.write(db.reference("names/" + user).get() + "\n")
+    f.write(names.get(user) + "\n")
   
   f.close()
+  print("OK")
 
 
 
