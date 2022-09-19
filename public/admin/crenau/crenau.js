@@ -704,7 +704,8 @@ function algo(){
 
     database.ref(path(j,h)).once('value', function(snapshot) {
         places = snapshot.child("places").val();
-        if(places==null || places[j][h]==""){
+        console.log(places)
+        if(places==null || places==""){
             places=0
         }
         snapshot.child("inscrits").forEach(function(child) {
