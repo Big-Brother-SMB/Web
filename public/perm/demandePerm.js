@@ -1,5 +1,5 @@
-let j = sessionStorage.getItem("j");
-let h = parseInt(sessionStorage.getItem("h"));
+let j = parseInt(readIntCookie("j"));
+let h = parseInt(readIntCookie("h"));
 
 let divDemandes = document.getElementById("demandes")
 

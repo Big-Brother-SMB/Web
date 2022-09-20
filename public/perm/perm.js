@@ -200,8 +200,8 @@ loop();
 
 function select(j, h){
     console.log("click")
-    sessionStorage.setItem("j", j);
-    sessionStorage.setItem("h", h);
+    writeCookie("j", j)
+    writeCookie("h", h)
     if (ouvert[j][h] == 0) {
         window.location.href = "demandePerm.html";
     }

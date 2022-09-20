@@ -1,3 +1,4 @@
+from concurrent.futures import thread
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -91,54 +92,43 @@ month = ["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septe
 dayNum = ["1lundi","2mardi","err","3jeudi","4vendredi"]
 dayNumMer = ["1lundi","2mardi","3mercredi","4jeudi","5vendredi"]
 
-number = 0
+number = ""
 userName  = "None"
+def keyTest(key):
+  pass
+
 def show(key):
-  #global name
   global number
   global userName
   userName="None"
   print(key)
   try:
     if(str(key) == "Key.backspace"):
-      if(number < 10):
-        number = 0
+      if(len(number) <= 1):
+        number = ""
       else:
-        number = int(str(number)[:-1])
+        number = number[:-1]
     elif str(key) == "Key.enter":
-      strLen=5-len(str(number))
-      for loop in range(strLen):
-        number=int(str(number)+"0")
+      pass
     elif str(key) == "Key.shift":
       pass
     else:
-      try:
-        nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
-        if(nb >= 96):
-          nb = nb - 96
-
-        if(number >= 10000):
-          number = 0
-
-        if(number == 0):
-          number = nb
-        else:
-          number = int(str(number) + str(nb))
-      except ValueError:
-          number = 0
-          pass
-
-    if(number != 0):
+      if(len(number) >= 5):
+        number = ""
+      nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
+      if(nb >= 96):
+        nb = nb - 96
+      number = number + str(nb)
       text.set(number)
-    else:
-      text.set("")
+  except ValueError:
+    pass
 
-    if(number >=10000):
-      canvas.itemconfig(image_container,image=imgLoading)
+  if len(number)==5:
+    canvas.itemconfig(image_container,image=imgLoading)
 
     d=db.reference("users").get()
     for userN in d:
-      if str(d.get(userN).get("code barre"))==str(number):
+      if str(d.get(userN).get("code barre"))==number:
         userName = userN
     buttonInscrire.pack_forget()
     if(userName != "None"):
@@ -157,9 +147,10 @@ def show(key):
       canvas.itemconfig(image_container,image=imgUnknown)
       name.set("")
       info.set("")
-
-  except ValueError:
-    pass
+  else:
+    canvas.itemconfig(image_container,image=imgUnknown)
+    name.set("")
+    info.set("")
 
 def add():
   canvas.itemconfig(image_container,image=imgLoading)

@@ -22,29 +22,38 @@ const analytics = firebase.analytics();
 
 firebase.auth().onAuthStateChanged(function(userX) {
     if (userX) {
-        userT = userX.email.split("@")[0].split(".");
-        userT[0]=userT[0][0].toUpperCase()+userT[0].slice(1)
-        userT[1]=userT[1].toUpperCase();
-        userName = userT[0]+" "+userT[1]
         user = userX.email.replaceAll('.','µ')
         email = userX.email;
         writeCookie("user",user)
-        writeCookie("name",userName)
         writeCookie("email",email)
+        database.ref("users/" + user).once("value", function(snapshot1) {
+            classe = snapshot1.child("classe").val()
+            if(classe != null){
+                writeCookie("classe",classe)
+            }
+            codeBar = snapshot1.child("code barre").val()
+            if(codeBar != null){
+                writeCookie("code bar",codeBar)
+            }
+        })
+        database.ref("names/"+user).once('value',function(snapshot){
+            userName=snapshot.val()
+            writeCookie("name",userName)
+        })
+        database.ref("modo/users/"+ user).once('value',function(snapshot){
+            if(window.location.pathname.includes("admin")){
+                if(snapshot.val()!=0 && snapshot.val()!=1){
+                    deco()
+                }
+            }
+            if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option") && snapshot.val()===1){
+                window.location.href = window.location.origin + "/admin/menu/menu.html"
+            }
+        })
+        console.log(user)
     } else {
         deco()
     }
-    console.log(user)
-    database.ref("modo/users/"+ user).once('value',function(snapshot){
-        if(window.location.pathname.includes("admin")){
-            if(snapshot.val()!=0 && snapshot.val()!=1){
-                deco()
-            }
-        }
-        if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option") && snapshot.val()===1){
-            window.location.href = window.location.origin + "/admin/menu/menu.html"
-        }
-    })
 });
 
 //--------------------
@@ -129,7 +138,6 @@ let email = readCookie("email")
 let classe = readCookie("classe")
 let week = readIntCookie("week")
 let bollAllAmis = readBoolCookie("allAmis",true)
-let bollEmail = readBoolCookie("bEmail",true)
 let codeBar = readIntCookie("code bar")
 
 

@@ -350,10 +350,8 @@ function update(j, h) {
 }
 
 function select(j, h) {
-    sessionStorage.setItem("j", j);
-    sessionStorage.setItem("h", h);
-    writeCookie("jour", j)
-    writeCookie("heure", h)
+    writeCookie("j", j)
+    writeCookie("h", h)
     const hInv = h==0?1:0
     if (ouvert[j][h] == 2 && demande[j][h]) {
         window.location.href = "../confirmation/modifier/modifier.html";
