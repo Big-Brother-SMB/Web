@@ -14,39 +14,43 @@ if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
 
 
 database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + user).once("value", function(snapshot) {
-    document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/croix.gif\" />"
-    if(snapshot.val()!=null){
-        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/ok.gif\" />"
-        database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
-            snapshot.forEach(function(child) {
-                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
+    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/ouvert").once("value", function(snapshotO) {
+        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/croix.gif\" />"
+        if(snapshotO.val()!=5){
+            if(snapshot.val()!=null){
+                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/ok.gif\" />"
+                database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
+                    snapshot.forEach(function(child) {
+                        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
+                            if(snapshot.val() != null){
+                                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prio.gif\" />"
+                            }
+                        })
+                    })
+                })
+                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
                     if(snapshot.val() != null){
                         document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prio.gif\" />"
                     }
                 })
-            })
-        })
-        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
-            if(snapshot.val() != null){
-                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prio.gif\" />"
-            }
-        })
-    }else{
-        database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
-            snapshot.forEach(function(child) {
-                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
+            }else{
+                database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
+                    snapshot.forEach(function(child) {
+                        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
+                            if(snapshot.val() != null){
+                                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prioSelf.png\" />"
+                            }
+                        })
+                    })
+                })
+                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
                     if(snapshot.val() != null){
                         document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prioSelf.png\" />"
                     }
                 })
-            })
-        })
-        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
-            if(snapshot.val() != null){
-                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prioSelf.png\" />"
             }
-        })
-    }
+        }
+    })
 });
 
 
