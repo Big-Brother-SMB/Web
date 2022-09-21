@@ -159,13 +159,13 @@ function refreshDatabase() {
                 text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
             }
             document.getElementById("semaine").innerHTML = text
-    
+
             let val = snapshotM.val()
             if (val == null) {
                 val = "inconnu pour le moment"
             }
             document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
-        
+
 
             for (let j = 0; j < 4; j++) {
                 for (let h = 0; h < 2; h++) {
@@ -180,17 +180,17 @@ function refreshDatabase() {
                         } else {
                             ouvert[j][h] = snapshotP.child("ouvert").val()
                         }
-    
+
                         if (snapshotP.child("cout").val() != null) {
                             cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
                         }
-            
+
                         //demande en cours
-            
+
                         nbDemandes[j][h] = 0
                         demandes[j][h] = []
                         demande[j][h] = false;
-            
+
                         snapshotP.child("demandes").forEach(function (child) {
                             const name = child.key
                             nbDemandes[j][h]++
@@ -200,13 +200,13 @@ function refreshDatabase() {
                                 demandes[j][h].push(name)
                             }
                         });
-            
+
                         //inscrits
-            
+
                         nbInscrits[j][h] = 0
                         inscrits[j][h] = []
                         inscrit[j][h] = false;
-            
+
                         snapshotP.child("inscrits").forEach(function (child) {
                             const name = child.key
                             nbInscrits[j][h]++
@@ -216,12 +216,12 @@ function refreshDatabase() {
                                 inscrits[j][h].push(name)
                             }
                         });
-            
-            
+
+
                         nbAmis[j][h] = 0
                         nbAmisDemande[j][h] = 0
                         nbAmisInscrit[j][h] = 0
-            
+
                         snapshotP.child("/demandes/" + user + "/amis").forEach(function (child) {
                             nbAmis[j][h]++
                             if (demandes[j][h].indexOf(child.key) != -1) {
@@ -497,7 +497,7 @@ function updateMsg(){
     if(msg!=hD){
         const modal = document.getElementById('modal')
         document.getElementById("modal-title").innerHTML="<b>Messagerie</b>"
-        document.getElementById("modal-body").innerHTML="Vous avez des massages non lu."
+        document.getElementById("modal-body").innerHTML="Vous avez des messages non lu."
         document.getElementById("modal-option").innerHTML="<button id=\"option-droite\" onclick=\"bntMsgOnclick()\" style=\"text-decoration : none; color :black;\">Messagerie</button>"
         openModal(modal)
     }

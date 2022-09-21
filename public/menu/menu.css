@@ -414,11 +414,14 @@ nav{
   padding: 10px 65px 10px 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   border-radius :25px 25px 0px 0px;
   background-color: rgb(60,80,112);
   color: white;
   font-size: 40px;
+}
+
+.modal-header b{
+  padding-left: 30px;
 }
 
 .modal-header img{
