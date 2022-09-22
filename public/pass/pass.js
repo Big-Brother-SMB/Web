@@ -31,6 +31,21 @@ database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + us
                 document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prio.gif\" />"
             }
         })
+    }else{
+        database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
+            snapshot.forEach(function(child) {
+                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
+                    if(snapshot.val() != null){
+                        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prioSelf.png\" />"
+                    }
+                })
+            })
+        })
+        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
+            if(snapshot.val() != null){
+                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prioSelf.png\" />"
+            }
+        })
     }
 });
 

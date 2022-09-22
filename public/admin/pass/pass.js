@@ -117,42 +117,73 @@ function searchName(name,scan){
     h2=h
 
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name).once("value", function(snapshot) {
-        if(snapshot.val() != null){
-            if(scan==true){
-                scanB.style.visibility="hidden";
-                inscB.style.visibility="hidden";
-                if(snapshot.child('scan').val()==null){
-                    NBscan++
-                }
-                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name+"/scan").set(hash())
-                affichagePassages()
-            }else{
-                scanB.style.visibility="visible";
-                inscB.style.visibility="hidden";
-            }
-            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok.png\" />"
-        }else{
-            if(h=="/11h"){
-                h2= "/12h"
-            }else{
-                h2= "/11h"
-            }
-            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + name).once("value", function(snapshot) {
-                if(snapshot.val() != null){
-                    scanB.style.visibility="visible";
-                    inscB.style.visibility="hidden";
-                    if(h2=="/11h"){
-                        document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok11.png\" />"
-                    }else{
-                        document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok12.png\" />"
+        database.ref("users/" + user + "/priorites").once("value", function(snapshot1) {
+            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/").once("value", function(snapshot2) {
+                database.ref("users/" + user + "/classe").once("value", function(snapshotC) {
+                    let classe = snapshotC.val()
+                    if(classe==null){
+                        classe="XXX"
                     }
-                }else{
-                    scanB.style.visibility="hidden";
-                    inscB.style.visibility="visible";
-                    document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/croix.png\" />"
-                }
+                    if(snapshot.val() != null){
+                        if(scan==true){
+                            scanB.style.visibility="hidden";
+                            inscB.style.visibility="hidden";
+                            if(snapshot.child('scan').val()==null){
+                                NBscan++
+                            }
+                            database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + name+"/scan").set(hash())
+                            affichagePassages()
+                        }else{
+                            scanB.style.visibility="visible";
+                            inscB.style.visibility="hidden";
+                        }
+                        document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok.png\" />"
+                        if(snapshot2.child(classe).val() != null){
+                            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/prio.png\" />"
+                        }
+                        snapshot1.forEach(function(child) {
+                            if(snapshot2.child(child.key).val() != null){
+                                document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/prio.png\" />"
+                            }
+                        })
+                    }else{
+                        let test=true
+                        if(snapshot2.child(classe).val() != null){
+                            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/prioSelf.png\" />"
+                            test=false
+                        }
+                        snapshot1.forEach(function(child) {
+                            if(snapshot2.child(child.key).val() != null){
+                                document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/prioSelf.png\" />"
+                                test=false
+                            }
+                        })
+                        if(h=="/11h"){
+                            h2= "/12h"
+                        }else{
+                            h2= "/11h"
+                        }
+                        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h2 + "/inscrits/" + name).once("value", function(snapshot) {
+                            if(snapshot.val() != null){
+                                scanB.style.visibility="visible";
+                                inscB.style.visibility="hidden";
+                                if(h2=="/11h"){
+                                    document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok11.png\" />"
+                                }else{
+                                    document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok12.png\" />"
+                                }
+                            }else{
+                                scanB.style.visibility="hidden";
+                                inscB.style.visibility="visible";
+                                if(test){
+                                    document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/croix.png\" />"
+                                }
+                            }
+                        })
+                    }
+                })
             })
-        }
+        })
     })
 }
 

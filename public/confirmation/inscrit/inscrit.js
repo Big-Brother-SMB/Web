@@ -29,6 +29,7 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                 butAmis[i] = document.createElement("button")
                 butAmis[i].classList.add("amis")
                 butAmis[i].innerHTML = name
+                divListeAmis.appendChild(butAmis[i]);
                 i++
             })
             snapshot1.child("score").forEach(function(child) {
@@ -60,7 +61,6 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             })
 
             if(divAmisAjoute.innerHTML==""){
-                console.log("tttt")
                 divAmisAjoute.innerHTML="Personne"
             }
         
