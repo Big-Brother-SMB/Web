@@ -103,54 +103,50 @@ def show(key):
   userName="None"
   print(key)
   try:
-    if(str(key) == "Key.backspace"):
+    if str(key) == "Key.backspace" :
       if(len(number) <= 1):
         number = ""
       else:
         number = number[:-1]
-    elif str(key) == "Key.enter":
-      pass
-    elif str(key) == "Key.shift":
-      pass
+      text.set(number)
     else:
+      nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
       if(len(number) >= 5):
         number = ""
-      nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
       if(nb >= 96):
         nb = nb - 96
       number = number + str(nb)
       text.set(number)
+
+      if len(number)==5:
+        canvas.itemconfig(image_container,image=imgLoading)
+        d=db.reference("users").get()
+        for userN in d:
+          if str(d.get(userN).get("code barre"))==number:
+            userName = userN
+        buttonInscrire.pack_forget()
+        if(userName != "None"):
+          name.set(db.reference("names/" + userName).get())
+          classe = str(db.reference("users/" + userName + "/classe").get())
+          info.set("classe : " + classe)
+          ref = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName)
+          if(ref.get() != None):
+            canvas.itemconfig(image_container,image=imgOk)
+            db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/scan").set(hash())
+            refreshPassages()
+          else:
+            canvas.itemconfig(image_container,image=imgCroix)
+            buttonInscrire.pack()
+        else:
+          canvas.itemconfig(image_container,image=imgUnknown)
+          name.set("")
+          info.set("")
+      else:
+        canvas.itemconfig(image_container,image=imgUnknown)
+        name.set("")
+        info.set("")
   except ValueError:
     pass
-
-  if len(number)==5:
-    canvas.itemconfig(image_container,image=imgLoading)
-
-    d=db.reference("users").get()
-    for userN in d:
-      if str(d.get(userN).get("code barre"))==number:
-        userName = userN
-    buttonInscrire.pack_forget()
-    if(userName != "None"):
-      name.set(db.reference("names/" + userName).get())
-      classe = str(db.reference("users/" + userName + "/classe").get())
-      info.set("classe : " + classe)
-      ref = db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName)
-      if(ref.get() != None):
-        canvas.itemconfig(image_container,image=imgOk)
-        db.reference("foyer_midi/semaine" + str(week) + "/" + dayNum[day] + "/" + str(heure) + "h/inscrits/" + userName+"/scan").set(hash())
-        refreshPassages()
-      else:
-        canvas.itemconfig(image_container,image=imgCroix)
-        buttonInscrire.pack()
-    else:
-      canvas.itemconfig(image_container,image=imgUnknown)
-      name.set("")
-      info.set("")
-  else:
-    canvas.itemconfig(image_container,image=imgUnknown)
-    name.set("")
-    info.set("")
 
 def add():
   canvas.itemconfig(image_container,image=imgLoading)
