@@ -32,7 +32,14 @@ function suite1(){
                 usersNames.push(snapshot.child(child.key).val())
             }
         })
-        autocomplete(document.getElementById("addAmi"), usersNames,function(){});
+        document.getElementById("addAmi").addEventListener("input", function(){
+          if (document.getElementById("addAmi").value.length>3){
+            autocomplete(document.getElementById("addAmi"), usersNames,function(){});
+          }
+          else{
+            autocomplete(document.getElementById("addAmi"), [],function(){});
+          }
+        })
     })
 
     document.getElementById("ajout").addEventListener("click", function() {
