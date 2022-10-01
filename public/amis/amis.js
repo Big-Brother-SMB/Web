@@ -6,10 +6,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
     snapshot.forEach(function(child) {
         let ami = document.createElement("button")
         ami.classList.add("amis")
-
-        database.ref("names/" + child.key).once("value", function(snapshot) {
-            ami.innerHTML = snapshot.val()
-        })
+        ami.innerHTML=FindMyName(child.key)
         ami.addEventListener("click", function() {
             database.ref("users/" + user + "/amis/" + child.key).remove();
             reload()
@@ -25,15 +22,16 @@ function suite1(){
     console.log(amis)
     let users = []
     let usersNames = []
-    database.ref("names").once("value", function(snapshot) {
+    database.ref("users").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
-            if(child.key != user && amis.indexOf(child.key) == -1){
-                users.push(child.key)
-                usersNames.push(snapshot.child(child.key).val())
+            childName=FindMyName(child.key)
+            if(childName != user && amis.indexOf(childName) == -1){
+                usersNames.push(childName)
+                users.push(child)
             }
         })
         document.getElementById("addAmi").addEventListener("input", function(){
-          if (document.getElementById("addAmi").value.length>3){
+          if (document.getElementById("addAmi").value.length>2){
             autocomplete(document.getElementById("addAmi"), usersNames,function(){});
           }
           else{
@@ -48,7 +46,7 @@ function suite1(){
         let ami = document.getElementById("addAmi").value
 
         if(usersNames.indexOf(ami) != -1){
-            database.ref("users/" + user + "/amis/" + users[usersNames.indexOf(ami)]).set(0);
+            database.ref("users/" + user + "/amis/" + FindMyEmail(ami)).set(0);
         }
         reload()
     })

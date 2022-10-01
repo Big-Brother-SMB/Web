@@ -67,25 +67,29 @@ document.getElementById("change").onclick = () => {
 
       const credential = GoogleAuthProvider.credentialFromResult(result)
       console.log("ok1")
-  
+
       const token = credential.accessToken
-  
+
       const user = result.user
-  
+
       if (user.email.split("@")[1] == "stemariebeaucamps.fr") {
         console.log(user)
-  
-        sessionStorage.setItem("user", user.displayName);
+
+        sessionStorage.setItem("user", user.displayName)
         sessionStorage.setItem("email", user.email)
+        fname=user.email.split("@")[0].split(".")[1].toUpperCase()
+        pname=user.email.split("@")[0].split(".")[0]
+        name=fname + " " + pname.substring(0, 1).toUpperCase() + pname.substring(1)
+        sessionStorage.setItem("name", name)
         window.location.href = "fin.html";
       } else {
         document.getElementById("body").style = "display:block"
         document.getElementById("chargement").style = "display:none"
         document.getElementById("infos").innerHTML = "Veuillez utiliser une adresse mail Beaucamps."
         alert("Veuillez utiliser une adresse mail Beaucamps.")
-  
+
         console.log("Merci de prendre une adresse mail beaucamps")
-  
+
       }
     })
     .catch((error) => {

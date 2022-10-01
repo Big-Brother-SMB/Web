@@ -18,6 +18,21 @@ var database = firebase.database()
 
 const analytics = firebase.analytics();
 
+/*----FindUserName-----*/
+function FindMyName (tempemail){
+  tempemail=tempemail.replace('µ', '.')
+  Fname=tempemail.split("@")[0].split(".")[1].toUpperCase()
+  Pname=tempemail.split("@")[0].split(".")[0]
+  Name=Fname + " " + Pname.substring(0, 1).toUpperCase() + Pname.substring(1)
+  return Name;
+}
+
+function FindMyEmail (tempname){
+  Fname=tempname.split(" ")[1].toLowerCase()
+  Pname=tempname.split(" ")[0].toLowerCase()
+  Email=Fname + "µ" + Pname +"@stemariebeaucampsµfr"
+  return Email
+}
 //--------------auth--------------
 
 firebase.auth().onAuthStateChanged(function(userX) {
@@ -36,10 +51,8 @@ firebase.auth().onAuthStateChanged(function(userX) {
                 writeCookie("code bar",codeBar)
             }
         })
-        database.ref("names/"+user).once('value',function(snapshot){
-            userName=snapshot.val()
-            writeCookie("name",userName)
-        })
+        userName=FindMyName(email)
+        writeCookie("name",userName)
         database.ref("modo/users/"+ user).once('value',function(snapshot){
             if(window.location.pathname.includes("admin")){
                 if(snapshot.val()!=0 && snapshot.val()!=1){
@@ -133,8 +146,10 @@ function deco(){
 
 //--------------------var--------------------
 let user = readCookie("user")
-let userName = readCookie("name")
 let email = readCookie("email")
+console.log(email)
+let userName = FindMyName(email)
+console.log(userName)
 let classe = readCookie("classe")
 let week = readIntCookie("week")
 let bollAllAmis = readBoolCookie("allAmis",true)
