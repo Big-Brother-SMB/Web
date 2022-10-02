@@ -16,12 +16,11 @@ let horaire = 0
 
 database.ref(path(j,h)).once('value').then(function(snapshot) {
     database.ref("users/" + user).once('value').then(function(snapshot1) {
-        database.ref("names/").once('value').then(function(snapshotNames) {
             let i = 0
             places = snapshot.child("places").val()
             snapshot1.child("amis").forEach(function(child) {
                 const amiID = child.key
-                const name = snapshotNames.child(child.key).val()
+                const name = FindMyName(child.key)
                 amis.push(amiID)
                 demandesAmis.push(0)
                 boolAmis.push(false)
@@ -41,15 +40,15 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             }else{
                 textScore = score + " pts"
             }
-    
-    
-    
-    
+
+
+
+
             if(snapshot.child("inscrits/" +user).val() == null){
                 window.location.href = menu;
             }
-        
-            
+
+
             snapshot.child("inscrits/" + user + "/amis").forEach(function(child) {
                 let name = child.key
                 let index = amis.indexOf(name)
@@ -63,7 +62,7 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             if(divAmisAjoute.innerHTML==""){
                 divAmisAjoute.innerHTML="Personne"
             }
-        
+
             snapshot.child("inscrits").forEach(function(child) {
                 const name = child.key
                 inscrits++
@@ -72,7 +71,7 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     demandesAmis[index] = 2
                 }
             });
-        
+
             snapshot.child("demandes").forEach(function(child) {
                 const name = child.key
                 demandes++
@@ -81,16 +80,16 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     demandesAmis[index] = 1
                 }
             })
-    
-    
+
+
             if(h == 1){
                 horaire = snapshot.child("inscrits/" + user + "/horaire").val()
                 if(horaire==null)horaire=0
             }
-    
-    
-    
-    
+
+
+
+
             for(let i in demandesAmis){
                 if(demandesAmis[i] == 1){
                     butAmis[i].innerHTML += " (a fait une demande)"
@@ -103,12 +102,12 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             document.getElementById("article").style.display = "inline"
             document.getElementById("chargement").style.display = "none"
             let reste = places - inscrits
-        
+
             let info = "Inscrit pour le "+ day[j]  +  " à " + (h+11)+"h<br>"
             + reste + " places restantes<br>("
             + inscrits + " acceptées pour " + places + " places)<br>" + demandes
             + " demandes en cours"
-        
+
             if(h == 1){
                 if(horaire == 1 || horaire == 3){
                     info+="<br>Je termine à 12h20"
@@ -119,10 +118,9 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             }
 
             document.getElementById("info").innerHTML = info
-        
+
             document.getElementById("pass").addEventListener("click", function() {
                 window.location.href = window.location.origin + "/pass/pass.html";
             });
-        })
     })
 })

@@ -55,11 +55,10 @@ document.getElementById("tout retirer").addEventListener("click", function() {
 
 database.ref(path(j,h)).once('value').then(function(snapshot) {
     database.ref("users/" + user).once('value').then(function(snapshot1) {
-        database.ref("names/").once('value').then(function(snapshotNames) {
             let i = 0
             snapshot1.child("amis").forEach(function(child) {
                 const amiID = child.key
-                const name = snapshotNames.child(child.key).val()
+                const name = FindMyName(child.key)
                 amis.push(amiID)
                 demandesAmis.push(0)
                 boolAmis.push(false)
@@ -68,7 +67,7 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                 butAmis[i].classList.add("amis")
                 butAmis[i].innerHTML = name
                 divListeAmis.appendChild(butAmis[i]);
-        
+
                 const num = i
                 butAmis[num].addEventListener("click", function() {
                     if(boolAmis[num]){
@@ -90,15 +89,15 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             }else{
                 textScore = score + " pts"
             }
-    
-    
-    
-    
+
+
+
+
             if(snapshot.child("demandes/" +user).val() == null){
                 window.location.href = menu;
             }
-        
-            
+
+
             snapshot.child("demandes/" + user + "/amis").forEach(function(child) {
                 let name = child.key
                 let index = amis.indexOf(name)
@@ -110,9 +109,9 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     database.ref(path(j,h) + "/demandes/" + user + "/amis/" + name).remove()
                 }
             })
-        
+
             places = snapshot.child("places").val()
-        
+
             snapshot.child("inscrits").forEach(function(child) {
                 const name = child.key
                 inscrits++
@@ -121,7 +120,7 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     demandesAmis[index] = 2
                 }
             });
-        
+
             snapshot.child("demandes").forEach(function(child) {
                 const name = child.key
                 demandes++
@@ -130,16 +129,16 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     demandesAmis[index] = 1
                 }
             })
-    
-    
+
+
             if(h == 1){
                 horaire = snapshot.child("demandes/" + user + "/horaire").val()
                 if(horaire==null)horaire=0
             }
-    
-    
-    
-    
+
+
+
+
             for(let i in demandesAmis){
                 if(demandesAmis[i] == 1){
                     butAmis[i].innerHTML += " (a fait une demande)"
@@ -152,17 +151,17 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
             document.getElementById("article").style.display = "inline"
             document.getElementById("chargement").style.display = "none"
             let reste = places - inscrits
-        
+
             document.getElementById("info").innerHTML = "Demande enregistrée<br>pour le "+ day[j]  +  " à " + (h+11)+"h<br>"
             + reste + " places restantes<br>("
             + inscrits + " acceptées pour " + places + " places)<br>" + demandes
             + " demandes en cours<br>Votre score: " + textScore
-        
+
             document.getElementById("retirer").addEventListener("click", function() {
                 database.ref(path(j,h) + "/demandes/" + user).remove()
-    
+
                 console.log(path(j,h) + "/demandes/" + user)
-        
+
                 database.ref(path(j,h) + "/demandes/" + user).once('value').then(function(snapshot) {
                     database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshotO) {
                         if(snapshot.val() == null && snapshotO.val() != null){
@@ -171,9 +170,9 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     })
                 });
             });
-        
-        
-        
+
+
+
             if(h == 1){
                 document.getElementById("opt").style.display = "inline"
                 if(horaire == 1 || horaire == 3){
@@ -182,10 +181,10 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                 if(horaire == 2 || horaire == 3){
                     document.getElementById("12h50").checked = true
                 }
-        
+
             }
-        
-        
+
+
             document.getElementById("modif").addEventListener("click", function() {
                 let str = ""
                 for(let a in initBoolAmis){
@@ -217,11 +216,10 @@ database.ref(path(j,h)).once('value').then(function(snapshot) {
                     }
                 }
             });
-        
+
             document.getElementById("non").addEventListener("click", function() {
                 window.location.href = menu;
             });
             updateConfirmation()
-        })
     })
 })
