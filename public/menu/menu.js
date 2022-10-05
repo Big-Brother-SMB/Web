@@ -367,7 +367,7 @@ function select(j, h) {
 function loop() {
     console.log("update database")
     refreshDatabase();
-    setTimeout(loop, 20000);
+    setTimeout(loop, 30000);
 }
 loop();
 

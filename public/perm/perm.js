@@ -145,12 +145,12 @@ function refreshDatabase() {
                                     str += ", "
                                 }
                                 str += name
-    
+
                             });
                             if(str != ""){
                                 bouton[j][h].innerHTML = str
                             }
-    
+
                         });
                     }else{
                         switch(ouv){
@@ -171,11 +171,11 @@ function refreshDatabase() {
                                 bouton[j][h].className = "crenau ferme"
                                 break;
                         }
-    
+
                     }
-    
-    
-    
+
+
+
                 })
             })
         }
@@ -193,7 +193,7 @@ database.ref("version").once("value", function (snapshot) {
 function loop() {
     console.log("update database")
     refreshDatabase();
-    setTimeout(loop, 20000);
+    setTimeout(loop, 100000);
 }
 loop();
 

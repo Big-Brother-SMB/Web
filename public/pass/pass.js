@@ -60,10 +60,10 @@ document.getElementById("user").innerHTML = userName + " " + classe
 function loop(){
     let d2 = new Date();
     if((((d2.getMinutes() >= 54 && d2.getHours() == 11) ||
-    (d2.getHours() >= 12)) 
+    (d2.getHours() >= 12))
     && h == "/11h") ||
     (((d2.getMinutes() < 54 && d2.getHours() == 11) ||
-    (d2.getHours() < 11)) 
+    (d2.getHours() < 11))
     && h == "/12h") ||
     d2.getWeek() != d.getWeek() ||
     d2.getDay() != d.getDay()){
@@ -72,7 +72,7 @@ function loop(){
 
     document.getElementById("heure").innerHTML = getHour()
     document.getElementById("code").innerHTML = hashDate()
-    setTimeout(loop,500);
+    setTimeout(loop,1250);
 }
 loop();
 
@@ -90,4 +90,3 @@ bcimg.className = "barcode";
 bcimg.setAttribute('id', bcid);
 containerElement.appendChild(bcimg);
 JsBarcode('#'+bcid, codeBar, {format: 'code39'});
-

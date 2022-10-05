@@ -243,9 +243,10 @@ h2 {
 
 .planing {
   background: #7290b3;
-  background: red;
-  color: white;
+  background: #b5c3e4;
+  color: black;
   width: 40%;
+  font-size: 95%;
   border-radius: 8px 8px 8px 8px;
   padding: 0.25rem;
   margin: 0.25em;
