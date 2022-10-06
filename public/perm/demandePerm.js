@@ -6,8 +6,8 @@ let divDemandes = document.getElementById("demandes")
 
 database.ref(pathPerm(j,h) + "/demandes").once("value").then(function(snapshot){
   if(snapshot.val() != null){
-            divDemandes.innerHTML = ""
-        }
+    divDemandes.innerHTML = ""
+  }
   snapshot.forEach(function(child) {
     let u = child.key
     let name = snapshot.child(u + "/name").val()
@@ -38,7 +38,6 @@ database.ref(pathPerm(j,h) + "/demandes").once("value").then(function(snapshot){
       }
 
     })
-
-    charged(true)
   })
+  charged(true)
 })
