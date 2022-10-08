@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site":"foyer-test",
+    "site":"foyer-smb",
     "public": "public",
     "ignore": [
       "firebase.json",

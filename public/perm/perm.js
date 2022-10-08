@@ -109,22 +109,14 @@ function refreshDatabase() {
             if(h >= 4){
                 heure += 1
             }
-            let nbDemandesPerm = 0
             database.ref(pathPerm(j,h)+"/demandes").once("value", function(snapshot){
                 bouton[j][h].className = "crenau"
                 snapshot.forEach(function(child){
-                    nbDemandesPerm++
                     if(user==child.key){
                         bouton[j][h].className = "crenau demande"
                     }
                 })
-                if (nbDemandesPerm==1){
-                    bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demande en cours"
-                }else if (nbDemandesPerm>1){
-                    bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demandes en cours"
-                }else {
-                    bouton[j][h].innerHTML="aucune info"
-                }
+                bouton[j][h].innerHTML="non planifié"
 
 
                 database.ref(pathPerm(j,h) + "/ouvert").once("value", function (snapshot) {
