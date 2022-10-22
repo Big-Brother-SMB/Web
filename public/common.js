@@ -43,7 +43,7 @@ firebase.auth().onAuthStateChanged(function(userX) {
         database.ref("modo/users/"+ user).once('value',function(snapshot){
             if(window.location.pathname.includes("admin")){
                 if(snapshot.val()!=0 && snapshot.val()!=1){
-                    deco()
+                    window.location.href = window.location.origin + "/menu/menu.html"
                 }
             }
             if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option") && snapshot.val()===1){

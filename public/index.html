@@ -5,7 +5,6 @@
   <meta name="google-site-verification" content="v9jqFOIS_CehrIhUBuWYG7K8Esnhe6USiMwqcB-vxks" />
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="common.css">
-  <script type="module" src="auth.js"></script>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Accueil</title>
@@ -39,44 +38,143 @@
           <button type="button" id="change" class="button"><span>Changer de Compte</span></button>
         </div>
         <p class="soustitre">(Adresse mail Beaucamps uniquement)</p>
-        <p id="infos" class="cgu" style="color:#ffdd00">Ce site est optimisé pour google chrome</p>
+        <p id="infos" class="cgu" style="color:#ffdd00"></p>
 
 
       </article>
-
-
-      <div class="loader-wrap" id="chargement">
-        <p class="loading-text">Chargement en cours</p>
-        <div class="loader">
-
-          <div class="circle-1 circle">
-            <div class="circle-2 circle">
-              <div class="circle-3 circle">
-                <div class="circle-4 circle"></div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
     </div>
   </div>
-z
+  <script type="module">
+    //---------------------------socket---------------------------
+    import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+    let key=null
+    let tURL=window.location.href.split("?")
+    if(tURL.length==2){
+      key=tURL[1]
+    }
+
+    let socket = io('http://localhost:3001',{
+      auth: {
+        token: key
+      }
+    });
+
+    async function socketAsync(channel,msg){
+      let promise = await new Promise(function (resolve, reject) {
+        socket.emit(channel,msg);
+        socket.once(channel,result => {
+          resolve(result)
+        });
+        setTimeout(reject,5000)
+      })
+      return promise; 
+    }
+
+    //---------------------------cookie---------------------------
+    let tablecookie = document.cookie.split('; ');
+    let cookie = {};
+    for (let i in tablecookie) {
+      let row = tablecookie[i].split('=')
+      if (row.length == 2) {
+        cookie[row[0]] = row[1];
+      }
+    }
+    console.log("cookie", cookie)
+
+    function writeCookie(key, value){
+      document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
+    }
+
+    //---------------------------récupération de l'identité---------------------------
+
+    let id_data = await socketAsync("id_data","")
+    console.log(id_data)
+
+    let last_name
+    let first_name
+    if(id_data!='err'){
+      let last_name = id_data.last_name
+      let first_name = id_data.first_name
+      let uuid = id_data.uuid
+    
+      writeCookie("last_name",last_name)
+      writeCookie("first_name",first_name)
+      writeCookie("uuid",uuid)
+
+      writeCookie("key",key)
+    }
+
+    //---------------------------RGPD---------------------------
+    if (cookie["RGPD"]) {
+      document.getElementById("checkbox").checked = true
+    }
+
+    document.getElementById("checkbox").addEventListener("change",function(){
+      writeCookie("RGPD",document.getElementById("checkbox").checked)
+    })
+
+    //---------------------------date---------------------------
+    Date.prototype.getWeek = function() {
+      var date = new Date(this.getTime());
+      date.setHours(0, 0, 0, 0);
+      // Thursday in current week decides the year.
+      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+      // January 4 is always in week 1.
+      var week1 = new Date(date.getFullYear(), 0, 4);
+      // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+      return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+    }
+
+    // Returns the four-digit year corresponding to the ISO week of the date.
+    Date.prototype.getWeekYear = function() {
+      var date = new Date(this.getTime());
+      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+      return date.getFullYear();
+    }
+    
+    let date = new Date();
+    const actualWeek = date.getWeek();
+
+
+
+
+    //---------------------------bouton connection---------------------------
+    if (cookie["key"] != null) {
+      document.getElementById("continue text").innerHTML = cookie["first_name"]+" "+cookie["last_name"]
+      document.getElementById("continue").style.display = "block"
+      if (cookie["connect"] == "true" && document.getElementById("checkbox").checked == true) {
+        connect()
+      }else{
+        document.getElementById("continue").addEventListener("click",function(){
+          if(document.getElementById("checkbox").checked == true){
+            connect()
+          } else {
+            document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies"
+          }
+        })
+      }
+    }
+
+
+    document.getElementById("change").addEventListener("click",function(){
+      window.location.href = "http://localhost:3000/";
+    })
+
+
+    //---------------------------connection---------------------------
+
+    async function connect(){
+      if(id_data!='err'){
+        writeCookie("week",actualWeek)
+        writeCookie("connect",true)
+        if(id_data.admin>=1){
+          window.location.href = "/admin/menu/menu.html";
+        } else {
+          console.log('menu')
+          //window.location.href = "/menu/menu.html";
+        }
+      }
+    }
+  </script>
 </body>
-
-<ref>
-
-</ref>
-<a href="https://foyer-smb.web.app/menu/menu.html"></a>
-<a href="https://foyer-smb.web.app/index.html"></a>
-<a href="https://foyer-smb.web.app/confirmation/demande/demande.html"></a>
-<a href="https://foyer-smb.web.app/perm/perm.html"></a>
-<a href="https://foyer-smb.web.app/fin.html"></a>
-<a href="https://foyer-smb.web.app/amis/amis.html"></a>
-<a href="https://foyer-smb.web.app/confirmation/modifier/modifier.html"></a>
-<a href="https://foyer-smb.web.app/perm/demandePerm.html"></a>
-<a href="https://foyer-smb.web.app/message/message.html"></a>
-<a href="https://foyer-smb.web.app/option/option.html"></a>
-<a href="https://foyer-smb.web.app/score/score.html"></a>
-<a href="https://foyer-smb.web.app/dev/dev.html"></a>
 </html>

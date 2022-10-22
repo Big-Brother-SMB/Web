@@ -748,6 +748,10 @@ function algo(){
                             usersScore[u] += parseFloat(snap.val())
                             usersScore[u] =  Math.round(usersScore[u]*100)/100
                         })
+                        if(isNaN(usersScore[u])){
+                            usersScore[u]=0
+                            console.log(name)
+                        }
                     let prios = []
                     snapshotUser.child(name + "/priorites").forEach(function(child) {
                         prios.push(child.key)
@@ -843,6 +847,9 @@ function algo(){
                             }
                         }
                         gScore[u] = Math.floor(gScore[u])
+                        if(isNaN(gScore[u])){
+                            gScore[u]=0
+                        }
                     }
             
             

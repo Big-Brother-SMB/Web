@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
-
+from operator import itemgetter
 
 cred = credentials.Certificate('key.json')
 
@@ -10,14 +10,15 @@ firebase_admin.initialize_app(cred, {
 })
 
 x=db.reference("users").get()
-tour=0
+l1=[]
 for n in x:
-    o=x.get(n).get("score")
-    score=0
-    for s in o:
-      score+=o.get(s).get("value")
-    if score<0:
-      tour+=1
-      print(n)
-print(tour)
+    c=x.get(n).get("priorites")
+    l2=[]
+    if c != None:
+      for p in c:
+        l2.append(p)
+      l1.append(l2)
+for l2 in l1:
+  if "AGL9" in l2 and "DGEMC" in l2:
+    print("ok")
     

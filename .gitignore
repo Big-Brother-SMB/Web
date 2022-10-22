@@ -1,6 +1,8 @@
 .firebaserc
 firebase.json
 *.csv
+*.db
+*.json
 key.json
 
 
