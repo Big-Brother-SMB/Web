@@ -131,9 +131,6 @@ function refreshDatabase() {
                             let str = ""
                             snapshot2.forEach(function (child) {
                                 const name = child.key
-                                if(name == classe){
-                                    bouton[j][h].className = "crenau inscrit"
-                                }
                                 if(str != ""){
                                     str += ", "
                                 }
@@ -158,6 +155,21 @@ function refreshDatabase() {
                             case 3:
                                 bouton[j][h].innerHTML = "réservé"
                                 bouton[j][h].className = "crenau reserve"
+                                database.ref(pathPerm(j,h) + "/classes").once("value", function (snapshot2) {
+                                    let str = ""
+                                    snapshot2.forEach(function (child) {
+                                        const name = child.key
+                                        if(str != ""){
+                                            str += ", "
+                                        }
+                                        str += name
+            
+                                    });
+                                    if(str != ""){
+                                        bouton[j][h].innerHTML = str
+                                    }
+            
+                                });
                                 break;
                             case 4:
                                 bouton[j][h].innerHTML = "vacances"

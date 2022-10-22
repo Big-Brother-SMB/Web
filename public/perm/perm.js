@@ -109,14 +109,22 @@ function refreshDatabase() {
             if(h >= 4){
                 heure += 1
             }
+            let nbDemandesPerm = 0
             database.ref(pathPerm(j,h)+"/demandes").once("value", function(snapshot){
                 bouton[j][h].className = "crenau"
                 snapshot.forEach(function(child){
+                    nbDemandesPerm++
                     if(user==child.key){
                         bouton[j][h].className = "crenau demande"
                     }
                 })
-                bouton[j][h].innerHTML="non planifié"
+                if (nbDemandesPerm==1){
+                    bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demande en cours"
+                }else if (nbDemandesPerm>1){
+                    bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demandes en cours"
+                }else {
+                    bouton[j][h].innerHTML="aucune info"
+                }
 
 
                 database.ref(pathPerm(j,h) + "/ouvert").once("value", function (snapshot) {
@@ -137,12 +145,12 @@ function refreshDatabase() {
                                     str += ", "
                                 }
                                 str += name
-
+    
                             });
                             if(str != ""){
                                 bouton[j][h].innerHTML = str
                             }
-
+    
                         });
                     }else{
                         switch(ouv){
@@ -157,17 +165,33 @@ function refreshDatabase() {
                             case 3:
                                 bouton[j][h].innerHTML = "réservé"
                                 bouton[j][h].className = "crenau reserve"
+                                database.ref(pathPerm(j,h) + "/classes").once("value", function (snapshot2) {
+                                    let str = ""
+                                    snapshot2.forEach(function (child) {
+                                        const name = child.key
+                                        if(name == classe){
+                                            bouton[j][h].className = "crenau inscrit"
+                                        }
+                                        if(str != ""){
+                                            str += ", "
+                                        }
+                                        str += name
+                                    });
+                                    if(str != ""){
+                                        bouton[j][h].innerHTML = str
+                                    }
+                                });
                                 break;
                             case 4:
                                 bouton[j][h].innerHTML = "vacances"
                                 bouton[j][h].className = "crenau ferme"
                                 break;
                         }
-
+    
                     }
-
-
-
+    
+    
+    
                 })
             })
         }
