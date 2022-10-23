@@ -9,14 +9,29 @@ const fs = require('fs');
 const rand = require("generate-key");
 const dateTime = require('date-and-time');
 const { firestore } = require('googleapis/build/src/apis/firestore');
+const path = require('path');
 
-const jsonString = fs.readFileSync(__dirname+"/code.json")
-const jsonObj = JSON.parse(jsonString);
+const jsonObj = JSON.parse(fs.readFileSync(__dirname+"/code.json"));
+let address = jsonObj.address
 const oauth2Client = new google.auth.OAuth2(
   jsonObj.client_id,
   jsonObj.code_secret,
-  "http://localhost:3000/oauth2callback"
+  address+"oauth2callback"
 );
+
+
+
+let mimeTypes = {
+  '.html': 'text/html',
+  '.css': 'text/css',
+  '.js': 'text/javascript',
+  '.jpg': 'image/jpeg',
+  '.png': 'image/png',
+  '.ico': 'image/x-icon',
+  '.svg': 'image/svg+xml',
+  '.eot': 'appliaction/vnd.ms-fontobject',
+  '.ttf': 'aplication/font-sfnt'
+};
 
 
 const authorizationUrl = oauth2Client.generateAuthUrl({
@@ -28,48 +43,10 @@ let server
 let db 
 
 async function main() {
-  io = new Server(3001,{cors: {
-    origin: "http://localhost",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }})
-  io.on("connection", (socket) => {
-    db.get("SELECT uuid FROM token where token=?",[socket.handshake.auth.token], (err, data) => {
-      console.log(data)
-    })
-
-    socket.on('id_data', msg => {
-        db.get("SELECT uuid FROM token where token=?",[socket.handshake.auth.token], (err, data) => {
-          try{
-            db.get("SELECT * FROM users where uuid=?",[data.uuid], (err, data) => {
-              try{
-                if(data!=undefined && err)return
-                console.log(data)
-                socket.emit('id_data',data)
-              }catch(e){
-                console.log(e)
-                socket.emit('id_data',"err")
-              }
-            })
-          }catch(e){
-            console.log(e)
-            socket.emit('id_data',"err")
-          }
-        })
-    });
-  });
-  
-  
-  
   db = new sqlite3.Database('main.db', err => {
     if (err)
       throw err
-    console.log("ok")
     db.serialize(()=>{
-      db.all("SELECT * FROM token", (err, data) => {
-        console.log(data)
-      })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='users'", (err, data) => {
         if(data==undefined)
           db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, groups text, amis text,tuto bool,admin int)')
@@ -103,7 +80,6 @@ async function main() {
           let {data} = await oauth2.userinfo.get();
           console.log(data.email)
           emailT=data.email.split("@")
-          console.log(emailT[1])
           if(emailT[1]=="stemariebeaucamps.fr"){
             let uuidG = uuid.v4()
             db.serialize(()=>{
@@ -125,25 +101,86 @@ async function main() {
                 let tokenAuth = rand.generateKey();
                 let date=dateTime.format(new Date(), 'YYYY/MM/DD');
                 db.run("INSERT INTO token(token,uuid,date) VALUES(?,?,?)", [tokenAuth,uuidG,date])
-                res.writeHead(301, { "Location" : "http://localhost/index.html?" + tokenAuth});
+                res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
                 res.end();
                 //fs.readFileSync(__dirname+"/test.html")
               })
             })
           } else {
-            res.writeHead(200);
-            res.end('Il faut un email stemariebeaucamps.fr');
+            res.writeHead(301, { "Location" : address+"index.html?err=Il faut une adresse email stemariebeaucamps.fr"});
+            res.end();
           }
         } catch (error) {
           console.error(error);
-          res.writeHead(200);
-          res.end('Erreur !!!');
+          res.writeHead(301, { "Location" : address+"index.html?err=inconnue"});
+          res.end();
         }
       }
     } else {
-      res.writeHead(200);
-      res.end('...');
+      let pathName = url.parse(req.url).path.split('?')[0];
+      if(pathName === '/'){
+        pathName = '/index.html';
+      }
+      pathName = pathName.substring(1, pathName.length);
+      let extName = path.extname(pathName);
+      let staticFiles = `${__dirname}/public/${pathName}`;
+      
+      try{
+        if(extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg'){
+          let file = fs.readFileSync(staticFiles);
+          res.writeHead(200, {'Content-Type': mimeTypes[extName]});
+          res.write(file, 'binary');
+          res.end();
+        }else {
+          fs.readFile(staticFiles, 'utf8', function (err, data) {
+            if(!err){
+              res.writeHead(200, {'Content-Type': mimeTypes[extName]});
+              res.end(data);
+            }else {
+              res.writeHead(200);
+              res.end(fs.readFileSync(`${__dirname}/public/404.html`));
+            }
+            res.end();
+          });
+        }
+      }catch(e){}
     }
   }).listen(3000);
+
+
+
+  io = new Server(server,{cors: {
+    origin: "http://localhost:3000/",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }})
+  io.on("connection", (socket) => {
+    db.get("SELECT uuid FROM token where token=?",[socket.handshake.auth.token], (err, data) => {
+      try{
+        console.log(data.uuid)
+      }catch(e){}
+    })
+
+    socket.on('id_data', msg => {
+        db.get("SELECT uuid FROM token where token=?",[socket.handshake.auth.token], (err, data) => {
+          try{
+            db.get("SELECT * FROM users where uuid=?",[data.uuid], (err, data) => {
+              try{
+                if(data!=undefined && err)return
+                console.log(data)
+                socket.emit('id_data',data)
+              }catch(e){
+                console.error(e)
+                socket.emit('id_data',"err")
+              }
+            })
+          }catch(e){
+            console.error(e)
+            socket.emit('id_data',"err")
+          }
+        })
+    });
+  });
 }
 main().catch(console.error);

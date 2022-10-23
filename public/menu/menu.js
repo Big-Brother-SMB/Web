@@ -1,26 +1,3 @@
-console.log(document.cookie)
-console.log(cookie)
-
-console.log("read : " + readCookie("user"))
-
-
-
-
-
-
-
-/*if (user == null || String(user).length < 5) {
-    sessionStorage.setItem("auth err", 2);
-    setTimeout(function () {
-        deco()
-    }, 2000);
-
-}*/
-
-
-
-
-
 console.log("lenght : " + String(user).length)
 console.log(user);
 console.log("classe : " + classe);
