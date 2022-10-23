@@ -1,9 +1,4 @@
-console.log("lenght : " + String(user).length)
-console.log(user);
-console.log("classe : " + classe);
-
-document.getElementById("user").innerHTML = userName + " " + classe
-
+import * as common from "../common.js";
 
 document.getElementById("pass").addEventListener("click", function () {
     window.location.href = "../pass/pass.html";
@@ -21,38 +16,28 @@ document.getElementById("planing").addEventListener("click", function () {
     window.location.href = "../perm/perm.html";
 });
 
-console.log("week : " + week)
-console.log("actual week : " + actualWeek)
 
+document.getElementById("user").innerHTML = common.first_name + " " + common.last_name + " " + common.classe
 
-function nextWeek(){
-    week = week + 1
-    writeCookie("week", week)
-    refreshDatabase()
-}
-function previousWeek(){
-    week = week - 1
-    writeCookie("week", week)
-    refreshDatabase()
-}
-function thisWeek(){
-    week = actualWeek
-    writeCookie("week", week)
-    refreshDatabase()
-}
 
 document.getElementById("semainePrecedente").addEventListener("click", function () {
-    previousWeek()
+    common.week--
+    common.writeCookie("week", week)
+    refreshDatabase()
 });
 
 
 document.getElementById("semaineActuelle").addEventListener("click", function () {
-    thisWeek()
+    common.week = common.actualWeek
+    common.writeCookie("week", week)
+    refreshDatabase()
 });
 
 
 document.getElementById("semaineSuivante").addEventListener("click", function () {
-    nextWeek()
+    common.week++
+    common.writeCookie("week", week)
+    refreshDatabase()
 });
 
 
@@ -62,8 +47,6 @@ Date.prototype.getWeek = function () {
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 0) / 7);
 }
-
-
 
 
 
@@ -88,7 +71,7 @@ for (let j = 0; j < 4; j++) {
     let div = document.createElement("div")
     let text = document.createElement("button")
     text.className = "jours tableau";
-    text.innerHTML = day[j]
+    text.innerHTML = common.day[j]
     div.appendChild(text);
 
     bouton[j] = []
@@ -118,117 +101,101 @@ for (let j = 0; j < 4; j++) {
 }
 
 
-function refreshDatabase() {
-    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshotM) {
-        database.ref("users/" + user + "/score").once('value').then(function(snapshotS) {
-            let score = 0
-            snapshotS.forEach(function(child) {
-                score += parseFloat(snapshotS.child(child.key + "/value").val())
-                score = round(score)
-                if (score < 2) {
-                    document.getElementById("score").innerHTML = score + " pt"
-                }else{
-                    document.getElementById("score").innerHTML = score + " pts"
+async function refreshDatabase() {
+    let info_menu = await common.socketAsync("info_menu_semaine",common.week)
+    let score = await common.socketAsync("my_score","int")
+
+    if (score < 2) {
+        document.getElementById("score").innerHTML = score + " pt"
+    }else{
+        document.getElementById("score").innerHTML = score + " pts"
+    }
+    
+    if (common.week == common.actualWeek) {
+        document.getElementById("semaine").innerHTML = "Cette semaine (n°" + common.week + " du " + common.semaine(common.week) + ")"
+    } else {
+        document.getElementById("semaine").innerHTML = "Semaine n°" + common.week + " du " + common.semaine(common.week)
+    }
+
+    let menu = info_menu.text
+    if (menu == null) {
+        menu = "inconnu pour le moment"
+    }
+    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + common.week + " :</u><br>" + menu
+
+
+    for (let j = 0; j < 4; j++) {
+        for (let h = 0; h < 2; h++) {
+            let info_horaire = await common.socketAsync("info_horaire",[common.week,j,h])
+            placesTotal[j][h] = info_horaire.places;
+            if(placesTotal[j][h]==null || placesTotal[j][h]==""){
+                placesTotal[j][h]=0
+            }
+
+            if (info_horaire.ouvert == null) {
+                ouvert[j][h] = 0
+            } else {
+                ouvert[j][h] = info_horaire.ouvert
+            }
+
+            if (info_horaire.cout != null) {
+                cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
+            }
+
+            //demande en cours
+
+            nbDemandes[j][h] = 0
+            demandes[j][h] = []
+            demande[j][h] = false;
+
+            for(let e in info_horaire.list_demande){
+                nbDemandes[j][h]++
+                if (e == common.uuid) {
+                    demande[j][h] = true;
+                } else {
+                    demandes[j][h].push(e)
                 }
-            })
-            let text = "Semaine n°" + week + " du " + semaine(week)
-            if (week == actualWeek) {
-                text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
-            }
-            document.getElementById("semaine").innerHTML = text
+            };
 
-            let val = snapshotM.val()
-            if (val == null) {
-                val = "inconnu pour le moment"
-            }
-            document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
+            //inscrits
+
+            nbInscrits[j][h] = 0
+            inscrits[j][h] = []
+            inscrit[j][h] = false;
 
 
-            for (let j = 0; j < 4; j++) {
-                for (let h = 0; h < 2; h++) {
-                    database.ref(path(j, h)).once('value').then(function (snapshotP) {
-                        placesTotal[j][h] = snapshotP.child("places").val();
-                        if(placesTotal[j][h]==null || placesTotal[j][h]==""){
-                            placesTotal[j][h]=0
-                        }
-
-                        if (snapshotP.child("ouvert").val() == null) {
-                            ouvert[j][h] = 0
-                        } else {
-                            ouvert[j][h] = snapshotP.child("ouvert").val()
-                        }
-
-                        if (snapshotP.child("cout").val() != null) {
-                            cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
-                        }
-
-                        //demande en cours
-
-                        nbDemandes[j][h] = 0
-                        demandes[j][h] = []
-                        demande[j][h] = false;
-
-                        snapshotP.child("demandes").forEach(function (child) {
-                            const name = child.key
-                            nbDemandes[j][h]++
-                            if (name == user) {
-                                demande[j][h] = true;
-                            } else {
-                                demandes[j][h].push(name)
-                            }
-                        });
-
-                        //inscrits
-
-                        nbInscrits[j][h] = 0
-                        inscrits[j][h] = []
-                        inscrit[j][h] = false;
-
-                        snapshotP.child("inscrits").forEach(function (child) {
-                            const name = child.key
-                            nbInscrits[j][h]++
-                            if (name == user) {
-                                inscrit[j][h] = true;
-                            } else {
-                                inscrits[j][h].push(name)
-                            }
-                        });
+            for(let e in info_horaire.list_demande){
+                nbInscrits[j][h]++
+                if (e == common.uuid) {
+                    inscrit[j][h] = true;
+                } else {
+                    inscrits[j][h].push(e)
+                }
+            };
 
 
-                        nbAmis[j][h] = 0
-                        nbAmisDemande[j][h] = 0
-                        nbAmisInscrit[j][h] = 0
+            nbAmis[j][h] = 0
+            nbAmisDemande[j][h] = 0
+            nbAmisInscrit[j][h] = 0
 
-                        snapshotP.child("/demandes/" + user + "/amis").forEach(function (child) {
-                            nbAmis[j][h]++
-                            if (demandes[j][h].indexOf(child.key) != -1) {
-                                nbAmisDemande[j][h]++
-                            }
-                            if (inscrits[j][h].indexOf(child.key) != -1) {
-                                nbAmisInscrit[j][h]++
-                            }
-                        });
-                        snapshotP.child("/inscrits/" + user + "/amis").forEach(function (child) {
-                            nbAmis[j][h]++
-                            if (demandes[j][h].indexOf(child.key) != -1) {
-                                nbAmisDemande[j][h]++
-                            }
-                            if (inscrits[j][h].indexOf(child.key) != -1) {
-                                nbAmisInscrit[j][h]++
-                            }
-                        });
-                        update(j, h);
-                    })
+            for(let e in info_horaire.amis){
+                nbAmis[j][h]++
+                if (demandes[j][h].indexOf(child.key) != -1) {
+                    nbAmisDemande[j][h]++
+                }
+                if (inscrits[j][h].indexOf(child.key) != -1) {
+                    nbAmisInscrit[j][h]++
                 }
             }
-        });
-    });
+            update(j, h);
+        }
+    }
 }
 
 
 function update(j, h) {
     places[j][h] = placesTotal[j][h] - nbInscrits[j][h];
-    let coutPourcentage = round((cout[j][h] - 1) * 100)
+    let coutPourcentage = common.round((cout[j][h] - 1) * 100)
     let textcout = ""
     let text = "horaire non planifié";
 
@@ -327,15 +294,13 @@ function update(j, h) {
 }
 
 function select(j, h) {
-    writeCookie("j", j)
-    writeCookie("h", h)
     const hInv = h==0?1:0
     if (ouvert[j][h] == 2 && demande[j][h]) {
-        window.location.href = "../confirmation/modifier/modifier.html";
+        window.location.href = "../confirmation/modifier/modifier.html?j="+j+"&h="+h;
     }else if(ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]){
-        window.location.href = "../confirmation/demande/demande.html";
+        window.location.href = "../confirmation/demande/demande.html?j="+j+"&h="+h;
     }else if((ouvert[j][h] == 2 || ouvert[j][h] == 3) && inscrit[j][h]){
-        window.location.href = "../confirmation/inscrit/inscrit.html";
+        window.location.href = "../confirmation/inscrit/inscrit.html?j="+j+"&h="+h;
     }
 }
 
@@ -349,8 +314,7 @@ function loop() {
 loop();
 
 
-
-
+/*
 document.getElementById("semaine").addEventListener('touchstart', handleTouchStart, false);
 document.getElementById("semaine").addEventListener('touchmove', handleTouchMove, false);
 
@@ -399,18 +363,6 @@ function handleTouchMove(evt) {
     xDown = null;
     yDown = null;
 };
-
-
-
-
-/*document.getElementById("logo").addEventListener("click",function(){
-    document.querySelectorAll("nav")[0].style.visibility = "visible"
-})
-
-document.getElementById("nav hide").addEventListener("click",function(){
-    document.querySelectorAll("nav")[0].style.visibility = "hidden"
-})*/
-
 
 
 //-------------------------------Pop-Up------------messagerie---------------------------------
@@ -493,3 +445,4 @@ document.getElementById("bSelf").addEventListener("click",function(){
     document.getElementById("menu self").innerHTML = "&darr;&darr;&darr;<br><br><br>Menu self:<br><iframe src='https://drive.google.com/file/d/1ymF5Q53oe9ugwPFpjCg0Uwj0SaYbem5L/preview' style='width: 90%;height: 600px;' allow='autoplay'></iframe>"
     window.location.href = "#menu self"
 })
+*/

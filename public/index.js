@@ -11,9 +11,7 @@ if(params.err!=null){
 import * as common from "./common.js";
 
 //---------------------------récupération de l'identité---------------------------
-if(common.id_data!='err'){
-  common.writeCookie("key",key)
-} else {
+if(common.id_data=='err'){
   document.getElementById("infos").innerHTML += "Erreur d'identification<br>"
 }
 
@@ -28,7 +26,7 @@ document.getElementById("checkbox").addEventListener("change",function(){
 
 //---------------------------bouton connection---------------------------
 if (common.key != null) {
-  document.getElementById("continue text").innerHTML = first_name+" "+last_name
+  document.getElementById("continue text").innerHTML = common.first_name+" "+common.last_name
   document.getElementById("continue").style.display = "block"
   if (common.readBoolCookie("connect") && document.getElementById("checkbox").checked == true) {
     connect()
@@ -55,11 +53,10 @@ async function connect(){
   if(common.id_data!='err'){
     common.writeCookie("week",common.actualWeek)
     common.writeCookie("connect",true)
-    if(id_data.admin>=1){
+    if(common.id_data.admin>=1){
       window.location.href = "/admin/menu/menu.html";
     } else {
-      console.log('menu')
-      //window.location.href = "/menu/menu.html";
+      window.location.href = "/menu/menu.html";
     }
   } else {
     common.writeCookie("connect",false)

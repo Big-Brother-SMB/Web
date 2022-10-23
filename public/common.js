@@ -47,7 +47,7 @@ export function existCookie(key){
 //---------------------------socket---------------------------
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
-let key=writeCookie("key")
+let key=readCookie("key")
 
 export {io,key};
 export let socket = io({
@@ -83,12 +83,12 @@ export let tuto
 export let uuid
 if(id_data!='err'){
     admin = id_data.admin
-    amis = id_data.amis.split(";")
+    //amis = id_data.amis.split(";")
     classe = id_data.classe
     codeBar = id_data.code_barre
     //email
     first_name = id_data.first_name
-    groups = id_data.groups.split(";")
+    //groups = id_data.groups.split(";")
     last_name = id_data.last_name
     tuto = id_data.tuto
     uuid = id_data.uuid
@@ -99,6 +99,7 @@ if(id_data!='err'){
 export let colorMode = readIntCookie("color mode")
 export let backgroundColor = readCookie("color background")
 export let textColor = readCookie("color text")
+export let week = readCookie("week")
 
 //---------------------------securité page admin + deco---------------------------
 
@@ -183,6 +184,7 @@ export function semaine(semaine){ //nombreSemaineSup = nombre de semaine ce trou
 }
 
 //---------------------------les fonctions de hash---------------------------
+
 export function getHour(){
     let d = new Date()
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
@@ -212,25 +214,25 @@ export function hashHour(){
 
 //---------------------------listes---------------------------
 
-const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
+export const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
 
-const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
-const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
+export const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
+export const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
 
-const dayMer = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"];
-const dayNumMer = ["1lundi", "2mardi","3mercredi","4jeudi","5vendredi"];
+export const dayMer = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"];
+export const dayNumMer = ["1lundi", "2mardi","3mercredi","4jeudi","5vendredi"];
 
-const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+export const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
 
-const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
-const listModePerm = ["Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
+export const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
+export const listModePerm = ["Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
 
-const listClasse = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"
+export const listClasse = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"
 ,"1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"
 ,"TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"
 ,"PCSI","PC","professeur-personnel"]
 
-//--------------------color export functions-----------------------
+//---------------------------color function---------------------------
 
 if(window.location.pathname.split("/").pop()!= "pass.html"){
   setColorMode(window.location.origin)
@@ -262,14 +264,113 @@ export function setColorMode(rootPath){
 
 
 
+//---------------------------autocomplete---------------------------
+
+function autocomplete(inp, arr, func) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+    var a, b, i, val = this.value;
+    /*close any already open lists of autocompleted values*/
+    closeAllLists();
+    if (!val) { return false;}
+    currentFocus = -1;
+    /*create a DIV element that will contain the items (values):*/
+    a = document.createElement("DIV");
+    a.setAttribute("id", this.id + "autocomplete-list");
+    a.setAttribute("class", "autocomplete-items");
+    /*append the DIV element as a child of the autocomplete container:*/
+    this.parentNode.appendChild(a);
+    /*for each item in the array...*/
+    for (i = 0; i < arr.length; i++) {
+      /*check if the item starts with the same letters as the text field value:*/
+      if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {        // arr[i].toLowerCase().includes(val.toLowerCase())
+      /*create a DIV element for each matching element:*/
+      b = document.createElement("DIV");
+      /*make the matching letters bold:*/
+      b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+      b.innerHTML += arr[i].substr(val.length);
+      /*insert a input field that will hold the current array item's value:*/
+      b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+      /*execute a function when someone clicks on the item value (DIV element):*/
+      b.addEventListener("click", function(e) {
+        /*insert the value for the autocomplete text field:*/
+        inp.value = this.getElementsByTagName("input")[0].value;
+        func(inp.value);
+        /*close the list of autocompleted values,
+        (or any other open lists of autocompleted values:*/
+        closeAllLists();
+      });
+      a.appendChild(b);
+      }
+    }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+    var x = document.getElementById(this.id + "autocomplete-list");
+    if (x) x = x.getElementsByTagName("div");
+    if (e.keyCode == 40) {
+      /*If the arrow DOWN key is pressed,
+      increase the currentFocus variable:*/
+      currentFocus++;
+      /*and and make the current item more visible:*/
+      addActive(x);
+    } else if (e.keyCode == 38) { //up
+      /*If the arrow UP key is pressed,
+      decrease the currentFocus variable:*/
+      currentFocus--;
+      /*and and make the current item more visible:*/
+      addActive(x);
+    } else if (e.keyCode == 13) {
+      /*If the ENTER key is pressed, prevent the form from being submitted,*/
+      e.preventDefault();
+      if (currentFocus > -1) {
+      /*and simulate a click on the "active" item:*/
+      if (x) x[currentFocus].click();
+      }
+    }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+    x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+  });
+}
+
+
+
+/*
 //--------------------database functions--------------------
 
 
 
-/**
- * @param {String} path - The path to the value
- * @param {function} onValue - The function that start when the value is returned. One parameter : the value read on the database
- */
 function readDatabase(path,onValue){
   database.ref(path).once("value", function(snapshot) {
     onValue(snapshot.val())
@@ -491,7 +592,7 @@ function commonElement(l1,l2){
   }
   return nb;
 }
-const dayLowerCase = ["lundi", "mardi","jeudi","vendredi"];
+export const dayLowerCase = ["lundi", "mardi","jeudi","vendredi"];
 let month=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
 
 
@@ -514,103 +615,7 @@ function getDayText(j){
   return text
 }
 
-function autocomplete(inp, arr, func) {
-  /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
-  var currentFocus;
-  /*execute a function when someone writes in the text field:*/
-  inp.addEventListener("input", function(e) {
-    var a, b, i, val = this.value;
-    /*close any already open lists of autocompleted values*/
-    closeAllLists();
-    if (!val) { return false;}
-    currentFocus = -1;
-    /*create a DIV element that will contain the items (values):*/
-    a = document.createElement("DIV");
-    a.setAttribute("id", this.id + "autocomplete-list");
-    a.setAttribute("class", "autocomplete-items");
-    /*append the DIV element as a child of the autocomplete container:*/
-    this.parentNode.appendChild(a);
-    /*for each item in the array...*/
-    for (i = 0; i < arr.length; i++) {
-      /*check if the item starts with the same letters as the text field value:*/
-      if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {        // arr[i].toLowerCase().includes(val.toLowerCase())
-      /*create a DIV element for each matching element:*/
-      b = document.createElement("DIV");
-      /*make the matching letters bold:*/
-      b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-      b.innerHTML += arr[i].substr(val.length);
-      /*insert a input field that will hold the current array item's value:*/
-      b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-      /*execute a function when someone clicks on the item value (DIV element):*/
-        b.addEventListener("click", function(e) {
-        /*insert the value for the autocomplete text field:*/
-        inp.value = this.getElementsByTagName("input")[0].value;
-        func(this.getElementsByTagName("input")[0].value);
-        /*close the list of autocompleted values,
-        (or any other open lists of autocompleted values:*/
-        closeAllLists();
-      });
-      a.appendChild(b);
-      }
-    }
-  });
-  /*execute a function presses a key on the keyboard:*/
-  inp.addEventListener("keydown", function(e) {
-    var x = document.getElementById(this.id + "autocomplete-list");
-    if (x) x = x.getElementsByTagName("div");
-    if (e.keyCode == 40) {
-      /*If the arrow DOWN key is pressed,
-      increase the currentFocus variable:*/
-      currentFocus++;
-      /*and and make the current item more visible:*/
-      addActive(x);
-    } else if (e.keyCode == 38) { //up
-      /*If the arrow UP key is pressed,
-      decrease the currentFocus variable:*/
-      currentFocus--;
-      /*and and make the current item more visible:*/
-      addActive(x);
-    } else if (e.keyCode == 13) {
-      /*If the ENTER key is pressed, prevent the form from being submitted,*/
-      e.preventDefault();
-      if (currentFocus > -1) {
-      /*and simulate a click on the "active" item:*/
-      if (x) x[currentFocus].click();
-      }
-    }
-  });
-  function addActive(x) {
-    /*a function to classify an item as "active":*/
-    if (!x) return false;
-    /*start by removing the "active" class on all items:*/
-    removeActive(x);
-    if (currentFocus >= x.length) currentFocus = 0;
-    if (currentFocus < 0) currentFocus = (x.length - 1);
-    /*add class "autocomplete-active":*/
-    x[currentFocus].classList.add("autocomplete-active");
-  }
-  function removeActive(x) {
-    /*a function to remove the "active" class from all autocomplete items:*/
-    for (var i = 0; i < x.length; i++) {
-    x[i].classList.remove("autocomplete-active");
-    }
-  }
-  function closeAllLists(elmnt) {
-    /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
-    var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
-    if (elmnt != x[i] && elmnt != inp) {
-    x[i].parentNode.removeChild(x[i]);
-    }
-  }
-  }
-  /*execute a function when someone clicks in the document:*/
-  document.addEventListener("click", function (e) {
-    closeAllLists(e.target);
-  });
-}
 
 
-let users = []
+
+let users = []*/

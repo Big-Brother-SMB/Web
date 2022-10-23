@@ -1,3 +1,17 @@
+/*
+npm i @google-cloud/local-auth
+npm i date-and-time
+npm i express
+npm i generate-key
+npm i googleapis
+npm i npm
+npm i path
+npm i socket.io
+npm i sqlite3
+npm i url
+npm i uuid
+*/
+
 const http = require('http');
 const https = require('https');
 const url = require('url');
