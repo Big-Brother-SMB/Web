@@ -1,3 +1,4 @@
+// il reste les pop-up
 import * as common from "../common.js";
 
 document.getElementById("pass").addEventListener("click", function () {
