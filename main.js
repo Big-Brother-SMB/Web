@@ -132,9 +132,9 @@ class User{
                 try{
                     if(data!=undefined){
                         let list=[]
-                        for(let e in data){
+                        data.forEach(e=>{
                             list.push(new User(e.uuid))
-                        }
+                        })
                         resolve(list)
                     }else{
                         resolve(null)
@@ -241,9 +241,9 @@ class User{
                 try{
                     if(data!=undefined){
                         let list=[]
-                        for(let e in data){
+                        data.forEach(e=>{
                             list.push(e.amis)
-                        }
+                        })
                         resolve(list)
                     }else{
                         resolve(null)
@@ -257,9 +257,9 @@ class User{
         let uuid=this.uuid
         db.serialize(()=>{
           db.run("delete from amis WHERE uuid=?",[uuid])
-          for(let e in list){
+          list.forEach(e=>{
               db.run("INSERT INTO amis(uuid,amis) VALUES (?,?)",[uuid,e])
-          }
+          })
         })
     }
 
@@ -286,9 +286,9 @@ class User{
         let uuid=this.uuid
         db.serialize(()=>{
             db.run("delete from user_groups where uuid=?",[uuid])
-            for(let e in list){
+            list.forEach(e=>{
                 db.run("INSERT INTO user_groups(uuid,group2) VALUES (?,?)",[uuid,e])
-            }
+            })
         })
     }
 
@@ -303,23 +303,23 @@ class User{
         db.all("SELECT * FROM point_perso WHERE uuid=?",[uuid], (err, data) => {
             try{
                 if(data!=undefined){
-                    for(let e in data){
-                        list.push(data[e])
-                    } 
+                    data.forEach(e=>{
+                        list.push(e)
+                    }) 
                 }
                 db.all("SELECT * FROM point_global", (err, data) => {
                   try{
                       if(data!=undefined){
-                          for(let e in data){
-                            list.push(data[e])
-                          } 
+                          data.forEach(e=>{
+                            list.push(e)
+                          })
                       }
                       db.all("SELECT * FROM midi_list WHERE uuid=?",[uuid], (err, data) => {
                         try{
                             if(data!=undefined){
-                                for(let e in data){
-                                  list.push(data[e])
-                                } 
+                                data.forEach(e=>{
+                                  list.push(e)
+                                }) 
                             }
                             resolve(list)
                         }catch(e){console.error(e);resolve(null)}
@@ -338,23 +338,23 @@ class User{
         db.all("SELECT * FROM point_perso WHERE uuid=?",[uuid], (err, data) => {
             try{
                 if(data!=undefined){
-                    for(let e in data){
-                        score+=data[e].value
-                    } 
+                    data.forEach(e=>{
+                        score+=e.value
+                    })
                 }
                 db.all("SELECT * FROM point_global", (err, data) => {
                   try{
                       if(data!=undefined){
-                          for(let e in data){
-                              score+=data[e].value
-                          } 
+                          data.forEach(e=>{
+                              score+=e.value
+                          })
                       }
                       db.all("SELECT * FROM midi_list WHERE uuid=?",[uuid], (err, data) => {
                         try{
                             if(data!=undefined){
-                                for(let e in data){
-                                  score+=data[e].cout
-                                } 
+                                data.forEach(e=>{
+                                  score+=e.cout
+                                })
                             }
                             resolve(score)
                         }catch(e){console.error(e);resolve(null)}
@@ -488,14 +488,14 @@ function setVar(key,value){
       if(data==undefined){
         db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio) VALUES (?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio])
       } else{
-        db.run("UPDATE midi_menu SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,unique_prio=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,unique_prio,semaine,creneau])
+        db.run("UPDATE midi_info SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,unique_prio=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,unique_prio,semaine,creneau])
       }
     })
     db.serialize(()=>{
       db.run("delete from midi_prio WHERE semaine=? and creneau=?",[semaine,creneau])
-      for(let e in list_prio){
+      list_prio.forEach(e=>{
         db.run("INSERT INTO midi_prio(semaine,creneau,group2) VALUES (?,?,?)",[semaine,creneau,e])
-      }
+      })
     })
   }
   function listMidiDemandes(semaine,creneau){
@@ -506,9 +506,9 @@ function setVar(key,value){
             for(let i=0;i<data.length;i++){
               db.all("SELECT * FROM midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,data[i].uuid], (err, data2) => {
                 let list=[]
-                for(let e in data2){
+                data2.forEach(e=>{
                   list.push(e.amis)
-                }
+                })
                 data[i].push(list)
               })
             }
@@ -531,9 +531,9 @@ function setVar(key,value){
     })
     db.serialize(()=>{
       db.run("delete from midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid])
-      for(let e in amis){
+      amis.forEach(e=>{
         db.run("INSERT INTO midi_amis(semaine,creneau,uuid,amis) VALUES (?,?,?,?)",[semaine,creneau,uuid,e])
-      }
+      })
     })
   }
   
@@ -562,9 +562,9 @@ function setVar(key,value){
   function setGroup(list){
     db.serialize(()=>{
       db.run("delete from group_list")
-      for(let e in list){
+      list.forEach(e=>{
         db.run("INSERT INTO group_list(group2) VALUES (?)",[e])
-      }
+      })
     })
   }
   function getClasse(){
@@ -584,9 +584,9 @@ function setVar(key,value){
   function setClasse(list){
     db.serialize(()=>{
       db.run("delete from classe_list")
-      for(let e in list){
+      list.forEach(e=>{
         db.run("INSERT INTO classe_list(classe) VALUES (?)",[e])
-      }
+      })
     })
   }
   
@@ -617,7 +617,7 @@ async function main() {
       //users / amis / user-group / token
       db.get("SELECT * FROM sqlite_master where type='table' AND name='users'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, tuto bool,admin int2)')
+          db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, tuto boolean,admin int2)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='amis'", (err, data) => {
         if(data==undefined)
@@ -645,7 +645,7 @@ async function main() {
       //midi
       db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_info'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE midi_info(semaine int2,creneau int2,cout float4,gratuit_prio bool,ouvert int2,perMin int2,places int2,unique_prio bool)')
+          db.run('CREATE TABLE midi_info(semaine int2,creneau int2,cout float4,gratuit_prio boolean,ouvert int2,perMin int2,places int2,unique_prio boolean)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_menu'", (err, data) => {
         if(data==undefined)
@@ -687,7 +687,7 @@ async function main() {
       //messages / news / sondage
       db.get("SELECT * FROM sqlite_master where type='table' AND name='messages'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE messages(id uuid,deAdmin bool,uuid uuid,lu bool,texte text,title text,type text,date text)')
+          db.run('CREATE TABLE messages(id uuid,deAdmin boolean,uuid uuid,lu boolean,texte text,title text,type text,date text)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='news'", (err, data) => {
         if(data==undefined)
@@ -834,8 +834,8 @@ async function main() {
       }catch(e){}
     });
   });
-  //setMidiInfo(43,2,1,false,3,75,175,true,null)
-  //setMidiMenu(43,"eiijzeiuzuei")
+  //setMidiInfo(43,2,1,false,3,75,175,true,["2F","Y"])
+  //setMidiMenu(43,"poison")
   //addGlobalPoint("a","a",5)
 }
 main().catch(console.error);
