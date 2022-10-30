@@ -1,4 +1,4 @@
-// il reste les pop-up
+// il reste les pop-up à faire
 import * as common from "../common.js";
 
 document.getElementById("pass").addEventListener("click", function () {
@@ -310,13 +310,13 @@ function select(j, h) {
 }
 
 
-
-function loop() {
+refreshDatabase();
+/*function loop() {
     console.log("update database")
     refreshDatabase();
     setTimeout(loop, 20000);
 }
-loop();
+loop();*/
 
 
 /*
@@ -368,7 +368,7 @@ function handleTouchMove(evt) {
     xDown = null;
     yDown = null;
 };
-
+*/
 
 //-------------------------------Pop-Up------------messagerie---------------------------------
 
@@ -386,37 +386,34 @@ function closeModal(modal) {
   overlay.classList.remove('active')
 }
 
-database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
-    tuto = snapshot.val()
-    if(tuto != true){
-        openModal(modal)
-    } else {
-        database.ref("sondages").once('value').then(function(snapshotS) {
-            database.ref("news").once('value').then(function(snapshotN) {
-                database.ref("users/" + user + "/messages").once('value').then(function(snapshotM) {
-                    snapshotS.forEach(function(child) {
-                        if(snapshotS.child(child.key + "/users/" + user).val() == null){
-                            nbMsg++
-                        }
-                    })
-                    snapshotN.forEach(function(child) {
-                        if(snapshotN.child(child.key + "/users/" + user).val() == null){
-                            nbMsg++
-                        }
-                    })
-                    snapshotM.forEach(function(child) {
-                        if(snapshotM.child(child.key + "/lu").val() == null){
-                            nbMsg++
-                        }
-                    })
-                    if(nbMsg!=0){
-                        updateMsg()
+if(common.tuto != true){
+    openModal(modal)
+} else {
+    /*database.ref("sondages").once('value').then(function(snapshotS) {
+        database.ref("news").once('value').then(function(snapshotN) {
+            database.ref("users/" + user + "/messages").once('value').then(function(snapshotM) {
+                snapshotS.forEach(function(child) {
+                    if(snapshotS.child(child.key + "/users/" + user).val() == null){
+                        nbMsg++
                     }
                 })
+                snapshotN.forEach(function(child) {
+                    if(snapshotN.child(child.key + "/users/" + user).val() == null){
+                        nbMsg++
+                    }
+                })
+                snapshotM.forEach(function(child) {
+                    if(snapshotM.child(child.key + "/lu").val() == null){
+                        nbMsg++
+                    }
+                })
+                if(nbMsg!=0){
+                    updateMsg()
+                }
             })
         })
-    }
-})
+    })*/
+}
 
 
 
@@ -438,8 +435,8 @@ function updateMsg(){
 }
 
 function bntMsgOnclick(){
+    common.writeCookie("msg",hashDay())
     window.location.href ="../message/message.html"
-    writeCookie("msg",hashDay())
 }
 
 
@@ -450,4 +447,3 @@ document.getElementById("bSelf").addEventListener("click",function(){
     document.getElementById("menu self").innerHTML = "&darr;&darr;&darr;<br><br><br>Menu self:<br><iframe src='https://drive.google.com/file/d/1ymF5Q53oe9ugwPFpjCg0Uwj0SaYbem5L/preview' style='width: 90%;height: 600px;' allow='autoplay'></iframe>"
     window.location.href = "#menu self"
 })
-*/

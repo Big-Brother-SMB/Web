@@ -111,11 +111,11 @@ export let week = readIntCookie("week")
 //---------------------------securité page admin + deco---------------------------
 
 if (readBoolCookie("connect")) {
-    if(readIntCookie("admin")==2){
+    if(admin==2){
         if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option")){
             window.location.href = window.location.origin + "/admin/menu/menu.html"
         }
-    } else if(readIntCookie("admin")==0){
+    } else if(admin==0){
         if(window.location.pathname.includes("admin")){
             window.location.href = window.location.origin + "/menu/menu.html"
         }
@@ -126,8 +126,11 @@ if (readBoolCookie("connect")) {
 }
 
 export function deco(){
-  delCookie("connect");
-  //window.location.href = window.location.origin + "/index.html";
+  let path = window.location.pathname
+  if(path!="/index.html"){
+    delCookie("connect");
+    window.location.href = window.location.origin + "/index.html";
+  }
 }
 
 //---------------------------fonctions diver---------------------------
@@ -242,9 +245,6 @@ export const listClasse = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K
 //---------------------------color function---------------------------
 
 if(window.location.pathname.split("/").pop()!= "pass.html"){
-  setColorMode(window.location.origin)
-}
-export function setColorMode(rootPath){
   try{
     document.getElementById("css").href = ""
     let name = ""
@@ -262,7 +262,7 @@ export function setColorMode(rootPath){
     }else{
       document.body.style.backgroundColor = "";
       document.body.style.color = "";
-      if(name!="") document.getElementById("css").href = rootPath + "/css/" + name + ".css";
+      if(name!="") document.getElementById("css").href = window.location.origin + "/css/" + name + ".css";
     }
   }catch(Exception){
     console.log("error with color mode")
@@ -371,7 +371,10 @@ function autocomplete(inp, arr, func) {
   });
 }
 
-document.getElementById("version").innerHTML = "Crédit"
+try{
+  document.getElementById("version").innerHTML = "Crédit"
+}catch(e){}
+
 
 /*
 //--------------------database functions--------------------

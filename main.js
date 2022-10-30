@@ -164,7 +164,7 @@ class User{
       let uuid=this.uuid
         db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
             if(data!=undefined){
-                db.run("UPDATE users SET ?=? where uuid=?",[key,value,uuid])
+                db.run("UPDATE users SET "+ key +" = ? where uuid=?",[value,uuid])
             }
         })
     }
@@ -304,21 +304,21 @@ class User{
             try{
                 if(data!=undefined){
                     for(let e in data){
-                        list.push(e)
+                        list.push(data[e])
                     } 
                 }
                 db.all("SELECT * FROM point_global", (err, data) => {
                   try{
                       if(data!=undefined){
                           for(let e in data){
-                            list.push(e)
+                            list.push(data[e])
                           } 
                       }
                       db.all("SELECT * FROM midi_list WHERE uuid=?",[uuid], (err, data) => {
                         try{
                             if(data!=undefined){
                                 for(let e in data){
-                                  list.push(e)
+                                  list.push(data[e])
                                 } 
                             }
                             resolve(list)
@@ -339,21 +339,21 @@ class User{
             try{
                 if(data!=undefined){
                     for(let e in data){
-                        score+=e.value
+                        score+=data[e].value
                     } 
                 }
                 db.all("SELECT * FROM point_global", (err, data) => {
                   try{
                       if(data!=undefined){
                           for(let e in data){
-                              score+=e.value
+                              score+=data[e].value
                           } 
                       }
                       db.all("SELECT * FROM midi_list WHERE uuid=?",[uuid], (err, data) => {
                         try{
                             if(data!=undefined){
                                 for(let e in data){
-                                  score+=e.cout
+                                  score+=data[e].cout
                                 } 
                             }
                             resolve(score)
@@ -473,7 +473,6 @@ function setVar(key,value){
     return new Promise(function(resolve, reject) {
       db.get("SELECT * FROM midi_info where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
         try {
-          console.log('cc',semaine,creneau)
           if(data!=undefined){
             resolve(data)
           }else{
@@ -806,7 +805,7 @@ async function main() {
         if(msg=="int"){
           socket.emit('my_score',await user.score)
         }else{
-          socket.emit('my_score',null)
+          socket.emit('my_score',await user.listPoint)
         }
       }catch(e){}
     });
@@ -820,15 +819,23 @@ async function main() {
     socket.on('info_horaire', async msg => {
       try{
         let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
-        console.log(msg[0],msg[1]*2+msg[2])
         if(info==null){
           info={}
         }
         socket.emit('info_horaire',info)
       }catch(e){}
     });
+
+
+    socket.on('tuto', msg => {
+      try{
+        user.tuto = msg
+        socket.emit('tuto','ok')
+      }catch(e){}
+    });
   });
   //setMidiInfo(43,2,1,false,3,75,175,true,null)
   //setMidiMenu(43,"eiijzeiuzuei")
+  //addGlobalPoint("a","a",5)
 }
 main().catch(console.error);
