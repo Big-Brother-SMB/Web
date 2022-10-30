@@ -371,7 +371,7 @@ function autocomplete(inp, arr, func) {
   });
 }
 
-
+document.getElementById("version").innerHTML = "Crédit"
 
 /*
 //--------------------database functions--------------------
