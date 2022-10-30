@@ -22,7 +22,7 @@ document.getElementById("checkbox").addEventListener("change",function(){
 })
 
 //---------------------------bouton connection---------------------------
-if (common.key != null) {
+if (common.key != null && common.uuid != undefined) {
   document.getElementById("continue text").innerHTML = common.first_name+" "+common.last_name
   document.getElementById("continue").style.display = "block"
   if (common.readBoolCookie("connect") && document.getElementById("checkbox").checked == true) {
