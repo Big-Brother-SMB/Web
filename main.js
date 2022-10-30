@@ -150,11 +150,11 @@ class User{
         return new Promise(function(resolve, reject) {
             db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
                 try{
-                if(data!=undefined){
+                  if(data!=undefined){
                     resolve(data[key])
-                }else{
+                  }else{
                     resolve(null)
-                }
+                  }
                 }catch(e){console.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
@@ -186,49 +186,49 @@ class User{
     }
 
     get first_name()   {
-        this.#getInfo("first_name")
+        return this.#getInfo("first_name")
     }
     set first_name(value)   {
         this.#setInfo("first_name",value)
     }
 
     get last_name()   {
-        this.#getInfo("last_name")
+      return this.#getInfo("last_name")
     }
     set last_name(value)   {
         this.#setInfo("last_name",value)
     }
 
     get email()   {
-        this.#getInfo("email")
+      return this.#getInfo("email")
     }
     set email(value)   {
         this.#setInfo("email",value)
     }
 
     get code_barre()   {
-        this.#getInfo("code_barre")
+      return this.#getInfo("code_barre")
     }
     set code_barre(value)   {
         this.#setInfo("code_barre",value)
     }
 
     get classe()   {
-        this.#getInfo("classe")
+      return this.#getInfo("classe")
     }
     set classe(value)   {
         this.#setInfo("classe",value)
     }
 
     get tuto()   {
-        this.#getInfo("tuto")
+      return this.#getInfo("tuto")
     }
     set tuto(value)   {
         this.#setInfo("tuto",value)
     }
 
     get admin()   {
-        this.#getInfo("admin")
+        return this.#getInfo("admin")
     }
     set admin(value)   {
         this.#setInfo("admin",value)
@@ -784,9 +784,23 @@ async function main() {
     allowedHeaders: ["my-custom-header"],
     credentials: true
   }})
+  io.of("/admin").on("connection", async (socket) => {
+    let user = await User.searchToken(socket.handshake.auth.token)
+    console.log("uuid admin socket:",await user.uuid)
+
+    if(await user.admin>0){
+      socket.on('my_admin_mode',async msg => {
+        try{
+          user.admin = msg
+          socket.emit('my_admin_mode',"ok")
+        }catch(e){}
+      })
+    }
+  })
   io.on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
-    console.log("uuid socket:",await user.uuid)  
+    console.log("uuid socket:",await user.uuid)
+    //user.admin=1
 
     socket.on('id_data', async msg => {
       try{

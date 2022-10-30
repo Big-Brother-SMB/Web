@@ -26,7 +26,7 @@ export function delCookie(key){
 export function readIntCookie(key){
     let read = parseInt(cookie[key]);
     if(isNaN(read)){
-        read = 0
+        read = null
     }
     return read
 }
@@ -73,6 +73,26 @@ export async function socketAsync(channel,msg){
     })
 }
 
+export let socketAdmin = io("/admin",{
+  auth: {
+    token: key
+  }
+});
+
+export async function socketAdminAsync(channel,msg){
+  if(admin>0){
+    return new Promise(function(resolve, reject) {
+      socketAdmin.emit(channel,msg);
+      socketAdmin.once(channel,result => {
+          resolve(result)
+      });
+      setTimeout(reject,5000)
+    })
+  } else {
+    return null
+  }
+}
+
 //---------------------------récupération de l'identité et des cookie/variable---------------------------
 
 export let id_data = await socketAsync("id_data","")
@@ -106,6 +126,7 @@ if(id_data!='err'){
 export let colorMode = readIntCookie("color mode")
 export let backgroundColor = readCookie("color background")
 export let textColor = readCookie("color text")
+export let boolAllAmis = readBoolCookie("allAmis")
 export let week = readIntCookie("week")
 
 //---------------------------securité page admin + deco---------------------------
@@ -245,6 +266,9 @@ export const listClasse = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K
 //---------------------------color function---------------------------
 
 if(window.location.pathname.split("/").pop()!= "pass.html"){
+  setColorMode(colorMode,backgroundColor,textColor)
+}
+export function setColorMode(colorMode,backgroundColor,textColor){
   try{
     document.getElementById("css").href = ""
     let name = ""
@@ -268,7 +292,6 @@ if(window.location.pathname.split("/").pop()!= "pass.html"){
     console.log("error with color mode")
   }
 }
-
 
 
 //---------------------------autocomplete---------------------------
