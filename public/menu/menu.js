@@ -21,22 +21,23 @@ document.getElementById("planing").addEventListener("click", function () {
 document.getElementById("user").innerHTML = common.first_name + " " + common.last_name + " " + common.classe
 
 
+let week = common.week
 document.getElementById("semainePrecedente").addEventListener("click", function () {
-    common.week--
+    week--
     common.writeCookie("week", week)
     refreshDatabase()
 });
 
 
 document.getElementById("semaineActuelle").addEventListener("click", function () {
-    common.week = common.actualWeek
+    week = common.actualWeek
     common.writeCookie("week", week)
     refreshDatabase()
 });
 
 
 document.getElementById("semaineSuivante").addEventListener("click", function () {
-    common.week++
+    week++
     common.writeCookie("week", week)
     refreshDatabase()
 });
@@ -103,7 +104,7 @@ for (let j = 0; j < 4; j++) {
 
 
 async function refreshDatabase() {
-    let info_menu = await common.socketAsync("info_menu_semaine",common.week)
+    let info_menu = await common.socketAsync("info_menu_semaine",week)
     let score = await common.socketAsync("my_score","int")
 
     if (score < 2) {
@@ -112,23 +113,26 @@ async function refreshDatabase() {
         document.getElementById("score").innerHTML = score + " pts"
     }
     
-    if (common.week == common.actualWeek) {
-        document.getElementById("semaine").innerHTML = "Cette semaine (n°" + common.week + " du " + common.semaine(common.week) + ")"
+    if (week == common.actualWeek) {
+        document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.semaine(week) + ")"
     } else {
-        document.getElementById("semaine").innerHTML = "Semaine n°" + common.week + " du " + common.semaine(common.week)
+        document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.semaine(week)
     }
 
-    let menu = info_menu.text
+    let menu
+    try{
+        menu = info_menu["menu"]
+    }catch(e){}
     if (menu == null) {
         menu = "inconnu pour le moment"
     }
-    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + common.week + " :</u><br>" + menu
+    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + menu
 
 
     for (let j = 0; j < 4; j++) {
         for (let h = 0; h < 2; h++) {
-            let info_horaire = await common.socketAsync("info_horaire",[common.week,j,h])
-            placesTotal[j][h] = info_horaire.places;
+            let info_horaire = await common.socketAsync("info_horaire",[week,j,h])
+            placesTotal[j][h] = info_horaire["places"];
             if(placesTotal[j][h]==null || placesTotal[j][h]==""){
                 placesTotal[j][h]=0
             }
@@ -140,7 +144,7 @@ async function refreshDatabase() {
             }
 
             if (info_horaire.cout != null) {
-                cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
+                cout[j][h] = Math.abs(parseFloat(info_horaire.cout))
             }
 
             //demande en cours

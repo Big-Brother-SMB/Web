@@ -47,6 +47,13 @@ export function existCookie(key){
 //---------------------------socket---------------------------
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+if(params.token!=null){
+  writeCookie("key",params.token)
+}
+
 let key=readCookie("key")
 
 export {io,key};
@@ -99,7 +106,7 @@ if(id_data!='err'){
 export let colorMode = readIntCookie("color mode")
 export let backgroundColor = readCookie("color background")
 export let textColor = readCookie("color text")
-export let week = readCookie("week")
+export let week = readIntCookie("week")
 
 //---------------------------securité page admin + deco---------------------------
 

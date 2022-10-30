@@ -1,9 +1,6 @@
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
-if(params.token!=null){
-  document.cookie = "key=" + params.token + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
-}
 if(params.err!=null){
   document.getElementById("infos").innerHTML += params.err + "<br>"
 }

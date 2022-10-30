@@ -15,7 +15,7 @@ npm i uuid
 const http = require('http');
 const https = require('https');
 const url = require('url');
-const uuid = require('uuid');
+const uuidG = require('uuid');
 const sqlite3 = require('sqlite3')
 const { google, chat_v1 } = require('googleapis');
 const { Server } = require("socket.io");
@@ -62,277 +62,484 @@ let db_midi
 let db_news
 let db_sondages
 
+class User{
+    constructor(uuid){
+        this.uuid=uuid
+    }
+    static search(code_barre){
+        return new Promise(function(resolve, reject) {
+            db.get("SELECT * FROM users WHERE code_barre=?",[code_barre], (err, data) => {
+                try{
+                    if(data!=undefined){
+                        resolve(new User(data.uuid))
+                    }else{
+                        resolve(null)
+                    }
+                }catch(e){console.error(e);resolve(null)}
+            })
+            setTimeout(reject,1000)
+        })
+    }
+      //user et  plus
+    static createUser(email){
+        return new Promise(function(resolve, reject) {
+            let uuid = uuidG.v4()
+            db.get("SELECT * FROM 'users' where email=?",[email], (err, data) => {
+                try{
+                    if(data==undefined){
+                        let tName=emailT[0].split(".")
+                        let first_name=tName[0]
+                        let last_name=""
+                        if(tName.length>=2){
+                        last_name=tName[1]
+                        }
+                        first_name=first_name[0].toUpperCase()+first_name.slice(1)
+                        last_name=last_name.toUpperCase();
+                        db.run("INSERT INTO users(email,uuid,first_name,last_name,admin) VALUES(?,?,?,?,?)", [email,uuid,first_name,last_name,0])
+                    }else{
+                        uuid=data.uuid
+                    }
+                    resolve(new User(uuid))
+                }catch(e){console.error(e);resolve(null)}
+            })
+            setTimeout(reject,1000)
+        })
+    }
+
+    createToken(){
+        let uuid=this.uuid
+        return new Promise(function(resolve, reject) {
+          let tokenAuth = rand.generateKey();
+          let date=dateTime.format(new Date(), 'YYYY/MM/DD');
+          db.run("INSERT INTO token(token,uuid,date) VALUES(?,?,?)", [tokenAuth,uuid,date])
+          resolve(tokenAuth)
+        })
+      }
+    static searchToken(token){
+        return new Promise(function(resolve, reject) {
+          db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
+            try {
+              if(data!=undefined){
+                resolve(new User(data.uuid))
+              }else{
+                resolve(null)
+              }
+            }catch(e){console.error(e);resolve(null)}
+          })
+          setTimeout(reject,1000)
+        })
+      }
+
+    static listUsers(){
+        return new Promise(function(resolve, reject) {
+            db.all("SELECT uuid FROM users", (err, data) => {
+                try{
+                    if(data!=undefined){
+                        let list=[]
+                        for(let e in data){
+                            list.push(new User(e.uuid))
+                        }
+                        resolve(list)
+                    }else{
+                        resolve(null)
+                    }
+                }catch(e){console.error(e);resolve(null)}
+            })
+            setTimeout(reject,1000)
+        })
+    }
+
+    #getInfo(key){
+        let uuid=this.uuid
+        return new Promise(function(resolve, reject) {
+            db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
+                try{
+                if(data!=undefined){
+                    resolve(data[key])
+                }else{
+                    resolve(null)
+                }
+                }catch(e){console.error(e);resolve(null)}
+            })
+            setTimeout(reject,1000)
+        })
+    }
+    #setInfo(key,value){
+      let uuid=this.uuid
+        db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
+            if(data!=undefined){
+                db.run("UPDATE users SET ?=? where uuid=?",[key,value,uuid])
+            }
+        })
+    }
+
+    get all(){
+        let uuid = this.uuid
+        return new Promise(function(resolve, reject) {
+            db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
+                try{
+                    if(data!=undefined){
+                        resolve(data)
+                    }else{
+                        resolve(null)
+                    }
+                }catch(e){console.error(e);resolve(null)}
+            })
+            setTimeout(reject,1000)
+        })
+    }
+
+    get first_name()   {
+        this.#getInfo("first_name")
+    }
+    set first_name(value)   {
+        this.#setInfo("first_name",value)
+    }
+
+    get last_name()   {
+        this.#getInfo("last_name")
+    }
+    set last_name(value)   {
+        this.#setInfo("last_name",value)
+    }
+
+    get email()   {
+        this.#getInfo("email")
+    }
+    set email(value)   {
+        this.#setInfo("email",value)
+    }
+
+    get code_barre()   {
+        this.#getInfo("code_barre")
+    }
+    set code_barre(value)   {
+        this.#setInfo("code_barre",value)
+    }
+
+    get classe()   {
+        this.#getInfo("classe")
+    }
+    set classe(value)   {
+        this.#setInfo("classe",value)
+    }
+
+    get tuto()   {
+        this.#getInfo("tuto")
+    }
+    set tuto(value)   {
+        this.#setInfo("tuto",value)
+    }
+
+    get admin()   {
+        this.#getInfo("admin")
+    }
+    set admin(value)   {
+        this.#setInfo("admin",value)
+    }
+
+    get amis(){
+        let uuid=this.uuid
+        return new Promise(function(resolve, reject) {
+            db_amis.all("SELECT amis FROM ?",[uuid], (err, data) => {
+                try{
+                    if(data!=undefined){
+                        let list=[]
+                        for(let e in data){
+                            list.push(e.amis)
+                        }
+                        resolve(list)
+                    }else{
+                        resolve(null)
+                    }
+                }catch(e){console.error(e);resolve(null)}
+            })
+            setTimeout(reject,1000)
+        })
+    }
+    set amis(list){
+        let uuid=this.uuid
+        db_amis.get("SELECT amis FROM ?",[uuid], (err, data) => {
+            db_amis.serialize(()=>{
+                if(data!=undefined){
+                    db_amis.run("delete from ?",[uuid])
+                }else{
+                    db_amis.run('CREATE TABLE ?(amis uuid)',[uuid])
+                }
+                for(let e in list){
+                    db_amis.run("INSERT INTO ?(amis) VALUES (?)",[uuid,e])
+                }
+            })
+        })
+    }
+
+    get groups(){
+        let uuid=this.uuid
+        return new Promise(function(resolve, reject) {
+            db.all("SELECT group2 FROM user_groups where uuid=?",[uuid], (err, data) => {
+                try{
+                    if(data!=undefined){
+                        let list=[]
+                        for(let e in data){
+                            list.push(e.group2)
+                        }
+                        resolve(list)
+                    }else{
+                        resolve(null)
+                    }
+                }catch(e){console.error(e);resolve(null)}
+            })
+            setTimeout(reject,1000)
+        })
+    }
+    set groups(list){
+        let uuid=this.uuid
+        db.serialize(()=>{
+            db.run("delete from user_groups where uuid=?",[uuid])
+            for(let e in list){
+                db.run("INSERT INTO user_groups(uuid,group2) VALUES (?,?)",[uuid,e])
+            }
+        })
+    }
+
+    //point
+    addPersonalPoint(date,name,value){
+        db.run("INSERT INTO point_perso(uuid,date,name,value) VALUES (?,?,?,?)",[this.uuid,date,name,value])
+    }
+    get listPoint(){
+      //%
+      let uuid=this.uuid
+      return new Promise(function(resolve, reject) {
+        resolve(9)
+        setTimeout(reject,1000)
+      })
+    }
+    get score(){
+      //%
+      let uuid=this.uuid
+      return new Promise(function(resolve, reject) {
+        resolve(9)
+        setTimeout(reject,1000)
+      })
+    }
+}
+
+
 //var
 function getVar(key){
-  return new Promise(async function(resolve, reject) {
-    try{
-      let uuidG = uuid.v4()
-      db.get("SELECT value FROM 'var' where key=?",[key], (err, data) => {
-        if(data!=undefined){
-          resolve(data.value)
-        }else{
-          resolve(null)
-        }
-      })
-    }catch(e){console.error(e);resolve(null)}
-    setTimeout(reject,1000)
-  })
+    return new Promise(function(resolve, reject) {
+        try{
+            db.get("SELECT value FROM 'var' where key=?",[key], (err, data) => {
+            if(data!=undefined){
+                resolve(data.value)
+            }else{
+                resolve(null)
+            }
+            })
+        }catch(e){console.error(e);resolve(null)}
+        setTimeout(reject,1000)
+    })
 }
 function setVar(key,value){
-  db.get("SELECT * FROM var where key=?",[key], (err, data) => {
-    if(data==undefined){
-      db.run("INSERT INTO var(key,value) VALUES (?,?)",[key,value])
-    } else{
-      db.run("UPDATE var SET value=? WHERE key=?",[value,key])
-    }
-  })
-}
-
-
-//user et  plus
-function createUser(email){
-  return new Promise(async function(resolve, reject) {
-    let uuidG = uuid.v4()
-    db.get("SELECT * FROM 'users' where email=?",[email], (err, data) => {
-      try{
+    db.get("SELECT * FROM var where key=?",[key], (err, data) => {
         if(data==undefined){
-          let tName=emailT[0].split(".")
-          let first_name=tName[0]
-          let last_name=""
-          if(tName.length>=2){
-            last_name=tName[1]
+            db.run("INSERT INTO var(key,value) VALUES (?,?)",[key,value])
+        } else{
+            db.run("UPDATE var SET value=? WHERE key=?",[value,key])
+        }
+    })
+}
+
+
+
+  //perm
+  function getPermOuvert(semaine,day,creneau){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM perm_info where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data.ouvert)
+          }else{
+            resolve(null)
           }
-          first_name=first_name[0].toUpperCase()+first_name.slice(1)
-          last_name=last_name.toUpperCase();
-          db.run("INSERT INTO users(email,uuid,first_name,last_name,admin) VALUES(?,?,?,?,?)", [email,uuidG,first_name,last_name,0])
-        }else{
-          uuidG=data.uuid
-        }
-        resolve(uuidG)
-      }catch(e){console.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
     })
-    setTimeout(reject,1000)
-  })
-}
-function getUser(uuid){
-  return new Promise(function(resolve, reject) {
-    db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
-      try{
-        if(data!=undefined){
-          resolve(data)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
+  }
+  function setPermOuvert(semaine,day,creneau,ouvert){
+    db.get("SELECT * FROM 'perm_info' where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
+      if(data==undefined){
+        db.run("INSERT INTO perm_info(ouvert,semaine,day,creneau) VALUES (?,?,?,?)",[ouvert,semaine,day,creneau])
+      } else{
+        db.run("UPDATE perm_info SET ouvert=? where semaine=? and day=? and creneau=?",[ouvert,semaine,day,creneau])
+      }
     })
-    setTimeout(reject,1000)
-  })
-}
-//%amis+group--------
-function setUser(uuid,first_name,last_name,email,code_barre,classe,tuto,admin){
-  db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
-    if(data!=undefined){
-      db.run("UPDATE users SET first_name=?,last_name=?,email=?,code_barre=?,classe=?,tuto=?,admin=? where uuid=?",[first_name,last_name,email,code_barre,classe,tuto,admin,uuid])
-    }
-  })
-}
-function listUsers(){
-  return new Promise(function(resolve, reject) {
-    db.all("SELECT * FROM users", (err, data) => {
-      try{
-        if(data!=undefined){
-          resolve(data)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
+  }
+  function listPermDemandes(semaine,day,creneau){
+    //% 
+  }
+  function setPermDemande(semaine,day,creneau,uuid,group,nb,DorI){
+    //%
+  }
+  
+  
+  //midi
+  function getMidiMenu(semaine){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM midi_menu where semaine=?",[semaine], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
     })
-    setTimeout(reject,1000)
-  })
-}
-
-
-//token
-function createToken(uuid){
-  return new Promise(async function(resolve, reject) {
-    let tokenAuth = rand.generateKey();
-    let date=dateTime.format(new Date(), 'YYYY/MM/DD');
-    await db.run("INSERT INTO token(token,uuid,date) VALUES(?,?,?)", [tokenAuth,uuid,date])
-    resolve(tokenAuth)
-  })
-}
-function getToken(token){
-  return new Promise(function(resolve, reject) {
-    db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
-      try {
-        if(data!=undefined){
-          resolve(data.uuid)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
-    })
-    setTimeout(reject,1000)
-  })
-}
-
-
-//perm
-function getPermOuvert(semaine,day,creneau){
-  return new Promise(function(resolve, reject) {
-    db.get("SELECT * FROM perm_info where semaine=?,day=?,creneau=?",[semaine,day,creneau], (err, data) => {
-      try {
-        if(data!=undefined){
-          resolve(data.ouvert)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
-    })
-    setTimeout(reject,1000)
-  })
-}
-function setPermOuvert(semaine,day,creneau,ouvert){
-  db.get("SELECT * FROM 'perm_info' where semaine=?,day=?,creneau=?",[semaine,day,creneau], (err, data) => {
-    if(data==undefined){
-      db.run("INSERT INTO perm_info(ouvert,semaine,day,creneau) VALUES (?,?,?,?)",[ouvert,semaine,day,creneau])
-    } else{
-      db.run("UPDATE perm_info SET ouvert=? where semaine=?,day=?,creneau=?",[ouvert,semaine,day,creneau])
-    }
-  })
-}
-function listPermDemandes(semaine,day,creneau){
-  //% 
-}
-function setPermDemande(semaine,day,creneau,uuid,group,nb,IorD){
-  //%
-}
-
-
-//midi
-function getMidiMenu(semaine){
-  return new Promise(function(resolve, reject) {
+  }
+  function setMidiMenu(semaine,menu){
     db.get("SELECT * FROM midi_menu where semaine=?",[semaine], (err, data) => {
-      try {
-        if(data!=undefined){
-          resolve(data.menu)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
+      if(data==undefined){
+        db.run("INSERT INTO midi_menu(menu,semaine) VALUES (?,?)",[menu,semaine])
+      } else{
+        db.run("UPDATE midi_menu SET menu=? where semaine=?",[menu,semaine])
+      }
     })
-    setTimeout(reject,1000)
-  })
-}
-function setMidiMenu(semaine,menu){
-  db.get("SELECT * FROM midi_menu where semaine=?",[semaine], (err, data) => {
-    if(data==undefined){
-      db.run("INSERT INTO midi_menu(menu,semaine) VALUES (?,?)",[menu,semaine])
-    } else{
-      db.run("UPDATE midi_menu SET menu=? where semaine=?",[menu,semaine])
-    }
-  })
-}
-function getMidiInfo(semaine,creneau){
-  return new Promise(function(resolve, reject) {
-    db.get("SELECT * FROM midi_info where semaine=?, creneau=?",[semaine,creneau], (err, data) => {
-      try {
-        if(data!=undefined){
-          resolve(data)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
+  }
+  function getMidiInfo(semaine,creneau){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM midi_info where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
+        try {
+          console.log('cc',semaine,creneau)
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
     })
-    setTimeout(reject,1000)
-  })
-}
-function setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio){
-  db.get("SELECT * FROM midi_info where semaine=?, creneau=?",[semaine,creneau], (err, data) => {
-    if(data==undefined){
-      db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio) VALUES (?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio])
-    } else{
-      db.run("UPDATE midi_menu SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,unique_prio=? where semaine=?, creneau=?",[cout,gratuit_prio,ouvert,perMin,places,unique_prio,semaine,creneau])
-    }
-  })
-}
-function listMidiDemandes(semaine,creneau){
-//%
-}
-function setMidiDemande(semaine,creneau,uuid,amis,IorD,scan){
-//%
-}
-
-
-//point
-function addGlobalPoint(date,name,value){
-  db.run("INSERT INTO point_global(date,name,value) VALUES (?,?,?)",[date,name,value])
-}
-function addPersonalPoint(uuid,date,name,value){
-  db.run("INSERT INTO point_perso(uuid,date,name,value) VALUES (?,?,?,?)",[uuid,date,name,value])
-}
-function getListPoint(uuid){
-  //%
-}
-function getScore(uuid){
-  //%
-}
-
-
-//group / classe
-function getGroup(){
-  return new Promise(function(resolve, reject) {
-    db.all("SELECT * FROM classe_list", (err, data) => {
-      try {
-        if(data!=undefined){
-          resolve(data)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
+  }
+  function setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio){//%
+    db.get("SELECT * FROM midi_info where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
+      if(data==undefined){
+        db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio) VALUES (?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio])
+      } else{
+        db.run("UPDATE midi_menu SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,unique_prio=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,unique_prio,semaine,creneau])
+      }
     })
-    setTimeout(reject,1000)
-  })
-}
-function setGroup(list){
-  db.serialize(()=>{
-    db.run("delete from group_list")
-    for(let e in list){
-      db.run("INSERT INTO group_list(group) VALUES (?)",[e])
-    }
-  })
-}
-function getClasse(){
-  return new Promise(function(resolve, reject) {
-    db.all("SELECT * FROM classe_list", (err, data) => {
-      try {
-        if(data!=undefined){
-          resolve(data)
-        }else{
-          resolve(null)
-        }
-      }catch(e){console.error(e);resolve(null)}
+  }
+  function listMidiDemandes(semaine,creneau){
+    return new Promise(function(resolve, reject) {
+      db_midi.all("SELECT * FROM ?",[semaine+"/"+creneau], (err, data) => {
+        try {
+          if(data!=undefined){
+            for(let i=0;i<data.length;i++){
+              db_midi.all("SELECT * FROM ?",[semaine+"/"+creneau+"/"+data[i].uuid], (err, data2) => {
+                let list=[]
+                for(let e in data2){
+                  list.push(e.amis)
+                }
+                data[i].push(list)
+              })
+            }
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
     })
-    setTimeout(reject,1000)
-  })
-}
-function setClasse(list){
-  db.serialize(()=>{
-    db.run("delete from classe_list")
-    for(let e in list){
-      db.run("INSERT INTO classe_list(classe) VALUES (?)",[e])
-    }
-  })
-}
-
-/*//%messages
-function addMessage(deAdmin,uuid,lu,text,title,type,date){
-
-}
-function luMessage(date){
-
-}
-// news / sondages*/
+  }
+  function setMidiDemande(semaine,creneau,uuid,amis,DorI,scan){
+    db_midi.get("SELECT * FROM sqlite_master where type='table' AND name=?",[semaine+"/"+creneau], (err, data) => {
+      if(data==undefined)
+        db_midi.run('CREATE TABLE ?(uuid uuid,scan boolean,DorI boolean)',[semaine+"/"+creneau])
+      db_midi.get("SELECT * FROM ? where uuid=?",[semaine+"/"+creneau,uuid], (err, data) => {
+        if(data==undefined){
+          db_midi.run("INSERT INTO ?(uuid uuid,scan boolean,DorI boolean) VALUES (?,?,?)",[semaine+"/"+creneau,uuid,scan,DorI])
+        } else{
+          db_midi.run("UPDATE ? SET scan=?,DorI=? where uuid=?",[semaine+"/"+creneau,scan,DorI,uuid])
+        }
+      })
+    })
+    db_midi.get("SELECT * FROM sqlite_master where type='table' AND name=?",[semaine+"/"+creneau+"/"+uuid], (err, data) => {
+      if(data==undefined)
+        db_midi.run('CREATE TABLE ?(amis uuid)',[semaine+"/"+creneau+"/"+uuid])
+      db_midi.serialize(()=>{
+        db_midi.run("delete from ?",[semaine+"/"+creneau+"/"+uuid])
+        for(let e in amis){
+          db_midi.run("INSERT INTO ?(amis) VALUES (?)",[semaine+"/"+creneau+"/"+uuid,e])
+        }
+      })
+    })
+  }
+  
+  
+  //point
+  function addGlobalPoint(date,name,value){
+    db.run("INSERT INTO point_global(date,name,value) VALUES (?,?,?)",[date,name,value])
+  }
+  
+  
+  //group / classe
+  function getGroup(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM classe_list", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
+    })
+  }
+  function setGroup(list){
+    db.serialize(()=>{
+      db.run("delete from group_list")
+      for(let e in list){
+        db.run("INSERT INTO group_list(group2) VALUES (?)",[e])
+      }
+    })
+  }
+  function getClasse(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM classe_list", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
+    })
+  }
+  function setClasse(list){
+    db.serialize(()=>{
+      db.run("delete from classe_list")
+      for(let e in list){
+        db.run("INSERT INTO classe_list(classe) VALUES (?)",[e])
+      }
+    })
+  }
+  
+  /*//%messages
+  function addMessage(deAdmin,uuid,lu,text,title,type,date){
+  
+  }
+  function luMessage(date){
+  
+  }
+  // news / sondages*/
 
 
 
@@ -356,7 +563,7 @@ async function main() {
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='user_groups'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE user_groups(uuid uuid,group text)')
+          db.run('CREATE TABLE user_groups(uuid uuid,group2 text)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='token'", (err, data) => {
         if(data==undefined)
@@ -396,7 +603,7 @@ async function main() {
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='group_list'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE group_list(group text)')
+          db.run('CREATE TABLE group_list(group2 text)')
       })
 
       //messages / news / sondage
@@ -446,7 +653,6 @@ async function main() {
   })
 
 
-
   server = http.createServer(async function (req, res) {
     if (req.url == '/') {
       res.writeHead(301, { "Location": authorizationUrl });
@@ -465,10 +671,10 @@ async function main() {
           });
           
           let {data} = await oauth2.userinfo.get();
-          console.log(data.email)
+          console.log("email",data.email)
           emailT=data.email.split("@")
           if(emailT[1]=="stemariebeaucamps.fr"){
-            let tokenAuth = await createToken(createUser(data.email))
+            let tokenAuth = await (await createUser(data.email)).createToken()
             res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
             res.end();
             //fs.readFileSync(__dirname+"/test.html")          
@@ -511,6 +717,7 @@ async function main() {
         }
       }catch(e){}
     }
+
   }).listen(3000);
 
 
@@ -522,30 +729,49 @@ async function main() {
     credentials: true
   }})
   io.on("connection", async (socket) => {
-    let uuid = await getToken(socket.handshake.auth.token)
-    console.log(uuid)
+    let user = await User.searchToken(socket.handshake.auth.token)
+    console.log("uuid socket:",await user.uuid)
 
     socket.on('id_data', async msg => {
-      let data = await getUser(uuid)
-      if(data!=undefined){
-        socket.emit('id_data',data)
-      }else{
-        socket.emit('id_data',"err")
-      }
+      try{
+        let data = await user.all
+        console.log("socket data:",data)
+        if(data!=undefined){
+          socket.emit('id_data',data)
+        }else{
+          socket.emit('id_data',"err")
+        }
+      }catch(e){}
     });
 
-    socket.on('my_score', msg => {
-      //% refaire
-      socket.emit('my_score',0)
+    socket.on('my_score', async msg => {
+      try{
+        if(msg=="int"){
+          socket.emit('my_score',await user.score)
+        }else{
+          socket.emit('my_score',null)
+        }
+      }catch(e){}
     });
 
-    socket.on('info_menu_semaine', msg => {
-
+    socket.on('info_menu_semaine', async msg => {
+      try{
+        socket.emit('info_menu_semaine',await getMidiMenu(msg))
+      }catch(e){}
     });
 
-    socket.on('info_horaire', msg => {
-
+    socket.on('info_horaire', async msg => {
+      try{
+        let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
+        console.log(msg[0],msg[1]*2+msg[2])
+        if(info==null){
+          info={}
+        }
+        socket.emit('info_horaire',info)
+      }catch(e){}
     });
   });
+  //setMidiInfo(43,2,1,false,3,75,175,true,null)
+  setMidiMenu(43,"eiijzeiuzuei")
 }
 main().catch(console.error);
