@@ -307,20 +307,64 @@ class User{
         db.run("INSERT INTO point_perso(uuid,date,name,value) VALUES (?,?,?,?)",[this.uuid,date,name,value])
     }
     get listPoint(){
-      //%
       let uuid=this.uuid
       return new Promise(function(resolve, reject) {
-        resolve(9)
-        setTimeout(reject,1000)
+          db.all("SELECT * FROM point_perso WHERE uuid=?",[uuid], (err, data) => {
+              try{
+                  if(data!=undefined){
+                      let list=[]
+                      for(let e in data){
+                          list.push(e.amis)
+                      }
+                      resolve(list)
+                  }else{
+                      resolve(null)
+                  }
+              }catch(e){console.error(e);resolve(null)}
+          })
+          setTimeout(reject,1000)
       })
     }
     get score(){
-      //%
       let uuid=this.uuid
       return new Promise(function(resolve, reject) {
-        resolve(9)
+        let score=0
+        db.all("SELECT * FROM point_perso WHERE uuid=?",[uuid], (err, data) => {
+            try{
+                if(data!=undefined){
+                    for(let e in data){
+                        score+=e.value
+                    } 
+                }
+                db.all("SELECT * FROM point_global", (err, data) => {
+                  try{
+                      if(data!=undefined){
+                          for(let e in data){
+                              score+=e.value
+                          } 
+                      }
+                      db_midi.all("SELECT * FROM sqlite_master where type='table'", (err, data) => {
+                        try{
+                            if(data!=undefined){
+                                for(let e in data){
+                                  if(e.name.count("/") == 1){
+                                    db_midi.all("SELECT * FROM ? WHERE uuid=?",[e.name,uuid], (err, data) => {
+                                      if(data!=undefined){
+
+                                      }
+                                    })
+                                  }
+                                } 
+                            }
+                            resolve(list)
+                        }catch(e){console.error(e);resolve(null)}
+                      })
+                  }catch(e){console.error(e);resolve(null)}
+                })
+            }catch(e){console.error(e);resolve(null)}
+        })
         setTimeout(reject,1000)
-      })
+    })
     }
 }
 
@@ -423,13 +467,23 @@ function setVar(key,value){
       setTimeout(reject,1000)
     })
   }
-  function setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio){//%
+  function setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio){
     db.get("SELECT * FROM midi_info where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
       if(data==undefined){
         db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio) VALUES (?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio])
       } else{
         db.run("UPDATE midi_menu SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,unique_prio=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,unique_prio,semaine,creneau])
       }
+    })
+    db_midi.get("SELECT * FROM sqlite_master where type='table' AND name=?",[semaine+"/"+creneau+"/prio"], (err, data) => {
+      if(data==undefined)
+      db_midi.run('CREATE TABLE ?(amis uuid)',[semaine+"/"+creneau+"/prio"])
+      db_midi.serialize(()=>{
+        db_midi.run("delete from ?",[semaine+"/"+creneau+"/prio"])
+        for(let e in list_prio){
+          db_midi.run("INSERT INTO ?(prio) VALUES (?)",[semaine+"/"+creneau+"/prio",e])
+        }
+      })
     })
   }
   function listMidiDemandes(semaine,creneau){
