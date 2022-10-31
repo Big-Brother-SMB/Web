@@ -83,6 +83,7 @@ class User{
             db.get("SELECT * FROM 'users' where email=?",[email], (err, data) => {
                 try{
                     if(data==undefined){
+                        let emailT=email.split("@")
                         let tName=emailT[0].split(".")
                         let first_name=tName[0]
                         let last_name=""
@@ -126,16 +127,12 @@ class User{
         })
       }
 
-    static listUsers(){
+    static listUsersName(){
         return new Promise(function(resolve, reject) {
-            db.all("SELECT uuid FROM users", (err, data) => {
+            db.all("SELECT uuid,first_name,last_name FROM users", (err, data) => {
                 try{
                     if(data!=undefined){
-                        let list=[]
-                        data.forEach(e=>{
-                            list.push(new User(e.uuid))
-                        })
-                        resolve(list)
+                        resolve(data)
                     }else{
                         resolve(null)
                     }
@@ -143,6 +140,40 @@ class User{
             })
             setTimeout(reject,1000)
         })
+    }
+
+    static listUsersUuid(){
+      return new Promise(function(resolve, reject) {
+          db.all("SELECT uuid FROM users", (err, data) => {
+              try{
+                  if(data!=undefined){
+                      let list=[]
+                      data.forEach(e=>{
+                          list.push(new User(e.uuid))
+                      })
+                      resolve(list)
+                  }else{
+                      resolve(null)
+                  }
+              }catch(e){console.error(e);resolve(null)}
+          })
+          setTimeout(reject,1000)
+      })
+    }
+
+    static listUsersComplete(){
+      return new Promise(function(resolve, reject) {
+          db.all("SELECT * FROM users", (err, data) => {
+              try{
+                  if(data!=undefined){
+                      resolve(data)
+                  }else{
+                      resolve(null)
+                  }
+              }catch(e){console.error(e);resolve(null)}
+          })
+          setTimeout(reject,1000)
+      })
     }
 
     #getInfo(key){
@@ -242,7 +273,7 @@ class User{
                     if(data!=undefined){
                         let list=[]
                         data.forEach(e=>{
-                            list.push(e.amis)
+                            list.push(e.ami)
                         })
                         resolve(list)
                     }else{
@@ -258,7 +289,7 @@ class User{
         db.serialize(()=>{
           db.run("delete from amis WHERE uuid=?",[uuid])
           list.forEach(e=>{
-              db.run("INSERT INTO amis(uuid,amis) VALUES (?,?)",[uuid,e])
+              db.run("INSERT INTO amis(uuid,ami) VALUES (?,?)",[uuid,e])
           })
         })
     }
@@ -728,8 +759,7 @@ async function main() {
           
           let {data} = await oauth2.userinfo.get();
           console.log("email",data.email)
-          emailT=data.email.split("@")
-          if(emailT[1]=="stemariebeaucamps.fr"){
+          if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
             let tokenAuth = await (await User.createUser(data.email)).createToken()
             res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
             res.end();
@@ -771,7 +801,7 @@ async function main() {
             res.end();
           });
         }
-      }catch(e){}
+      }catch(e){console.error(e)}
     }
 
   }).listen(3000);
@@ -793,7 +823,7 @@ async function main() {
         try{
           user.admin = msg
           socket.emit('my_admin_mode',"ok")
-        }catch(e){}
+        }catch(e){console.error(e)}
       })
     }
   })
@@ -811,7 +841,7 @@ async function main() {
         }else{
           socket.emit('id_data',"err")
         }
-      }catch(e){}
+      }catch(e){console.error(e)}
     });
 
     socket.on('my_score', async msg => {
@@ -821,13 +851,13 @@ async function main() {
         }else{
           socket.emit('my_score',await user.listPoint)
         }
-      }catch(e){}
+      }catch(e){console.error(e)}
     });
 
     socket.on('info_menu_semaine', async msg => {
       try{
         socket.emit('info_menu_semaine',await getMidiMenu(msg))
-      }catch(e){}
+      }catch(e){console.error(e)}
     });
 
     socket.on('info_horaire', async msg => {
@@ -837,7 +867,7 @@ async function main() {
           info={}
         }
         socket.emit('info_horaire',info)
-      }catch(e){}
+      }catch(e){console.error(e)}
     });
 
 
@@ -845,11 +875,34 @@ async function main() {
       try{
         user.tuto = msg
         socket.emit('tuto','ok')
-      }catch(e){}
+      }catch(e){console.error(e)}
+    });
+
+    socket.on('amis', async msg => {
+      try{
+        if(msg=='get'){
+          socket.emit('amis',await user.amis)
+        }else if (msg.class==[].class){
+          user.amis=msg
+          socket.emit('amis','ok')
+        }
+      }catch(e){console.error(e)}
+    });
+
+    socket.on('list_users', async msg => {
+      try{
+        socket.emit('list_users',await User.listUsersName())
+      }catch(e){console.error(e)}
     });
   });
-  //setMidiInfo(43,2,1,false,3,75,175,true,["2F","Y"])
-  //setMidiMenu(43,"poison")
-  //addGlobalPoint("a","a",5)
+  
+  
+  /*setMidiInfo(43,2,1,false,3,75,175,true,["2F","Y"])
+  setMidiMenu(43,"poison")
+  addGlobalPoint("a","a",5)
+
+  User.createUser('robin.delatre@stemariebeaucamps.fr')
+  User.createUser('A.B@stemariebeaucamps.fr')
+  User.createUser('C.D@stemariebeaucamps.fr')*/
 }
 main().catch(console.error);

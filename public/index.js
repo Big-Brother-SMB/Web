@@ -50,7 +50,7 @@ async function connect(){
   if(common.id_data!='err'){
     common.writeCookie("week",common.actualWeek)
     common.writeCookie("connect",true)
-    if(common.id_data.admin>=1){
+    if(common.id_data.admin==2){
       window.location.href = "/admin/menu/menu.html";
     } else {
       window.location.href = "/menu/menu.html";

@@ -54,10 +54,9 @@ if(params.token!=null){
   writeCookie("key",params.token)
 }
 
-let key=readCookie("key")
+export let key=readCookie("key")
 
-export {io,key};
-export let socket = io({
+let socket = io({
     auth: {
         token: key
     }
@@ -71,26 +70,6 @@ export async function socketAsync(channel,msg){
         });
         setTimeout(reject,5000)
     })
-}
-
-export let socketAdmin = io("/admin",{
-  auth: {
-    token: key
-  }
-});
-
-export async function socketAdminAsync(channel,msg){
-  if(admin>0){
-    return new Promise(function(resolve, reject) {
-      socketAdmin.emit(channel,msg);
-      socketAdmin.once(channel,result => {
-          resolve(result)
-      });
-      setTimeout(reject,5000)
-    })
-  } else {
-    return null
-  }
 }
 
 //---------------------------récupération de l'identité et des cookie/variable---------------------------
@@ -130,6 +109,30 @@ export let boolAllAmis = readBoolCookie("allAmis")
 export let week = readIntCookie("week")
 
 //---------------------------securité page admin + deco---------------------------
+
+
+let socketAdmin
+if(admin>0){
+  socketAdmin = io("/admin",{
+    auth: {
+      token: key
+    }
+  });
+}
+
+export async function socketAdminAsync(channel,msg){
+  if(admin>0){
+    return new Promise(function(resolve, reject) {
+      socketAdmin.emit(channel,msg);
+      socketAdmin.once(channel,result => {
+          resolve(result)
+      });
+      setTimeout(reject,5000)
+    })
+  } else {
+    return null
+  }
+}
 
 if (readBoolCookie("connect")) {
     if(admin==2){
@@ -296,7 +299,7 @@ export function setColorMode(colorMode,backgroundColor,textColor){
 
 //---------------------------autocomplete---------------------------
 
-function autocomplete(inp, arr, func) {
+export function autocomplete(inp, arr, func) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
   var currentFocus;
