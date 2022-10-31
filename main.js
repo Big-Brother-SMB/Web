@@ -830,7 +830,6 @@ async function main() {
   io.on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
     console.log("uuid socket:",await user.uuid)
-    //user.admin=1
 
     socket.on('id_data', async msg => {
       try{

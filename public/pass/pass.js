@@ -1,9 +1,9 @@
-//setColorMode("..")
+import * as common from "../common.js";
 
 let d = new Date();
 
-let j = dayWithMer[d.getDay() - 1];
-document.getElementById("day").innerHTML = allDay[d.getDay()]
+let j = common.dayWithMer[d.getDay() - 1];
+document.getElementById("day").innerHTML = common.allDay[d.getDay()]
 let h;
 if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
     h = "/11h";
@@ -11,7 +11,7 @@ if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
     h = "/12h";
 }
 
-
+/*
 
 database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + user).once("value", function(snapshot) {
     database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/ouvert").once("value", function(snapshotO) {
@@ -53,9 +53,9 @@ database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + us
     })
 });
 
+*/
 
-
-document.getElementById("user").innerHTML = userName + " " + classe
+document.getElementById("user").innerHTML = common.first_name + " " + common.last_name + " " + common.classe
 
 function loop(){
     let d2 = new Date();
@@ -70,24 +70,21 @@ function loop(){
         window.location.href = window.location.href;
     }
 
-    document.getElementById("heure").innerHTML = getHour()
-    document.getElementById("code").innerHTML = hashDate()
+    document.getElementById("heure").innerHTML = common.getHour()
+    document.getElementById("code").innerHTML = common.hashControl()
     setTimeout(loop,500);
 }
 loop();
 
 
-
-
-
 const containerElement = document.getElementById('single');
 
-console.log(codeBar)
-const bcid = 'bc'+codeBar;
+
+const bcid = 'bc'+common.codeBar;
 // create the image element
 const bcimg = document.createElement('img');
 bcimg.className = "barcode";
 bcimg.setAttribute('id', bcid);
 containerElement.appendChild(bcimg);
-JsBarcode('#'+bcid, codeBar, {format: 'code39'});
+JsBarcode('#'+bcid, common.codeBar, {format: 'code39'});
 
