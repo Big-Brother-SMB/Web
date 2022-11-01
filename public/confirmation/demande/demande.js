@@ -120,7 +120,7 @@ if(info.ouvert != 2){
 }
 
 listDemandes.forEach(function(child) {
-    const index = amisUuid.indexOf(child.uuid)
+    const index = listAmisUuid.indexOf(child.uuid)
     if(child.DorI==true){
         inscrits++
         if(index != -1){
@@ -150,24 +150,23 @@ document.getElementById("info").innerHTML = "Demander l'inscription<br>pour le "
 + "Il reste " + reste + " places<br>(" + inscrits + " inscrits pour " + places + " places)<br>Il y déjà " + demandes
 + " demandes en cours<br>Votre score est de " + textScore
 
-if(h == 1){
-    document.getElementById("opt").style.display = "inline"
-}
 
 
-document.getElementById("oui").addEventListener("click", function() {
+document.getElementById("oui").addEventListener("click", async function() {
     let str = ""
+    let amis = []
     for(let i in boolAmis){
         if(boolAmis[i]){
-            str += amis[i] + "/"
-            database.ref(path(j,h) + "/demandes/" + user + "/amis/" + [i]).set(0);
+            str += listAmisUuid[i] + "/"
+            amis.push(listAmisUuid[i])
         }
 
     }
     common.writeCookie("derniere demande",str)
 
-    //%common.socketAsync('my_demande',[w,j,h,amis])
-    window.location.href = window.location.origin + "/menu/menu.html";
+    if(await common.socketAsync('my_demande',[w,j,h,amis])=='ok'){
+        window.location.href = window.location.origin + "/menu/menu.html";
+    }
 });
 document.getElementById("non").addEventListener("click", function() {
     window.location.href = window.location.origin + "/menu/menu.html";

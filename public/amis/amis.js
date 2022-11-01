@@ -40,12 +40,9 @@ function reload(){
     })
     common.autocomplete(document.getElementById("addAmi"), usersNames,function(){});
 
-    console.log(usersNames)
-    console.log(users)
     console.log(listAmisUuid)
     document.getElementById("ajout").addEventListener("click", function() {
         let ami = document.getElementById("addAmi").value
-        console.log(usersNames.indexOf(ami))
         if(usersNames.indexOf(ami) != -1){
             if(listAmisUuid.indexOf(users[usersNames.indexOf(ami)].uuid) == -1){
                 listAmisUuid.push(users[usersNames.indexOf(ami)].uuid)

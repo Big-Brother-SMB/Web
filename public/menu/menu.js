@@ -45,7 +45,6 @@ document.getElementById("semaineSuivante").addEventListener("click", function ()
 
 const body = document.getElementById("body");
 Date.prototype.getWeek = function () {
-    console.log(this)
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 0) / 7);
 }
@@ -138,6 +137,9 @@ async function refreshDatabase() {
     for (let j = 0; j < 4; j++) {
         for (let h = 0; h < 2; h++) {
             let info_horaire = await common.socketAsync("info_horaire",[week,j,h])
+            let my_demande = await common.socketAsync("my_demande",[week,j,h])
+            let list_demandes = await common.socketAsync("list_demandes",[week,j,h])
+
             placesTotal[j][h] = info_horaire["places"];
             if(placesTotal[j][h]==null || placesTotal[j][h]==""){
                 placesTotal[j][h]=0
@@ -159,44 +161,43 @@ async function refreshDatabase() {
             demandes[j][h] = []
             demande[j][h] = false;
 
-            for(let e in info_horaire.list_demande){
-                nbDemandes[j][h]++
-                if (e == common.uuid) {
-                    demande[j][h] = true;
-                } else {
-                    demandes[j][h].push(e)
-                }
-            };
-
-            //inscrits
-
             nbInscrits[j][h] = 0
             inscrits[j][h] = []
             inscrit[j][h] = false;
-
-
-            for(let e in info_horaire.list_demande){
-                nbInscrits[j][h]++
-                if (e == common.uuid) {
-                    inscrit[j][h] = true;
-                } else {
-                    inscrits[j][h].push(e)
-                }
-            };
-
 
             nbAmis[j][h] = 0
             nbAmisDemande[j][h] = 0
             nbAmisInscrit[j][h] = 0
 
-            for(let e in info_horaire.amis){
-                nbAmis[j][h]++
-                if (demandes[j][h].indexOf(child.key) != -1) {
-                    nbAmisDemande[j][h]++
+            list_demandes.forEach(e => {
+                if(e.DorI == 0){
+                    nbDemandes[j][h]++
+                    if (e.uuid == common.uuid) {
+                        demande[j][h] = true;
+                    } else {
+                        demandes[j][h].push(e.uuid)
+                    }
+                }else if(e.DorI == 1){
+                    nbInscrits[j][h]++
+                    if (e.uuid == common.uuid) {
+                        inscrit[j][h] = true;
+                    } else {
+                        inscrits[j][h].push(e.uuid)
+                    }
                 }
-                if (inscrits[j][h].indexOf(child.key) != -1) {
-                    nbAmisInscrit[j][h]++
-                }
+            });
+
+
+            if(my_demande.amis!=null){
+                my_demande.amis.forEach(e=>{
+                    nbAmis[j][h]++
+                    if (demandes[j][h].indexOf(e) != -1) {
+                        nbAmisDemande[j][h]++
+                    }
+                    if (inscrits[j][h].indexOf(e) != -1) {
+                        nbAmisInscrit[j][h]++
+                    }
+                })
             }
             update(j, h);
         }

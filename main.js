@@ -42,6 +42,7 @@ let mimeTypes = {
   '.jpg': 'image/jpeg',
   '.png': 'image/png',
   '.ico': 'image/x-icon',
+  '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.eot': 'appliaction/vnd.ms-fontobject',
   '.ttf': 'aplication/font-sfnt'
@@ -134,9 +135,9 @@ class User{
                     if(data!=undefined){
                         resolve(data)
                     }else{
-                        resolve(null)
+                        resolve([])
                     }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){console.error(e);resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -153,9 +154,9 @@ class User{
                       })
                       resolve(list)
                   }else{
-                      resolve(null)
+                      resolve([])
                   }
-              }catch(e){console.error(e);resolve(null)}
+              }catch(e){console.error(e);resolve([])}
           })
           setTimeout(reject,1000)
       })
@@ -168,9 +169,9 @@ class User{
                   if(data!=undefined){
                       resolve(data)
                   }else{
-                      resolve(null)
+                      resolve([])
                   }
-              }catch(e){console.error(e);resolve(null)}
+              }catch(e){console.error(e);resolve([])}
           })
           setTimeout(reject,1000)
       })
@@ -202,10 +203,12 @@ class User{
 
     get all(){
         let uuid = this.uuid
+        let groups = this.groups
         return new Promise(function(resolve, reject) {
-            db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
+            db.get("SELECT * FROM users where uuid=?",[uuid], async (err, data) => {
                 try{
                     if(data!=undefined){
+                        data.groups = await groups
                         resolve(data)
                     }else{
                         resolve(null)
@@ -277,9 +280,9 @@ class User{
                         })
                         resolve(list)
                     }else{
-                        resolve(null)
+                        resolve([])
                     }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){console.error(e);resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -301,14 +304,14 @@ class User{
                 try{
                     if(data!=undefined){
                         let list=[]
-                        for(let e in data){
+                        data.forEach(e=>{
                             list.push(e.group2)
-                        }
+                        })
                         resolve(list)
                     }else{
-                        resolve(null)
+                        resolve([])
                     }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){console.error(e);resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -323,24 +326,26 @@ class User{
         })
     }
     //demandes
-    getMidiDemande(){
+    getMidiDemande(semaine,creneau){
+      let uuid = this.uuid
       return new Promise(function(resolve, reject) {
-        let uuid = this.uuid
         db.get("SELECT * FROM midi_list WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid], (err, data) => {
           try {
             if(data!=undefined){
-              db.all("SELECT * FROM midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,data.uuid], (err, data2) => {
+              db.all("SELECT * FROM midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid], (err, data2) => {
                 let list=[]
-                data2.forEach(e=>{
-                  list.push(e.ami)
-                })
-                data.push(list)
+                if(data!=undefined){
+                  data2.forEach(e=>{
+                    list.push(e.amis)
+                  })
+                }
+                data["amis"]=list
+                resolve(data)
               })
-              resolve(data)
             }else{
-              resolve(null)
+              resolve({})
             }
-          }catch(e){console.error(e);resolve(null)}
+          }catch(e){console.error(e);resolve({})}
         })
         setTimeout(reject,1000)
       })
@@ -361,7 +366,27 @@ class User{
         })
       })
     }
-    //%getperm
+    delMidiDemande(semaine,creneau){
+      let uuid = this.uuid
+      db.run("delete from midi_list where semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid])
+    }
+
+    //perm
+    getPermDemande(semaine,day,creneau){
+      let uuid = this.uuid
+      return new Promise(function(resolve, reject) {
+        db.get("SELECT * FROM perm_list WHERE semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid], (err, data) => {
+          try {
+            if(data!=undefined){
+              resolve(data)
+            }else{
+              resolve({})
+            }
+          }catch(e){console.error(e);resolve({})}
+        })
+        setTimeout(reject,1000)
+      })
+    }
     setPermDemande(semaine,day,creneau,group,nb,DorI){
       let uuid = this.uuid
       db.get("SELECT * FROM perm_list where semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid], (err, data) => {
@@ -395,19 +420,23 @@ class User{
                             list.push(e)
                           })
                       }
-                      db.all("SELECT * FROM midi_list WHERE uuid=?",[uuid], (err, data) => {
+                      db.all("SELECT * FROM midi_list WHERE uuid=? and DorI=True",[uuid], async (err, data) => {
                         try{
                             if(data!=undefined){
-                                data.forEach(e=>{
-                                  list.push(e)
-                                }) 
+                              for (let i in data){
+                                list.push(await new Promise(function(resolve2, reject2) {
+                                  db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=?",[data[i].semaine,data[i].creneau], (err, data2) => {
+                                    resolve2(data2)
+                                  })
+                                }))
+                              }
                             }
                             resolve(list)
-                        }catch(e){console.error(e);resolve(null)}
+                        }catch(e){console.error(e);resolve([])}
                       })
-                  }catch(e){console.error(e);resolve(null)}
+                  }catch(e){console.error(e);resolve([])}
                 })
-            }catch(e){console.error(e);resolve(null)}
+            }catch(e){console.error(e);resolve([])}
         })
         setTimeout(reject,1000)
       })
@@ -430,12 +459,16 @@ class User{
                               score+=e.value
                           })
                       }
-                      db.all("SELECT * FROM midi_list WHERE uuid=?",[uuid], (err, data) => {
+                      db.all("SELECT * FROM midi_list WHERE uuid=? and DorI=True",[uuid], async (err, data) => {
                         try{
                             if(data!=undefined){
-                                data.forEach(e=>{
-                                  score+=e.cout
-                                })
+                                for (let i in data){
+                                  score+=await new Promise(function(resolve2, reject2) {
+                                    db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=?",[data[i].semaine,data[i].creneau], (err, data2) => {
+                                      resolve2(data2.cout)
+                                    })
+                                  })
+                                }
                             }
                             resolve(score)
                         }catch(e){console.error(e);resolve(null)}
@@ -508,9 +541,9 @@ function setVar(key,value){
           if(data!=undefined){
             resolve(data)
           }else{
-            resolve(null)
+            resolve([])
           }
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -525,9 +558,9 @@ function setVar(key,value){
           if(data!=undefined){
             resolve(data)
           }else{
-            resolve(null)
+            resolve({})
           }
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve({})}
       })
       setTimeout(reject,1000)
     })
@@ -546,11 +579,18 @@ function setVar(key,value){
       db.get("SELECT * FROM midi_info where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
         try {
           if(data!=undefined){
-            resolve(data)
+            db.all("SELECT * FROM midi_prio where semaine=? and creneau=?",[semaine,creneau], (err, data2) => {
+              let list=[]
+              data2.forEach(e=>{
+                list.push(e.group2)
+              })
+              data.prio=list
+              resolve(data)
+            })
           }else{
-            resolve(null)
+            resolve({})
           }
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve({})}
       })
       setTimeout(reject,1000)
     })
@@ -581,14 +621,14 @@ function setVar(key,value){
                 data2.forEach(e=>{
                   list.push(e.amis)
                 })
-                data[i].push(list)
+                data[i]["amis"]=list
               })
             }
             resolve(data)
           }else{
-            resolve(null)
+            resolve([])
           }
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -609,9 +649,9 @@ function setVar(key,value){
           if(data!=undefined){
             resolve(data)
           }else{
-            resolve(null)
+            resolve([])
           }
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -785,7 +825,7 @@ async function main() {
           
           let {data} = await oauth2.userinfo.get();
           console.log("email",data.email)
-          if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
+          if(true){//%if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
             let tokenAuth = await (await User.createUser(data.email)).createToken()
             res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
             res.end();
@@ -810,21 +850,23 @@ async function main() {
       let staticFiles = `${__dirname}/public/${pathName}`;
       
       try{
-        if(extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg'){
+        if(extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg' || extName == '.gif'){
           let file = fs.readFileSync(staticFiles);
           res.writeHead(200, {'Content-Type': mimeTypes[extName]});
           res.write(file, 'binary');
           res.end();
         }else {
           fs.readFile(staticFiles, 'utf8', function (err, data) {
-            if(!err){
-              res.writeHead(200, {'Content-Type': mimeTypes[extName]});
-              res.end(data);
-            }else {
-              res.writeHead(200);
-              res.end(fs.readFileSync(`${__dirname}/public/404.html`));
-            }
-            res.end();
+            try{
+              if(!err){
+                res.writeHead(200, {'Content-Type': mimeTypes[extName]});
+                res.end(data);
+              }else {
+                res.writeHead(200);
+                res.end(fs.readFileSync(`${__dirname}/public/404.html`));
+              }
+              res.end();
+            }catch(e){console.error(e)}
           });
         }
       }catch(e){console.error(e)}
@@ -856,7 +898,7 @@ async function main() {
   io.on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
     console.log("uuid socket:",await user.uuid)
-    //user.classe="1D"
+
 
     socket.on('id_data', async msg => {
       try{
@@ -873,7 +915,9 @@ async function main() {
     socket.on('my_score', async msg => {
       try{
         if(msg=="int"){
-          socket.emit('my_score',await user.score)
+          let score = await user.score
+          if(score==null) score=0
+          socket.emit('my_score',score)
         }else{
           socket.emit('my_score',await user.listPoint)
         }
@@ -889,9 +933,6 @@ async function main() {
     socket.on('info_horaire', async msg => {
       try{
         let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
-        if(info==null){
-          info={}
-        }
         socket.emit('info_horaire',info)
       }catch(e){console.error(e)}
     });
@@ -929,10 +970,14 @@ async function main() {
 
     socket.on('my_demande', async msg => {
       try{
-        if('get'){
+        if(msg.length==3){
           socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
-        }else if(msg.class==[].class){
-          socket.emit('my_demande',await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,null))
+        }else if(msg[3]===false){
+          await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
+          socket.emit('my_demande',"ok")
+        } else if(msg.length==4){
+          await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,false)
+          socket.emit('my_demande',"ok")
         }
       }catch(e){console.error(e)}
     });
@@ -945,7 +990,7 @@ async function main() {
   });
   
   
-  //setMidiInfo(43,2,1,false,2,75,175,true,["2F","Y"])
+  //setMidiInfo(43,7,1,false,2,75,175,true,["2F","A"])
   /*setMidiMenu(43,"poison")
   addGlobalPoint("a","a",5)
 

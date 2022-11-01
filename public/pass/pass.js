@@ -6,54 +6,48 @@ let j = common.dayWithMer[d.getDay() - 1];
 document.getElementById("day").innerHTML = common.allDay[d.getDay()]
 let h;
 if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
-    h = "/11h";
+    h = 0;
 }else{
-    h = "/12h";
+    h = 1;
 }
 
-/*
 
-database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/inscrits/" + user).once("value", function(snapshot) {
-    database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/ouvert").once("value", function(snapshotO) {
-        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/croix.gif\" />"
-        if(snapshotO.val()!=5){
-            if(snapshot.val()!=null){
-                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/ok.gif\" />"
-                database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
-                    snapshot.forEach(function(child) {
-                        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
-                            if(snapshot.val() != null){
-                                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prio.gif\" />"
-                            }
-                        })
-                    })
-                })
-                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
-                    if(snapshot.val() != null){
-                        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prio.gif\" />"
-                    }
-                })
-            }else{
-                database.ref("users/" + user + "/priorites").once("value", function(snapshot) {
-                    snapshot.forEach(function(child) {
-                        database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + child.key).once("value", function(snapshot) {
-                            if(snapshot.val() != null){
-                                document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prioSelf.png\" />"
-                            }
-                        })
-                    })
-                })
-                database.ref("foyer_midi/semaine" + actualWeek + "/" + j + h + "/prioritaires/" + classe).once("value", function(snapshot) {
-                    if(snapshot.val() != null){
-                        document.getElementById("pass").innerHTML = "<img class=\"pass\" src=\"../../Images/prioSelf.png\" />"
-                    }
-                })
-            }
+
+
+
+let info_horaire = await common.socketAsync("info_horaire",[common.actualWeek,j,h])
+let my_demande = await common.socketAsync("my_demande",[common.actualWeek,j,h])
+
+console.log(info_horaire)
+console.log(my_demande)
+
+
+if(info_horaire.ouvert!=5){
+    if(my_demande.DorI==true){
+        document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/ok.gif" />'
+        if(info_horaire.prio.indexOf(common.classe)!=-1){
+            document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prio.gif" />'
         }
-    })
-});
+        common.groups.forEach(e=>{
+            if(info_horaire.prio.indexOf(e)!=-1){
+                document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prio.gif" />'
+            }
+        })
+    }else{
+        document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/croix.gif" />'
+        if(info_horaire.prio.indexOf(common.classe)!=-1){
+            document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prioSelf.png" />'
+        }
+        common.groups.forEach(e=>{
+            if(info_horaire.prio.indexOf(e)!=-1){
+                document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prioSelf.png" />'
+            }
+        })
+    }
+}else{
+    document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/croix.gif" />'
+}
 
-*/
 
 document.getElementById("user").innerHTML = common.first_name + " " + common.last_name + " " + common.classe
 

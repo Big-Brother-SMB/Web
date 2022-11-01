@@ -78,10 +78,9 @@ export let id_data = await socketAsync("id_data","")
 console.log(id_data)
 
 export let admin
-export let amis
 export let classe
 export let codeBar
-//email
+export let email
 export let first_name
 export let groups
 export let last_name
@@ -89,12 +88,11 @@ export let tuto
 export let uuid
 if(id_data!='err'){
     admin = id_data.admin
-    //amis = id_data.amis.split(";")
     classe = id_data.classe
     codeBar = id_data.code_barre
-    //email
+    email = id_data.email
     first_name = id_data.first_name
-    //groups = id_data.groups.split(";")
+    groups = id_data.groups
     last_name = id_data.last_name
     tuto = id_data.tuto
     uuid = id_data.uuid
@@ -248,14 +246,14 @@ export function hashHour(){
 //---------------------------listes---------------------------
 
 export const day = ["Lundi", "Mardi","Jeudi","Vendredi"];
-
-export const dayWithMer = ["1lundi", "2mardi","err","3jeudi","4vendredi"]
-export const dayNum = ["1lundi", "2mardi","3jeudi","4vendredi"];
-
 export const dayMer = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"];
-export const dayNumMer = ["1lundi", "2mardi","3mercredi","4jeudi","5vendredi"];
-
 export const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+
+export const dayWithMer = [0,1,"err",2,3]
+export const dayNum = [0,1,2,3];
+export const dayNumMer = [0,1,2,3,5];
+
+
 
 export const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
 export const listModePerm = ["Selection","Fermé","Ouvert à tous","Reservation","Vacances"]

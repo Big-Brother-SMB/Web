@@ -11,12 +11,20 @@ let i=0
 
 let data = await common.socketAsync('my_score',null)
 let total = 0
-for(let child in data) {    let event = document.createElement("button")
+for(let child in data) {
+    let event = document.createElement("button")
     event.classList.add("event")
 
 
-    let name = data[child].name
-    let eventScore = data[child].value
+    let name
+    let eventScore
+    if(data[child].cout!=undefined){
+        name = "Repas du semaine "+data[child].semaine+" creneau n°"+data[child].creneau
+        eventScore = data[child].cout
+    }else{
+        name = data[child].name
+        eventScore = data[child].value
+    }
 
 
     histogramGain[i] = eventScore
@@ -37,14 +45,6 @@ for(let child in data) {    let event = document.createElement("button")
                     borderColor: "rgba(100,155,155,1)",
                     label: 'Total',
                     data: histogramValues,
-                    borderWidth: 3
-                },
-                {
-                    borderColor: "rgba(70,155,100,1)",
-                    lineTension: 0,
-                    fill: false,
-                    label: 'Gain',
-                    data: histogramGain,
                     borderWidth: 3
                 }
                 ]
