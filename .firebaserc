@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "big-brother-ac39c"
+  },
+  "targets": {
+    "big-brother-ac39c": {
+      "hosting": {
+        "public": [
+          "foyer-smb"
+        ]
+      }
+    }
+  }
+}
