@@ -167,85 +167,87 @@ function refreshDatabase() {
             document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
 
 
-            for (let j = 0; j < 4; j++) {
-                for (let h = 0; h < 2; h++) {
-                    database.ref(path(j, h)).once('value').then(function (snapshotP) {
-                        placesTotal[j][h] = snapshotP.child("places").val();
-                        if(placesTotal[j][h]==null || placesTotal[j][h]==""){
-                            placesTotal[j][h]=0
-                        }
-
-                        if (snapshotP.child("ouvert").val() == null) {
-                            ouvert[j][h] = 0
-                        } else {
-                            ouvert[j][h] = snapshotP.child("ouvert").val()
-                        }
-
-                        if (snapshotP.child("cout").val() != null) {
-                            cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
-                        }
-
-                        //demande en cours
-
-                        nbDemandes[j][h] = 0
-                        demandes[j][h] = []
-                        demande[j][h] = false;
-
-                        snapshotP.child("demandes").forEach(function (child) {
-                            const name = child.key
-                            nbDemandes[j][h]++
-                            if (name == user) {
-                                demande[j][h] = true;
-                            } else {
-                                demandes[j][h].push(name)
-                            }
-                        });
-
-                        //inscrits
-
-                        nbInscrits[j][h] = 0
-                        inscrits[j][h] = []
-                        inscrit[j][h] = false;
-
-                        snapshotP.child("inscrits").forEach(function (child) {
-                            const name = child.key
-                            nbInscrits[j][h]++
-                            if (name == user) {
-                                inscrit[j][h] = true;
-                            } else {
-                                inscrits[j][h].push(name)
-                            }
-                        });
-
-
-                        nbAmis[j][h] = 0
-                        nbAmisDemande[j][h] = 0
-                        nbAmisInscrit[j][h] = 0
-
-                        snapshotP.child("/demandes/" + user + "/amis").forEach(function (child) {
-                            nbAmis[j][h]++
-                            if (demandes[j][h].indexOf(child.key) != -1) {
-                                nbAmisDemande[j][h]++
-                            }
-                            if (inscrits[j][h].indexOf(child.key) != -1) {
-                                nbAmisInscrit[j][h]++
-                            }
-                        });
-                        snapshotP.child("/inscrits/" + user + "/amis").forEach(function (child) {
-                            nbAmis[j][h]++
-                            if (demandes[j][h].indexOf(child.key) != -1) {
-                                nbAmisDemande[j][h]++
-                            }
-                            if (inscrits[j][h].indexOf(child.key) != -1) {
-                                nbAmisInscrit[j][h]++
-                            }
-                        });
-                        update(j, h);
-                    })
-                }
-            }
+            
         });
     });
+
+    for (let j = 0; j < 4; j++) {
+        for (let h = 0; h < 2; h++) {
+            database.ref(path(j, h)).once('value').then(function (snapshotP) {
+                placesTotal[j][h] = snapshotP.child("places").val();
+                if(placesTotal[j][h]==null || placesTotal[j][h]==""){
+                    placesTotal[j][h]=0
+                }
+
+                if (snapshotP.child("ouvert").val() == null) {
+                    ouvert[j][h] = 0
+                } else {
+                    ouvert[j][h] = snapshotP.child("ouvert").val()
+                }
+
+                if (snapshotP.child("cout").val() != null) {
+                    cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
+                }
+
+                //demande en cours
+
+                nbDemandes[j][h] = 0
+                demandes[j][h] = []
+                demande[j][h] = false;
+
+                snapshotP.child("demandes").forEach(function (child) {
+                    const name = child.key
+                    nbDemandes[j][h]++
+                    if (name == user) {
+                        demande[j][h] = true;
+                    } else {
+                        demandes[j][h].push(name)
+                    }
+                });
+
+                //inscrits
+
+                nbInscrits[j][h] = 0
+                inscrits[j][h] = []
+                inscrit[j][h] = false;
+
+                snapshotP.child("inscrits").forEach(function (child) {
+                    const name = child.key
+                    nbInscrits[j][h]++
+                    if (name == user) {
+                        inscrit[j][h] = true;
+                    } else {
+                        inscrits[j][h].push(name)
+                    }
+                });
+
+
+                nbAmis[j][h] = 0
+                nbAmisDemande[j][h] = 0
+                nbAmisInscrit[j][h] = 0
+
+                snapshotP.child("/demandes/" + user + "/amis").forEach(function (child) {
+                    nbAmis[j][h]++
+                    if (demandes[j][h].indexOf(child.key) != -1) {
+                        nbAmisDemande[j][h]++
+                    }
+                    if (inscrits[j][h].indexOf(child.key) != -1) {
+                        nbAmisInscrit[j][h]++
+                    }
+                });
+                snapshotP.child("/inscrits/" + user + "/amis").forEach(function (child) {
+                    nbAmis[j][h]++
+                    if (demandes[j][h].indexOf(child.key) != -1) {
+                        nbAmisDemande[j][h]++
+                    }
+                    if (inscrits[j][h].indexOf(child.key) != -1) {
+                        nbAmisInscrit[j][h]++
+                    }
+                });
+                update(j, h);
+            })
+        }
+    }
 }
 
 
