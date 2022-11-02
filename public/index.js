@@ -1,11 +1,11 @@
+import * as common from "./common.js";
+
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
 if(params.err!=null){
   document.getElementById("infos").innerHTML += params.err + "<br>"
 }
-
-import * as common from "./common.js";
 
 //---------------------------récupération de l'identité---------------------------
 if(common.id_data=='err'){

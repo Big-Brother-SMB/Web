@@ -50,7 +50,13 @@ Date.prototype.getWeek = function () {
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 0) / 7);
 }
 
-
+let banderole = await common.socketAsync("banderole",null)
+if (banderole != null && document.getElementById("banderole")!=null) {
+  document.getElementById("banderole").innerHTML = banderole
+  if (banderole.length > 0) {
+    document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
+  }
+}
 
 let bouton = [];
 let placesTotal = [];
@@ -301,11 +307,11 @@ function update(j, h) {
 function select(j, h) {
     const hInv = h==0?1:0
     if (ouvert[j][h] == 2 && demande[j][h]) {
-        window.location.href = "../confirmation/modifier/modifier.html?j="+j+"&h="+h;
+        window.location.href = "../confirmation/modifier/modifier.html?j="+j+"&h="+h+"&w="+week;
     }else if(ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]){
-        window.location.href = "../confirmation/demande/demande.html?j="+j+"&h="+h;
+        window.location.href = "../confirmation/demande/demande.html?j="+j+"&h="+h+"&w="+week;
     }else if((ouvert[j][h] == 2 || ouvert[j][h] == 3) && inscrit[j][h]){
-        window.location.href = "../confirmation/inscrit/inscrit.html?j="+j+"&h="+h;
+        window.location.href = "../confirmation/inscrit/inscrit.html?j="+j+"&h="+h+"&w="+week;
     }
 }
 

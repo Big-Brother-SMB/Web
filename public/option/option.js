@@ -2,7 +2,7 @@ import * as common from "../common.js";
 
 let switchAllAmis = document.getElementById("allAmis")
 
-switchAllAmis.checked = common.boolAllAmis
+switchAllAmis.checked = common.readBoolCookie("allAmis")
 switchAllAmis.addEventListener("change", function () {
     common.writeCookie("allAmis", this.checked)
 })

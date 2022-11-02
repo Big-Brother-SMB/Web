@@ -105,7 +105,6 @@ if(id_data!='err'){
 export let colorMode = readIntCookie("color mode")
 export let backgroundColor = readCookie("color background")
 export let textColor = readCookie("color text")
-export let boolAllAmis = readBoolCookie("allAmis")
 export let week = readIntCookie("week")
 
 //---------------------------securité page admin + deco---------------------------

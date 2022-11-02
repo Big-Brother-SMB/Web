@@ -322,6 +322,56 @@ class User{
             })
         })
     }
+    //demandes
+    getMidiDemande(){
+      return new Promise(function(resolve, reject) {
+        let uuid = this.uuid
+        db.get("SELECT * FROM midi_list WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid], (err, data) => {
+          try {
+            if(data!=undefined){
+              db.all("SELECT * FROM midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,data.uuid], (err, data2) => {
+                let list=[]
+                data2.forEach(e=>{
+                  list.push(e.ami)
+                })
+                data.push(list)
+              })
+              resolve(data)
+            }else{
+              resolve(null)
+            }
+          }catch(e){console.error(e);resolve(null)}
+        })
+        setTimeout(reject,1000)
+      })
+    }
+    setMidiDemande(semaine,creneau,amis,DorI,scan){
+      let uuid = this.uuid
+      db.get("SELECT * FROM midi_list where semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid], (err, data) => {
+        if(data==undefined){
+          db.run("INSERT INTO midi_list(semaine,creneau,uuid,scan,DorI) VALUES (?,?,?,?,?)",[semaine,creneau,uuid,scan,DorI])
+        } else{
+          db.run("UPDATE midi_list SET scan=?,DorI=? where semaine=? and creneau=? and uuid=?",[scan,DorI,semaine,creneau,uuid])
+        }
+      })
+      db.serialize(()=>{
+        db.run("delete from midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid])
+        amis.forEach(e=>{
+          db.run("INSERT INTO midi_amis(semaine,creneau,uuid,amis) VALUES (?,?,?,?)",[semaine,creneau,uuid,e])
+        })
+      })
+    }
+    //%getperm
+    setPermDemande(semaine,day,creneau,group,nb,DorI){
+      let uuid = this.uuid
+      db.get("SELECT * FROM perm_list where semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid], (err, data) => {
+        if(data==undefined){
+          db.run("INSERT INTO perm_list(semaine,day,creneau,uuid,group2,nb,DorI) VALUES (?,?,?,?,?,?,?)",[semaine,day,creneau,uuid,group,nb,DorI])
+        } else{
+          db.run("UPDATE perm_list SET group2=?,nb=?,DorI=? where semaine=? and day=? and creneau=? and uuid=?",[group,nb,DorI,semaine,day,creneau,uuid])
+        }
+      })
+    }
 
     //point
     addPersonalPoint(date,name,value){
@@ -465,15 +515,6 @@ function setVar(key,value){
       setTimeout(reject,1000)
     })
   }
-  function setPermDemande(semaine,day,creneau,uuid,group,nb,DorI){
-    db.get("SELECT * FROM perm_list where semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid], (err, data) => {
-      if(data==undefined){
-        db.run("INSERT INTO perm_list(semaine,day,creneau,uuid,group2,nb,DorI) VALUES (?,?,?,?,?,?,?)",[semaine,day,creneau,uuid,group,nb,DorI])
-      } else{
-        db.run("UPDATE perm_list SET group2=?,nb=?,DorI=? where semaine=? and day=? and creneau=? and uuid=?",[group,nb,DorI,semaine,day,creneau,uuid])
-      }
-    })
-  }
   
   
   //midi
@@ -550,21 +591,6 @@ function setVar(key,value){
         }catch(e){console.error(e);resolve(null)}
       })
       setTimeout(reject,1000)
-    })
-  }
-  function setMidiDemande(semaine,creneau,uuid,amis,DorI,scan){
-    db.get("SELECT * FROM midi_list where semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid], (err, data) => {
-      if(data==undefined){
-        db.run("INSERT INTO midi_list(semaine,creneau,uuid,scan,DorI) VALUES (?,?,?,?,?)",[semaine,creneau,uuid,scan,DorI])
-      } else{
-        db.run("UPDATE midi_list SET scan=?,DorI=? where semaine=? and creneau=? and uuid=?",[scan,DorI,semaine,creneau,uuid])
-      }
-    })
-    db.serialize(()=>{
-      db.run("delete from midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid])
-      amis.forEach(e=>{
-        db.run("INSERT INTO midi_amis(semaine,creneau,uuid,amis) VALUES (?,?,?,?)",[semaine,creneau,uuid,e])
-      })
     })
   }
   
@@ -830,6 +856,7 @@ async function main() {
   io.on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
     console.log("uuid socket:",await user.uuid)
+    //user.classe="1D"
 
     socket.on('id_data', async msg => {
       try{
@@ -893,11 +920,33 @@ async function main() {
         socket.emit('list_users',await User.listUsersName())
       }catch(e){console.error(e)}
     });
+
+    socket.on('banderole', async msg => {
+      try{
+        socket.emit('banderole',await getVar('banderole'))
+      }catch(e){console.error(e)}
+    });
+
+    socket.on('my_demande', async msg => {
+      try{
+        if('get'){
+          socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
+        }else if(msg.class==[].class){
+          socket.emit('my_demande',await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,null))
+        }
+      }catch(e){console.error(e)}
+    });
+
+    socket.on('list_demandes', async msg => {
+      try{
+        socket.emit('list_demandes',await listMidiDemandes(msg[0],msg[1]*2+msg[2]))
+      }catch(e){console.error(e)}
+    });
   });
   
   
-  /*setMidiInfo(43,2,1,false,3,75,175,true,["2F","Y"])
-  setMidiMenu(43,"poison")
+  //setMidiInfo(43,2,1,false,2,75,175,true,["2F","Y"])
+  /*setMidiMenu(43,"poison")
   addGlobalPoint("a","a",5)
 
   User.createUser('robin.delatre@stemariebeaucamps.fr')
