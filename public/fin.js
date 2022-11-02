@@ -1,4 +1,5 @@
 firebase.auth().onAuthStateChanged(function(userX) {
+
   if(userX){
     user = userX.email.replaceAll('.','µ')
 
@@ -35,4 +36,11 @@ firebase.auth().onAuthStateChanged(function(userX) {
   }else{
     window.location.href = window.location.origin + "/index.html";
   }
+})
+
+
+document.getElementById("brr").addEventListener("click",function(){
+  document.getElementById("brr").style = "display:none"
+  document.getElementById("rr").style = "display:block"
+  document.getElementById("rr").play()
 })
