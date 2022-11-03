@@ -8,60 +8,64 @@ var histogramNames = []
 var histogramGain = []
 let i=0
 
-
+let list = []
 let data = await common.socketAsync('my_score',null)
-let total = 0
 data.forEach((child)=> {
     let event = document.createElement("button")
     event.classList.add("event")
 
 
-    let name
-    let eventScore
-    let date
+    let obj={}
     if(child.cout!=undefined){
-        name = "Repas du " + common.dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
-        eventScore = child.cout
-        date = common.getDayHash(Math.floor(child.creneau / 2),child.semaine,(11 + (child.creneau % 2)))
+        obj.name = "Repas du " + common.dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
+        obj.value = -child.cout
+        obj.date = common.getDayHash(Math.floor(child.creneau / 2),child.semaine,(11 + (child.creneau % 2)))
     }else{
-        name = child.name
-        eventScore = child.value
-        date = child.date
+        obj.name = child.name
+        obj.value = child.value
+        obj.date = child.date
     }
-    console.log(date)
+    list.push(obj)
+})
 
+list.sort(function compareFn(a, b) {
+    if(a.date>b.data){
+        return -1
+    }else if(a.date<b.data){
+        return 1
+    }else{
+        return 0
+    }
+})
 
-    histogramGain[i] = eventScore
+list.forEach((child)=> {
+    histogramGain[i] = child.value
     if (histogramValues.length==0){
-        histogramValues[i]=eventScore
-        }
-    else{
-        histogramValues[i]=Math.round((histogramValues[i-1]+eventScore)*100)/100
+        histogramValues[i] = child.value
+    }else{
+        histogramValues[i]=Math.round((histogramValues[i-1]+child.value)*100)/100
     }
-    histogramNames[i]=name
+    histogramNames[i]=child.name
     i++
-      const ctx = document.getElementById('myChart')
-        const myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: histogramNames,
-                datasets: [{
-                    borderColor: "rgba(100,155,155,1)",
-                    label: 'Total',
-                    data: histogramValues,
-                    borderWidth: 3
-                }
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    const ctx = document.getElementById('myChart')
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: histogramNames,
+            datasets: [{
+                borderColor: "rgba(100,155,155,1)",
+                label: 'Total',
+                data: histogramValues,
+                borderWidth: 3
+            }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
-
-    total += eventScore
-    total = Math.round(total*100)/100
+        }
+    });
 })

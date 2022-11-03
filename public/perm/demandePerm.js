@@ -30,6 +30,7 @@ if(listDemandes.lenght!=0){
     divDemandes.innerHTML = ""
 }
 listDemandes.forEach(function(child) {
+  if(child.DorI!=true){
     let name
     listUsers.forEach(child2=>{
         if(child.uuid==child2.uuid){
@@ -47,6 +48,7 @@ listDemandes.forEach(function(child) {
         })
     }
     divDemandes.appendChild(but);
+  }
 })
 
 
