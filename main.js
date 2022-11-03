@@ -10,6 +10,7 @@ npm i socket.io
 npm i sqlite3
 npm i url
 npm i uuid
+npm i pino
 */
 
 
@@ -512,7 +513,7 @@ class User{
                                     })
                                   })
                                   if(r!=undefined){
-                                    score+=r.cout
+                                    score-=r.cout
                                   }
                                 }
                             }
@@ -1067,16 +1068,16 @@ async function main() {
         }
       }catch(e){logger.error(e)}
     });
-    //console.log(await listPermDemandes(44,1,1))
-    //user.setPermDemande(43,2,1,"a",3,1)
+    //user.setMidiDemande(44,2,[],true,false)
+    user.setPermDemande(44,2,1,"A",32,true)
   });
   
 
+  /*addGlobalPoint("2021-01-01 20:00:00","Un point",1)
+  setVar('banderole',"coucou")
+  setMidiInfo(44,2,1,false,2,75,175,true,["2F","A"])
+  setMidiMenu(44,"poison")
   
-  //setVar('banderole',"aaa")
-  //setMidiInfo(43,2,1,false,1,75,175,true,["2F","A"])
-  /*setMidiMenu(43,"poison")
-  addGlobalPoint("a","a",5)
 
   User.createUser('robin.delatre@stemariebeaucamps.fr')
   User.createUser('A.B@stemariebeaucamps.fr')
