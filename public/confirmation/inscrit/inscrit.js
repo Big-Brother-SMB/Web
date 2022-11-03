@@ -72,6 +72,7 @@ listAmis.forEach(function(child) {
     }else{
         divListeAmis.appendChild(butAmis[i]);
     }
+    i++
 })
 
 listDemandes.forEach(function(child) {
@@ -88,7 +89,6 @@ listDemandes.forEach(function(child) {
         }
     }
 });
-
 
 
 for(let i in demandesAmis){

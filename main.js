@@ -860,7 +860,7 @@ async function main() {
     } else if (req.url.startsWith('/oauth2callback')) {
       let q = url.parse(req.url, true).query;
       if (q.error || q.code===undefined) {
-        console.log('Error:' + q.error);
+        logger.info('Error:' + q.error);
       } else {
         try {
           let { tokens } = await oauth2Client.getToken(q.code);
@@ -882,7 +882,7 @@ async function main() {
             res.end();
           }
         } catch (error) {
-          console.error(error);
+          logger.error(error);
           res.writeHead(301, { "Location" : address+"index.html?err=Erreur inconnue"});
           res.end();
         }
@@ -931,7 +931,7 @@ async function main() {
   }})
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
-    console.log("uuid admin socket:",await user.uuid)
+    logger.info("uuid admin socket: " + await user.uuid)
 
     if(await user.admin>0){
       socket.on('my_admin_mode',async msg => {
@@ -944,13 +944,13 @@ async function main() {
   })
   io.on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
-    console.log("uuid socket:",await user.uuid)
+    logger.info("uuid socket: "+await user.uuid)
 
 
     socket.on('id_data', async msg => {
       try{
         let data = await user.all
-        console.log("socket data:",data)
+        console.log("socket data: " + data)
         if(data!=null){
           socket.emit('id_data',data)
         }else{
@@ -1069,7 +1069,8 @@ async function main() {
       }catch(e){logger.error(e)}
     });
     //user.setMidiDemande(44,2,[],true,false)
-    user.setPermDemande(44,2,1,"A",32,true)
+    //user.setPermDemande(44,2,1,"A",32,true)
+    //user.admin=1
   });
   
 
