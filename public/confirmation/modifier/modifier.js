@@ -92,6 +92,10 @@ let demandes = 0
 const boolAllAmis = common.readBoolCookie("allAmis")
 
 
+if(info.ouvert != 2 || my_demande=={}){
+    window.location.href = window.location.origin + "/menu/menu.html";
+}
+
 let i=0
 listAmis.forEach(function(child) {
     const amiID = child.uuid
@@ -120,11 +124,6 @@ listAmis.forEach(function(child) {
 
     i++
 })
-
-
-if(info.ouvert != 2 || my_demande==null){
-    window.location.href = window.location.origin + "/menu/menu.html";
-}
 
 listDemandes.forEach(function(child) {
     const index = listAmisUuid.indexOf(child.uuid)

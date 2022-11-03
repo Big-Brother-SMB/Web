@@ -54,12 +54,16 @@ let demandes = 0
 
 const boolAllAmis = common.readBoolCookie("allAmis")
 
+if((info.ouvert != 2 && info.ouvert != 3) || my_demande.DorI!=1){
+    window.location.href = window.location.origin + "/menu/menu.html";
+}
+
 let i = 0
 listAmis.forEach(function(child) {
     const amiID = child.uuid
     const name = child.first_name + " " + child.last_name
     demandesAmis.push(0)
-    boolAmis.push(boolAllAmis || amisCookie.indexOf(amiID) != -1)
+    boolAmis.push(my_demande.amis.indexOf(child.uuid) != -1)
     butAmis[i] = document.createElement("button")
     butAmis[i].classList.add("amis")
     butAmis[i].innerHTML = name
@@ -68,12 +72,7 @@ listAmis.forEach(function(child) {
     }else{
         divListeAmis.appendChild(butAmis[i]);
     }
-    i++
 })
-
-if((info.ouvert != 2 && info.ouvert != 3) || my_demande.DorI!=1){
-    window.location.href = window.location.origin + "/menu/menu.html";
-}
 
 listDemandes.forEach(function(child) {
     const index = listAmisUuid.indexOf(child.uuid)

@@ -12,41 +12,36 @@ if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
 }
 
 
-
-
-
 let info_horaire = await common.socketAsync("info_horaire",[common.actualWeek,j,h])
 let my_demande = await common.socketAsync("my_demande",[common.actualWeek,j,h])
 
-console.log(info_horaire)
-console.log(my_demande)
-
-
-if(info_horaire.ouvert!=5){
-    if(my_demande.DorI==true){
-        document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/ok.gif" />'
-        if(info_horaire.prio.indexOf(common.classe)!=-1){
-            document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prio.gif" />'
-        }
-        common.groups.forEach(e=>{
-            if(info_horaire.prio.indexOf(e)!=-1){
+try{
+    if(info_horaire.ouvert!=5){
+        if(my_demande.DorI==true){
+            document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/ok.gif" />'
+            if(info_horaire.prio.indexOf(common.classe)!=-1){
                 document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prio.gif" />'
             }
-        })
-    }else{
-        document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/croix.gif" />'
-        if(info_horaire.prio.indexOf(common.classe)!=-1){
-            document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prioSelf.png" />'
-        }
-        common.groups.forEach(e=>{
-            if(info_horaire.prio.indexOf(e)!=-1){
+            common.groups.forEach(e=>{
+                if(info_horaire.prio.indexOf(e)!=-1){
+                    document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prio.gif" />'
+                }
+            })
+        }else{
+            document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/croix.gif" />'
+            if(info_horaire.prio.indexOf(common.classe)!=-1){
                 document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prioSelf.png" />'
             }
-        })
+            common.groups.forEach(e=>{
+                if(info_horaire.prio.indexOf(e)!=-1){
+                    document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/prioSelf.png" />'
+                }
+            })
+        }
+    }else{
+        document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/croix.gif" />'
     }
-}else{
-    document.getElementById("pass").innerHTML = '<img class="pass" src="../../Images/croix.gif" />'
-}
+}catch(e){console.error(e)}
 
 
 document.getElementById("user").innerHTML = common.first_name + " " + common.last_name + " " + common.classe

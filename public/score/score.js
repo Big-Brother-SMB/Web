@@ -11,20 +11,24 @@ let i=0
 
 let data = await common.socketAsync('my_score',null)
 let total = 0
-for(let child in data) {
+data.forEach((child)=> {
     let event = document.createElement("button")
     event.classList.add("event")
 
 
     let name
     let eventScore
-    if(data[child].cout!=undefined){
-        name = "Repas du semaine "+data[child].semaine+" creneau n°"+data[child].creneau
-        eventScore = data[child].cout
+    let date
+    if(child.cout!=undefined){
+        name = "Repas du " + common.dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
+        eventScore = child.cout
+        date = common.getDayHash(Math.floor(child.creneau / 2),child.semaine,(11 + (child.creneau % 2)))
     }else{
-        name = data[child].name
-        eventScore = data[child].value
+        name = child.name
+        eventScore = child.value
+        date = child.date
     }
+    console.log(date)
 
 
     histogramGain[i] = eventScore
@@ -60,4 +64,4 @@ for(let child in data) {
 
     total += eventScore
     total = Math.round(total*100)/100
-}
+})

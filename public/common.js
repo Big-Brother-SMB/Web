@@ -166,6 +166,41 @@ export function reload(){
 
 //---------------------------les fonctions dates---------------------------
 
+export function getDayText(j,week){
+  let date = new Date();
+  let ajd=date.getDay()-1;
+  let jour = j
+  if(j > 1){
+    jour++
+  }
+  let dateBeg=(Date.now()+604800000*(week - actualWeek))-(ajd-jour)*86400000;
+  dateBeg=new Date(dateBeg);
+  dateBeg = dateBeg.toLocaleString();
+  let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
+  let text = ""
+  if(dateBeg[0] != "0"){
+    text += dateBeg[0]
+  }
+  text += dateBeg[1] + " " + month[mBeg]
+  return text
+}
+
+export function getDayHash(j,week,h){
+  let date = new Date();
+  let ajd=date.getDay()-1;
+  let jour = j
+  if(j > 1){
+    jour++
+  }
+  let dateBeg=(Date.now()+604800000*(week - actualWeek))-(ajd-jour)*86400000;
+  dateBeg=new Date(dateBeg);
+  dateBeg = dateBeg.toLocaleString();
+  let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
+  let text = ""
+  text = dateBeg[6]+dateBeg[7]+dateBeg[8]+dateBeg[9] + "-" + mBeg + "-" + dateBeg[0]+dateBeg[1] + " " + h+":00:00"
+  return text
+}
+
 Date.prototype.getWeek = function() {
   var date = new Date(this.getTime());
   date.setHours(0, 0, 0, 0);
@@ -253,7 +288,8 @@ export const dayWithMer = [0,1,"err",2,3]
 export const dayNum = [0,1,2,3];
 export const dayNumMer = [0,1,2,3,5];
 
-
+export const dayLowerCase = ["lundi", "mardi","jeudi","vendredi"];
+export let month=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
 
 export const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
 export const listModePerm = ["Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
@@ -625,28 +661,10 @@ function commonElement(l1,l2){
   }
   return nb;
 }
-export const dayLowerCase = ["lundi", "mardi","jeudi","vendredi"];
-let month=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
 
 
-function getDayText(j){
-  let date = new Date();
-  let ajd=date.getDay()-1;
-  let jour = j
-  if(j > 1){
-    jour++
-  }
-  let dateBeg=(Date.now()+604800000*(week - actualWeek))-(ajd-jour)*86400000;
-  dateBeg=new Date(dateBeg);
-  dateBeg = dateBeg.toLocaleString();
-  let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
-  let text = ""
-  if(dateBeg[0] != "0"){
-    text += dateBeg[0]
-  }
-  text += dateBeg[1] + " " + month[mBeg]
-  return text
-}
+
+
 
 
 

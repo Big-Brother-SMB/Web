@@ -12,6 +12,31 @@ npm i url
 npm i uuid
 */
 
+
+const pino = require('pino');
+const transport = {
+  targets: [
+    {
+      level: 'info', // Nous devons définir le niveau minimum de gravité pour chacune des cibles
+      target: 'pino/file',
+      options: { destination: 1 } // On affiche les lods sur la sortie standard
+    },
+    {
+      level: 'trace',
+      target: 'pino/file',
+      options: { destination: './main.log' } // On enregistre les logs dans un fichier main.log
+    }
+  ]
+}
+ 
+const logger = pino({
+  level: 'trace',
+  transport
+})
+
+logger.info("start")
+
+
 const http = require('http');
 const https = require('https');
 const url = require('url');
@@ -65,6 +90,7 @@ class User{
 
     static search(code_barre){
         return new Promise(function(resolve, reject) {
+          try {
             db.get("SELECT * FROM users WHERE code_barre=?",[code_barre], (err, data) => {
                 try{
                     if(data!=undefined){
@@ -72,14 +98,16 @@ class User{
                     }else{
                         resolve(null)
                     }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){logger.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
+          } catch (e) {logger.error(e)}
         })
     }
       //user et  plus
     static createUser(email){
         return new Promise(function(resolve, reject) {
+          try{
             let uuid = uuidG.v4()
             db.get("SELECT * FROM 'users' where email=?",[email], (err, data) => {
                 try{
@@ -89,7 +117,7 @@ class User{
                         let first_name=tName[0]
                         let last_name=""
                         if(tName.length>=2){
-                        last_name=tName[1]
+                            last_name=tName[1]
                         }
                         first_name=first_name[0].toUpperCase()+first_name.slice(1)
                         last_name=last_name.toUpperCase();
@@ -98,23 +126,27 @@ class User{
                         uuid=data.uuid
                     }
                     resolve(new User(uuid))
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){logger.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
+          } catch (e) {logger.error(e)}
         })
     }
 
     createToken(){
         let uuid=this.uuid
         return new Promise(function(resolve, reject) {
-          let tokenAuth = rand.generateKey();
-          let date=dateTime.format(new Date(), 'YYYY/MM/DD');
-          db.run("INSERT INTO token(token,uuid,date) VALUES(?,?,?)", [tokenAuth,uuid,date])
-          resolve(tokenAuth)
+          try{
+            let tokenAuth = rand.generateKey();
+            let date=dateTime.format(new Date(), 'YYYY/MM/DD');
+            db.run("INSERT INTO token(token,uuid,date) VALUES(?,?,?)", [tokenAuth,uuid,date])
+            resolve(tokenAuth)
+          } catch (e) {logger.error(e)}
         })
       }
     static searchToken(token){
         return new Promise(function(resolve, reject) {
+          try{
           db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
             try {
               if(data!=undefined){
@@ -122,14 +154,16 @@ class User{
               }else{
                 resolve(new User(null))
               }
-            }catch(e){console.error(e);resolve(null)}
+            }catch(e){logger.error(e);resolve(null)}
           })
           setTimeout(reject,1000)
+          } catch (e) {logger.error(e)}
         })
       }
 
     static listUsersName(){
         return new Promise(function(resolve, reject) {
+          try{
             db.all("SELECT uuid,first_name,last_name FROM users", (err, data) => {
                 try{
                     if(data!=undefined){
@@ -137,14 +171,16 @@ class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){console.error(e);resolve([])}
+                }catch(e){logger.error(e);resolve([])}
             })
             setTimeout(reject,1000)
+          } catch (e) {logger.error(e)}
         })
     }
 
     static listUsersUuid(){
       return new Promise(function(resolve, reject) {
+        try{
           db.all("SELECT uuid FROM users", (err, data) => {
               try{
                   if(data!=undefined){
@@ -156,9 +192,10 @@ class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){console.error(e);resolve([])}
+              }catch(e){logger.error(e);resolve([])}
           })
           setTimeout(reject,1000)
+        } catch (e) {logger.error(e)}
       })
     }
 
@@ -171,7 +208,7 @@ class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){console.error(e);resolve([])}
+              }catch(e){logger.error(e);resolve([])}
           })
           setTimeout(reject,1000)
       })
@@ -187,7 +224,7 @@ class User{
                   }else{
                     resolve(null)
                   }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){logger.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
         })
@@ -213,7 +250,7 @@ class User{
                     }else{
                         resolve(null)
                     }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){logger.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
         })
@@ -282,7 +319,7 @@ class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){console.error(e);resolve([])}
+                }catch(e){logger.error(e);resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -311,7 +348,7 @@ class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){console.error(e);resolve([])}
+                }catch(e){logger.error(e);resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -345,7 +382,7 @@ class User{
             }else{
               resolve({})
             }
-          }catch(e){console.error(e);resolve({})}
+          }catch(e){logger.error(e);resolve({})}
         })
         setTimeout(reject,1000)
       })
@@ -382,7 +419,7 @@ class User{
             }else{
               resolve({})
             }
-          }catch(e){console.error(e);resolve({})}
+          }catch(e){logger.error(e);resolve({})}
         })
         setTimeout(reject,1000)
       })
@@ -396,6 +433,10 @@ class User{
           db.run("UPDATE perm_list SET group2=?,nb=?,DorI=? where semaine=? and day=? and creneau=? and uuid=?",[group,nb,DorI,semaine,day,creneau,uuid])
         }
       })
+    }
+    delPermDemande(semaine,day,creneau){
+      let uuid = this.uuid
+      db.run("delete from perm_list where semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid])
     }
 
     //point
@@ -424,19 +465,21 @@ class User{
                         try{
                             if(data!=undefined){
                               for (let i in data){
-                                list.push(await new Promise(function(resolve2, reject2) {
-                                  db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=?",[data[i].semaine,data[i].creneau], (err, data2) => {
+                                let r = await new Promise(function(resolve2, reject2) {
+                                  db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=? and (ouvert=2 or ouvert=3 or ouvert=5)",[data[i].semaine,data[i].creneau], (err, data2) => {
                                     resolve2(data2)
                                   })
-                                }))
+                                })
+                                if(r!=undefined)
+                                  list.push(r)
                               }
                             }
                             resolve(list)
-                        }catch(e){console.error(e);resolve([])}
+                        }catch(e){logger.error(e);resolve([])}
                       })
-                  }catch(e){console.error(e);resolve([])}
+                  }catch(e){logger.error(e);resolve([])}
                 })
-            }catch(e){console.error(e);resolve([])}
+            }catch(e){logger.error(e);resolve([])}
         })
         setTimeout(reject,1000)
       })
@@ -463,19 +506,22 @@ class User{
                         try{
                             if(data!=undefined){
                                 for (let i in data){
-                                  score+=await new Promise(function(resolve2, reject2) {
-                                    db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=?",[data[i].semaine,data[i].creneau], (err, data2) => {
-                                      resolve2(data2.cout)
+                                  let r = await new Promise(function(resolve2, reject2) {
+                                    db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=? and (ouvert=2 or ouvert=3 or ouvert=5)",[data[i].semaine,data[i].creneau], (err, data2) => {
+                                      resolve2(data2)
                                     })
                                   })
+                                  if(r!=undefined){
+                                    score+=r.cout
+                                  }
                                 }
                             }
                             resolve(score)
-                        }catch(e){console.error(e);resolve(null)}
+                        }catch(e){logger.error(e);resolve(null)}
                       })
-                  }catch(e){console.error(e);resolve(null)}
+                  }catch(e){logger.error(e);resolve(null)}
                 })
-            }catch(e){console.error(e);resolve(null)}
+            }catch(e){logger.error(e);resolve(null)}
         })
         setTimeout(reject,1000)
       })
@@ -494,7 +540,7 @@ function getVar(key){
                 resolve(null)
             }
             })
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){logger.error(e);resolve(null)}
         setTimeout(reject,1000)
     })
 }
@@ -520,7 +566,7 @@ function setVar(key,value){
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){logger.error(e);resolve(null)}
       })
       setTimeout(reject,1000)
     })
@@ -536,14 +582,14 @@ function setVar(key,value){
   }
   function listPermDemandes(semaine,day,creneau){
     return new Promise(function(resolve, reject) {
-      db.all("SELECT * FROM perm_list WHERE semaine=? ans day=? and creneau=?",[semaine,day,creneau], (err, data) => {
+      db.all("SELECT * FROM perm_list WHERE semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
         try {
           if(data!=undefined){
             resolve(data)
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);resolve([])}
+        }catch(e){logger.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -560,7 +606,7 @@ function setVar(key,value){
           }else{
             resolve({})
           }
-        }catch(e){console.error(e);resolve({})}
+        }catch(e){logger.error(e);resolve({})}
       })
       setTimeout(reject,1000)
     })
@@ -590,7 +636,7 @@ function setVar(key,value){
           }else{
             resolve({})
           }
-        }catch(e){console.error(e);resolve({})}
+        }catch(e){logger.error(e);resolve({})}
       })
       setTimeout(reject,1000)
     })
@@ -628,7 +674,7 @@ function setVar(key,value){
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);resolve([])}
+        }catch(e){logger.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -651,7 +697,7 @@ function setVar(key,value){
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);resolve([])}
+        }catch(e){logger.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -673,7 +719,7 @@ function setVar(key,value){
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);resolve(null)}
+        }catch(e){logger.error(e);resolve(null)}
       })
       setTimeout(reject,1000)
     })
@@ -866,10 +912,10 @@ async function main() {
                 res.end(fs.readFileSync(`${__dirname}/public/404.html`));
               }
               res.end();
-            }catch(e){console.error(e)}
+            }catch(e){logger.error(e)}
           });
         }
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     }
 
   }).listen(3000);
@@ -891,7 +937,7 @@ async function main() {
         try{
           user.admin = msg
           socket.emit('my_admin_mode',"ok")
-        }catch(e){console.error(e)}
+        }catch(e){logger.error(e)}
       })
     }
   })
@@ -904,12 +950,12 @@ async function main() {
       try{
         let data = await user.all
         console.log("socket data:",data)
-        if(data!=undefined){
+        if(data!=null){
           socket.emit('id_data',data)
         }else{
           socket.emit('id_data',"err")
         }
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('my_score', async msg => {
@@ -921,20 +967,20 @@ async function main() {
         }else{
           socket.emit('my_score',await user.listPoint)
         }
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('info_menu_semaine', async msg => {
       try{
         socket.emit('info_menu_semaine',await getMidiMenu(msg))
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('info_horaire', async msg => {
       try{
         let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
         socket.emit('info_horaire',info)
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
 
@@ -942,7 +988,7 @@ async function main() {
       try{
         user.tuto = msg
         socket.emit('tuto','ok')
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('amis', async msg => {
@@ -953,19 +999,19 @@ async function main() {
           user.amis=msg
           socket.emit('amis','ok')
         }
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('list_users', async msg => {
       try{
         socket.emit('list_users',await User.listUsersName())
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('banderole', async msg => {
       try{
         socket.emit('banderole',await getVar('banderole'))
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('my_demande', async msg => {
@@ -973,24 +1019,62 @@ async function main() {
         if(msg.length==3){
           socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
         }else if(msg[3]===false){
-          await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
-          socket.emit('my_demande',"ok")
+          if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
+            await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
+            socket.emit('my_demande',"ok")
+          }
         } else if(msg.length==4){
-          await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,false)
-          socket.emit('my_demande',"ok")
+          if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
+            await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,false)
+            socket.emit('my_demande',"ok")
+          }
         }
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
 
     socket.on('list_demandes', async msg => {
       try{
         socket.emit('list_demandes',await listMidiDemandes(msg[0],msg[1]*2+msg[2]))
-      }catch(e){console.error(e)}
+      }catch(e){logger.error(e)}
     });
+
+    socket.on('list_demandes_perm', async msg => {
+      try{
+        socket.emit('list_demandes_perm',await listPermDemandes(msg[0],msg[1],msg[2]))
+      }catch(e){logger.error(e)}
+    });
+
+    socket.on("ouvert_perm", async msg => {
+      try{
+        socket.emit("ouvert_perm",await getPermOuvert(msg[0],msg[1],msg[2]))
+      }catch(e){logger.error(e)}
+    });
+
+    socket.on("my_demande_perm", async msg => {
+      try{
+        if(msg.length==3){
+          socket.emit("my_demande_perm",await user.getPermDemande(msg[0],msg[1],msg[2]))
+        }else if(msg[3]===false){
+          if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
+            await user.delPermDemande(msg[0],msg[1],msg[2])
+            socket.emit('my_demande_perm',"ok")
+          }
+        } else if(msg.length==5){
+          if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
+            await socket.emit("my_demande_perm",await user.setPermDemande(msg[0],msg[1],msg[2],msg[3],msg[4],false))
+            socket.emit('my_demande_perm',"ok")
+          }
+        }
+      }catch(e){logger.error(e)}
+    });
+    //console.log(await listPermDemandes(44,1,1))
+    //user.setPermDemande(43,2,1,"a",3,1)
   });
   
+
   
-  //setMidiInfo(43,7,1,false,2,75,175,true,["2F","A"])
+  //setVar('banderole',"aaa")
+  //setMidiInfo(43,2,1,false,1,75,175,true,["2F","A"])
   /*setMidiMenu(43,"poison")
   addGlobalPoint("a","a",5)
 
