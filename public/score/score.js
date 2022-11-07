@@ -29,14 +29,16 @@ data.forEach((child)=> {
 })
 
 list.sort(function compareFn(a, b) {
-    if(a.date>b.data){
-        return -1
-    }else if(a.date<b.data){
+    if(a.date>b.date){
         return 1
+    }else if(a.date<b.date){
+        return -1
     }else{
         return 0
     }
 })
+
+console.log(list)
 
 list.forEach((child)=> {
     histogramGain[i] = child.value

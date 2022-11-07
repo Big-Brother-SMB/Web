@@ -1,103 +1,62 @@
-//window.location.href = "../index.html";
-
-//(new Date()).getWeek();
-
+import * as common from "../../common.js";
 
 document.getElementById("planing").addEventListener("click", function () {
     window.location.href = "../perm/menu/menuPerm.html";
 });
 
 
-document.getElementById("semainePrecedente").addEventListener("click", function() {
-    sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) - 1);
-    week = week - 1
-    writeCookie("week",week)
-    refreshDatabase()
-});
-
-document.getElementById("semaineActuelle").addEventListener("click", function() {
-    sessionStorage.setItem("week", actualWeek);
-    week = actualWeek
-    writeCookie("week",week)
+let week = common.week
+document.getElementById("semainePrecedente").addEventListener("click", function () {
+    week--
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
 
-document.getElementById("semaineSuivante").addEventListener("click", function() {
-    sessionStorage.setItem("week", parseInt(sessionStorage.getItem("week")) + 1);
-    week = week + 1
-    writeCookie("week",week)
+document.getElementById("semaineActuelle").addEventListener("click", function () {
+    week = common.actualWeek
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
-document.getElementById("add point").addEventListener("click",function(){
+
+document.getElementById("semaineSuivante").addEventListener("click", function () {
+    week++
+    common.writeCookie("week", week)
+    refreshDatabase()
+});
+
+document.getElementById("add point").addEventListener("click",async function(){
 	var nbpts=prompt("Nombre de point(s) à ajouter :","1")
     nbpts = parseFloat(nbpts.replaceAll(",","."))
     let nomgain
+    let conf
     if (nbpts!==null && !isNaN(nbpts)){
-        nomgain=prompt("Nom du gain :", "gain de la semaine " + actualWeek)
+        nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
         if (nomgain!==null){
-      	    var conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
-            namePoint=[]
-            valuePoint=[]
-            hashPoint=[]
-            database.ref("histPoint").once("value", function(snapshot) {
-                snapshot.forEach(function(child){
-                    namePoint.push(snapshot.child(child.key+"/name").val())
-                    valuePoint.push(snapshot.child(child.key+"/value").val())
-                    hashPoint.push(child.key)
-                })
-            })
-            database.ref("users").once("value", function(snapshot) {
-                snapshot.forEach(function(child){
-                    namePointU=[]
-                    snapshot.child(child.key+"/score").forEach(function(child2){
-                        namePointU.push(snapshot.child(child.key+"/score/"+child2.key+"/name").val())
-                    })
-                    for (let loop in namePoint){
-                        if(!namePointU.includes(namePoint[loop])){
-                            database.ref("users/"+child.key+"/score/"+hashPoint[loop]+"/name").set(namePoint[loop])
-                            database.ref("users/"+child.key+"/score/"+hashPoint[loop]+"/value").set(valuePoint[loop])
-                        }
-                    }
-                })
-            })
+      	    conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
         }
     }
-	let hashCode= hash()
-    let nb=0
 	if (conf==="OUI"){
-        database.ref("histPoint/" + hashCode + "/name").set(nomgain)
-        database.ref("histPoint/" + hashCode + "/value").set(nbpts)
-	    database.ref("users").once("value", function(snapshot) {
-            let total = snapshot.numChildren()
-            snapshot.forEach(function(child) {
-                let name = child.key
-                database.ref("users/" + name + "/score/" + hashCode + "/name").set(nomgain)
-                database.ref("users/" + name + "/score/" + hashCode + "/value").set(nbpts)
-                nb++
-                if(nb == total){
-                    if(nomgain=="gain de la semaine " + actualWeek) document.getElementById("notif plus").style.visibility = "hidden"
-                    alert("Ajout de points effectués")
-                }
-            })
-        })
+        await common.socketAdminAsync("add_global_point",[common.hashHour(),nomgain,nbpts])
+        if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("notif plus").style.visibility = "hidden"
+        alert("Ajout de points effectués")
     }
 });
 
 
 
-database.ref("histPoint").once("value", function(snapshot) {
-    let test=true
-    snapshot.forEach(function(child){
-        if(snapshot.child(child.key+"/name").val()==="gain de la semaine " + actualWeek){
-            test = false
-        }
-    })
-    if(test){
-        document.getElementById("notif plus").style.visibility = "visible"
+let global_points = await common.socketAdminAsync("get_global_point",null)
+let test=true
+global_points.forEach(e => {
+    if("gain de la semaine " + common.actualWeek==e.name){
+        test=false
     }
 })
+if(test){
+    document.getElementById("notif plus").style.visibility = "visible"
+}
+
 
 
 const body = document.getElementById("body");
@@ -108,6 +67,21 @@ Date.prototype.getWeek = function() {
 }
 
 
+let info_menu = await common.socketAsync("info_menu_semaine",week)
+let val = info_menu.menu
+if (val == null) {
+    val = "inconnu pour le moment"
+}
+document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
+
+
+let banderole = await common.socketAsync("banderole",null)
+if (banderole != null && document.getElementById("banderole")!=null) {
+  document.getElementById("banderole").innerHTML = banderole
+  if (banderole.length > 0) {
+    document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
+  }
+}
 
 
 
@@ -125,7 +99,7 @@ for(let j = 0; j < 4; j++){
     let div = document.createElement("div")
     let text = document.createElement("button")
     text.className = "jours tableau";
-    text.innerHTML = day[j]
+    text.innerHTML = common.day[j]
     div.appendChild(text);
 
     bouton[j] = []
@@ -149,66 +123,63 @@ for(let j = 0; j < 4; j++){
 }
 
 
-function refreshDatabase() {
-    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshotM) {
-        let text = "Semaine n°" + week + " du " + semaine(week)
-        if (week == actualWeek) {
-            text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
-        }
-        document.getElementById("semaine").innerHTML = text
+async function refreshDatabase() {
+    let info_menu = await common.socketAsync("info_menu_semaine",week)
+    let text = "Semaine n°" + week + " du " + common.semaine(week)
+    if (week == common.actualWeek) {
+        text = "Cette semaine (n°" + week + " du " + common.semaine(week) + ")"
+    }
+    document.getElementById("semaine").innerHTML = text
 
-        let val = snapshotM.val()
-        if (val == null) {
-            val = "inconnu pour le moment"
-        }
-        document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
-    
+    let val = info_menu.menu
+    if (val == null) {
+        val = "inconnu pour le moment"
+    }
+    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
 
-        for (let j = 0; j < 4; j++) {
-            for (let h = 0; h < 2; h++) {
-                database.ref(path(j, h)).once('value').then(function (snapshotP) {
-                    total[j][h] = snapshotP.child("places").val();
-                    if(total[j][h]==null || total[j][h]==""){
-                        total[j][h]=0
-                    }
 
-                    if (snapshotP.child("ouvert").val() == null) {
-                        ouvert[j][h] = 0
-                    } else {
-                        ouvert[j][h] = snapshotP.child("ouvert").val()
-                    }
-
-                    if (snapshotP.child("cout").val() != null) {
-                        cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
-                    }
-        
-                    //demande en cours
-        
-                    demandes[j][h] = 0
-
-                    snapshotP.child("demandes").forEach(function (child) {
-                        demandes[j][h]++
-                    });
-        
-                    //inscrits
-
-                    inscrits[j][h] = 0
-        
-                    snapshotP.child("inscrits").forEach(function (child) {
-                        inscrits[j][h]++
-                    });
-                    update(j, h);
-                })
+    for (let j = 0; j < 4; j++) {
+        for (let h = 0; h < 2; h++) {
+            let info_horaire = await common.socketAsync("info_horaire",[week,j,h])
+            let list_demandes = await common.socketAsync("list_demandes",[week,j,h])
+            total[j][h] = info_horaire.places
+            if(total[j][h]==null || total[j][h]==""){
+                total[j][h]=0
             }
+
+            if (info_horaire.ouvert == null) {
+                ouvert[j][h] = 0
+            } else {
+                ouvert[j][h] = info_horaire.ouvert 
+            }
+
+            if (info_horaire.cout != null) {
+                cout[j][h] = Math.abs(parseFloat(info_horaire.cout))
+            }
+
+            //demande en cours
+
+            inscrits[j][h] = 0
+            demandes[j][h] = 0
+
+            list_demandes.forEach(function (child) {
+                if(child.DorI==1){
+                    inscrits[j][h]++
+                }else{
+                    demandes[j][h]++
+                }
+            });
+
+            update(j, h);
         }
-    });
+    }
 }
 
 
 function update(j,h){
     places[j][h] = total[j][h] - inscrits[j][h];
     
-    let coutPourcentage = round((cout[j][h] - 1) * 100)
+    let coutPourcentage = common.round((cout[j][h] - 1) * 100)
     let textcout = ""
     let text = "horaire non planifié";
 
@@ -262,74 +233,43 @@ function update(j,h){
 }
 
 function select(j,h){
-
     sessionStorage.setItem("j", j);
     sessionStorage.setItem("h", h);
     window.location.href = "../crenau/crenau.html";
 }
 
-function reload(){
-    window.location.reload(true)
-}
+
+refreshDatabase();
 
 
-function loop(){
-    refreshDatabase();
-
-    setTimeout(loop,10000);
-}
-loop();
-
-database.ref("banderole").once("value", function (snapshot) {
-    let msg = snapshot.val()
-    if (msg != null) {
-        document.getElementById("banderole").innerHTML = msg
-        if (msg.length > 0) {
-            document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
-
-        }
+document.getElementById("editbanner").addEventListener("click",async function(){
+    let banderole = await common.socketAsync("banderole",null)
+    let p=window.prompt("Message de la banderole:",banderole);
+    if (p!=null){
+        await common.socketAdminAsync("set_banderole",p)
+        document.getElementById("banderole").innerHTML = p
     }
-
-
 })
 
-function clickBanderole(){
-    database.ref("banderole").once("value", function(snapshot) {
-        let p=window.prompt("Message de la banderole:",snapshot.val());
-        if (p!=null){
-            database.ref("banderole").set(p);
-            document.getElementById("banderole").innerHTML = p
-        }
-    })
-}
-
-database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshot) {
-    let val = snapshot.val()
-    if (val == null) {
-        val = "inconnu pour le moment"
+document.getElementById("menu semaine").addEventListener("click",async function(){
+    let info_menu = await common.socketAsync("info_menu_semaine",week)
+    let p= info_menu.menu
+    if (p==null || p=="" || p=="null"){
+        p = "inconnu pour le moment"
     }
-    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
-});
-
-function clickMenu(){
-    database.ref("foyer_midi/semaine" + week + "/menu").once("value", function(snapshot) {
-        let p=snapshot.val()
-        if (p==null || p=="" || p=="null"){
-            p = "inconnu pour le moment"
-        }
-        p=window.prompt("Menu de la semaine "+week+":",p);
-        if (p==null){
-            p=snapshot.val()
-        }
-        if (p==null || p=="" || p=="null"){
-            p = "inconnu pour le moment"
-        }
-        database.ref("foyer_midi/semaine" + week + "/menu").set(p);
-        document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + p
-    })
-}
+    p=window.prompt("Menu de la semaine "+week+":",p);
+    if (p==null){
+        p=info_menu.menu
+    }
+    if (p==null || p=="" || p=="null"){
+        p = "inconnu pour le moment"
+    }
+    await common.socketAdminAsync("set_menu",[week,p])
+    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + p
+})
 
 //-----------sondages--------------------
+/*
 const notifMsg = document.getElementById("notif msg")
 
 let nbMsg = 0
@@ -350,23 +290,23 @@ database.ref("messages/").once('value').then(function(snapshot) {
             })
         })
     })
-})
+})*/
 
 
 
 let retourImg=document.getElementById("retourImg")
 let retour=document.getElementById("retour")
-database.ref("modo/users/"+user).once('value').then(function(snapshot) {
-    if(snapshot.val()===1){
-        retourImg.src="../../Images/option.png"
+
+
+if(common.admin===2){
+    retourImg.src="../../Images/option.png"
+} else {
+    retourImg.src="../../Images/retour.png"
+}
+retour.addEventListener("click",function(){
+    if(common.admin===2){
+        window.location.href="../../option/option.html"
     } else {
-        retourImg.src="../../Images/retour.png"
+        window.location.href="../../menu/menu.html"
     }
-    retour.addEventListener("click",function(){
-        if(snapshot.val()===1){
-            window.location.href="../../option/option.html"
-        } else {
-            window.location.href="../../menu/menu.html"
-        }
-    })
 })

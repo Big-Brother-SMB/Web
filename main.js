@@ -13,15 +13,25 @@ npm i uuid
 npm i pino
 */
 
+/*const { WebSocketServer } = require('ws');
+
+const server2 = new WebSocketServer({ port: 3001 });
+
+server2.on("connection", (socket) => {
+  function loopT(){
+    socket.send(JSON.stringify({
+      type: "bonjour du client",
+      content: [ 3, "4" ],
+      info: 'cc'
+    }));
+    setTimeout(loopT,5000)
+  }
+  loopT()
+});*/
 
 const pino = require('pino');
 const transport = {
   targets: [
-    {
-      level: 'info', // Nous devons définir le niveau minimum de gravité pour chacune des cibles
-      target: 'pino/file',
-      options: { destination: 1 } // On affiche les lods sur la sortie standard
-    },
     {
       level: 'trace',
       target: 'pino/file',
@@ -139,8 +149,8 @@ class User{
         return new Promise(function(resolve, reject) {
           try{
             let tokenAuth = rand.generateKey();
-            let date=dateTime.format(new Date(), 'YYYY/MM/DD');
-            db.run("INSERT INTO token(token,uuid,date) VALUES(?,?,?)", [tokenAuth,uuid,date])
+            let date = hashHour()
+            db.run("INSERT INTO token(token,uuid,creation,last_use) VALUES(?,?,?,?)", [tokenAuth,uuid,date,date])
             resolve(tokenAuth)
           } catch (e) {logger.error(e)}
         })
@@ -151,6 +161,7 @@ class User{
           db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
             try {
               if(data!=undefined){
+                db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
                 resolve(new User(data.uuid))
               }else{
                 resolve(new User(null))
@@ -686,12 +697,29 @@ function setVar(key,value){
   function addGlobalPoint(date,name,value){
     db.run("INSERT INTO point_global(date,name,value) VALUES (?,?,?)",[date,name,value])
   }
+  function listGlobalPoint(){
+    let uuid=this.uuid
+    return new Promise(function(resolve, reject) {
+      let list=[]
+      db.all("SELECT * FROM point_global", (err, data) => {
+        try{
+            if(data!=undefined){
+                data.forEach(e=>{
+                  list.push(e)
+                })
+            }
+            resolve(list)
+        }catch(e){logger.error(e);resolve([])}
+      })
+      setTimeout(reject,1000)
+    })
+  }
   
   
   //group / classe
   function getGroup(){
     return new Promise(function(resolve, reject) {
-      db.all("SELECT * FROM classe_list", (err, data) => {
+      db.all("SELECT * FROM group_list", (err, data) => {
         try {
           if(data!=undefined){
             resolve(data)
@@ -729,7 +757,7 @@ function setVar(key,value){
     db.serialize(()=>{
       db.run("delete from classe_list")
       list.forEach(e=>{
-        db.run("INSERT INTO classe_list(classe) VALUES (?)",[e])
+        db.run("INSERT INTO classe_list(classe,niveau) VALUES (?,?)",[e[0],e[1]])
       })
     })
   }
@@ -744,6 +772,15 @@ function setVar(key,value){
 //% messages / news / sondages 
 
 
+function hashHour(){
+  let d =  new Date()
+  return d.getFullYear()
+  + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
+  + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
+  + " " + (String(d.getHours()).length == 1?"0":"") + d.getHours()
+  + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes()
+  + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+}
 
 
 
@@ -773,7 +810,7 @@ async function main() {
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='token'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE token(token text,uuid UUID,date DATE)')
+          db.run('CREATE TABLE token(token text,uuid UUID,creation text,last_use text)')
       })
 
       //perm
@@ -821,7 +858,7 @@ async function main() {
       //group / classe
       db.get("SELECT * FROM sqlite_master where type='table' AND name='classe_list'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE classe_list(classe text)')
+          db.run('CREATE TABLE classe_list(classe text,niveau int2)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='group_list'", (err, data) => {
         if(data==undefined)
@@ -923,12 +960,12 @@ async function main() {
 
 
 
-  io = new Server(server,{cors: {
+  io = new Server(server/*,{cors: {
     origin: address,
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
-  }})
+  }}*/)
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
     logger.info("uuid admin socket: " + await user.uuid)
@@ -940,137 +977,164 @@ async function main() {
           socket.emit('my_admin_mode',"ok")
         }catch(e){logger.error(e)}
       })
+      socket.on('add_global_point',async msg => {
+        try{
+          addGlobalPoint(msg[0],msg[1],msg[2])
+          socket.emit('add_global_point',"ok")
+        }catch(e){logger.error(e)}
+      })
+      socket.on('get_global_point',async msg => {
+        try{
+          socket.emit('get_global_point',await listGlobalPoint())
+        }catch(e){logger.error(e)}
+      })
+      socket.on('set_banderole',async msg => {
+        try{
+          setVar("banderole",msg)
+          socket.emit('set_banderole',"ok")
+        }catch(e){logger.error(e)}
+      })
+      socket.on('set_menu',async msg => {
+        try{
+          setMidiMenu(msg[0],msg[1])
+          socket.emit('set_menu',"ok")
+        }catch(e){logger.error(e)}
+      })
     }
   })
   io.on("connection", async (socket) => {
-    let user = await User.searchToken(socket.handshake.auth.token)
-    logger.info("uuid socket: "+await user.uuid)
+    try {
+      let user = await User.searchToken(socket.handshake.auth.token)
+      if(user!=null)logger.info("uuid socket: " + await user.uuid)
+  
+      socket.on('test', async msg => {
+        socket.emit('test',"msg:cc")
+      });
 
-
-    socket.on('id_data', async msg => {
-      try{
-        let data = await user.all
-        console.log("socket data: " + data)
-        if(data!=null){
-          socket.emit('id_data',data)
-        }else{
-          socket.emit('id_data',"err")
-        }
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('my_score', async msg => {
-      try{
-        if(msg=="int"){
-          let score = await user.score
-          if(score==null) score=0
-          socket.emit('my_score',score)
-        }else{
-          socket.emit('my_score',await user.listPoint)
-        }
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('info_menu_semaine', async msg => {
-      try{
-        socket.emit('info_menu_semaine',await getMidiMenu(msg))
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('info_horaire', async msg => {
-      try{
-        let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
-        socket.emit('info_horaire',info)
-      }catch(e){logger.error(e)}
-    });
-
-
-    socket.on('tuto', msg => {
-      try{
-        user.tuto = msg
-        socket.emit('tuto','ok')
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('amis', async msg => {
-      try{
-        if(msg=='get'){
-          socket.emit('amis',await user.amis)
-        }else if (msg.class==[].class){
-          user.amis=msg
-          socket.emit('amis','ok')
-        }
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('list_users', async msg => {
-      try{
-        socket.emit('list_users',await User.listUsersName())
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('banderole', async msg => {
-      try{
-        socket.emit('banderole',await getVar('banderole'))
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('my_demande', async msg => {
-      try{
-        if(msg.length==3){
-          socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
-        }else if(msg[3]===false){
-          if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
-            await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
-            socket.emit('my_demande',"ok")
+      socket.on('id_data', async msg => {
+        try{
+          let data = await user.all
+          if(data!=null){
+            socket.emit('id_data',data)
+          }else{
+            socket.emit('id_data',"err")
           }
-        } else if(msg.length==4){
-          if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
-            await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,false)
-            socket.emit('my_demande',"ok")
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('my_score', async msg => {
+        try{
+          if(msg=="int"){
+            let score = await user.score
+            if(score==null) score=0
+            socket.emit('my_score',score)
+          }else{
+            socket.emit('my_score',await user.listPoint)
           }
-        }
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('list_demandes', async msg => {
-      try{
-        socket.emit('list_demandes',await listMidiDemandes(msg[0],msg[1]*2+msg[2]))
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on('list_demandes_perm', async msg => {
-      try{
-        socket.emit('list_demandes_perm',await listPermDemandes(msg[0],msg[1],msg[2]))
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on("ouvert_perm", async msg => {
-      try{
-        socket.emit("ouvert_perm",await getPermOuvert(msg[0],msg[1],msg[2]))
-      }catch(e){logger.error(e)}
-    });
-
-    socket.on("my_demande_perm", async msg => {
-      try{
-        if(msg.length==3){
-          socket.emit("my_demande_perm",await user.getPermDemande(msg[0],msg[1],msg[2]))
-        }else if(msg[3]===false){
-          if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
-            await user.delPermDemande(msg[0],msg[1],msg[2])
-            socket.emit('my_demande_perm',"ok")
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('info_menu_semaine', async msg => {
+        try{
+          socket.emit('info_menu_semaine',await getMidiMenu(msg))
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('info_horaire', async msg => {
+        try{
+          let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
+          socket.emit('info_horaire',info)
+        }catch(e){logger.error(e)}
+      });
+  
+  
+      socket.on('tuto', msg => {
+        try{
+          user.tuto = msg
+          socket.emit('tuto','ok')
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('amis', async msg => {
+        try{
+          if(msg=='get'){
+            socket.emit('amis',await user.amis)
+          }else if (msg.class==[].class){
+            user.amis=msg
+            socket.emit('amis','ok')
           }
-        } else if(msg.length==5){
-          if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
-            await socket.emit("my_demande_perm",await user.setPermDemande(msg[0],msg[1],msg[2],msg[3],msg[4],false))
-            socket.emit('my_demande_perm',"ok")
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('list_users', async msg => {
+        try{
+          socket.emit('list_users',await User.listUsersName())
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('banderole', async msg => {
+        try{
+          socket.emit('banderole',await getVar('banderole'))
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('my_demande', async msg => {
+        try{
+          if(msg.length==3){
+            socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
+          }else if(msg[3]===false){
+            if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
+              await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
+              socket.emit('my_demande',"ok")
+            }
+          } else if(msg.length==4){
+            if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
+              await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,false)
+              socket.emit('my_demande',"ok")
+            }
           }
-        }
-      }catch(e){logger.error(e)}
-    });
-    //user.setMidiDemande(44,2,[],true,false)
-    //user.setPermDemande(44,2,1,"A",32,true)
-    //user.admin=1
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('list_demandes', async msg => {
+        try{
+          socket.emit('list_demandes',await listMidiDemandes(msg[0],msg[1]*2+msg[2]))
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on('list_demandes_perm', async msg => {
+        try{
+          socket.emit('list_demandes_perm',await listPermDemandes(msg[0],msg[1],msg[2]))
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on("ouvert_perm", async msg => {
+        try{
+          socket.emit("ouvert_perm",await getPermOuvert(msg[0],msg[1],msg[2]))
+        }catch(e){logger.error(e)}
+      });
+  
+      socket.on("my_demande_perm", async msg => {
+        try{
+          if(msg.length==3){
+            socket.emit("my_demande_perm",await user.getPermDemande(msg[0],msg[1],msg[2]))
+          }else if(msg[3]===false){
+            if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
+              await user.delPermDemande(msg[0],msg[1],msg[2])
+              socket.emit('my_demande_perm',"ok")
+            }
+          } else if(msg.length==5){
+            if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
+              await socket.emit("my_demande_perm",await user.setPermDemande(msg[0],msg[1],msg[2],msg[3],msg[4],false))
+              socket.emit('my_demande_perm',"ok")
+            }
+          }
+        }catch(e){logger.error(e)}
+      });
+      //user.setMidiDemande(44,2,[],true,false)
+      //user.setPermDemande(44,2,1,"A",32,true)
+      //user.admin=1
+    } catch (e) {logger.error(e)}
   });
   
 
@@ -1085,3 +1149,4 @@ async function main() {
   User.createUser('C.D@stemariebeaucamps.fr')*/
 }
 main().catch(console.error);
+

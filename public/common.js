@@ -127,6 +127,7 @@ export async function socketAdminAsync(channel,msg){
       setTimeout(reject,5000)
     })
   } else {
+    console.log('e')
     return null
   }
 }
@@ -195,7 +196,7 @@ export function getDayHash(j,week,h){
   let dateBeg=(Date.now()+604800000*(week - actualWeek))-(ajd-jour)*86400000;
   dateBeg=new Date(dateBeg);
   dateBeg = dateBeg.toLocaleString();
-  let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
+  let mBeg = dateBeg[3]+dateBeg[4]
   let text = ""
   text = dateBeg[6]+dateBeg[7]+dateBeg[8]+dateBeg[9] + "-" + mBeg + "-" + dateBeg[0]+dateBeg[1] + " " + h+":00:00"
   return text
