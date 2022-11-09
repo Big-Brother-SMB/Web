@@ -77,9 +77,9 @@ document.getElementById("change").onclick = () => {
 
         sessionStorage.setItem("user", user.displayName)
         sessionStorage.setItem("email", user.email)
-        fname=user.email.split("@")[0].split(".")[1].toUpperCase()
-        pname=user.email.split("@")[0].split(".")[0]
-        name=fname + " " + pname.substring(0, 1).toUpperCase() + pname.substring(1)
+        let fname=user.email.split("@")[0].split(".")[1].toUpperCase()
+        let pname=user.email.split("@")[0].split(".")[0]
+        let name=fname + " " + pname.substring(0, 1).toUpperCase() + pname.substring(1)
         sessionStorage.setItem("name", name)
         window.location.href = "fin.html";
       } else {

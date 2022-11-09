@@ -1,8 +1,6 @@
 console.log(document.cookie)
 console.log(cookie)
 
-console.log("read : " + readCookie("user"))
-
 
 
 

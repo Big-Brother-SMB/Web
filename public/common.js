@@ -20,24 +20,46 @@ const analytics = firebase.analytics();
 
 /*----FindUserName-----*/
 function FindMyName (tempemail){
-  tempemail=tempemail.replace('µ', '.')
-  Fname=tempemail.split("@")[0].split(".")[1].toUpperCase()
-  Pname=tempemail.split("@")[0].split(".")[0]
-  Name=Fname + " " + Pname.substring(0, 1).toUpperCase() + Pname.substring(1)
-  return Name;
+    try {
+        let userT = tempemail.split("@")[0].split("µ");
+        console.log("t",userT, tempemail)
+        userT[0]=userT[0][0].toUpperCase()+userT[0].slice(1)
+        Fname=userT[0]
+        Pname=""
+        if(userT.length==2){
+          userT[1]=userT[1].toUpperCase();
+          Pname=userT[1]
+        }
+        Name=Fname + " " + Pname.substring(0, 1).toUpperCase() + Pname.substring(1)
+        return Name;
+    } catch (error) {
+        return "err";
+    }
 }
 
 function FindMyEmail (tempname){
-  Fname=tempname.split(" ")[1].toLowerCase()
-  Pname=tempname.split(" ")[0].toLowerCase()
+  Fname=tempname.split(" ")[0].toLowerCase()
+  Pname=tempname.split(" ")[1].toLowerCase()
   Email=Fname + "µ" + Pname +"@stemariebeaucampsµfr"
   return Email
 }
 //--------------auth--------------
 
+function replaceX(email,d,f){
+    let emailT = email.split(d);
+    let str = ""
+    for(let i = 0 ; i<emailT.length ; i++){
+        if(str!=""){
+            str+=f
+        }
+        str+=emailT[i]
+    }
+    console.log(str)
+    return str
+}
 firebase.auth().onAuthStateChanged(function(userX) {
     if (userX) {
-        user = userX.email.replaceAll('.','µ')
+        user = replaceX(userX.email,'.','µ')
         email = userX.email;
         writeCookie("user",user)
         writeCookie("email",email)
@@ -51,7 +73,7 @@ firebase.auth().onAuthStateChanged(function(userX) {
                 writeCookie("code bar",codeBar)
             }
         })
-        userName=FindMyName(email)
+        userName=FindMyName(user)
         writeCookie("name",userName)
         database.ref("modo/users/"+ user).once('value',function(snapshot){
             if(window.location.pathname.includes("admin")){
@@ -145,10 +167,10 @@ function deco(){
 }
 
 //--------------------var--------------------
-let user = readCookie("user")
+let user = replaceX(readCookie("email"),'.','µ')
 let email = readCookie("email")
 console.log(email)
-let userName = FindMyName(email)
+let userName = FindMyName(user)
 console.log(userName)
 let classe = readCookie("classe")
 let week = readIntCookie("week")
