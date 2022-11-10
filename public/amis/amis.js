@@ -19,7 +19,6 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 })
 
 function suite1(){
-    console.log(amis)
     let users = []
     let usersNames = []
     database.ref("users").once("value", function(snapshot) {
