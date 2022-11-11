@@ -118,6 +118,7 @@ if(admin>0){
 }
 
 export async function socketAdminAsync(channel,msg){
+  console.log(socketAdmin)
   if(admin>0){
     return new Promise(function(resolve, reject) {
       socketAdmin.emit(channel,msg);
@@ -292,13 +293,13 @@ export const dayNumMer = [0,1,2,3,5];
 export const dayLowerCase = ["lundi", "mardi","jeudi","vendredi"];
 export let month=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
 
-export const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
 export const listModePerm = ["Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
 
-export const listClasse = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"
+/*export const listClasse = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"
 ,"1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"
 ,"TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"
-,"PCSI","PC","professeur-personnel"]
+,"PCSI","PC","professeur-personnel"]*/
+export const nomNiveau = ["secondes","premières","terminales","adultes"]
 
 //---------------------------color function---------------------------
 

@@ -60,6 +60,7 @@ const rand = require("generate-key");
 const dateTime = require('date-and-time');
 const { firestore } = require('googleapis/build/src/apis/firestore');
 const path = require('path');
+const { setgroups } = require('process');
 
 const jsonObj = JSON.parse(fs.readFileSync(__dirname+"/code.json"));
 let address = jsonObj.address
@@ -784,6 +785,139 @@ function hashHour(){
 
 
 
+class UserSelect{
+  static usersList = []
+
+  constructor(uuid,score,prios,amis){
+      this.uuid=uuid
+      this.score = score
+      this.prios = prios
+      this.amis = amis
+      this.amisC = []
+      
+      //-1=refuser ; 0=prio passer ; 1=score ; 2=inscrit
+      this.pass = 0
+  }
+
+  static async createUserList(semaine,creneau){
+    let info = await getMidiInfo(semaine,creneau)
+    let listDemandes = await listMidiDemandes(semaine,creneau)
+    this.usersList = []
+    for(let i in listDemandes){
+      if(DorI==0){
+        //% prio
+        let user = new User(listDemandes[i].uuid)
+        let score = await user.score
+        if(score == null) score = -500
+        let prios = await user.groups
+        let amis = listDemandes[i].amis
+        for(let a in amis){
+          if(this.searchAmi(amis[a])==null){
+            amis.splice(a,1);
+            a--
+          }
+        }
+        this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prios,amis))
+      }
+    }
+    this.usersList.sort(function compareFn(a, b) {
+      if(a.score>b.score){
+          return 1
+      }else if(a.score<b.score){
+          return -1
+      }else{
+          let rand = Math.floor(Math.random() * 2);
+          if(rand == 0) rand=-1
+          return rand
+      }
+    })
+
+    for(let i in this.usersList){
+      this.usersList[i].amisComplete(this.usersList[i])
+    }
+
+    
+
+    //% -1 prio
+    for(let i in this.usersList){
+      if(this.usersList[i].pass==1){
+        this.usersList[i].amisC.forEach(a=>{
+          a=this.searchAmi(a)
+          if(a.pass==-1){
+            this.usersList[i].pass=-1
+          }
+        })
+      }
+    }
+
+
+    let inscrits = 0
+    let places = info.places
+    while(inscrits<info.places){
+      let test=true
+      for(let i in this.usersList){
+        if(this.usersList[i].pass==0){
+          test=false
+        }
+      }
+      if(test) break;
+
+
+      if(places<=0){
+          places=1
+      }
+      for(let i in this.usersList){
+        if(places>0 && this.usersList[i].pass==0){
+          places--
+          this.usersList[i].pass=1
+        }
+      }
+
+
+      for(let i in usersList){
+        if(usersList[i].pass==1){
+          let test= true
+          this.usersList[i].amisC.forEach(a=>{
+            a=this.searchAmi(a)
+            if(a.pass==0 || a.pass==-1){
+              test=false
+            }
+          })
+          if(test && this.usersList[i].amisC.length+inscrits<=info.places){
+            this.usersList[i].pass=2
+            inscrits+=this.usersList[i].amisC.length+1
+            this.usersList[i].amisC.forEach(a=>{
+              a=this.searchAmi(a)
+              a.pass=2
+            })
+          }
+        }
+      }
+    }
+    //%
+    return this.usersList
+  }
+
+  amisComplete(moi){
+    let obj = this
+    obj.amis.forEach(a=>{
+      if(a!=moi.uuid && !moi.amisC.includes(a)){
+        moi.amisC.push(a)
+        searchAmi(a).amisComplete(moi)
+      }
+    })
+  }
+
+  static searchAmi(uuid){
+    for(let i in usersList){
+      if(usersList[i].uuid==uuid){
+        return usersList[i]
+      }
+    }
+    return null
+  }
+}
+
 async function main() {
   db = new sqlite3.Database('main.db', err => {
     if (err)
@@ -985,7 +1119,9 @@ async function main() {
       })
       socket.on('get_global_point',async msg => {
         try{
+          console.log('ok1')
           socket.emit('get_global_point',await listGlobalPoint())
+          console.log('ok2')
         }catch(e){logger.error(e)}
       })
       socket.on('set_banderole',async msg => {
@@ -998,6 +1134,19 @@ async function main() {
         try{
           setMidiMenu(msg[0],msg[1])
           socket.emit('set_menu',"ok")
+        }catch(e){logger.error(e)}
+      })
+      socket.on('setMidiInfo',async msg => {
+        try{
+          console.log(msg)
+          //semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio
+          setMidiInfo(msg[0],msg[1]*2+msg[2],msg[3],msg[4],msg[5],msg[6],msg[7],msg[8],msg[9])
+          socket.emit('setMidiInfo',"ok")
+        }catch(e){logger.error(e)}
+      })
+      socket.on('list group/classe',async msg => {
+        try{
+          socket.emit('list group/classe',[await getGroup(),await getClasse()])
         }catch(e){logger.error(e)}
       })
     }
@@ -1026,7 +1175,7 @@ async function main() {
         try{
           if(msg=="int"){
             let score = await user.score
-            if(score==null) score=0
+            if(score==null) score=-500
             socket.emit('my_score',score)
           }else{
             socket.emit('my_score',await user.listPoint)
@@ -1137,6 +1286,25 @@ async function main() {
     } catch (e) {logger.error(e)}
   });
   
+  /*let t0 =["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
+  let t1 =["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
+  let t2 =["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+  let t3=["PCSI","PC","professeur-personnel"]
+  let tab = []
+  t0.forEach(e=>{
+    tab.push([e,0])
+  })
+  t1.forEach(e=>{
+    tab.push([e,1])
+  })
+  t2.forEach(e=>{
+    tab.push([e,2])
+  })
+  t3.forEach(e=>{
+    tab.push([e,3])
+  })
+  setClasse(tab)
+  setGroup(['a','b','c'])*/
 
   /*addGlobalPoint("2021-01-01 20:00:00","Un point",1)
   setVar('banderole',"coucou")
@@ -1147,6 +1315,7 @@ async function main() {
   User.createUser('robin.delatre@stemariebeaucamps.fr')
   User.createUser('A.B@stemariebeaucamps.fr')
   User.createUser('C.D@stemariebeaucamps.fr')*/
+  UserSelect.createUserList()
 }
 main().catch(console.error);
 

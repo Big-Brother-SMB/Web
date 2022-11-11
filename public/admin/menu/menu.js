@@ -233,9 +233,7 @@ function update(j,h){
 }
 
 function select(j,h){
-    sessionStorage.setItem("j", j);
-    sessionStorage.setItem("h", h);
-    window.location.href = "../crenau/crenau.html";
+    window.location.href = "../crenau/crenau.html?j="+j+"&h="+h+"&w="+week;
 }
 
 

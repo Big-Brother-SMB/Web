@@ -1,14 +1,19 @@
-/*
-database.ref("users").once("value",function(snapshot){
-    snapshot.forEach(function(child){
-        database.ref(path(j,h)+"/demandes/"+child.key+"/user").set(0)
-    })
-})
-database.ref(path(j,h)+"/inscrits/").remove()
-*/
-let j = sessionStorage.getItem("j");
-let h = parseInt(sessionStorage.getItem("h"));
-console.log("hello2");
+import * as common from "../../common.js";
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  let j = 0
+  let h = 0
+  let w = 0
+    if(params.j!=null){
+      j = parseInt(params.j)
+    }
+    if(params.h!=null){
+      h = parseInt(params.h)
+    }
+    if(params.w!=null){
+      w = parseInt(params.w)
+    }
 
 let table = document.getElementById("tbody")
 
