@@ -31,7 +31,7 @@ function onScanSuccess(decodedText, decodedResult) {
     search(decodedText,true)
 }
 var html5QrcodeScanner = new Html5QrcodeScanner(
-	"qr-reader", { fps: 30, qrbox: 250 });
+	"qr-reader", { fps: 30, qrbox: 400 });
 html5QrcodeScanner.render(onScanSuccess);
 
 let d = new Date();

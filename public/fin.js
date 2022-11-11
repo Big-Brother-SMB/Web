@@ -92,11 +92,13 @@ firebase.auth().onAuthStateChanged(function(userX) {
             window.location.href = "/admin/menu/menu.html";
           }
           else {
-            window.location.href = "/menu/menu.html";
+            setTimeout(function() {
+              window.location.href = "/menu/menu.html";
+            },5000)
           }
         })
       })
-    },8000);
+    },500);
   }else{
     window.location.href = window.location.origin + "/index.html";
   }
