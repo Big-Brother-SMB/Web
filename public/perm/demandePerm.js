@@ -18,11 +18,6 @@ let w = 0
 let divDemandes = document.getElementById("demandes")
 
 
-/*database.ref(pathPerm(j,h) + "/demandes").once('value').then(function(snapshot) {
-    database.ref("names").once('value').then(function(snapshotNames) {
-
-    })
-});*/
 let listDemandes = await common.socketAsync("list_demandes_perm",[w,j,h])
 let listUsers = await common.socketAsync('list_users',null)
 

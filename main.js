@@ -430,7 +430,7 @@ class User{
     getPermDemande(semaine,day,creneau){
       let uuid = this.uuid
       return new Promise(function(resolve, reject) {
-        db.get("SELECT * FROM perm_list WHERE semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid], (err, data) => {
+        db.get("SELECT * FROM perm_list WHERE semaine=? and day=? and creneau=? and uuid=? and DorI=false",[semaine,day,creneau,uuid], (err, data) => {
           try {
             if(data!=undefined){
               resolve(data)
@@ -442,19 +442,19 @@ class User{
         setTimeout(reject,1000)
       })
     }
-    setPermDemande(semaine,day,creneau,group,nb,DorI){
+    setPermDemande(semaine,day,creneau,group,nb){
       let uuid = this.uuid
-      db.get("SELECT * FROM perm_list where semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid], (err, data) => {
+      db.get("SELECT * FROM perm_list where semaine=? and day=? and creneau=? and uuid=? and DorI=false",[semaine,day,creneau,uuid], (err, data) => {
         if(data==undefined){
-          db.run("INSERT INTO perm_list(semaine,day,creneau,uuid,group2,nb,DorI) VALUES (?,?,?,?,?,?,?)",[semaine,day,creneau,uuid,group,nb,DorI])
+          db.run("INSERT INTO perm_list(semaine,day,creneau,uuid,group2,nb,DorI) VALUES (?,?,?,?,?,?,false)",[semaine,day,creneau,uuid,group,nb])
         } else{
-          db.run("UPDATE perm_list SET group2=?,nb=?,DorI=? where semaine=? and day=? and creneau=? and uuid=?",[group,nb,DorI,semaine,day,creneau,uuid])
+          db.run("UPDATE perm_list SET group2=?,nb=? where semaine=? and day=? and creneau=? and uuid=? and DorI=false",[group,nb,semaine,day,creneau,uuid])
         }
       })
     }
     delPermDemande(semaine,day,creneau){
       let uuid = this.uuid
-      db.run("delete from perm_list where semaine=? and day=? and creneau=? and uuid=?",[semaine,day,creneau,uuid])
+      db.run("delete from perm_list where semaine=? and day=? and creneau=? and uuid=? and DorI=false",[semaine,day,creneau,uuid])
     }
 
     //point
@@ -610,6 +610,12 @@ function setVar(key,value){
         }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
+    })
+  }
+  function setPermInscrit(semaine,day,creneau,groups){
+    db.run("delete from perm_list where semaine=? and day=? and creneau=? and DorI=true",[semaine,day,creneau])
+    groups.forEach(g=>{
+      db.run("INSERT INTO perm_list(semaine,day,creneau,group2,DorI) VALUES (?,?,?,?,true)",[semaine,day,creneau,g])
     })
   }
   
@@ -1184,6 +1190,24 @@ async function main() {
           let user = new User(msg[3])
           await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
           socket.emit('del DorI','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('set perm ouvert',async msg => {
+        try{
+          await setPermOuvert(msg[0],msg[1],msg[2],msg[3])
+          socket.emit('set perm ouvert','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('del perm demande',async msg => {
+        try{
+          await (new User(msg[3])).delPermDemande(msg[0],msg[1],msg[2])
+          socket.emit('del perm demande','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('set perm inscrit',async msg => {
+        try{
+          setPermInscrit(msg[0],msg[1],msg[2],msg[3])
+          socket.emit('set perm inscrit','ok')
         }catch(e){console.error(e)}
       })
     }
