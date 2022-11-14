@@ -152,7 +152,7 @@ async function refreshDatabase() {
             }
 
             if (info_horaire.cout != null) {
-                cout[j][h] = Math.abs(parseFloat(info_horaire.cout))
+                cout[j][h] = parseFloat(info_horaire.cout)
             }
 
             //demande en cours

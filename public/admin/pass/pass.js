@@ -49,6 +49,9 @@ if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
 }
 
 dayP.addEventListener("click",async function(){
+    scanB.style.visibility="hidden";
+    inscB.style.visibility="hidden";
+
     actualisation = false
     if(0===h){
         h = 1;
@@ -213,17 +216,17 @@ scanB.addEventListener("click",async function(){
     scanB.style.visibility="hidden";
     inscB.style.visibility="hidden";
 
-    console.log('pass test',listCreneau)
-
     listCreneau.forEach(e=>{
-        if(e.DorI==1 && e.uuid == inputNameId){
-            if(e.scan!=1 && h2==h){
-                NBscan++
-            }
+        if(e.uuid == inputNameId && e.scan!=1){
+            NBscan++
+            affichagePassages()
         }
     })
-    await common.socketAdminAsync('scan',[common.actualWeek,j,h,inputNameId,true])
-    affichagePassages()
+    if(h2==h){
+        await common.socketAdminAsync('scan',[common.actualWeek,j,h,inputNameId,true])
+    }else{
+        await common.socketAdminAsync('scan',[common.actualWeek,j,h2,inputNameId,true])
+    }
 })
 
 inscB.addEventListener("click",async function(){

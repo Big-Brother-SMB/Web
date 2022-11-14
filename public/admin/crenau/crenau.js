@@ -335,7 +335,10 @@ document.getElementById("inversed").addEventListener("click", async function() {
     await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
 });
 
-
+document.getElementById("start algo").addEventListener("click", async function() {
+    let rep = await common.socketAdminAsync('algo',[w,j,h])
+    document.getElementById("start algo").innerHTML = rep
+})
 
 /*
 document.getElementById("start algo").addEventListener("click", function() {

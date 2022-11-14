@@ -811,13 +811,12 @@ class UserSelect{
       this.pass = 0
   }
 
-  static async createUserList(semaine,creneau){
+  static async algoDeSelection(semaine,creneau){
     let info = await getMidiInfo(semaine,creneau)
     let listDemandes = await listMidiDemandes(semaine,creneau)
     this.usersList = []
     for(let i in listDemandes){
       if(DorI==0){
-        //% prio
         let user = new User(listDemandes[i].uuid)
         let score = await user.score
         if(score == null) score = -500
@@ -850,7 +849,10 @@ class UserSelect{
 
     
 
-    //% -1 prio
+    //% -1 prio info.prio
+    /*for(let i in this.usersList){
+      if()
+    }*/
     for(let i in this.usersList){
       if(this.usersList[i].pass==1){
         this.usersList[i].amisC.forEach(a=>{
@@ -1131,9 +1133,7 @@ async function main() {
       })
       socket.on('get_global_point',async msg => {
         try{
-          console.log('ok1')
           socket.emit('get_global_point',await listGlobalPoint())
-          console.log('ok2')
         }catch(e){console.error(e)}
       })
       socket.on('set_banderole',async msg => {
@@ -1150,7 +1150,6 @@ async function main() {
       })
       socket.on('setMidiInfo',async msg => {
         try{
-          console.log(msg)
           //semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio
           setMidiInfo(msg[0],msg[1]*2+msg[2],msg[3],msg[4],msg[5],msg[6],msg[7],msg[8],msg[9])
           socket.emit('setMidiInfo',"ok")
@@ -1171,7 +1170,6 @@ async function main() {
           let user = new User(msg[3])
           let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
           await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,info.DorI,msg[4])
-          console.log('test4')
           socket.emit('scan','ok')
         }catch(e){console.error(e)}
       })
@@ -1179,9 +1177,7 @@ async function main() {
         try{
           let user = new User(msg[3])
           let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
-          console.log(info)
           await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,msg[4],info.scan)
-          console.log('test3')
           socket.emit('set DorI','ok')
         }catch(e){console.error(e)}
       })
@@ -1206,21 +1202,22 @@ async function main() {
       })
       socket.on('set perm inscrit',async msg => {
         try{
-          setPermInscrit(msg[0],msg[1],msg[2],msg[3])
+          await setPermInscrit(msg[0],msg[1],msg[2],msg[3])
           socket.emit('set perm inscrit','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('algo',async msg => {
+        try{
+          let rep = await UserSelect.setPermInscrit(msg[0],msg[1]*2+msg[2])
+          socket.emit('algo',rep)
         }catch(e){console.error(e)}
       })
     }
   })
   io.on("connection", async (socket) => {
-    //db.run('drop table midi_list')
     try {
       let user = await User.searchToken(socket.handshake.auth.token)
       if(user!=null)console.log("uuid socket: " + await user.uuid)
-  
-      socket.on('test', async msg => {
-        socket.emit('test',"msg:cc")
-      });
 
       socket.on('id_data', async msg => {
         try{
@@ -1347,6 +1344,8 @@ async function main() {
       //user.admin=1
     } catch (e) {console.error(e)}
   });
+
+  //db.run('drop table midi_list')
   
   /*let t0 =["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
   let t1 =["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
@@ -1377,6 +1376,5 @@ async function main() {
   User.createUser('robin.delatre@stemariebeaucamps.fr')
   User.createUser('A.B@stemariebeaucamps.fr')
   User.createUser('C.D@stemariebeaucamps.fr')*/
-  //UserSelect.createUserList()
 }
 main().catch(console.error);
