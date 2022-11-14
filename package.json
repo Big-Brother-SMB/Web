@@ -1,0 +1,28 @@
+{
+  "name": "foyer_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "rien",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.1",
+    "date-and-time": "^2.4.1",
+    "express": "^4.18.1",
+    "generate-key": "^0.0.6",
+    "googleapis": "^108.0.0",
+    "npm": "^8.19.2",
+    "path": "^0.12.7",
+    "pino": "^8.7.0",
+    "pm2": "^5.2.2",
+    "socket.io": "^4.5.2",
+    "sqlite3": "^5.1.2",
+    "url": "^0.11.0",
+    "uuid": "^9.0.0",
+    "ws": "^8.10.0"
+  }
+}

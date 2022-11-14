@@ -45,7 +45,7 @@ const logger = pino({
   transport
 })
 
-logger.info("start")
+console.log("start")
 
 
 const http = require('http');
@@ -110,10 +110,10 @@ class User{
                     }else{
                         resolve(null)
                     }
-                }catch(e){logger.error(e);resolve(null)}
+                }catch(e){console.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
-          } catch (e) {logger.error(e)}
+          } catch (e) {console.error(e)}
         })
     }
       //user et  plus
@@ -138,10 +138,10 @@ class User{
                         uuid=data.uuid
                     }
                     resolve(new User(uuid))
-                }catch(e){logger.error(e);resolve(null)}
+                }catch(e){console.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
-          } catch (e) {logger.error(e)}
+          } catch (e) {console.error(e)}
         })
     }
 
@@ -153,7 +153,7 @@ class User{
             let date = hashHour()
             db.run("INSERT INTO token(token,uuid,creation,last_use) VALUES(?,?,?,?)", [tokenAuth,uuid,date,date])
             resolve(tokenAuth)
-          } catch (e) {logger.error(e)}
+          } catch (e) {console.error(e)}
         })
       }
     static searchToken(token){
@@ -167,10 +167,10 @@ class User{
               }else{
                 resolve(new User(null))
               }
-            }catch(e){logger.error(e);resolve(null)}
+            }catch(e){console.error(e);resolve(null)}
           })
           setTimeout(reject,1000)
-          } catch (e) {logger.error(e)}
+          } catch (e) {console.error(e)}
         })
       }
 
@@ -184,10 +184,10 @@ class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){logger.error(e);resolve([])}
+                }catch(e){console.error(e);resolve([])}
             })
             setTimeout(reject,1000)
-          } catch (e) {logger.error(e)}
+          } catch (e) {console.error(e)}
         })
     }
 
@@ -205,23 +205,26 @@ class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){logger.error(e);resolve([])}
+              }catch(e){console.error(e);resolve([])}
           })
           setTimeout(reject,1000)
-        } catch (e) {logger.error(e)}
+        } catch (e) {console.error(e)}
       })
     }
 
     static listUsersComplete(){
       return new Promise(function(resolve, reject) {
-          db.all("SELECT * FROM users", (err, data) => {
+          db.all("SELECT * FROM users", async (err, data) => {
               try{
                   if(data!=undefined){
+                      for(let i in data){
+                        data[i].groups = await (new User(data[i].uuid)).groups
+                      }
                       resolve(data)
                   }else{
                       resolve([])
                   }
-              }catch(e){logger.error(e);resolve([])}
+              }catch(e){console.error(e);resolve([])}
           })
           setTimeout(reject,1000)
       })
@@ -237,7 +240,7 @@ class User{
                   }else{
                     resolve(null)
                   }
-                }catch(e){logger.error(e);resolve(null)}
+                }catch(e){console.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
         })
@@ -263,7 +266,7 @@ class User{
                     }else{
                         resolve(null)
                     }
-                }catch(e){logger.error(e);resolve(null)}
+                }catch(e){console.error(e);resolve(null)}
             })
             setTimeout(reject,1000)
         })
@@ -332,7 +335,7 @@ class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){logger.error(e);resolve([])}
+                }catch(e){console.error(e);resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -361,7 +364,7 @@ class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){logger.error(e);resolve([])}
+                }catch(e){console.error(e);resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -395,7 +398,7 @@ class User{
             }else{
               resolve({})
             }
-          }catch(e){logger.error(e);resolve({})}
+          }catch(e){console.error(e);resolve({})}
         })
         setTimeout(reject,1000)
       })
@@ -411,9 +414,11 @@ class User{
       })
       db.serialize(()=>{
         db.run("delete from midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid])
-        amis.forEach(e=>{
-          db.run("INSERT INTO midi_amis(semaine,creneau,uuid,amis) VALUES (?,?,?,?)",[semaine,creneau,uuid,e])
-        })
+        if(typeof amis == 'object'){
+          amis.forEach(e=>{
+            db.run("INSERT INTO midi_amis(semaine,creneau,uuid,amis) VALUES (?,?,?,?)",[semaine,creneau,uuid,e])
+          })
+        }
       })
     }
     delMidiDemande(semaine,creneau){
@@ -432,7 +437,7 @@ class User{
             }else{
               resolve({})
             }
-          }catch(e){logger.error(e);resolve({})}
+          }catch(e){console.error(e);resolve({})}
         })
         setTimeout(reject,1000)
       })
@@ -488,11 +493,11 @@ class User{
                               }
                             }
                             resolve(list)
-                        }catch(e){logger.error(e);resolve([])}
+                        }catch(e){console.error(e);resolve([])}
                       })
-                  }catch(e){logger.error(e);resolve([])}
+                  }catch(e){console.error(e);resolve([])}
                 })
-            }catch(e){logger.error(e);resolve([])}
+            }catch(e){console.error(e);resolve([])}
         })
         setTimeout(reject,1000)
       })
@@ -530,11 +535,11 @@ class User{
                                 }
                             }
                             resolve(score)
-                        }catch(e){logger.error(e);resolve(null)}
+                        }catch(e){console.error(e);resolve(null)}
                       })
-                  }catch(e){logger.error(e);resolve(null)}
+                  }catch(e){console.error(e);resolve(null)}
                 })
-            }catch(e){logger.error(e);resolve(null)}
+            }catch(e){console.error(e);resolve(null)}
         })
         setTimeout(reject,1000)
       })
@@ -553,7 +558,7 @@ function getVar(key){
                 resolve(null)
             }
             })
-        }catch(e){logger.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve(null)}
         setTimeout(reject,1000)
     })
 }
@@ -579,7 +584,7 @@ function setVar(key,value){
           }else{
             resolve(null)
           }
-        }catch(e){logger.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve(null)}
       })
       setTimeout(reject,1000)
     })
@@ -602,7 +607,7 @@ function setVar(key,value){
           }else{
             resolve([])
           }
-        }catch(e){logger.error(e);resolve([])}
+        }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -619,7 +624,7 @@ function setVar(key,value){
           }else{
             resolve({})
           }
-        }catch(e){logger.error(e);resolve({})}
+        }catch(e){console.error(e);resolve({})}
       })
       setTimeout(reject,1000)
     })
@@ -649,7 +654,7 @@ function setVar(key,value){
           }else{
             resolve({})
           }
-        }catch(e){logger.error(e);resolve({})}
+        }catch(e){console.error(e);resolve({})}
       })
       setTimeout(reject,1000)
     })
@@ -687,7 +692,7 @@ function setVar(key,value){
           }else{
             resolve([])
           }
-        }catch(e){logger.error(e);resolve([])}
+        }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -710,7 +715,7 @@ function setVar(key,value){
                 })
             }
             resolve(list)
-        }catch(e){logger.error(e);resolve([])}
+        }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -727,7 +732,7 @@ function setVar(key,value){
           }else{
             resolve([])
           }
-        }catch(e){logger.error(e);resolve([])}
+        }catch(e){console.error(e);resolve([])}
       })
       setTimeout(reject,1000)
     })
@@ -749,7 +754,7 @@ function setVar(key,value){
           }else{
             resolve(null)
           }
-        }catch(e){logger.error(e);resolve(null)}
+        }catch(e){console.error(e);resolve(null)}
       })
       setTimeout(reject,1000)
     })
@@ -762,6 +767,7 @@ function setVar(key,value){
       })
     })
   }
+
   
  
   function addMessage(deAdmin,uuid,lu,text,title,type,date){
@@ -1031,7 +1037,7 @@ async function main() {
     } else if (req.url.startsWith('/oauth2callback')) {
       let q = url.parse(req.url, true).query;
       if (q.error || q.code===undefined) {
-        logger.info('Error:' + q.error);
+        console.log('Error:' + q.error);
       } else {
         try {
           let { tokens } = await oauth2Client.getToken(q.code);
@@ -1053,7 +1059,7 @@ async function main() {
             res.end();
           }
         } catch (error) {
-          logger.error(error);
+          console.error(error);
           res.writeHead(301, { "Location" : address+"index.html?err=Erreur inconnue"});
           res.end();
         }
@@ -1084,10 +1090,10 @@ async function main() {
                 res.end(fs.readFileSync(`${__dirname}/public/404.html`));
               }
               res.end();
-            }catch(e){logger.error(e)}
+            }catch(e){console.error(e)}
           });
         }
-      }catch(e){logger.error(e)}
+      }catch(e){console.error(e)}
     }
 
   }).listen(3000);
@@ -1102,39 +1108,39 @@ async function main() {
   }}*/)
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
-    logger.info("uuid admin socket: " + await user.uuid)
+    console.log("uuid admin socket: " + await user.uuid)
 
     if(await user.admin>0){
       socket.on('my_admin_mode',async msg => {
         try{
           user.admin = msg
           socket.emit('my_admin_mode',"ok")
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       })
       socket.on('add_global_point',async msg => {
         try{
           addGlobalPoint(msg[0],msg[1],msg[2])
           socket.emit('add_global_point',"ok")
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       })
       socket.on('get_global_point',async msg => {
         try{
           console.log('ok1')
           socket.emit('get_global_point',await listGlobalPoint())
           console.log('ok2')
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       })
       socket.on('set_banderole',async msg => {
         try{
           setVar("banderole",msg)
           socket.emit('set_banderole',"ok")
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       })
       socket.on('set_menu',async msg => {
         try{
           setMidiMenu(msg[0],msg[1])
           socket.emit('set_menu',"ok")
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       })
       socket.on('setMidiInfo',async msg => {
         try{
@@ -1142,19 +1148,51 @@ async function main() {
           //semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio
           setMidiInfo(msg[0],msg[1]*2+msg[2],msg[3],msg[4],msg[5],msg[6],msg[7],msg[8],msg[9])
           socket.emit('setMidiInfo',"ok")
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       })
       socket.on('list group/classe',async msg => {
         try{
           socket.emit('list group/classe',[await getGroup(),await getClasse()])
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
+      })
+      socket.on('list pass',async msg => {
+        try{
+          socket.emit('list pass',await User.listUsersComplete())
+        }catch(e){console.error(e)}
+      })
+      socket.on('scan',async msg => {
+        try{
+          let user = new User(msg[3])
+          let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
+          await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,info.DorI,msg[4])
+          console.log('test4')
+          socket.emit('scan','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('set DorI',async msg => {
+        try{
+          let user = new User(msg[3])
+          let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
+          console.log(info)
+          await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,msg[4],info.scan)
+          console.log('test3')
+          socket.emit('set DorI','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('del DorI',async msg => {
+        try{
+          let user = new User(msg[3])
+          await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
+          socket.emit('del DorI','ok')
+        }catch(e){console.error(e)}
       })
     }
   })
   io.on("connection", async (socket) => {
+    //db.run('drop table midi_list')
     try {
       let user = await User.searchToken(socket.handshake.auth.token)
-      if(user!=null)logger.info("uuid socket: " + await user.uuid)
+      if(user!=null)console.log("uuid socket: " + await user.uuid)
   
       socket.on('test', async msg => {
         socket.emit('test',"msg:cc")
@@ -1168,7 +1206,7 @@ async function main() {
           }else{
             socket.emit('id_data',"err")
           }
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('my_score', async msg => {
@@ -1180,20 +1218,20 @@ async function main() {
           }else{
             socket.emit('my_score',await user.listPoint)
           }
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('info_menu_semaine', async msg => {
         try{
           socket.emit('info_menu_semaine',await getMidiMenu(msg))
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('info_horaire', async msg => {
         try{
           let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
           socket.emit('info_horaire',info)
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
   
@@ -1201,7 +1239,7 @@ async function main() {
         try{
           user.tuto = msg
           socket.emit('tuto','ok')
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('amis', async msg => {
@@ -1212,19 +1250,19 @@ async function main() {
             user.amis=msg
             socket.emit('amis','ok')
           }
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('list_users', async msg => {
         try{
           socket.emit('list_users',await User.listUsersName())
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('banderole', async msg => {
         try{
           socket.emit('banderole',await getVar('banderole'))
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('my_demande', async msg => {
@@ -1242,25 +1280,25 @@ async function main() {
               socket.emit('my_demande',"ok")
             }
           }
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('list_demandes', async msg => {
         try{
           socket.emit('list_demandes',await listMidiDemandes(msg[0],msg[1]*2+msg[2]))
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on('list_demandes_perm', async msg => {
         try{
           socket.emit('list_demandes_perm',await listPermDemandes(msg[0],msg[1],msg[2]))
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on("ouvert_perm", async msg => {
         try{
           socket.emit("ouvert_perm",await getPermOuvert(msg[0],msg[1],msg[2]))
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
   
       socket.on("my_demande_perm", async msg => {
@@ -1278,12 +1316,12 @@ async function main() {
               socket.emit('my_demande_perm',"ok")
             }
           }
-        }catch(e){logger.error(e)}
+        }catch(e){console.error(e)}
       });
       //user.setMidiDemande(44,2,[],true,false)
       //user.setPermDemande(44,2,1,"A",32,true)
       //user.admin=1
-    } catch (e) {logger.error(e)}
+    } catch (e) {console.error(e)}
   });
   
   /*let t0 =["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
@@ -1315,7 +1353,6 @@ async function main() {
   User.createUser('robin.delatre@stemariebeaucamps.fr')
   User.createUser('A.B@stemariebeaucamps.fr')
   User.createUser('C.D@stemariebeaucamps.fr')*/
-  UserSelect.createUserList()
+  //UserSelect.createUserList()
 }
 main().catch(console.error);
-

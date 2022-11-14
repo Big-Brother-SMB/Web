@@ -135,11 +135,11 @@ sGratuit.addEventListener("change", async function() {
 
 
 document.getElementById("demandes").addEventListener("click", function() {
-    window.location.href = "listes/liste.html?j="+j+"&h="+h+"&w="+week;
+    window.location.href = "listes/liste.html?j="+j+"&h="+h+"&w="+w;
 });
 
 document.getElementById("inscrits").addEventListener("click", function() {
-    window.location.href = "listes/liste.html?j="+j+"&h="+h+"&w="+week;
+    window.location.href = "listes/liste.html?j="+j+"&h="+h+"&w="+w;
 });
 
 

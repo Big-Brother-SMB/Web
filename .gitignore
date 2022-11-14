@@ -2,9 +2,8 @@
 firebase.json
 *.csv
 *.db
-*.json
 key.json
-
+code.json
 
 # Logs
 logs

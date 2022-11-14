@@ -61,6 +61,11 @@ let socket = io({
         token: key
     }
 });
+await new Promise(function(resolve, reject) {
+  socket.once("connect", () => {
+    resolve(null)
+  });
+})
 
 export async function socketAsync(channel,msg){
     return new Promise(function(resolve, reject) {
@@ -115,10 +120,14 @@ if(admin>0){
       token: key
     }
   });
+  await new Promise(function(resolve, reject) {
+    socketAdmin.once("connect", () => {
+      resolve(null)
+    });
+  })
 }
 
 export async function socketAdminAsync(channel,msg){
-  console.log(socketAdmin)
   if(admin>0){
     return new Promise(function(resolve, reject) {
       socketAdmin.emit(channel,msg);
@@ -128,7 +137,7 @@ export async function socketAdminAsync(channel,msg){
       setTimeout(reject,5000)
     })
   } else {
-    console.log('e')
+    console.log('err')
     return null
   }
 }
