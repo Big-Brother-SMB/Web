@@ -30,12 +30,7 @@ function suite1(){
             }
         })
         document.getElementById("addAmi").addEventListener("input", function(){
-          if (document.getElementById("addAmi").value.length>2){
             autocomplete(document.getElementById("addAmi"), usersNames,function(){});
-          }
-          else{
-            autocomplete(document.getElementById("addAmi"), [],function(){});
-          }
         })
     })
 
