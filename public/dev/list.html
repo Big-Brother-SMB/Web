@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="../Images/logo.png">
+  <title>Arcade</title>
+  <link rel="stylesheet" href="../common.css">
+  <link rel="stylesheet" href="dev.css">
+  <link rel="stylesheet" id="css">
+</head>
+
+<body>
+  <header>
+    <img class="headerimg" src="../Images/logo.png" alt="logo Lycée">
+
+    <h1 id="title" style="font-size: 50px;">Arcade</h1>
+
+    <a class="notification" href="../menu/menu.html"><img src="../Images/retour.png" alt="retour"></a>
+
+  </header>
+
+
+  <article style="text-align: center;">
+      <form autocomplete="off" action="/action_page.php">
+        <div class="autocomplete" style="width:500px;margin-top: 10px;">
+          <input id="jeu" type="text" name="myCountry" placeholder="Nom du jeu" style="text-align: center; border-radius:10px;">
+        </div>
+      </form>
+      <p id="num"></p>
+  </article>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+<script src="../common.js"></script>
+<script src="dev.js"></script>
+</body>
+
+</html>

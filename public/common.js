@@ -653,16 +653,16 @@ function charged(bool){
     }
 }
 
-try{
-    database.ref("version").once("value", function (snapshot) {
-        let msg = snapshot.val()
+database.ref("version").once("value", function (snapshot) {
+    let msg = snapshot.val()
+    if(document.getElementById("version")!=null){
         if (msg != null) {
             document.getElementById("version").innerHTML = "Version " + msg
         } else {
             document.getElementById("version").innerHTML = "Crédit"
         }
-    })
-}catch{}
+    }
+})
 
 
 //nb pers
