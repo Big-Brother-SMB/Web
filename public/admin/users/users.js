@@ -1,3 +1,4 @@
+import { admin } from "googleapis/build/src/apis/admin/index.js";
 import * as common from "../../common.js";
 
 let divClasse = document.getElementById("classe")
@@ -12,14 +13,6 @@ let infoCodeCarte = document.getElementById("info code barre")
 let codeCarte = document.getElementById("code carte")
 let adminBox = document.getElementById("admin")
 
-for(i in listClasse){
-    let opt = document.createElement("option")
-    opt.innerHTML = listClasse[i]
-    divClasse.appendChild(opt);
-}
-
-
-
 let divPrio = document.getElementById("prio")
 let addPrio = document.getElementById("addPrio")
 
@@ -31,6 +24,11 @@ g_c[0].forEach(function(child) {
     opt.innerHTML = child.group2
     addPrio.appendChild(opt);
 })
+for(let i in g_c[1]){
+    let opt = document.createElement("option")
+    opt.innerHTML = g_c[1][i].classe
+    divClasse.appendChild(opt);
+}
 
 
 function stop(){
@@ -60,19 +58,31 @@ autocomplete(document.getElementById("search"), utilisateursNames,function(val){
     stop()
     setTimeout(function() {
         let utilisateur = listUsers[utilisateursNames.indexOf(document.getElementById("search").value)]
+        let codeBar = utilisateur.code_barre
+        let classe = utilisateur.classe
+        let listGroups = utilisateur.groups
+        let first_name = utilisateur.first_name
+        let last_name = utilisateur.last_name
+
         if(utilisateursNames.indexOf(utilisateur) == -1){
             document.getElementById("info").innerHTML = "cet utilisateur n'existe pas"
         }else{
             document.getElementById("info").innerHTML = "Page de " + utilisateur.first_name + " " + utilisateur.last_name
-            divClasse.selectedIndex = listClasse.indexOf(utilisateur.classe);
+            divClasse.selectedIndex = g_c[1].indexOf(utilisateur.classe);
             divClasse.addEventListener("change", fu1=function() {
-                database.ref("users/" + utilisateur + "/classe").set(listClasse[this.selectedIndex])
+                classe = g_c[1][this.selectedIndex]
+                common.socketAdminAsync('set user',[utilisateur.uuid,first_name,last_name,codeBar,classe,adminBox.checked,listGroups])
             });
             
             dName.value = utilisateur.first_name + " " + utilisateur.last_name
             dName.addEventListener("input",fuName=function(){
                 if(utilisateursNames.indexOf(dName.value) == -1){
-                    database.ref("names/" + utilisateur).set(dName.value)
+                    let name = dName.value.split(' ')
+                    first_name=name[0]
+                    if(name.length>1){
+                       last_name=name[1] 
+                    }
+                    common.socketAdminAsync('set user',[utilisateur.uuid,first_name,last_name,codeBar,classe,adminBox.checked,listGroups])
                 }
             })
     
@@ -145,75 +155,55 @@ autocomplete(document.getElementById("search"), utilisateursNames,function(val){
                 
             });
     
-            database.ref("modo/users/" + utilisateur).once('value').then(function(snapshot) {
-                if(snapshot.val()===0 || snapshot.val()===1){
-                    adminBox.checked=true
-                } else {
-                    adminBox.checked=false
-                }
-                adminBox.addEventListener("change", fu3=function() {
-                    if (adminBox.checked == true){
-                        database.ref("modo/users/" + utilisateur).set(0)
-                    } else {
-                        database.ref("modo/users/" + utilisateur).remove()
-                    }
-                })
-    
+            if(utilisateur.admin==1 || utilisateur.admin==2){
+                adminBox.checked=true
+            } else {
+                adminBox.checked=false
+            }
+            adminBox.addEventListener("change", fu3=function() {
+                common.socketAdminAsync('set user',[utilisateur.uuid,first_name,last_name,codeBar,classe,adminBox.checked,listGroups])
             })
-            database.ref("users/" + utilisateur + "/code barre").once('value').then(function(snapshot) {
-                let codeBar = snapshot.val()
-                codeCarte.value = codeBar
-                codeCarte.addEventListener("input", fu4=function() {
-                    infoCodeCarte.innerHTML = ""
-                    let val = codeCarte.value
-                    if(String(val).length  == 5 && val != codeBar){
-                        let test= true;
-                        database.ref("users").once("value", function(snapshot){
-                            snapshot.forEach(function(child) {
-                                let codeBar2 = snapshot.child(child.key+"/code barre").val()
-                                if(codeBar2===val && child.key!=utilisateur){
-                                    test=false
-                                    infoCodeCarte.innerHTML += "déjà utiliser par: " + child.key
-                                }
-                            })
-                            if(test){
-                                database.ref("users/" + utilisateur + "/code barre").set(val)
-                                codeBar=val
-                            }
-                        })
+
+            codeCarte.value = codeBar
+            codeCarte.addEventListener("input", fu4=function() {
+                infoCodeCarte.innerHTML = ""
+                let val = codeCarte.value
+                if(String(val).length  == 5 && val != codeBar){
+                    let test=true
+                    listUsers.forEach(function(child) {
+                        let codeBar2 = child.code_barre
+                        if(codeBar2==val && child!=utilisateur){
+                            test=false
+                            infoCodeCarte.innerHTML += "déjà utiliser par: " + utilisateur.first_name + " " + utilisateur.last_name
+                        }
+                    })
+                    if(test){
+                        common.socketAdminAsync('set user',[utilisateur.uuid,first_name,last_name,codeBar,classe,adminBox.checked,listGroups])
+                        codeBar=val
                     }
-                });
+                }
             });
             
-    
-            let bPrio = []
-            for(let {} in priorites){
-                bPrio.push(false)
+            
+            if(listGroups.length == null){
+                divPrio.innerHTML = "aucune priorités"
+            }else{
+                divPrio.innerHTML = ""
+                listGroups.forEach((e)=>{
+                    addButPrio(e)
+                })
             }
-            database.ref("users/" + utilisateur + "/priorites").once('value',function(snapshot) {
-                if(snapshot.val() == null){
-                    divPrio.innerHTML = "aucune priorités"
-                }else{
-                    console.log(snapshot.val())
-                    divPrio.innerHTML = ""
-                    snapshot.forEach(function(child) {
-                        addButPrio(child.key)
-                        bPrio[priorites.indexOf(child.key)] = true
-                    })
-                }
-            });
             
             addPrio.addEventListener("click", fu5=function() {
                 const index = this.selectedIndex - 1
                 addPrio.selectedIndex = 0
-                if(index != -1 && !bPrio[index]){
-                    bPrio[index] = true
-                    const name = priorites[index]
-                    database.ref("users/" + utilisateur + "/priorites/" + name).set(0)
+                if(index != -1 && !listGroups.include(g_c[1][index].classe)){
+                    listGroups.push(g_c[1][index].classe)
+                    common.socketAdminAsync('set user',[utilisateur.uuid,first_name,last_name,codeBar,classe,adminBox.checked,listGroups])
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = ""
                     }
-                    addButPrio(name)
+                    addButPrio(g_c[1][index].classe)
                 }
             });
             function addButPrio(name){
@@ -221,9 +211,9 @@ autocomplete(document.getElementById("search"), utilisateursNames,function(val){
                 prio.innerHTML = name
                 prio.className = "priorites"
                 prio.addEventListener("click", function() {
-                    database.ref("users/" + utilisateur + "/priorites/" + name).remove()
+                    listGroups = listGroups.filter(o => o != name);
+                    common.socketAdminAsync('set user',[utilisateur.uuid,first_name,last_name,codeBar,classe,adminBox.checked,listGroups])
                     prio.parentNode.removeChild(prio);
-                    bPrio[priorites.indexOf(name)] = false
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = "aucune priorités"
                     }

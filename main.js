@@ -1208,8 +1208,15 @@ async function main() {
       })
       socket.on('algo',async msg => {
         try{
-          let rep = await UserSelect.setPermInscrit(msg[0],msg[1]*2+msg[2])
+          let rep = await UserSelect.algoDeSelection(msg[0],msg[1]*2+msg[2])
           socket.emit('algo',rep)
+        }catch(e){console.error(e)}
+      })
+      socket.on('set user',async msg => {
+        try{
+          //uuid,first,last,codebarre,classe,admin,groups
+          let user = new User(msg[0])
+          socket.emit('set user','ok')
         }catch(e){console.error(e)}
       })
     }
