@@ -21,7 +21,7 @@ database.ref("users/" + user + "/amis").once("value", function(snapshot) {
 function suite1(){
     let users = []
     let usersNames = []
-    database.ref("users").once("value", function(snapshot) {
+    database.ref("names").once("value", function(snapshot) {
         snapshot.forEach(function(child) {
             childName=FindMyName(child.key)
             if(childName != user && amis.indexOf(childName) == -1){
@@ -35,8 +35,6 @@ function suite1(){
     })
 
     document.getElementById("ajout").addEventListener("click", function() {
-        console.log("click")
-
         let ami = document.getElementById("addAmi").value
 
         if(usersNames.indexOf(ami) != -1){
