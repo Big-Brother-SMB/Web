@@ -272,6 +272,11 @@ class User{
         })
     }
 
+    set all(args){
+      db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?,admin=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.admin,this.uuid])
+      this.groups=args.listGroups
+    }
+
     get first_name()   {
         return this.#getInfo("first_name")
     }
@@ -461,22 +466,26 @@ class User{
     addPersonalPoint(date,name,value){
         db.run("INSERT INTO point_perso(uuid,date,name,value) VALUES (?,?,?,?)",[this.uuid,date,name,value])
     }
+    delPersonalPoint(date){
+        console.log(date)
+        db.run("delete from point_perso where uuid=? and date=?",[this.uuid,date])
+    }
     get listPoint(){
       let uuid=this.uuid
       return new Promise(function(resolve, reject) {
-        let list=[]
+        let lists={perso:[],global:[],midi:[]}
         db.all("SELECT * FROM point_perso WHERE uuid=?",[uuid], (err, data) => {
             try{
                 if(data!=undefined){
                     data.forEach(e=>{
-                        list.push(e)
+                        lists.perso.push(e)
                     }) 
                 }
                 db.all("SELECT * FROM point_global", (err, data) => {
                   try{
                       if(data!=undefined){
                           data.forEach(e=>{
-                            list.push(e)
+                            lists.global.push(e)
                           })
                       }
                       db.all("SELECT * FROM midi_list WHERE uuid=? and DorI=True",[uuid], async (err, data) => {
@@ -489,10 +498,10 @@ class User{
                                   })
                                 })
                                 if(r!=undefined)
-                                  list.push(r)
+                                  lists.midi.push(r)
                               }
                             }
-                            resolve(list)
+                            resolve(lists)
                         }catch(e){console.error(e);resolve([])}
                       })
                   }catch(e){console.error(e);resolve([])}
@@ -708,6 +717,9 @@ function setVar(key,value){
   //point
   function addGlobalPoint(date,name,value){
     db.run("INSERT INTO point_global(date,name,value) VALUES (?,?,?)",[date,name,value])
+  }
+  function delGlobalPoint(date){
+    db.run("delete from point_global where date=?",[date])
   }
   function listGlobalPoint(){
     let uuid=this.uuid
@@ -1131,6 +1143,13 @@ async function main() {
           socket.emit('add_global_point',"ok")
         }catch(e){console.error(e)}
       })
+      socket.on('add_perso_point',async msg => {
+        try{
+          let user = new User(msg[0])
+          user.addPersonalPoint(msg[1],msg[2],msg[3])
+          socket.emit('add_perso_point',"ok")
+        }catch(e){console.error(e)}
+      })
       socket.on('get_global_point',async msg => {
         try{
           socket.emit('get_global_point',await listGlobalPoint())
@@ -1214,9 +1233,28 @@ async function main() {
       })
       socket.on('set user',async msg => {
         try{
-          //uuid,first,last,codebarre,classe,admin,groups
-          let user = new User(msg[0])
+          let user = new User(msg.uuid)
+          user.all=msg
           socket.emit('set user','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('get score list',async msg => {
+        try{
+          let user = new User(msg)
+          socket.emit('get score list',await user.listPoint)
+        }catch(e){console.error(e)}
+      })
+      socket.on('del_perso_point',async msg => {
+        try{
+          let user = new User(msg[0])
+          user.delPersonalPoint(msg[1])
+          socket.emit('del_perso_point','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('del_global_point',async msg => {
+        try{
+          delGlobalPoint(msg)
+          socket.emit('del_global_point','ok')
         }catch(e){console.error(e)}
       })
     }
@@ -1348,7 +1386,7 @@ async function main() {
       });
       //user.setMidiDemande(44,2,[],true,false)
       //user.setPermDemande(44,2,1,"A",32,true)
-      //user.admin=1
+      user.admin=1
     } catch (e) {console.error(e)}
   });
 

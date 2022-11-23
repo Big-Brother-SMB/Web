@@ -124,8 +124,26 @@ input[type=checkbox] {
   border: 1px solid black;
 }
 
-.event{
+.eventM{
+  background-color: #8bc995;
+  border-radius:8px 8px 8px 8px;
+  padding: .75rem;
+  margin: .25em;
+  height: 50px;
+  width: 97%;
+}
+
+.eventP{
   background-color: #8b9fc9;
+  border-radius:8px 8px 8px 8px;
+  padding: .75rem;
+  margin: .25em;
+  height: 50px;
+  width: 97%;
+}
+
+.eventG{
+  background-color: #f37272;
   border-radius:8px 8px 8px 8px;
   padding: .75rem;
   margin: .25em;

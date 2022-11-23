@@ -101,9 +101,6 @@ async function refreshDatabase() {
                     groupsInscrits.push(child.group2)
                 }else{
                     nbDemandesPerm++
-                    if(common.uuid==child.uuid){
-                        bouton[j][h].className = "crenau demande"
-                    }
                 }
             })
 
@@ -124,9 +121,6 @@ async function refreshDatabase() {
                 case 0:
                     let str = ""
                     groupsInscrits.forEach(function (child) {
-                        if(child == common.classe || common.groups.indexOf(child)!=-1){
-                            bouton[j][h].className = "crenau inscrit"
-                        }
                         if(str != ""){
                             str += ", "
                         }

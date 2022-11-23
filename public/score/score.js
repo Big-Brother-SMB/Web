@@ -10,21 +10,36 @@ let i=0
 
 let list = []
 let data = await common.socketAsync('my_score',null)
-data.forEach((child)=> {
+console.log(data)
+data.midi.forEach((child)=> {
     let event = document.createElement("button")
     event.classList.add("event")
 
+    let obj={}
+    obj.name = "Repas du " + common.dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
+    obj.value = -child.cout
+    obj.date = common.getDayHash(Math.floor(child.creneau / 2),child.semaine,(11 + (child.creneau % 2)))
+    list.push(obj)
+})
+
+data.perso.forEach((child)=> {
+    let event = document.createElement("button")
+    event.classList.add("event")
 
     let obj={}
-    if(child.cout!=undefined){
-        obj.name = "Repas du " + common.dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
-        obj.value = -child.cout
-        obj.date = common.getDayHash(Math.floor(child.creneau / 2),child.semaine,(11 + (child.creneau % 2)))
-    }else{
-        obj.name = child.name
-        obj.value = child.value
-        obj.date = child.date
-    }
+    obj.name = child.name
+    obj.value = child.value
+    obj.date = child.date
+    list.push(obj)
+})
+data.global.forEach((child)=> {
+    let event = document.createElement("button")
+    event.classList.add("event")
+
+    let obj={}
+    obj.name = child.name
+    obj.value = child.value
+    obj.date = child.date
     list.push(obj)
 })
 
