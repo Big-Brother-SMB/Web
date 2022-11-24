@@ -56,6 +56,11 @@ listUsers.forEach(function(child) {
 console.log(utilisateursNames)
 common.autocomplete(document.getElementById("search"), utilisateursNames,async function(){
     stop()
+    listUsers = await common.socketAdminAsync('list pass',null)
+    utilisateursNames=[]
+    listUsers.forEach(function(child) {
+        utilisateursNames.push(child.first_name + " " + child.last_name)
+    })
     let utilisateur = listUsers[utilisateursNames.indexOf(document.getElementById("search").value)]
     let codeBar = utilisateur.code_barre
     let classe = utilisateur.classe
@@ -185,7 +190,6 @@ common.autocomplete(document.getElementById("search"), utilisateursNames,async f
             event.addEventListener("click", async function() {
                 const index = [...divScoreEvent.children].indexOf(event)
                 let obj = scoreObjs[index]
-                //% remove
                 if(obj.type==0){
                     await common.socketAdminAsync('del DorI',[obj.semaine,0,obj.creneau,utilisateur.uuid])
                 }else if(obj.type==1){
@@ -246,8 +250,8 @@ common.autocomplete(document.getElementById("search"), utilisateursNames,async f
                     }
                 })
                 if(test){
-                    common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                     codeBar=val
+                    common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                 }
             }
         });
