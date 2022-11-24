@@ -510,9 +510,10 @@ function closeModal(modal) {
 
 
 document.getElementById("bSelf").addEventListener("click",function(){
-    document.getElementById("menu self").style.visibility="visible"
+    window.location.href='https://sites.google.com/api-restauration.com/institution-sainte-marie-beauc/soyons-complices-%C3%A0-table?pli=1#h.e2fzlfnqqon'
+    /*/document.getElementById("menu self").style.visibility="visible"
     document.getElementById("menu self").style.height="auto"
     document.getElementById("menu self").style.margin="30px"
     document.getElementById("menu self").innerHTML = "&darr;&darr;&darr;<br><br><br>Menu self:<br><iframe src='https://drive.google.com/file/d/1ymF5Q53oe9ugwPFpjCg0Uwj0SaYbem5L/preview' style='width: 90%;height: 600px;' allow='autoplay'></iframe>"
-    window.location.href = "#menu self"
+    window.location.href = "#menu self"*/
 })
