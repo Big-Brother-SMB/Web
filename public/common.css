@@ -56,7 +56,6 @@ select{
   margin: 10px;
 }
 
-
 .notification .badge {
   position: absolute;
   bottom: 10px;
@@ -295,4 +294,43 @@ input[type="number"] {
 input[type="radio"] {
   width: 30px;
   height: 30px;
+}
+
+@media only screen and (min-width: 1650px){
+  .notification{
+    padding: 7.5px 13px;
+    margin: 5px;
+  }
+
+  .marquee-rtl{
+    max-height: 40px;
+  }
+
+  .notification img{
+    width: 50px;
+    height: 50px;
+  }
+
+  #title{
+    font-size : 25px
+  }
+
+  .headerimg {
+    width: 85px;
+    height: 75px;
+  }
+
+  .tableau{
+    height: 75px;
+  }
+
+  p{
+    margin: 10px;
+    font-size: 30px;
+  }
+
+  .semaine{
+    font-size: 15px;
+    height: 50px;
+  }
 }

@@ -484,3 +484,24 @@ nav{
   opacity: 1;
   pointer-events: all;
 }
+
+@media only screen and (min-width: 1650px){
+  button{
+    height: 75px;
+  }
+
+  .edit{
+    width: 40px;
+    height: 40px;
+    top: 117px;
+  }
+
+  .planing{
+    font-size: 70%;
+  }
+
+  #menuAdmin{
+    max-width: 950px;
+    margin: auto;
+  }
+}

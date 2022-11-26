@@ -312,3 +312,13 @@ article {
   #retirerDemande{
     font-size: 30px;
   }
+
+@media only screen and (min-width: 1650px){
+  .crenau,.jours{
+    height: 80px;
+  }
+
+  .heurediv{
+    max-height: 25px;
+  }
+}
