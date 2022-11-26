@@ -702,12 +702,12 @@ function setVar(key,value){
       setTimeout(reject,1000)
     })
   }
-  function setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio){
+  function setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio){
     db.get("SELECT * FROM midi_info where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
       if(data==undefined){
-        db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio) VALUES (?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio])
+        db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode) VALUES (?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode])
       } else{
-        db.run("UPDATE midi_info SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,unique_prio=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,unique_prio,semaine,creneau])
+        db.run("UPDATE midi_info SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,prio_mode=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,prio_mode,semaine,creneau])
       }
     })
     db.serialize(()=>{
@@ -931,7 +931,7 @@ class UserSelect{
 
     //active l'option prioritaire uniquement
     //refuse les non prio
-    if(info.unique_prio){
+    if(info.prio_mode==2){
       for(let u in this.usersList){
         if(!this.usersList[u].prio){
           this.usersList[u].pass=-1
@@ -960,9 +960,7 @@ class UserSelect{
     const dejaInscrits = inscrits
 
     
-    //%prioVar
-    let prioVar=true
-    if(prioVar){
+    if(info.prio_mode==1){
       let usersList2 = []
       for(let u in this.usersList){
         if(this.usersList[u].pass!=-1){
@@ -1018,10 +1016,8 @@ class UserSelect{
     bloc1 : {
       while(inscrits<places){
         //teste les utilisateurs avec en commensant par ceux avec le plus gros scores
-        console.log('b')
         bloc2 : {
           for(let i in this.usersList){
-            console.log(this.usersList[i])
             //si l'utilisateur n'est pas déja refusé
             if(this.usersList[i].pass==0){
               let testScore=true
@@ -1032,13 +1028,14 @@ class UserSelect{
                 }
               })
               //test si il y a assez de places pour inscrire l'utilisateur et ses amis éloignier
-              let nbAmisNonInscrit = this.usersList[i].amisEloigner.length+1+inscrits
+              let nbAmisNonInscrit = this.usersList[i].amisEloigner.length+1
               this.usersList[i].amisEloigner.forEach(a=>{
                 if(UserSelect.searchAmi(a).pass==1){
                   nbAmisNonInscrit--
                 }
               })
-              if(testScore && this.usersList[i].amisEloigner.length+1+inscrits<=places){
+              
+              if(testScore && nbAmisNonInscrit+inscrits<=places){
                 //inscrit l'utilisateur et les amis
                 inscrits += nbAmisNonInscrit
                 this.usersList[i].pass=1
@@ -1119,7 +1116,7 @@ async function main() {
       //midi
       db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_info'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE midi_info(semaine int2,creneau int2,cout float4,gratuit_prio boolean,ouvert int2,perMin int2,places int2,unique_prio boolean)')
+          db.run('CREATE TABLE midi_info(semaine int2,creneau int2,cout float4,gratuit_prio boolean,ouvert int2,perMin int2,places int2,prio_mode int2)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_menu'", (err, data) => {
         if(data==undefined)
@@ -1302,7 +1299,7 @@ async function main() {
       })
       socket.on('setMidiInfo',async msg => {
         try{
-          //semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio
+          //semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio
           setMidiInfo(msg[0],msg[1]*2+msg[2],msg[3],msg[4],msg[5],msg[6],msg[7],msg[8],msg[9])
           socket.emit('setMidiInfo',"ok")
         }catch(e){console.error(e)}
@@ -1388,6 +1385,11 @@ async function main() {
         try{
           delGlobalPoint(msg)
           socket.emit('del_global_point','ok')
+        }catch(e){console.error(e)}
+      })
+      socket.on('copy key',async msg => {
+        try{
+          socket.emit('copy key',await (new User(msg)).createToken())
         }catch(e){console.error(e)}
       })
     }
@@ -1543,7 +1545,7 @@ async function main() {
   })
   setClasse(tab)
   setGroup(['a','b','c'])
-  
+  /*
   User.createUser('robin.delatre@stemariebeaucamps.fr')
   User.createUser('A.B@stemariebeaucamps.fr')
   User.createUser('C.D@stemariebeaucamps.fr')

@@ -2,6 +2,7 @@ import * as common from "../../common.js";
 
 let divClasse = document.getElementById("classe")
 let dName = document.getElementById("name")
+let connect = document.getElementById('key button')
 
 let pScore = document.getElementById("score")
 let divScoreEvent = document.getElementById("divScoreEvent")
@@ -38,6 +39,7 @@ function stop(){
     adminBox.removeEventListener("change",fu3)
     codeCarte.removeEventListener("input",fu4)
     addPrio.removeEventListener("click",fu5)
+    connect.removeEventListener("click",fu6)
 }
 
 let fuName=function(){return}
@@ -46,6 +48,7 @@ let fu2=function(){return}
 let fu3=function(){return}
 let fu4=function(){return}
 let fu5=function(){return}
+let fu6=function(){return}
 
 let utilisateursNames = []
 let listUsers = await common.socketAdminAsync('list pass',null)
@@ -292,5 +295,12 @@ common.autocomplete(document.getElementById("search"), utilisateursNames,async f
             });
             divPrio.appendChild(prio);
         }
+
+        connect.addEventListener("click",fu6=async function(){
+            let key = await common.socketAdminAsync('copy key',utilisateur.uuid)
+            common.writeCookie("key2",common.key)
+            common.writeCookie("key",key)
+            window.location.reload()
+        })
     }
 });

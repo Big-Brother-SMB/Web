@@ -27,7 +27,7 @@ let gratuit_prio = 0
 let ouvert = 0
 let perMin = 75
 let places = 100
-let unique_prio = 0
+let prio_mode = 0
 let list_prio = []
 
 async function reloadInfoHoraire(){
@@ -69,9 +69,9 @@ places = info.places
 if(places == null){
     places = 100
 }
-unique_prio = info.unique_prio
-if(unique_prio == null){
-    unique_prio = 0
+prio_mode = info.prio_mode
+if(prio_mode == null){
+    prio_mode = 1
 }
 list_prio = info.prio
 if(list_prio == null){
@@ -92,7 +92,7 @@ for(let i in listMode){
 divMode.selectedIndex = ouvert
 divMode.addEventListener("change", async function() {
     ouvert = this.selectedIndex
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
@@ -100,7 +100,7 @@ let inPlaces = document.getElementById("places")
 inPlaces.value = places
 inPlaces.addEventListener("change", async function() {
     places = this.value
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
@@ -108,7 +108,7 @@ let inCout = document.getElementById("cout")
 inCout.value = cout
 inCout.addEventListener("change", async function() {
     cout = inCout.value
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
@@ -116,15 +116,20 @@ let inPer = document.getElementById("per")
 inPer.value = perMin
 inPer.addEventListener("change", async function() {
     perMin = this.value
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
-
-let sOnly = document.getElementById("switch prio only")
-sOnly.checked = unique_prio
-sOnly.addEventListener("change", async function() {
-    unique_prio = this.checked
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+const listPrioMode = ["Ne pas prendre en conte les prio","prendre en conte les prio","uniquement prio"]
+let divPrioMode = document.getElementById("prio mode")
+for(let i in listPrioMode){
+    let opt = document.createElement("option")
+    opt.innerHTML = listPrioMode[i]
+    divPrioMode.appendChild(opt);
+}
+divPrioMode.selectedIndex = prio_mode
+divPrioMode.addEventListener("change", async function() {
+    prio_mode = this.selectedIndex
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
@@ -132,7 +137,7 @@ let sGratuit = document.getElementById("switch gratuit")
 sGratuit.checked = gratuit_prio
 sGratuit.addEventListener("change", async function() {
     gratuit_prio = this.checked
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
@@ -175,12 +180,12 @@ g_c[0].forEach(function(child) {
             if(!list_prio.includes(groupes[index])){
                 list_prio.push(groupes[index])
             }
-            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
         }else{
             if(list_prio.includes(groupes[index])){
                 list_prio = list_prio.filter(o => o != groupes[index]);
             }
-            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
         }
     })
     //cbClasses[n][i].checked = true
@@ -226,7 +231,7 @@ for(let n in listNiveau){
                 list_prio.push(listNiveau[n][i])
             }
         }
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
     });
     divNiveau.appendChild(nSelectAll);
 
@@ -241,7 +246,7 @@ for(let n in listNiveau){
                 list_prio = list_prio.filter(o => o != listNiveau[n][i]);
             }
         }
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
     });
     divNiveau.appendChild(nSelectNone);
 
@@ -262,7 +267,7 @@ for(let n in listNiveau){
                 }
             }
         }
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
     });
     divNiveau.appendChild(nInversed);
 
@@ -283,7 +288,7 @@ for(let n in listNiveau){
                     list_prio = list_prio.filter(o => o != listNiveau[n][i]);
                 }
             }
-            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
         })
         divNiveau.appendChild(opt);
         if(list_prio.includes(listNiveau[n][i])){
@@ -303,7 +308,7 @@ document.getElementById("select all").addEventListener("click", async function()
             }
         }
     }
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 document.getElementById("select none").addEventListener("click", async function() {
@@ -316,7 +321,7 @@ document.getElementById("select none").addEventListener("click", async function(
             }
         }
     }
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 document.getElementById("inversed").addEventListener("click", async function() {
@@ -335,7 +340,7 @@ document.getElementById("inversed").addEventListener("click", async function() {
             }
         }
     }
-    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,unique_prio,list_prio])
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 document.getElementById("start algo").addEventListener("click", async function() {

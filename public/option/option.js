@@ -81,3 +81,17 @@ adminS.addEventListener("change", function () {
         adminVal=1
     }
 })
+
+
+let key2 = document.getElementById("key2")
+let key2Val = common.readCookie("key2")
+if (key2Val!=undefined){
+    key2.style.visibility="visible";
+    key2.style.height="auto";
+}
+
+key2.addEventListener("click", function () {
+    common.writeCookie("key",key2Val)
+    common.delCookie("key2")
+    window.location.reload()
+})
