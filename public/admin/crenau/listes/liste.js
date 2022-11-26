@@ -15,6 +15,9 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
       w = parseInt(params.w)
     }
 
+document.getElementById("retour").addEventListener("click",()=>{
+    window.location.href = "../crenau.html?j="+j+"&h="+h+"&w="+w;
+})
 
 let table = document.getElementById("tbody")
 

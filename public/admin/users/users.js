@@ -269,13 +269,13 @@ common.autocomplete(document.getElementById("search"), utilisateursNames,async f
         addPrio.addEventListener("click", fu5=function() {
             const index = this.selectedIndex - 1
             addPrio.selectedIndex = 0
-            if(index != -1 && !listGroups.include(g_c[1][index].classe)){
-                listGroups.push(g_c[1][index].classe)
+            if(index != -1 && !listGroups.includes(g_c[0][index])){
+                listGroups.push(g_c[0][index].group2)
                 common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                 if(divPrio.childElementCount == 0){
                     divPrio.innerHTML = ""
                 }
-                addButPrio(g_c[1][index].classe)
+                addButPrio(g_c[0][index].group2)
             }
         });
         function addButPrio(name){

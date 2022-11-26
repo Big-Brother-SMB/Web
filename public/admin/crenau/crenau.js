@@ -43,39 +43,42 @@ async function reloadInfoHoraire(){
     });
     document.getElementById("demandes").innerHTML = "demandes (" + demandes + ")"
     document.getElementById("inscrits").innerHTML = "inscrits (" + inscrits + ")"
-
-
-    let info = await common.socketAsync('info_horaire',[w,j,h])
-    cout = info.cout
-    if(cout==null){
-        cout=1
-    }
-    gratuit_prio = info.gratuit_prio
-    if(gratuit_prio == null){
-        gratuit_prio = 0
-    }
-    ouvert = info.ouvert
-    if(ouvert==null){
-        ouvert=0
-    }
-    perMin = info.perMin
-    if(perMin == null){
-        perMin = 75
-    }
-    places = info.places
-    if(places == null){
-        places = 100
-    }
-    unique_prio = info.unique_prio
-    if(unique_prio == null){
-        unique_prio = 0
-    }
-    list_prio = info.list_prio
-    if(list_prio == null){
-        list_prio = []
-    }
 }
 await reloadInfoHoraire()
+
+
+
+let info = await common.socketAsync('info_horaire',[w,j,h])
+cout = info.cout
+if(cout==null){
+    cout=1
+}
+gratuit_prio = info.gratuit_prio
+if(gratuit_prio == null){
+    gratuit_prio = 0
+}
+ouvert = info.ouvert
+if(ouvert==null){
+    ouvert=0
+}
+perMin = info.perMin
+if(perMin == null){
+    perMin = 75
+}
+places = info.places
+if(places == null){
+    places = 100
+}
+unique_prio = info.unique_prio
+if(unique_prio == null){
+    unique_prio = 0
+}
+list_prio = info.prio
+if(list_prio == null){
+    list_prio = []
+}
+
+
 
 
 
@@ -217,7 +220,7 @@ for(let n in listNiveau){
     nSelectAll.innerHTML ="selectionner tous les " + common.nomNiveau[n]
     nSelectAll.addEventListener("click", async function() {
         console.log("niveau " + n + " select all")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = true
             if(!list_prio.includes(listNiveau[n][i])){
                 list_prio.push(listNiveau[n][i])
@@ -232,7 +235,7 @@ for(let n in listNiveau){
     nSelectNone.innerHTML ="retirer tous les " + common.nomNiveau[n]
     nSelectNone.addEventListener("click", async function() {
         console.log("niveau " + n + " select none")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = false
             if(list_prio.includes(listNiveau[n][i])){
                 list_prio = list_prio.filter(o => o != listNiveau[n][i]);
@@ -247,7 +250,7 @@ for(let n in listNiveau){
     nInversed.innerHTML ="Inverser tous les " + common.nomNiveau[n]
     nInversed.addEventListener("click", async function() {
         console.log("niveau " + n + " inversed")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = !cbClasses[n][i].checked
             if(cbClasses[n][i].checked){
                 if(!list_prio.includes(listNiveau[n][i])){
@@ -293,7 +296,7 @@ for(let n in listNiveau){
 document.getElementById("select all").addEventListener("click", async function() {
     console.log("select all")
     for(let n in cbClasses){
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = true
             if(!list_prio.includes(listNiveau[n][i])){
                 list_prio.push(listNiveau[n][i])
@@ -306,7 +309,7 @@ document.getElementById("select all").addEventListener("click", async function()
 document.getElementById("select none").addEventListener("click", async function() {
     console.log("select none")
     for(let n in cbClasses){
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = false
             if(list_prio.includes(listNiveau[n][i])){
                 list_prio = list_prio.filter(o => o != listNiveau[n][i]);
@@ -319,7 +322,7 @@ document.getElementById("select none").addEventListener("click", async function(
 document.getElementById("inversed").addEventListener("click", async function() {
     console.log("inversed")
     for(let n in cbClasses){
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = !cbClasses[n][i].checked
             if(cbClasses[n][i].checked){
                 if(!list_prio.includes(listNiveau[n][i])){
@@ -338,6 +341,8 @@ document.getElementById("inversed").addEventListener("click", async function() {
 document.getElementById("start algo").addEventListener("click", async function() {
     let rep = await common.socketAdminAsync('algo',[w,j,h])
     document.getElementById("start algo").innerHTML = rep
+
+    reloadInfoHoraire()
 })
 
 /*

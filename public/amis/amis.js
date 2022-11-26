@@ -10,6 +10,11 @@ listUsers.forEach(child=>{
         listAmis.push(child)
     }
 })
+listAmisUuid=[]
+listAmis.forEach(child=>{
+    listAmisUuid.push(child.uuid)
+})
+
 
 
 function reload(){

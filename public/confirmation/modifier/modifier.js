@@ -73,6 +73,11 @@ listUsers.forEach(child=>{
         listAmis.push(child)
     }
 })
+listAmisUuid=[]
+listAmis.forEach(child=>{
+    listAmisUuid.push(child.uuid)
+})
+
 
 
 let divListeAmis = document.getElementById("liste d'amis")
@@ -92,7 +97,7 @@ let demandes = 0
 const boolAllAmis = common.readBoolCookie("allAmis")
 
 
-if(info.ouvert != 2 || my_demande=={}){
+if(info.ouvert != 2 || my_demande.amis==undefined){
     window.location.href = window.location.origin + "/menu/menu.html";
 }
 

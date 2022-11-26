@@ -68,6 +68,11 @@ listUsers.forEach(child=>{
         listAmis.push(child)
     }
 })
+listAmisUuid=[]
+listAmis.forEach(child=>{
+    listAmisUuid.push(child.uuid)
+})
+
 
 
 let divListeAmis = document.getElementById("liste d'amis")

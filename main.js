@@ -177,7 +177,7 @@ class User{
     static listUsersName(){
         return new Promise(function(resolve, reject) {
           try{
-            db.all("SELECT uuid,first_name,last_name FROM users", (err, data) => {
+            db.all("SELECT uuid,first_name,last_name FROM users ORDER BY first_name ASC, last_name ASC", (err, data) => {
                 try{
                     if(data!=undefined){
                         resolve(data)
@@ -194,7 +194,7 @@ class User{
     static listUsersUuid(){
       return new Promise(function(resolve, reject) {
         try{
-          db.all("SELECT uuid FROM users", (err, data) => {
+          db.all("SELECT uuid FROM users ORDER BY first_name ASC, last_name ASC", (err, data) => {
               try{
                   if(data!=undefined){
                       let list=[]
@@ -214,7 +214,7 @@ class User{
 
     static listUsersComplete(){
       return new Promise(function(resolve, reject) {
-          db.all("SELECT * FROM users", async (err, data) => {
+          db.all("SELECT * FROM users ORDER BY first_name ASC, last_name ASC", async (err, data) => {
               try{
                   if(data!=undefined){
                       for(let i in data){
@@ -472,6 +472,7 @@ class User{
     }
     get listPoint(){
       let uuid=this.uuid
+      let moi = this
       return new Promise(function(resolve, reject) {
         let lists={perso:[],global:[],midi:[]}
         db.all("SELECT * FROM point_perso WHERE uuid=?",[uuid], (err, data) => {
@@ -492,10 +493,23 @@ class User{
                         try{
                             if(data!=undefined){
                               for (let i in data){
-                                let r = await new Promise(function(resolve2, reject2) {
-                                  db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=? and (ouvert=2 or ouvert=3 or ouvert=5)",[data[i].semaine,data[i].creneau], (err, data2) => {
-                                    resolve2(data2)
-                                  })
+                                let r = await new Promise(async function(resolve2, reject2) {
+                                  let info=await getMidiInfo(data[i].semaine,data[i].creneau)
+                                    if(info.gratuit_prio){
+                                      let groups = await moi.groups
+                                      let classe = await moi.classe
+                                      if(info.prio.indexOf(classe)!=-1){
+                                        info.cout
+                                      }
+                                      groups.forEach(e=>{
+                                        if(info.prio.indexOf(e)!=-1){
+                                          info.cout=0
+                                        }
+                                      })
+                                      resolve2(info)
+                                    }else{
+                                      resolve2(info)
+                                    }
                                 })
                                 if(r!=undefined)
                                   lists.midi.push(r)
@@ -513,6 +527,7 @@ class User{
     }
     get score(){
       let uuid=this.uuid
+      let moi = this
       return new Promise(function(resolve, reject) {
         let score=0
         db.all("SELECT * FROM point_perso WHERE uuid=?",[uuid], (err, data) => {
@@ -533,10 +548,23 @@ class User{
                         try{
                             if(data!=undefined){
                                 for (let i in data){
-                                  let r = await new Promise(function(resolve2, reject2) {
-                                    db.get("SELECT * FROM midi_info WHERE semaine=? and creneau=? and (ouvert=2 or ouvert=3 or ouvert=5)",[data[i].semaine,data[i].creneau], (err, data2) => {
-                                      resolve2(data2)
-                                    })
+                                  let r = await new Promise(async function(resolve2, reject2) {
+                                    let info=await getMidiInfo(data[i].semaine,data[i].creneau)
+                                    if(info.gratuit_prio){
+                                      let groups = await moi.groups
+                                      let classe = await moi.classe
+                                      if(info.prio.indexOf(classe)!=-1){
+                                        resolve2(undefined)
+                                      }
+                                      groups.forEach(e=>{
+                                        if(info.prio.indexOf(e)!=-1){
+                                          resolve2(undefined)
+                                        }
+                                      })
+                                      resolve2(info)
+                                    }else{
+                                      resolve2(info)
+                                    }
                                   })
                                   if(r!=undefined){
                                     score-=r.cout
@@ -667,9 +695,9 @@ function setVar(key,value){
               resolve(data)
             })
           }else{
-            resolve({})
+            resolve({prio:[]})
           }
-        }catch(e){console.error(e);resolve({})}
+        }catch(e){console.error(e);resolve({prio:[]})}
       })
       setTimeout(reject,1000)
     })
@@ -812,42 +840,62 @@ function hashHour(){
 class UserSelect{
   static usersList = []
 
-  constructor(uuid,score,prios,amis){
-      this.uuid=uuid
+  constructor(uuid,score,prio,amis){
+      this.uuid = uuid
       this.score = score
-      this.prios = prios
+      this.prio = prio
       this.amis = amis
-      this.amisC = []
-      
-      //-1=refuser ; 0=prio passer ; 1=score ; 2=inscrit
+      this.amisEloigner = []
+      //-1=refuser ; 0=defaut ; 1=inscrit
       this.pass = 0
   }
 
   static async algoDeSelection(semaine,creneau){
+    //les amis proche => amis dans ma liste de ma demande
+    //les amis éloignier => mes amis + les amis de mes amis + les amis des amis de mes amis + ...
+
+    //récupère les données
     let info = await getMidiInfo(semaine,creneau)
     let listDemandes = await listMidiDemandes(semaine,creneau)
     this.usersList = []
+
+    //remplie la "usersList" avec des "UserSelect" en utilisant les données précédante
     for(let i in listDemandes){
-      if(DorI==0){
+      if(listDemandes[i].DorI==0){
         let user = new User(listDemandes[i].uuid)
         let score = await user.score
-        if(score == null) score = -500
-        let prios = await user.groups
-        let amis = listDemandes[i].amis
-        for(let a in amis){
-          if(this.searchAmi(amis[a])==null){
-            amis.splice(a,1);
-            a--
-          }
+        let prio = false
+        if(info.prio.indexOf(await user.classe)!=-1){
+          prio = true
         }
-        this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prios,amis))
+        (await user.groups).forEach(function(child) {
+          if(info.prio.indexOf(child)!=-1){
+            prio=true
+          }
+        })
+        let amis = listDemandes[i].amis
+        this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis))
       }
     }
+
+
+    //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
+    this.usersList.forEach(u=>{
+      for(let a in u.amis){
+        if(UserSelect.searchAmi(u.amis[a])==null){
+          u.amis.splice(a,1);
+          a--
+          u.pass=-1
+        }
+      }
+    })
+
+    //trie les utilisateurs par ordre décroissant par rapport au score 
     this.usersList.sort(function compareFn(a, b) {
       if(a.score>b.score){
-          return 1
-      }else if(a.score<b.score){
           return -1
+      }else if(a.score<b.score){
+          return 1
       }else{
           let rand = Math.floor(Math.random() * 2);
           if(rand == 0) rand=-1
@@ -855,89 +903,163 @@ class UserSelect{
       }
     })
 
-    for(let i in this.usersList){
-      this.usersList[i].amisComplete(this.usersList[i])
+    //récupère les amis éloignier des utilisateur
+    for(let u in this.usersList){
+      this.usersList[u].amisComplete(this.usersList[u])
     }
 
-    
+    //rend prioritère les gens qui ont un pourcentage minimum de 'perMin' amis proche prioritère
+    let usersList2 = []
+    this.usersList.forEach(e=>{
+      usersList2.push(e)
+    })
+    for(let u in this.usersList){
+      let nbAmisPrio=0
+      let nbAmis=0
+      this.usersList[u].amis.forEach(a=>{
+        if(UserSelect.searchAmi(a).prio){
+          nbAmisPrio++
+        }
+        nbAmis++
+      })
+      let pourcentageAmisPrio = Math.ceil((nbAmisPrio/nbAmis)*100)
+      if(pourcentageAmisPrio>=info.perMin){
+        usersList2.prio = true
+      }
+    }
+    this.usersList = usersList2
 
-    //% -1 prio info.prio
-    /*for(let i in this.usersList){
-      if()
-    }*/
+    //active l'option prioritaire uniquement
+    //refuse les non prio
+    if(info.unique_prio){
+      for(let u in this.usersList){
+        if(!this.usersList[u].prio){
+          this.usersList[u].pass=-1
+        }
+      }
+    }
+
+    //me refuse si l'un de mes amis éloignié est refusé
     for(let i in this.usersList){
-      if(this.usersList[i].pass==1){
-        this.usersList[i].amisC.forEach(a=>{
-          a=this.searchAmi(a)
+      this.usersList[i].amisEloigner.forEach(a=>{
+        a=UserSelect.searchAmi(a)
+        if(a.pass==-1){
+          UserSelect.usersList[i].pass=-1
+        }
+      })
+    }
+
+    //récupère places/nombre inscrition
+    const places = info.places
+    let inscrits = 0
+    listDemandes.forEach(i=>{
+      if(i.DorI==1){
+        inscrits++
+      }
+    })
+    const dejaInscrits = inscrits
+
+    
+    //%prioVar
+    let prioVar=true
+    if(prioVar){
+      let usersList2 = []
+      for(let u in this.usersList){
+        if(this.usersList[u].pass!=-1){
+          usersList2.push(true)
+        }else{
+          usersList2.push(false)
+        }
+      }
+
+      //premier tour prio uniquement 
+      for(let u in this.usersList){
+        if(!this.usersList[u].prio){
+          this.usersList[u].pass=-1
+        }
+      }
+      for(let i in this.usersList){
+        this.usersList[i].amisEloigner.forEach(a=>{
+          a=UserSelect.searchAmi(a)
           if(a.pass==-1){
-            this.usersList[i].pass=-1
+            UserSelect.usersList[i].pass=-1
           }
         })
       }
+      inscrits=this.boucleInscription(inscrits,places)
+
+      //reset les pass -1 car il n'était pas prioritère
+      for(let i in this.usersList){
+        if(usersList2[i] && this.usersList[i].pass==-1){
+          this.usersList[i].pass=0
+        }
+      }
+    }
+    
+    //liste des inscrires
+    inscrits=this.boucleInscription(inscrits,places)
+
+    //inscription SQL
+    for(let i in this.usersList){
+      if(this.usersList[i].pass==1){
+        let user = new User(this.usersList[i].uuid)
+        let infoD = await user.getMidiDemande(semaine,creneau)
+        await user.setMidiDemande(semaine,creneau,infoD.amis,true,infoD.scan)
+      }
     }
 
-
-    let inscrits = 0
-    let places = info.places
-    while(inscrits<info.places){
-      let test=true
-      for(let i in this.usersList){
-        if(this.usersList[i].pass==0){
-          test=false
-        }
-      }
-      if(test) break;
+    //reponse client
+    return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload"
+  }
 
 
-      if(places<=0){
-          places=1
-      }
-      for(let i in this.usersList){
-        if(places>0 && this.usersList[i].pass==0){
-          places--
-          this.usersList[i].pass=1
-        }
-      }
-
-
-      for(let i in usersList){
-        if(usersList[i].pass==1){
-          let test= true
-          this.usersList[i].amisC.forEach(a=>{
-            a=this.searchAmi(a)
-            if(a.pass==0 || a.pass==-1){
-              test=false
+  static boucleInscription(inscrits,places){
+        //vérifie qu'il reste des places
+        while(inscrits<places){
+          //teste les utilisateurs avec en commensant par ceux avec le plus gros scores
+          for(let i in this.usersList){
+            //si l'utilisateur n'est pas déja refusé
+            if(this.usersList[i].pass==0){
+              let testScore=true
+              //test si les amis ont tous plus de points que l'utilisateur ou qu'il sont déja inscrit
+              this.usersList[i].amisEloigner.forEach(a=>{
+                if(UserSelect.usersList[i].score>UserSelect.searchAmi(a).score && UserSelect.searchAmi(a).pass!=1){
+                  testScore=false
+                }
+              })
+              //test si il y a assez de places pour inscrire l'utilisateur et ses amis éloignier
+              //% il faut enlevé les amis deja inscrit
+              if(testScore && this.usersList[i].amisEloigner.length+1+inscrits<=places){
+                //inscrit l'utilisateur et les amis
+                inscrits += this.usersList[i].amisEloigner.length+1
+                this.usersList[i].pass=1
+                this.usersList[i].amisEloigner.forEach(a=>{
+                  UserSelect.searchAmi(a).pass=1
+                })
+                //recommence à tester depuis le début de la liste quand des inscriptions ont eu lieu
+                break;
+              }
             }
-          })
-          if(test && this.usersList[i].amisC.length+inscrits<=info.places){
-            this.usersList[i].pass=2
-            inscrits+=this.usersList[i].amisC.length+1
-            this.usersList[i].amisC.forEach(a=>{
-              a=this.searchAmi(a)
-              a.pass=2
-            })
           }
+          break;
         }
-      }
-    }
-    //%
-    return this.usersList
+        return inscrits
   }
 
   amisComplete(moi){
     let obj = this
     obj.amis.forEach(a=>{
-      if(a!=moi.uuid && !moi.amisC.includes(a)){
-        moi.amisC.push(a)
-        searchAmi(a).amisComplete(moi)
+      if(a!=moi.uuid && !moi.amisEloigner.includes(a)){
+        moi.amisEloigner.push(a)
+        UserSelect.searchAmi(a).amisComplete(moi)
       }
     })
   }
 
   static searchAmi(uuid){
-    for(let i in usersList){
-      if(usersList[i].uuid==uuid){
-        return usersList[i]
+    for(let i in this.usersList){
+      if(this.usersList[i].uuid==uuid){
+        return this.usersList[i]
       }
     }
     return null
@@ -1295,7 +1417,7 @@ async function main() {
   
       socket.on('info_horaire', async msg => {
         try{
-          let info=await getMidiInfo(msg[0],msg[1]*2+msg[2])
+          let info = await getMidiInfo(msg[0],msg[1]*2+msg[2])
           socket.emit('info_horaire',info)
         }catch(e){console.error(e)}
       });
@@ -1336,12 +1458,13 @@ async function main() {
           if(msg.length==3){
             socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
           }else if(msg[3]===false){
-            if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
+            console.log(await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
+            if((await user.getMidiDemande(msg[0],msg[1]*2+msg[2])).DorI!=true){
               await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
               socket.emit('my_demande',"ok")
             }
           } else if(msg.length==4){
-            if(user.getMidiDemande(msg[0],msg[1]*2+msg[2]).DorI!=true){
+            if((await user.getMidiDemande(msg[0],msg[1]*2+msg[2])).DorI!=true){
               await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,false)
               socket.emit('my_demande',"ok")
             }
@@ -1384,14 +1507,12 @@ async function main() {
           }
         }catch(e){console.error(e)}
       });
-      //user.setMidiDemande(44,2,[],true,false)
-      //user.setPermDemande(44,2,1,"A",32,true)
-      user.admin=1
+      //user.admin=1
     } catch (e) {console.error(e)}
   });
 
   //db.run('drop table midi_list')
-  
+
   /*let t0 =["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
   let t1 =["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
   let t2 =["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
@@ -1410,16 +1531,12 @@ async function main() {
     tab.push([e,3])
   })
   setClasse(tab)
-  setGroup(['a','b','c'])*/
-
-  /*addGlobalPoint("2021-01-01 20:00:00","Un point",1)
-  setVar('banderole',"coucou")
-  setMidiInfo(44,2,1,false,2,75,175,true,["2F","A"])
-  setMidiMenu(44,"poison")
+  setGroup(['a','b','c'])
   
-
   User.createUser('robin.delatre@stemariebeaucamps.fr')
   User.createUser('A.B@stemariebeaucamps.fr')
-  User.createUser('C.D@stemariebeaucamps.fr')*/
+  User.createUser('C.D@stemariebeaucamps.fr')
+  User.createUser('AC.B@stemariebeaucamps.fr')
+  User.createUser('AB.A@stemariebeaucamps.fr')*/
 }
 main().catch(console.error);

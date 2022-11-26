@@ -38,7 +38,7 @@ html5QrcodeScanner.render(onScanSuccess);
 
 let d = new Date();
 let h;
-let j = common.dayNum[d.getDay() - 1];
+let j = common.dayWithMer[d.getDay() - 1];
 let actualisation = true
 if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
     h = 0;
@@ -144,7 +144,7 @@ async function searchName(name,scan){
     
         let info_horaire = await common.socketAsync("info_horaire",[common.actualWeek,j,h])
 
-        console.log(info_horaire)
+        console.log(info_horaire,j,h)
     
         if(userDemande != null){
             if(scan==true){
