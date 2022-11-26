@@ -924,7 +924,7 @@ class UserSelect{
       })
       let pourcentageAmisPrio = Math.ceil((nbAmisPrio/nbAmis)*100)
       if(pourcentageAmisPrio>=info.perMin){
-        usersList2.prio = true
+        usersList2[u].prio = true
       }
     }
     this.usersList = usersList2
