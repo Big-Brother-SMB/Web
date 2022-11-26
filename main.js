@@ -1014,10 +1014,14 @@ class UserSelect{
 
 
   static boucleInscription(inscrits,places){
-        //vérifie qu'il reste des places
-        while(inscrits<places){
-          //teste les utilisateurs avec en commensant par ceux avec le plus gros scores
+    //vérifie qu'il reste des places
+    bloc1 : {
+      while(inscrits<places){
+        //teste les utilisateurs avec en commensant par ceux avec le plus gros scores
+        console.log('b')
+        bloc2 : {
           for(let i in this.usersList){
+            console.log(this.usersList[i])
             //si l'utilisateur n'est pas déja refusé
             if(this.usersList[i].pass==0){
               let testScore=true
@@ -1028,22 +1032,29 @@ class UserSelect{
                 }
               })
               //test si il y a assez de places pour inscrire l'utilisateur et ses amis éloignier
-              //% il faut enlevé les amis deja inscrit
+              let nbAmisNonInscrit = this.usersList[i].amisEloigner.length+1+inscrits
+              this.usersList[i].amisEloigner.forEach(a=>{
+                if(UserSelect.searchAmi(a).pass==1){
+                  nbAmisNonInscrit--
+                }
+              })
               if(testScore && this.usersList[i].amisEloigner.length+1+inscrits<=places){
                 //inscrit l'utilisateur et les amis
-                inscrits += this.usersList[i].amisEloigner.length+1
+                inscrits += nbAmisNonInscrit
                 this.usersList[i].pass=1
                 this.usersList[i].amisEloigner.forEach(a=>{
                   UserSelect.searchAmi(a).pass=1
                 })
                 //recommence à tester depuis le début de la liste quand des inscriptions ont eu lieu
-                break;
+                break bloc2;
               }
             }
           }
-          break;
+          break bloc1;
         }
-        return inscrits
+      }
+    }
+    return inscrits
   }
 
   amisComplete(moi){
