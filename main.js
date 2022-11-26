@@ -467,7 +467,6 @@ class User{
         db.run("INSERT INTO point_perso(uuid,date,name,value) VALUES (?,?,?,?)",[this.uuid,date,name,value])
     }
     delPersonalPoint(date){
-        console.log(date)
         db.run("delete from point_perso where uuid=? and date=?",[this.uuid,date])
     }
     get listPoint(){
@@ -1471,7 +1470,6 @@ async function main() {
           if(msg.length==3){
             socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
           }else if(msg[3]===false){
-            console.log(await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
             if((await user.getMidiDemande(msg[0],msg[1]*2+msg[2])).DorI!=true){
               await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
               socket.emit('my_demande',"ok")
