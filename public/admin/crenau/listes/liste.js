@@ -27,6 +27,7 @@ let usersList = await common.socketAdminAsync('list pass',null)
 
 for(let i in usersList){
     usersList[i].name = usersList[i].first_name+" "+usersList[i].last_name
+    await common.socketAdminAsync('set DorI',[w,j,h,usersList[i].uuid,false])
 }
 
 usersList.sort((a, b) => (a.name > b.name) ? 1 : -1)

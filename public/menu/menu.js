@@ -1,4 +1,4 @@
-// il reste les pop-up à faire
+// il reste les pop-up à faire + msg
 import * as common from "../common.js";
 
 document.getElementById("pass").addEventListener("click", function () {

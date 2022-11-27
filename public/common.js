@@ -67,13 +67,16 @@ await new Promise(function(resolve, reject) {
   });
 })
 
-export async function socketAsync(channel,msg){
+export async function socketAsync(channel,msg,time){
     return new Promise(function(resolve, reject) {
         socket.emit(channel,msg);
         socket.once(channel,result => {
             resolve(result)
         });
-        setTimeout(reject,5000)
+        if(time==undefined){
+          time=5000
+        }
+        setTimeout(reject,time)
     })
 }
 
@@ -127,14 +130,17 @@ if(admin>0){
   })
 }
 
-export async function socketAdminAsync(channel,msg){
+export async function socketAdminAsync(channel,msg,time){
   if(admin>0){
     return new Promise(function(resolve, reject) {
       socketAdmin.emit(channel,msg);
       socketAdmin.once(channel,result => {
           resolve(result)
       });
-      setTimeout(reject,5000)
+      if(time==undefined){
+        time=5000
+      }
+      setTimeout(reject,time)
     })
   } else {
     console.log('err')

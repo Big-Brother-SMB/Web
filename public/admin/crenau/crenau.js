@@ -344,7 +344,7 @@ document.getElementById("inversed").addEventListener("click", async function() {
 });
 
 document.getElementById("start algo").addEventListener("click", async function() {
-    let rep = await common.socketAdminAsync('algo',[w,j,h])
+    let rep = await common.socketAdminAsync('algo',[w,j,h],60000)
     document.getElementById("start algo").innerHTML = rep
 
     reloadInfoHoraire()

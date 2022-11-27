@@ -1,3 +1,5 @@
+import * as common from "../common.js";
+
 let divNew = document.getElementById("new msg")
 let divOld = document.getElementById("old msg")
 

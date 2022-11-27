@@ -580,6 +580,22 @@ class User{
         setTimeout(reject,1000)
       })
     }
+
+    getAllMessages(){
+      let uuid = this.uuid
+      return new Promise(function(resolve, reject) {
+        db.all("SELECT * FROM messages WHERE from2=? or to2=?",[uuid,uuid], (err, data) => {
+          try {
+            if(data!=undefined){
+              resolve(data)
+            }else{
+              resolve(null)
+            }
+          }catch(e){console.error(e);resolve(null)}
+        })
+        setTimeout(reject,1000)
+      })
+    }
 }
 
 
@@ -607,7 +623,6 @@ function setVar(key,value){
         }
     })
 }
-
 
 
   //perm
@@ -814,14 +829,46 @@ function setVar(key,value){
   }
 
   
- 
-  function addMessage(deAdmin,uuid,lu,text,title,type,date){
-  
+  //% messages / news / sondages 
+  function addMessage(from,to,lu,texte,title,date){
+    let id=uuidG.v4()
+    db.run("INSERT INTO messages(id,from2,to2,lu,texte,title,date) VALUE(?,?,?,?,?,?,?)",[id,from,to,lu,texte,title,date])
+    return id
   }
-  function luMessage(date){
-  
+  function setMessage(id,from,to,lu,texte,title,date){
+    db.run("UPDATE messages SET from2=?,to2=?,lu=?,texte=?,title=?,date=? WHERE id=?",[from,to,lu,texte,title,date,id])
   }
-//% messages / news / sondages 
+  function getMessage(id){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM messages WHERE id=?",[id], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
+    })
+  }
+  function delMessage(id){
+    db.run("delete from messages WHERE id=?",[id])
+  }
+  function getAllMessages(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM messages", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
+    })
+  }
 
 
 function hashHour(){
@@ -838,6 +885,7 @@ function hashHour(){
 
 class UserSelect{
   static usersList = []
+  static enCour = false
 
   constructor(uuid,score,prio,amis){
       this.uuid = uuid
@@ -850,6 +898,10 @@ class UserSelect{
   }
 
   static async algoDeSelection(semaine,creneau){
+    if(this.enCour){
+      return "En cour"
+    }
+    this.enCour = true
     //les amis proche => amis dans ma liste de ma demande
     //les amis éloignier => mes amis + les amis de mes amis + les amis des amis de mes amis + ...
 
@@ -1006,6 +1058,7 @@ class UserSelect{
     }
 
     //reponse client
+    this.enCour = false
     return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload"
   }
 
@@ -1157,7 +1210,7 @@ async function main() {
       //messages / news / sondage
       db.get("SELECT * FROM sqlite_master where type='table' AND name='messages'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE messages(id uuid,deAdmin boolean,uuid uuid,lu boolean,texte text,title text,type text,date text)')
+          db.run('CREATE TABLE messages(id uuid,from2 text,to2 text,lu boolean,texte text,title text,date text)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='news'", (err, data) => {
         if(data==undefined)
@@ -1169,7 +1222,7 @@ async function main() {
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='sondages'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE sondages(texte text,title text,date text,mode int2)')
+          db.run('CREATE TABLE sondages(id uuid,texte text,title text,date text,mode int2,choix text)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='sondages_reponse'", (err, data) => {
         if(data==undefined)
@@ -1198,11 +1251,10 @@ async function main() {
           
           let {data} = await oauth2.userinfo.get();
           console.log("email",data.email)
-          if(true){//%if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
+          if(true){//%if(data.email.split("@")[1]=="stemariebeaucamps.fr"){ + changer page de connection api
             let tokenAuth = await (await User.createUser(data.email)).createToken()
             res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
-            res.end();
-            //fs.readFileSync(__dirname+"/test.html")          
+            res.end();        
           } else {
             res.writeHead(301, { "Location" : address+"index.html?err=Il faut une adresse email stemariebeaucamps.fr"});
             res.end();
@@ -1249,12 +1301,7 @@ async function main() {
 
 
 
-  io = new Server(server/*,{cors: {
-    origin: address,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }}*/)
+  io = new Server(server)
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
     console.log("uuid admin socket: " + await user.uuid)
@@ -1518,7 +1565,20 @@ async function main() {
           }
         }catch(e){console.error(e)}
       });
-      //user.admin=1
+
+      socket.on("all msg", async msg => {
+        try{
+          //%addMessage(user.uuid,"admin",false,msg.texte,msg.title,hashHour())
+          socket.emit("all msg",'ok')
+        }catch(e){console.error(e)}
+      });
+
+      socket.on("add msg", async msg => {
+        try{
+          addMessage(user.uuid,"admin",false,msg.texte,msg.title,hashHour())
+          socket.emit("add msg",'ok')
+        }catch(e){console.error(e)}
+      });
     } catch (e) {console.error(e)}
   });
 
