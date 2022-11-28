@@ -485,7 +485,7 @@ nav{
   pointer-events: all;
 }
 
-@media only screen and (min-width: 1650px){
+@media only screen and (min-width: 1200px){
   button{
     height: 75px;
   }
@@ -503,5 +503,9 @@ nav{
   #menuAdmin{
     max-width: 950px;
     margin: auto;
+  }
+
+  .places{
+    font-size: 13.5px;
   }
 }
