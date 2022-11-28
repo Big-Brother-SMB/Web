@@ -313,7 +313,7 @@ article {
     font-size: 30px;
   }
 
-@media only screen and (min-width: 1650px){
+@media only screen and (min-width: 1200px){
   .crenau,.jours{
     height: 80px;
   }
