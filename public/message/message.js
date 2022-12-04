@@ -6,6 +6,8 @@ let divOld = document.getElementById("old msg")
 let idNew = []
 let idOld = []
 
+let varAllMsg = await  common.socketAsync("my msgs",null)
+console.log(varAllMsg)
 
 function addNew(elem, h){
     elem.id = h
@@ -69,26 +71,22 @@ const size = [
     ["9.9%","100px"]
 ]
 
-
-database.ref("sondages").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        let h = child.key
-        let text = snapshot.child(h+"/text").val()
-        let mode = snapshot.child(h+"/mode").val()
-        if(mode == null){
-            mode = 0
-        }
-        let reponse = snapshot.child(h + "/users/" + user).val()
-        if(mode == 3){
-            let choices = []
-            snapshot.child(h + "/choices").forEach(function(child) {
-                choices.push(child.key)
-            })
-            sondage(h, text, mode,reponse,choices)
-        }else{
-            sondage(h, text, mode,reponse,null)
-        }
-    })
+varAllMsg.sondage.forEach(function(child) {
+    let h = child.date
+    let text = child.texte
+    let mode = child.mode
+    let id = child.id
+    if(mode == null){
+        mode = 0
+    }
+    let reponse = child.rep
+    if(mode == 3){
+        let choices = []
+        choices = child.choix.split('/')
+        sondage(h, text, mode,reponse,choices,id)
+    }else{
+        sondage(h, text, mode,reponse,null,id)
+    }
 })
 
 
@@ -96,7 +94,7 @@ database.ref("sondages").once('value').then(function(snapshot) {
 
 
 let numRadio = 0
-function sondage(h, text, mode, reponse,choices){
+function sondage(h, text, mode, reponse,choices,id){
     let msg = document.createElement("div")
     msg.className = "sondage"
 
@@ -177,7 +175,7 @@ function sondage(h, text, mode, reponse,choices){
                     function event() {
                         bRep.removeEventListener("mouseup",event)
                         reponse = choices[i]
-                        database.ref("sondages/" + h + "/users/" + user).set(choices[i])
+                        //%database.ref("sondages/" + h + "/users/" + user).set(choices[i])
                         hide()
                     }
 
@@ -223,7 +221,7 @@ function sondage(h, text, mode, reponse,choices){
                         const text = textarea.value
                         if(text != ""){
                             reponse = text
-                            database.ref("sondages/" + h + "/users/" + user).set(text)
+                            //%database.ref("sondages/" + h + "/users/" + user).set(text)
                             hide()
                         }
                     }
@@ -248,7 +246,7 @@ function sondage(h, text, mode, reponse,choices){
                 function event() {
                     bRep.removeEventListener("mouseup", event)
                     reponse = parseInt(i)
-                    database.ref("sondages/" + h + "/users/" + user).set(parseInt(i))
+                    //%database.ref("sondages/" + h + "/users/" + user).set(parseInt(i))
                     hide()
                 }
 
@@ -266,7 +264,7 @@ function sondage(h, text, mode, reponse,choices){
         function event3() {
             jsp.removeEventListener("mouseup", event3)
             reponse = -1
-            database.ref("sondages/" + h + "/users/" + user).set(-1)
+            //%database.ref("sondages/" + h + "/users/" + user).set(-1)
             hide()
         }
 
@@ -279,18 +277,17 @@ function sondage(h, text, mode, reponse,choices){
 
 //------------------------------news---------------------------------
 
-database.ref("news").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        let h = child.key
-        let title = snapshot.child(h+"/title").val()
-        let text = snapshot.child(h+"/text").val()
-        let lu = snapshot.child(h + "/users/" + user).val() != null
-        news(h, title, text,lu)
-    })
+varAllMsg.news.forEach(function(child) {
+    let h = child.date
+    let text = child.texte
+    let title = child.title
+    let lu = child.lu
+    let id = child.id
+    news(h, title, text,lu,id)
 })
 
 
-function news(h,title,text,lu){
+function news(h,title,text,lu,id){
     let msg = document.createElement("div")
     msg.className = "news"
     if(lu){
@@ -314,9 +311,8 @@ function news(h,title,text,lu){
             display()
         }
         if(!divOld.contains(msg)){
+            common.socketAsync("msg lu",id)
             addOld(msg, h)
-            database.ref("news/" + h + "/users/" + user).set(true)
-            //divOld.appendChild(msg);
             newMsg()
         }
 
@@ -358,18 +354,20 @@ function news(h,title,text,lu){
 }
 
 //------------------------------my msg---------------------------------
-
-database.ref("messages/" + user).once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        let h = child.key
-        let title = snapshot.child(h+"/title").val()
-        let text = snapshot.child(h+"/text").val()
-        let type = snapshot.child(h+"/type").val()
-        myMessage(h, title, text, type)
-    })
+varAllMsg.mp.forEach(function(child) {
+    let h = child.date
+    let text = child.texte
+    let title = child.title
+    let lu = child.lu
+    let id = child.id
+    if(child.from2==common.uuid){
+        myMessage(h, title, text,id)
+    }else{
+        message(h, title, text,lu,id)
+    }
 })
 
-function myMessage(h,title,text,type){
+function myMessage(h,title,text,id){
     let msg = document.createElement("div")
     msg.className = "mymsg"
     hide()
@@ -377,7 +375,7 @@ function myMessage(h,title,text,type){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = type + " : " + title+"<br>à: modo"
+        p.innerHTML = "MP : " + title+"<br>à: modo"
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -397,7 +395,7 @@ function myMessage(h,title,text,type){
         msg.innerHTML = ""
 
         let prive = document.createElement("p")
-        prive.innerHTML = type + " : " + title+"<br>à: modo"
+        prive.innerHTML = "MP : " + title+"<br>à: modo"
         prive.className = "text"
         msg.appendChild(prive);
 
@@ -416,18 +414,7 @@ function myMessage(h,title,text,type){
 
 //------------------------------msg---------------------------------
 
-database.ref("users/" + user + "/messages").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        let h = child.key
-        let title = snapshot.child(h+"/title").val()
-        let text = snapshot.child(h+"/text").val()
-        let lu = snapshot.child(h+"/lu").val() != null
-        message(h, title, text,lu)
-    })
-})
-
-
-function message(h,title,text,lu){
+function message(h,title,text,lu,id){
     let msg = document.createElement("div")
     msg.className = "msg"
     if(lu){
@@ -450,7 +437,7 @@ function message(h,title,text,lu){
             display()
         }
         if(!divOld.contains(msg)){
-            database.ref("users/" + user + "/messages/" + h + "/lu").set(true)
+            common.socketAsync("msg lu",id)
             addOld(msg, h)
             newMsg()
         }
@@ -533,13 +520,11 @@ for (let i in listType) {
     type.appendChild(opt);
 }
 
-send.addEventListener("click", function() {
+send.addEventListener("click", async function() {
     if(title.value != "" && text.value != ""){
-        let hashCode = hash()
-        database.ref("messages/" + user +"/"+ hashCode + "/title").set(title.value)
-        database.ref("messages/" + user +"/"+ hashCode + "/type").set(listType[type.selectedIndex])
-        database.ref("messages/" + user +"/"+ hashCode + "/text").set(text.value.replaceAll('\n',"</br>"))
-        myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"), listType[type.selectedIndex])
+        let hashCode = common.hashHour()
+        await common.socketAsync("add msg",{title:title.value,texte:text.value.replaceAll('\n',"</br>")})
+        myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"))
         title.value = ""
         text.value = ""
         closeModal(modal)
@@ -560,4 +545,5 @@ overlay.addEventListener('click', () => {
   })
 })
 
-charged(true)
+document.getElementById("article").style.display = "inline"
+document.getElementById("chargement").style.display = "none"

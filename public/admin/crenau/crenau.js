@@ -31,9 +31,9 @@ let prio_mode = 0
 let list_prio = []
 
 async function reloadInfoHoraire(){
+    listDemandes = await common.socketAsync('list_demandes',[w,j,h])
     inscrits=0
     demandes=0
-    listDemandes = await common.socketAsync('list_demandes',[w,j,h])
     listDemandes.forEach(function (child) {
     if(child.DorI==1){
         inscrits++
@@ -344,6 +344,7 @@ document.getElementById("inversed").addEventListener("click", async function() {
 });
 
 document.getElementById("start algo").addEventListener("click", async function() {
+    document.getElementById("start algo").innerHTML = "..."
     let rep = await common.socketAdminAsync('algo',[w,j,h],60000)
     document.getElementById("start algo").innerHTML = rep
 

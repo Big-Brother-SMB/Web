@@ -581,19 +581,76 @@ class User{
       })
     }
 
+    //messagerie
     getAllMessages(){
-      let uuid = this.uuid
+      let uuid=this.uuid
       return new Promise(function(resolve, reject) {
+        let msg = {mp:[],news:[],sondage:[]}
         db.all("SELECT * FROM messages WHERE from2=? or to2=?",[uuid,uuid], (err, data) => {
-          try {
-            if(data!=undefined){
-              resolve(data)
-            }else{
-              resolve(null)
-            }
-          }catch(e){console.error(e);resolve(null)}
+            try{
+                if(data!=undefined){
+                    msg.mp=data
+                }
+                db.all("SELECT * FROM news", async (err, data) => {
+                  try{
+                      if(data!=undefined){
+                        for (let i in data){
+                          let r = await new Promise(async function(resolve2, reject2) {
+                            db.get("SELECT * FROM news_lu WHERE id=? and user=?",[data[i].id,uuid], async (err, data2) => {
+                              resolve2(data2)
+                            })
+                          })
+                          if(r!=undefined){
+                            data[i].lu=r
+                          }
+                          msg.news.push(data[i])
+                        }
+                      }
+                      db.all("SELECT * FROM sondages", async (err, data) => {
+                        try{
+                            if(data!=undefined){
+                                for (let i in data){
+                                  let r = await new Promise(async function(resolve2, reject2) {
+                                    db.get("SELECT * FROM sondages_reponse WHERE id=? and user=?",[data[i].id,uuid], async (err, data2) => {
+                                      resolve2(data2)
+                                    })
+                                  })
+                                  if(r!=undefined){
+                                    data[i].rep=r
+                                  }
+                                  msg.sondage.push(data[i])
+                                }
+                            }
+                            resolve(msg)
+                        }catch(e){console.error(e);resolve(null)}
+                      })
+                  }catch(e){console.error(e);resolve(null)}
+                })
+            }catch(e){console.error(e);resolve(null)}
         })
         setTimeout(reject,1000)
+      })
+    }
+
+    messageLu(id){
+      let uuid =this.uuid
+      db.run("UPDATE messages SET lu=true WHERE id=? and to2=?",[id,uuid])
+      db.get("SELECT * FROM news_lu WHERE id=? and user=?",[id,uuid], (err, data) => {
+        if(data!=undefined){
+          db.run("UPDATE news_lu SET lu=true WHERE id=? and user=?",[id,uuid])
+        }else{
+          db.run("INSERT INTO news_lu(lu,id,user) VALUES (true,?,?)",[id,uuid])
+        }
+      })
+    }
+
+    sondage_reponse(id,rep){
+      db.get("SELECT * FROM sondages_reponse WHERE id=? and user=?",[id,uuid], (err, data) => {
+        if(data!=undefined){
+          db.run("UPDATE sondages_reponse SET reponse=? WHERE id=? and user=?",[rep,id,uuid])
+        }else{
+          db.run("INSERT INTO sondages_reponse(reponse,id,user) VALUES (?,?,?)",[rep,id,uuid])
+        }
       })
     }
 }
@@ -832,7 +889,7 @@ function setVar(key,value){
   //% messages / news / sondages 
   function addMessage(from,to,lu,texte,title,date){
     let id=uuidG.v4()
-    db.run("INSERT INTO messages(id,from2,to2,lu,texte,title,date) VALUE(?,?,?,?,?,?,?)",[id,from,to,lu,texte,title,date])
+    db.run("INSERT INTO messages(id,from2,to2,lu,texte,title,date) VALUES (?,?,?,?,?,?,?)",[id,from,to,lu,texte,title,date])
     return id
   }
   function setMessage(id,from,to,lu,texte,title,date){
@@ -857,14 +914,48 @@ function setVar(key,value){
   }
   function getAllMessages(){
     return new Promise(function(resolve, reject) {
+      let msg = {mp:[],news:[],sondage:[]}
       db.all("SELECT * FROM messages", (err, data) => {
-        try {
-          if(data!=undefined){
-            resolve(data)
-          }else{
-            resolve(null)
-          }
-        }catch(e){console.error(e);resolve(null)}
+          try{
+              if(data!=undefined){
+                  msg.mp=data
+              }
+              db.all("SELECT * FROM news", async (err, data) => {
+                try{
+                    if(data!=undefined){
+                      for (let i in data){
+                        let r = await new Promise(async function(resolve2, reject2) {
+                          db.all("SELECT * FROM news_lu WHERE id=?",[data[i].id], async (err, data2) => {
+                            resolve2(data2)
+                          })
+                        })
+                        if(r!=undefined){
+                          data[i].lu=r
+                        }
+                        msg.news.push(data[i])
+                      }
+                    }
+                    db.all("SELECT * FROM sondages", async (err, data) => {
+                      try{
+                          if(data!=undefined){
+                              for (let i in data){
+                                let r = await new Promise(async function(resolve2, reject2) {
+                                  db.all("SELECT * FROM sondages_reponse WHERE id=?",[data[i].id], async (err, data2) => {
+                                    resolve2(data2)
+                                  })
+                                })
+                                if(r!=undefined){
+                                  data[i].rep=r
+                                }
+                                msg.sondage.push(data[i])
+                              }
+                          }
+                          resolve(msg)
+                      }catch(e){console.error(e);resolve(null)}
+                    })
+                }catch(e){console.error(e);resolve(null)}
+              })
+          }catch(e){console.error(e);resolve(null)}
       })
       setTimeout(reject,1000)
     })
@@ -1214,19 +1305,19 @@ async function main() {
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='news'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE news(id uuid,texte text,title text,date text)')
+          db.run('CREATE TABLE news(id uuid,from2 text,texte text,title text,date text)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='news_lu'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE news_lu(id uuid,uuid uuid,lu boolean)')
+          db.run('CREATE TABLE news_lu(id uuid,user uuid,lu boolean)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='sondages'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE sondages(id uuid,texte text,title text,date text,mode int2,choix text)')
+          db.run('CREATE TABLE sondages(id uuid,from2 text,texte text,title text,date text,mode int2,choix text)')
       })
       db.get("SELECT * FROM sqlite_master where type='table' AND name='sondages_reponse'", (err, data) => {
         if(data==undefined)
-          db.run('CREATE TABLE sondages_reponse(id uuid,uuid uuid,reponse text)')
+          db.run('CREATE TABLE sondages_reponse(id uuid,user uuid,reponse text)')
       })
     })
   })
@@ -1566,10 +1657,16 @@ async function main() {
         }catch(e){console.error(e)}
       });
 
-      socket.on("all msg", async msg => {
+      socket.on("my msgs", async msg => {
         try{
-          //%addMessage(user.uuid,"admin",false,msg.texte,msg.title,hashHour())
-          socket.emit("all msg",'ok')
+          socket.emit("my msgs",await user.getAllMessages())
+        }catch(e){console.error(e)}
+      });
+
+      socket.on("msg lu", async msg => {
+        try{
+          user.messageLu(msg)
+          socket.emit("msg lu",'ok')
         }catch(e){console.error(e)}
       });
 
