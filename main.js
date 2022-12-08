@@ -616,7 +616,7 @@ class User{
                                     })
                                   })
                                   if(r!=undefined){
-                                    data[i].rep=r
+                                    data[i].rep=r.reponse
                                   }
                                   msg.sondage.push(data[i])
                                 }
@@ -645,6 +645,7 @@ class User{
     }
 
     sondage_reponse(id,rep){
+      let uuid = this.uuid
       db.get("SELECT * FROM sondages_reponse WHERE id=? and user=?",[id,uuid], (err, data) => {
         if(data!=undefined){
           db.run("UPDATE sondages_reponse SET reponse=? WHERE id=? and user=?",[rep,id,uuid])
@@ -1674,6 +1675,13 @@ async function main() {
         try{
           addMessage(user.uuid,"admin",false,msg.texte,msg.title,hashHour())
           socket.emit("add msg",'ok')
+        }catch(e){console.error(e)}
+      });
+
+      socket.on("rep sondage", async msg => {
+        try{
+          user.sondage_reponse(msg.id,msg.rep)
+          socket.emit("rep sondage",'ok')
         }catch(e){console.error(e)}
       });
     } catch (e) {console.error(e)}

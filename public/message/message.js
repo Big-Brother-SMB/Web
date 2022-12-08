@@ -85,6 +85,7 @@ varAllMsg.sondage.forEach(function(child) {
         choices = child.choix.split('/')
         sondage(h, text, mode,reponse,choices,id)
     }else{
+        reponse = parseInt(reponse)
         sondage(h, text, mode,reponse,null,id)
     }
 })
@@ -175,7 +176,7 @@ function sondage(h, text, mode, reponse,choices,id){
                     function event() {
                         bRep.removeEventListener("mouseup",event)
                         reponse = choices[i]
-                        //%database.ref("sondages/" + h + "/users/" + user).set(choices[i])
+                        common.socketAsync("rep sondage",{id:id,rep:reponse})
                         hide()
                     }
 
@@ -221,7 +222,7 @@ function sondage(h, text, mode, reponse,choices,id){
                         const text = textarea.value
                         if(text != ""){
                             reponse = text
-                            //%database.ref("sondages/" + h + "/users/" + user).set(text)
+                            common.socketAsync("rep sondage",{id:id,rep:reponse})
                             hide()
                         }
                     }
@@ -246,7 +247,7 @@ function sondage(h, text, mode, reponse,choices,id){
                 function event() {
                     bRep.removeEventListener("mouseup", event)
                     reponse = parseInt(i)
-                    //%database.ref("sondages/" + h + "/users/" + user).set(parseInt(i))
+                    common.socketAsync("rep sondage",{id:id,rep:reponse})
                     hide()
                 }
 
@@ -264,7 +265,7 @@ function sondage(h, text, mode, reponse,choices,id){
         function event3() {
             jsp.removeEventListener("mouseup", event3)
             reponse = -1
-            //%database.ref("sondages/" + h + "/users/" + user).set(-1)
+            common.socketAsync("rep sondage",{id:id,rep:reponse})
             hide()
         }
 
