@@ -1,5 +1,7 @@
 .imgAct {
     width: 8vw;
+    min-height: 150px;
+    min-width: 150px;
     height: 8vw;
     border: solid;
     padding: 4px;
