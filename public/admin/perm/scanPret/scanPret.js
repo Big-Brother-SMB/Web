@@ -8,6 +8,7 @@ document.addEventListener('keydown', function(evt) {
     if (evt.code == 'Enter') {
         if (barcodeLaser){
             search(barcodeLaser,true)
+            showAct()
             inputCodeBar.value = barcodeLaser;
         }
         barcodeLaser = '';
