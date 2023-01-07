@@ -276,7 +276,7 @@ function reload(){
 function loop(){
     refreshDatabase();
 
-    setTimeout(loop,10000);
+    setTimeout(loop,30000);
 }
 loop();
 
@@ -332,7 +332,7 @@ function clickMenu(){
 //-----------sondages--------------------
 const notifMsg = document.getElementById("notif msg")
 
-let nbMsg = 0
+/*let nbMsg = 0
 database.ref("messages/").once('value').then(function(snapshot) {
     snapshot.forEach(function(child) {
         let user = child.key
@@ -350,7 +350,7 @@ database.ref("messages/").once('value').then(function(snapshot) {
             })
         })
     })
-})
+})*/
 
 
 
