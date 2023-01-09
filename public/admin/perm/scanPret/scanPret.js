@@ -69,13 +69,16 @@ database.ref("users").once("value", function(snapshot){
 var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker"]
 
 function debutPret(elem){
-    today=new Date()
-    date=('0'+today.getDate()).slice(-2)+"-"+('0'+(today.getMonth()+1)).slice(-2)+"-"+today.getFullYear()+" : "+('0'+today.getHours()).slice(-2)+":"+('0'+today.getMinutes()).slice(-2)
-    database.ref("pret/!enCours/"+elem+"/nom").set(inputName.value)
-    database.ref("pret/!enCours/"+elem+"/date").set(date)
+    if (inputName.value!="" && inputName.value!="undefined"){
+        today=new Date()
+        date=('0'+today.getDate()).slice(-2)+"-"+('0'+(today.getMonth()+1)).slice(-2)+"-"+today.getFullYear()+" : "+('0'+today.getHours()).slice(-2)+":"+('0'+today.getMinutes()).slice(-2)
+        database.ref("pret/!enCours/"+elem+"/nom").set(inputName.value)
+        database.ref("pret/!enCours/"+elem+"/date").set(date)
+        document.getElementById(elem+"-Name").innerHTML=inputName.value
+        document.getElementById(elem).style.filter="grayscale(1)"
+    }
     inputName.value=""
     inputCodeBar.value=""
-    document.getElementById(elem).style.filter="grayscale(1)"
 }
 
 function finPret(elem){
@@ -85,13 +88,14 @@ function finPret(elem){
                 today=new Date()
                 EndDate=('0'+today.getHours()).slice(-2)+":"+('0'+today.getMinutes()).slice(-2)
                 database.ref("pret/"+elem+"/"+begDate.val()+" à "+EndDate).set(name.val())
-                if (inputName.value!=""){
+                if (inputName.value!="" && inputName.value!="undefined"){
                     debutPret(elem)
                 }
                 else{
                     database.ref("pret/!enCours/"+elem+"/nom").set("Libre")
                     database.ref("pret/!enCours/"+elem+"/date").set("NaN")
                     document.getElementById(elem).style.filter="grayscale(0)"
+                    document.getElementById(elem+"-Name").innerHTML="Libre"
                 }
             }
         })
