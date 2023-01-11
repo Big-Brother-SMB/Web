@@ -24,3 +24,9 @@ tfoot {
     margin-top: 10px;
     margin-bottom: 10px;
  }
+
+ #code{
+    font-size: 40px;
+    width: 150px;
+    height: 50px;
+ }
