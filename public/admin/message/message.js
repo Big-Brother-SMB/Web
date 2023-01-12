@@ -1,9 +1,22 @@
+import * as common from "../../common.js";
+
+let usersListBrut = await common.socketAsync('list_users',null)
+let usersList = []
+let usersIdList = []
+usersListBrut.forEach(e=>{
+    usersList.push(e.first_name + " " + e.last_name)
+    usersIdList.push(e.uuid)
+})
+
+
 let divNew = document.getElementById("new msg")
 let divOld = document.getElementById("old msg")
 
 let idNew = []
 let idOld = []
 
+let varAllMsg = await  common.socketAdminAsync("admin msgs",null)
+console.log(varAllMsg)
 
 function addNew(elem, h){
     elem.id = h
@@ -44,7 +57,7 @@ function newMsg(){
     }else{
         pNew.innerHTML = nbNew + " nouveaux messages"
     }
-    
+
 }
 
 //----------------------sondages---------------------
@@ -68,33 +81,40 @@ const size = [
 ]
 
 
-database.ref("sondages").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        let h = child.key
-        let text = snapshot.child(h+"/text").val()
-        let mode = snapshot.child(h+"/mode").val()
-        if(mode == null){
-            mode = 0
-        }
-        let reponse=[]
-        snapshot.child(h + "/users/").forEach(function(child){
-            reponse.push(snapshot.child(h + "/users/"+child.key).val())
-        })
-        if(mode == 3){
-            let choices = []
-            snapshot.child(h + "/choices").forEach(function(child) {
-                choices.push(child.key)
-            })
-            sondage(h, text, mode,reponse,choices)
-        }else{
-            sondage(h, text, mode,reponse,null)
-        }
+varAllMsg.sondage.forEach(function(child) {
+    let h = child.date
+    let text = child.texte
+    let mode = child.mode
+    let id = child.id
+    if(mode == null){
+        mode = 0
+    }
+    let reponse = child.rep
+    let tableauRep=[]
+    reponse.forEach((e)=>{
+        tableauRep.push(e.reponse)
     })
+    if(mode == 3){
+        let choices = []
+        choices = child.choix.split('/')
+        sondage(h, text, mode,tableauRep,choices,id)
+    }else{
+        for(let i in tableauRep){
+            tableauRep[i]=parseInt(tableauRep[i])
+        }   
+        sondage(h, text, mode,tableauRep,null,id)
+    }
 })
 
-function sondage(h, text, mode, reponse,choices){
+
+
+
+
+function sondage(h, text, mode, reponse,choices,id){
     let msg = document.createElement("div")
     msg.className = "sondage"
+
+    console.log('rep',reponse)
     
     let reponseList=[]
     let moyen=0
@@ -125,7 +145,7 @@ function sondage(h, text, mode, reponse,choices){
                 reponseList[reponse[loop]]++
             }
         }
-        moyen=round(total/tour)
+        moyen=common.round(total/tour)
     }  else if(mode==3) {
         reponseList=new Map();
         for(let loop in choices){
@@ -204,7 +224,7 @@ function sondage(h, text, mode, reponse,choices){
             for(let i in choices){
                 if(choices[i] != "other"){
                     let bRep = document.createElement("p")
-                    bRep.innerHTML = "<p>"+choices[i]+" : "+(round(reponseList.get(choices[i])/tour)*100)+"%</p>"            
+                    bRep.innerHTML = "<p>"+choices[i]+" : "+(common.round(reponseList.get(choices[i])/tour)*100)+"%</p>"            
                     divRep.appendChild(bRep);
                 }
             }
@@ -222,7 +242,7 @@ function sondage(h, text, mode, reponse,choices){
         }else{
             for(let i in rep[mode]){
                 let bRep = document.createElement("p")
-                bRep.innerHTML = "<p>"+rep[mode][i]+" : "+(round(reponseList[i]/tour)*100)+"%</p>"            
+                bRep.innerHTML = "<p>"+rep[mode][i]+" : "+(common.round(reponseList[i]/tour)*100)+"%</p>"            
                 divRep.appendChild(bRep);
             }
         }
@@ -242,20 +262,31 @@ function sondage(h, text, mode, reponse,choices){
 
 //------------------------------news---------------------------------
 
-database.ref("news").once('value').then(function(snapshot) {
-    snapshot.forEach(function(child) {
-        let h = child.key
-        let title = snapshot.child(h+"/title").val()
-        let text = snapshot.child(h+"/text").val()
-        news(h, title, text)         
-    })
+varAllMsg.news.forEach(function(child) {
+    let h = child.date
+    let text = child.texte
+    let title = child.title
+    let lu = child.lu
+    let id = child.id
+    news(h, title, text,lu,id)
 })
 
 
-function news(h,title,text){
+function news(h,title,text,lu,id){
+    let luAdmin=false
+    lu.forEach(e=>{
+        if(e.user=="admin" && e.lu==true) luAdmin=true
+    })
     let msg = document.createElement("div")
     msg.className = "news"
-    hide()   
+    if(lu){
+        hide()
+    }else{
+        display()
+        addNew(msg, h)
+        //divNew.appendChild(msg);
+        newMsg()
+    }
 
     function hide(){
         msg.innerHTML = ""
@@ -270,13 +301,12 @@ function news(h,title,text){
         }
         if(!divOld.contains(msg)){
             addOld(msg, h)
-            //divOld.appendChild(msg);
             newMsg()
         }
-        
+
     }
 
-    
+
 
     function display(){
         msg.innerHTML = ""
@@ -291,12 +321,332 @@ function news(h,title,text){
         msg.appendChild(main);
         msg.addEventListener("click",event)
 
+        let btn
+        if(luAdmin){
+            btn = document.createElement("button")
+            btn.innerHTML = "marquer lu"
+            btn.className = "rep"
+            msg.appendChild(btn);
+            btn.addEventListener("mouseup",event)
+        }
+
+        function event(){
+            if(luAdmin){
+                btn.removeEventListener("mouseup", event)
+            }
+            luAdmin=true
+            msg.removeEventListener("click", event)
+            hide()
+        }
+    }
+}
+
+//------------------------------my msg---------------------------------
+varAllMsg.mp.forEach(function(child) {
+    let h = child.date
+    let text = child.texte
+    let title = child.title
+    let lu = child.lu
+    let id = child.id
+    if(child.from2=="admin"){
+        myMessage(h, title, text,id)
+    }else{
+        message(h, title, text,lu,id)
+    }
+})
+
+function myMessage(h,title,text,id){
+    let msg = document.createElement("div")
+    msg.className = "mymsg"
+    hide()
+
+    function hide(){
+        msg.innerHTML = ""
+        let p = document.createElement("p")
+        p.innerHTML = "MP : " + title+"<br>à: modo"
+        p.className = "text"
+        msg.appendChild(p);
+        msg.addEventListener("click",event)
+        function event(){
+            msg.removeEventListener("click",event)
+            display()
+        }
+        if(!divOld.contains(msg)){
+            addOld(msg, h)
+        }
+
+    }
+
+
+
+    function display(){
+        msg.innerHTML = ""
+
+        let prive = document.createElement("p")
+        prive.innerHTML = "MP : " + title+"<br>à: modo"
+        prive.className = "text"
+        msg.appendChild(prive);
+
+        let main = document.createElement("p")
+        main.innerHTML = text
+        main.className = "text"
+        msg.appendChild(main);
+        msg.addEventListener("click",event)
+
         function event(){
             msg.removeEventListener("click", event)
             hide()
         }
     }
 }
+
+//------------------------------msg---------------------------------
+
+function message(h,title,text,lu,id){
+    let msg = document.createElement("div")
+    msg.className = "msg"
+    if(lu){
+        hide()
+    }else{
+        display()
+        addNew(msg, h)
+        newMsg()
+    }
+
+    function hide(){
+        msg.innerHTML = ""
+        let p = document.createElement("p")
+        p.innerHTML = "MP : " + title+"<br>De: modo"
+        p.className = "text"
+        msg.appendChild(p);
+        msg.addEventListener("click",event)
+        function event(){
+            msg.removeEventListener("click",event)
+            display()
+        }
+        if(!divOld.contains(msg)){
+            common.socketAdminAsync("msg lu",id)
+            addOld(msg, h)
+            newMsg()
+        }
+
+    }
+
+
+
+    function display(){
+        msg.innerHTML = ""
+
+        let prive = document.createElement("p")
+        prive.innerHTML = "MP : " + title+"<br>De: modo"
+        prive.className = "text"
+        msg.appendChild(prive);
+
+        let main = document.createElement("p")
+        main.innerHTML = text
+        main.className = "text"
+        msg.appendChild(main);
+        msg.addEventListener("click",event)
+
+        let btn
+        if(lu!=true){
+            btn = document.createElement("button")
+            btn.innerHTML = "marquer lu"
+            btn.className = "rep"
+            msg.appendChild(btn);
+            btn.addEventListener("mouseup",event)
+        }
+
+        function event(){
+            if(lu!=true){
+                btn.removeEventListener("mouseup", event)
+            }
+            lu=true
+            msg.removeEventListener("click", event)
+            hide()
+        }
+    }
+}
+
+
+
+//----------------------------send---------------------------
+
+
+
+let iconSend = document.getElementById("iconSend")
+let iconNews = document.getElementById("iconNews")
+let iconSondage = document.getElementById("iconSondage")
+let divSend = document.getElementById("divSend")
+
+let modal = document.getElementById('modal')
+let overlay = document.getElementById('overlay')
+let titleUp = document.getElementById('title pop up')
+let logoUp = document.getElementById('logo pop up')
+
+function openModal(modal) {
+  if (modal == null) return
+  modal.classList.add('active')
+  overlay.classList.add('active')
+}
+
+function closeModal(modal) {
+  if (modal == null) return
+  modal.classList.remove('active')
+  overlay.classList.remove('active')
+}
+
+
+let send = document.getElementById("send")
+let annuler = document.getElementById("annuler")
+let title = document.getElementById("title2")
+let text = document.getElementById("text")
+let destinataire = document.getElementById("as")
+let type = document.getElementById("type")
+
+let destinataire2 = document.getElementById("as2")
+let type2 = document.getElementById("type2")
+
+let icon
+
+const listType = ["Oui/Non","Satisfait","Echelle 1 à 10","Customiser"]
+
+common.autocomplete(destinataire, usersList,function(val){});
+for (let i in listType) {
+    let opt = document.createElement("option")
+    opt.innerHTML = listType[i]
+    type.appendChild(opt);
+}
+
+iconSend.addEventListener("click", function() {
+    icon = 0
+
+    destinataire2.style.visibility = "visible"
+    destinataire2.style.height= "auto"
+    type2.style.visibility = "hidden"
+    type2.style.height= "0px"
+
+    logoUp.src="../../Images/write.png"
+    titleUp.innerHTML="<b>Envoyer un message</b>"
+
+    openModal(modal)
+})
+iconNews.addEventListener("click", function() {
+    icon = 1
+
+    destinataire2.style.visibility = "hidden"
+    destinataire2.style.height= "0px"
+    type2.style.visibility = "hidden"
+    type2.style.height= "0px"
+
+
+    logoUp.src="../../Images/news.png"
+    titleUp.innerHTML="<b>Envoyer une news</b>"
+
+    openModal(modal)
+})
+iconSondage.addEventListener("click", function() {
+    icon = 2
+
+    destinataire2.style.visibility = "hidden"
+    destinataire2.style.height= "0px"
+    type2.style.visibility = "visible"
+    type2.style.height= "auto"
+
+    logoUp.src="../../Images/sondage.png"
+    titleUp.innerHTML="<b>Envoyer un sondage</b>"
+
+    openModal(modal)
+})
+
+send.addEventListener("click", async function() {
+    if(title.value != ""){
+        let hashCode = common.hashHour()
+        if(icon==0 && usersList.indexOf(destinataire.value)!=-1 && text.value != ""){
+            let at=usersIdList[usersList.indexOf(destinataire.value)]
+            await common.socketAdminAsync("add msg",{destinataire:at,title:title.value,texte:text.value.replaceAll('\n',"</br>")})
+            myMessage(hashCode, title.value, text.value.replaceAll('\n',"</br>"),at,false)
+            title.value = ""
+            destinataire.value = ""
+            type.selectedIndex = 0
+            text.value = ""
+            closeModal(modal)
+        }
+        if(icon==1 && text.value != ""){
+            await common.socketAdminAsync("add news",{title:title.value,texte:text.value.replaceAll('\n',"</br>")})
+            news(hashCode, title.value, text.value.replaceAll('\n',"</br>"),[],"")
+            title.value = ""
+            destinataire.value = ""
+            type.selectedIndex = 0
+            text.value = ""
+            closeModal(modal)
+        }
+        if(icon==2){
+            let choices=text.value.split('/')
+            await common.socketAdminAsync("add sondage",{title:title.value,texte:text.value.replaceAll('\n',"</br>"),choix:choices,mode:type.selectedIndex})
+            sondage(hashCode, title.value, type.selectedIndex,[],choices)
+            title.value = ""
+            destinataire.value = ""
+            type.selectedIndex = 0
+            text.value = ""
+            closeModal(modal)
+        }
+    }
+})
+
+annuler.addEventListener("click", function() {
+    title.value = ""
+    destinataire.value = ""
+    type.selectedIndex = 0
+    text.value = ""
+    closeModal(modal)
+})
+
+
+overlay.addEventListener('click', () => {
+    const modals = document.querySelectorAll('.modal.active')
+    modals.forEach(modal => {
+      closeModal(modal)
+    })
+  })
+
+document.getElementById("article").style.display = "inline"
+document.getElementById("chargement").style.display = "none"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
 
 //------------------------------my msg---------------------------------
 let usersList = []
@@ -608,5 +958,5 @@ overlay.addEventListener('click', () => {
 
 
 
-/* inspired by Web Dev Simplified */
 charged(true)
+*/

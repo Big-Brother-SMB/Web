@@ -887,7 +887,101 @@ function setVar(key,value){
   }
 
   
-  //% messages / news / sondages 
+  //% messages / news / sondages
+
+  function addSondage(from,texte,title,date,mode,choix){
+    let id=uuidG.v4()
+    db.run("INSERT INTO sondages(id,from2,texte,title,date,mode,choix) VALUES (?,?,?,?,?,?,?)",[id,from,texte,title,date,mode,choix])
+    return id
+  }
+  function setSondage(id,from,texte,title,date,mode,choix){
+    db.run("UPDATE sondages SET from2=?,texte=?,title=?,date=?,mode=?,choix=? WHERE id=?",[from,texte,title,date,mode,choix,id])
+  }
+  function getSondage(id){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM sondages WHERE id=?",[id],async (err, data) => {
+        try {
+          if(data!=undefined){
+            let r = await new Promise(async function(resolve2, reject2) {
+              db.all("SELECT * FROM sondages_reponse WHERE id=?",[id], async (err, data2) => {
+                resolve2(data2)
+              })
+            })
+            if(r!=undefined){
+              data.rep=r
+            }else{
+              data.rep=[]
+            }
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
+    })
+  }
+  function delSondage(id){
+    db.run("delete from sondages WHERE id=?",[id])
+    db.run("delete from sondages_reponse WHERE id=?",[id])
+  }
+
+
+
+
+
+
+
+
+
+  function addNews(from,texte,title,date){
+    let id=uuidG.v4()
+    db.run("INSERT INTO news(id,from2,texte,title,date) VALUES (?,?,?,?,?)",[id,from,texte,title,date])
+    return id
+  }
+  function setNews(id,from,texte,title,date){
+    db.run("UPDATE news SET from2=?,texte=?,title=?,date=? WHERE id=?",[from,texte,title,date,id])
+  }
+  function getNews(id){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM news WHERE id=?",[id],async (err, data) => {
+        try {
+          if(data!=undefined){
+            let r = await new Promise(async function(resolve2, reject2) {
+              db.all("SELECT * FROM news_lu WHERE id=?",[id], async (err, data2) => {
+                resolve2(data2)
+              })
+            })
+            if(r!=undefined){
+              data.lu=r
+            }else{
+              data.lu=[]
+            }
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);resolve(null)}
+      })
+      setTimeout(reject,1000)
+    })
+  }
+  function delNews(id){
+    db.run("delete from news WHERE id=?",[id])
+    db.run("delete from news_lu WHERE id=?",[id])
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   function addMessage(from,to,lu,texte,title,date){
     let id=uuidG.v4()
     db.run("INSERT INTO messages(id,from2,to2,lu,texte,title,date) VALUES (?,?,?,?,?,?,?)",[id,from,to,lu,texte,title,date])
@@ -1530,6 +1624,40 @@ async function main() {
           socket.emit('copy key',await (new User(msg)).createToken())
         }catch(e){console.error(e)}
       })
+
+      socket.on("admin msgs", async msg => {
+        try{
+          socket.emit("admin msgs",await getAllMessages())
+        }catch(e){console.error(e)}
+      });
+
+      socket.on("msg lu", async msg => {
+        try{
+          (new User("admin")).messageLu(msg)
+          socket.emit("msg lu",'ok')
+        }catch(e){console.error(e)}
+      });
+
+      socket.on("add msg", async msg => {
+        try{
+          addMessage("admin",msg.destinataire,false,msg.texte,msg.title,hashHour())
+          socket.emit("add msg",'ok')
+        }catch(e){console.error(e)}
+      });
+
+      socket.on("add news", async msg => {
+        try{
+          addNews("admin",msg.texte,msg.title,hashHour())
+          socket.emit("add news",'ok')
+        }catch(e){console.error(e)}
+      });
+
+      socket.on("add sondage", async msg => {
+        try{
+          addSondage("admin",msg.texte,msg.title,hashHour(),msg.mode,msg.choix)
+          socket.emit("add sondage",'ok')
+        }catch(e){console.error(e)}
+      });
     }
   })
   io.on("connection", async (socket) => {
