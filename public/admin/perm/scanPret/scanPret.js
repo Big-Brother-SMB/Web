@@ -23,7 +23,7 @@ document.addEventListener('keydown', function(evt) {
 let inputName = document.getElementById("name")
 let inputNameId = null
 
-let inputCodeBar = document.getElementById("code bar")
+let inputCodeBar = document.getElementById("code")
 
 let utilisateurs = []
 let utilisateursNames = []
