@@ -11,9 +11,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-
-var database = firebase.database()
-
 function replaceX(email,d,f){
   let emailT = email.split(d);
   let str = ""
@@ -63,7 +60,6 @@ const actualWeek = date.getWeek();
 
 
 firebase.auth().onAuthStateChanged(function(userX) {
-
   if(userX){
     user = replaceX(userX.email,'.','µ')
 
@@ -73,29 +69,12 @@ firebase.auth().onAuthStateChanged(function(userX) {
     writeCookie("email",email)
     writeCookie("week",actualWeek)
     writeCookie("RGPD",true)
-    database.ref("users/" + user + "/email").set(email);
-    
-    database.ref("names/"+user).once('value',function(snapshot){
-      let userT = userX.email.split("@")[0].split(".");
-      userT[0]=userT[0][0].toUpperCase()+userT[0].slice(1)
-      userT[1]=userT[1].toUpperCase();
-      userName = userT[0]+" "+userT[1]
-      if(snapshot.val()==null){
-          database.ref("names/" + user).set(userName);
-      }else{
-          userName=snapshot.val()
-          writeCookie("name",userName)
-      }
-      database.ref("modo/users/"+ user).once('value',function(snapshot2){
-        if(snapshot2.val()===1){
-          window.location.href = "/admin/menu/menu.html";
-        }
-        else {
-          window.location.href = "/menu/menu.html";
-        }
-      })
-    })
-  }else{
-    window.location.href = window.location.origin + "/index.html";
+
+    let userT = userX.email.split("@")[0].split(".");
+    userT[0]=userT[0][0].toUpperCase()+userT[0].slice(1)
+    userT[1]=userT[1].toUpperCase();
+    userName = userT[0]+" "+userT[1]
+    writeCookie("name",userName)
+    window.location.href = window.location.origin + "/menu/menu.html";
   }
 })

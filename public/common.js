@@ -1,22 +1,28 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyAPJ-33mJESHMcvEtaPX7JwIajUawblSuY",
-    authDomain: "big-brother-ac39c.firebaseapp.com",
-    databaseURL: "https://big-brother-ac39c-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "big-brother-ac39c",
-    storageBucket: "big-brother-ac39c.appspot.com",
-    messagingSenderId: "498546882155",
-    appId: "1:498546882155:web:722a18432bf108e0c1632e",
-    measurementId: "G-J5N38BGN7R"
-};
+
+    apiKey: "AIzaSyBaviw7XsruniyFgQQ5cwGvWVWA6DI8lsU",
+  
+    authDomain: "smb-384c5.firebaseapp.com",
+  
+    databaseURL: "https://smb-384c5-default-rtdb.europe-west1.firebasedatabase.app",
+  
+    projectId: "smb-384c5",
+  
+    storageBucket: "smb-384c5.appspot.com",
+  
+    messagingSenderId: "959816118012",
+  
+    appId: "1:959816118012:web:b598df1b6d9712efd13179",
+  
+    measurementId: "G-6V1FSH3NXE"
+  
+  };
+  
 
 firebase.initializeApp(firebaseConfig);
 
 
 var database = firebase.database()
-
-//----------analytics
-
-const analytics = firebase.analytics();
 
 /*----FindUserName-----*/
 function FindMyName (tempemail){
@@ -57,7 +63,7 @@ function replaceX(email,d,f){
     console.log(str)
     return str
 }
-firebase.auth().onAuthStateChanged(function(userX) {
+/*firebase.auth().onAuthStateChanged(function(userX) {
     if (userX) {
         user = replaceX(userX.email,'.','µ')
         email = userX.email;
@@ -89,7 +95,7 @@ firebase.auth().onAuthStateChanged(function(userX) {
     } else {
         deco()
     }
-});
+});*/
 
 //--------------------
 
