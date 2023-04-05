@@ -66,7 +66,7 @@ database.ref("users").once("value", function(snapshot){
 })
 
 
-var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker"]
+var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker","Echec","Jungle Speed","Jeu de cartes"]
 
 function debutPret(elem){
     if (inputName.value!="" && inputName.value!="undefined"){
