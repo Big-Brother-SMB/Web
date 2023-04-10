@@ -76,6 +76,7 @@ varAllMsg.sondage.forEach(function(child) {
     let text = child.texte
     let mode = child.mode
     let id = child.id
+    let from = child.from2
     if(mode == null){
         mode = 0
     }
@@ -83,10 +84,10 @@ varAllMsg.sondage.forEach(function(child) {
     if(mode == 3){
         let choices = []
         choices = child.choix.split('/')
-        sondage(h, text, mode,reponse,choices,id)
+        sondage(h, text, mode,reponse,choices,id,from)
     }else{
         reponse = parseInt(reponse)
-        sondage(h, text, mode,reponse,null,id)
+        sondage(h, text, mode,reponse,null,id,from)
     }
 })
 
@@ -95,7 +96,7 @@ varAllMsg.sondage.forEach(function(child) {
 
 
 let numRadio = 0
-function sondage(h, text, mode, reponse,choices,id){
+function sondage(h, text, mode, reponse,choices,id,from){
     let msg = document.createElement("div")
     msg.className = "sondage"
 
@@ -120,7 +121,7 @@ function sondage(h, text, mode, reponse,choices,id){
             }
         }
         let p = document.createElement("p")
-        p.innerHTML = "Sondage (" + text + ")<br>réponse : " + nameRep
+        p.innerHTML = "Sondage (" + text + ")<br>réponse : " + nameRep + "<br>De: " + from
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -141,7 +142,7 @@ function sondage(h, text, mode, reponse,choices,id){
     function display(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = text + "<br><br>Propositions : "
+        p.innerHTML = text + "<br>De: " + from + "<br><br>Propositions : "
         p.className = "text"
         msg.appendChild(p);
 
@@ -284,11 +285,12 @@ varAllMsg.news.forEach(function(child) {
     let title = child.title
     let lu = child.lu
     let id = child.id
-    news(h, title, text,lu,id)
+    let from = child.from2
+    news(h, title, text,lu,id,from)
 })
 
 
-function news(h,title,text,lu,id){
+function news(h,title,text,lu,id,from){
     let msg = document.createElement("div")
     msg.className = "news"
     if(lu){
@@ -303,7 +305,7 @@ function news(h,title,text,lu,id){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = title
+        p.innerHTML = title + "<br>De: " + from
         p.className = "text title"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -324,7 +326,7 @@ function news(h,title,text,lu,id){
     function display(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = title
+        p.innerHTML = title + "<br>De: " + from
         p.className = "text title"
         msg.appendChild(p);
 
@@ -335,7 +337,7 @@ function news(h,title,text,lu,id){
         msg.addEventListener("click",event)
 
         let btn
-        if(lu!=true){
+        if(!lu){
             btn = document.createElement("button")
             btn.innerHTML = "marquer lu"
             btn.className = "rep"
@@ -344,7 +346,7 @@ function news(h,title,text,lu,id){
         }
 
         function event(){
-            if(lu!=true){
+            if(!lu){
                 btn.removeEventListener("mouseup", event)
             }
             lu=true
@@ -361,14 +363,16 @@ varAllMsg.mp.forEach(function(child) {
     let title = child.title
     let lu = child.lu
     let id = child.id
-    if(child.from2==common.uuid){
-        myMessage(h, title, text,id)
+    let from = child.from2
+    let to = child.to2
+    if(from==common.uuid){
+        myMessage(h, title, text,id,to)
     }else{
-        message(h, title, text,lu,id)
+        message(h, title, text,lu,id,from)
     }
 })
 
-function myMessage(h,title,text,id){
+function myMessage(h,title,text,id,to){
     let msg = document.createElement("div")
     msg.className = "mymsg"
     hide()
@@ -376,7 +380,7 @@ function myMessage(h,title,text,id){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = "MP : " + title+"<br>à: modo"
+        p.innerHTML = "MP : " + title+"<br>à: "+to
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -396,7 +400,7 @@ function myMessage(h,title,text,id){
         msg.innerHTML = ""
 
         let prive = document.createElement("p")
-        prive.innerHTML = "MP : " + title+"<br>à: modo"
+        prive.innerHTML = "MP : " + title+"<br>à: "+to
         prive.className = "text"
         msg.appendChild(prive);
 
@@ -415,7 +419,7 @@ function myMessage(h,title,text,id){
 
 //------------------------------msg---------------------------------
 
-function message(h,title,text,lu,id){
+function message(h,title,text,lu,id,from){
     let msg = document.createElement("div")
     msg.className = "msg"
     if(lu){
@@ -429,7 +433,7 @@ function message(h,title,text,lu,id){
     function hide(){
         msg.innerHTML = ""
         let p = document.createElement("p")
-        p.innerHTML = "MP : " + title+"<br>De: modo"
+        p.innerHTML = "MP : " + title+"<br>De: "+from
         p.className = "text"
         msg.appendChild(p);
         msg.addEventListener("click",event)
@@ -451,7 +455,7 @@ function message(h,title,text,lu,id){
         msg.innerHTML = ""
 
         let prive = document.createElement("p")
-        prive.innerHTML = "MP : " + title+"<br>De: modo"
+        prive.innerHTML = "MP : " + title+"<br>De: "+from
         prive.className = "text"
         msg.appendChild(prive);
 
@@ -462,7 +466,7 @@ function message(h,title,text,lu,id){
         msg.addEventListener("click",event)
 
         let btn
-        if(lu!=true){
+        if(!lu){
             btn = document.createElement("button")
             btn.innerHTML = "marquer lu"
             btn.className = "rep"
@@ -471,7 +475,7 @@ function message(h,title,text,lu,id){
         }
 
         function event(){
-            if(lu!=true){
+            if(!lu){
                 btn.removeEventListener("mouseup", event)
             }
             lu=true
