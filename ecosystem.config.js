@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    script: 'index.js',
+    script: 'main.js',
     watch: '.'
   }],
   deploy : {
