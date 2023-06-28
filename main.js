@@ -62,7 +62,7 @@ const { firestore } = require('googleapis/build/src/apis/firestore');
 const path = require('path');
 const { setgroups } = require('process');
 
-const jsonObj = JSON.parse(fs.readFileSync(__dirname+"/code.json"));
+const jsonObj = JSON.parse(fs.readFileSync(__dirname+"/../code.json"));
 let address = jsonObj.address
 const oauth2Client = new google.auth.OAuth2(
   jsonObj.client_id,
@@ -1313,7 +1313,7 @@ class UserSelect{
 }
 
 async function main() {
-  db = new sqlite3.Database('main.db', err => {
+  db = new sqlite3.Database('../main.db', err => {
     if (err)
       throw err
     db.serialize(()=>{
