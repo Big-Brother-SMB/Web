@@ -1323,6 +1323,12 @@ async function main() {
           db.run('CREATE TABLE var(key text, value text)')
       })
 
+      //var
+      db.get("SELECT * FROM sqlite_master where type='table' AND name='emprunt'", (err, data) => {
+        if(data==undefined)
+          db.run('CREATE TABLE emprunt(objet string,uuid UUID,debut DATE,fin DATE)')
+      })
+
       //users / amis / user-group / token
       db.get("SELECT * FROM sqlite_master where type='table' AND name='users'", (err, data) => {
         if(data==undefined)
