@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
-  <meta name="google-site-verification" content="v9jqFOIS_CehrIhUBuWYG7K8Esnhe6USiMwqcB-vxks" />
-  <link rel="stylesheet" href="auth.css">
-  <link rel="stylesheet" href="common.css">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Accueil</title>
-  <link rel="icon" href="../Images/logo.png">
-
-</head>
-
-<body>
-
-  <header>
-    <img class="headerimg" src="Images/logo.png" alt="logo Lycée">
-    <h1 id="title">Authentification</h1>
-  </header>
-
-  <div class="auth-ui">
-    <div class="content">
-      <article id="body">
+  <head>
+    <!--<meta name="google-site-verification" content="v9jqFOIS_CehrIhUBuWYG7K8Esnhe6USiMwqcB-vxks" />-->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="common.css">
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <link rel="icon" href="../Images/logo.png">
+  </head>
+  
+  <body>
+  
+    <div id="login_window">
+      <div id="title_bar">
+        <img class="login_img" src="Images/logo.png">
+        <h1 id="title"><u>Authentification</u></h1>
+      </div>
+  
+      <div>
         <p class="cgu">
-          J'accepte la <a href="https://drive.google.com/file/d/12HP5ANpmbFvX-njjuSX2sTS0YAUAeDRE/view?usp=sharing" download>politique de confidentialité des
-            données</a> et <a href="cgu/cookie.html">les cookies</a> : <input id="checkbox" type="checkbox"
-            value="RGPD" />
+          J'accepte la <a href="https://drive.google.com/file/d/12HP5ANpmbFvX-njjuSX2sTS0YAUAeDRE/view?usp=sharing" download> politique de confidentialité des données</a> et <a href="cgu/cookie.html">les cookies</a> : <input id="checkbox" type="checkbox" value="RGPD"/>
         </p>
-
-        <div class="container">
-          <button type="button" id="continue" class="button" style="display:none"><span id="continue text"></span></button>
+      </div>
+  
+      <div>
+        <div id="list_accounts">
+          <div id="continue" class="account">
+            <img class="account_img" src="Images/account.png">
+            <p id="continue text">Continuer</p>
+          </div>
         </div>
 
-        <br>
+        <hr style="width: 75%;" />
 
-        <div class="container">
-          <button type="button" id="change" class="button"><span>Changer de Compte</span></button>
+        <div id="change">
+            <img class="account_img" src="Images/account.png">
+            <p>Changer de Compte</p>
         </div>
+      </div>
+      
+      <div id="div_informative">
         <p class="soustitre">(Adresse mail Beaucamps uniquement)</p>
-        <p id="infos" class="cgu" style="color:#ffdd00"></p>
-      </article>
+        <p id="infos" style="color:#ffdd00"></p>
+      </div>
     </div>
-  </div>
-  <script type="module" src="index.js"></script>
-</body>
+  
+    <script type="module" src="index.js"></script>
+  </body>
 </html>

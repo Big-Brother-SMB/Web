@@ -1,4 +1,4 @@
-input,select{
+/*input,select{
   text-align: center;
   border-radius:10px;
 }
@@ -8,7 +8,7 @@ input,select{
 }
 
 .autocomplete {
-  /*the container must be positioned relative:*/
+  //the container must be positioned relative:
   position: relative;
   display: inline-block;
 }
@@ -19,7 +19,7 @@ input,select{
   border-bottom: none;
   border-top: none;
   z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
+  //position the autocomplete items to be the same width as the container:
   top: 100%;
   left: 0;
   right: 0;
@@ -31,11 +31,11 @@ input,select{
   border-bottom: 1px solid #d4d4d4;
 }
 .autocomplete-items div:hover {
-  /*when hovering an item:*/
+  //when hovering an item:
   background-color: #e9e9e9;
 }
 .autocomplete-active {
-  /*when navigating through the items using the arrow keys:*/
+  //when navigating through the items using the arrow keys:
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
@@ -163,7 +163,7 @@ select{
   padding: 5px 2em 5px 100%;
 }
 .marquee-rtl:hover > div {
-  animation-play-state: paused; /* met en pause le défilement */
+  animation-play-state: paused; //met en pause le défilement 
 }
 @keyframes defilement-rtl {
   0% {
@@ -231,14 +231,14 @@ nav {
   height: 34px;
 }
 
-/* Hide default HTML checkbox */
+// Hide default HTML checkbox
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
+// The slider
 .slider {
   position: absolute;
   cursor: pointer;
@@ -277,7 +277,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
+// Rounded sliders
 .slider.round {
   border-radius: 34px;
 }
@@ -296,3 +296,4 @@ input[type="radio"] {
   width: 30px;
   height: 30px;
 }
+*/

@@ -38,7 +38,6 @@ if (common.key != null && common.uuid != undefined) {
   }
 }
 
-
 document.getElementById("change").addEventListener("click",function(){
   window.location.href = window.location.origin;
 })
