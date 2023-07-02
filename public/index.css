@@ -1,5 +1,5 @@
 body{
-  background-image: url("https://drive.google.com/uc?export=view&id=1_UUwkOjtru2MEYwbGpgy2i3ce2MneBuW");
+  background-image: url("https://drive.google.com/uc?export=view&id=1rrgwmi8m2bb1BBwfrZ5xJqQuv5ugLGR5");
   background-size: 130% auto ;
 }
 
@@ -17,7 +17,7 @@ a{
   padding: 20%,20%;
   max-height: 70%;
   max-width: 70%;
-  background-color: #dd1e1e80;
+  background-color: #ad5558b5;
 }
 
 div *{
@@ -32,7 +32,7 @@ div *{
 
 h1{
   width: min-content;
-  font-size: 50px;
+  font-size: 5em;
 }
 
 p *{
@@ -41,7 +41,7 @@ p *{
 
 p{
   width: 80%;
-  font-size: 30px;
+  font-size: 2em;
 }
 
 .login_img{

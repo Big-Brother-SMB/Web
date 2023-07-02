@@ -1,3 +1,5 @@
+//#00341c9e vert
+//#ad5558b5 red
 import * as common from "./common.js";
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -25,17 +27,13 @@ document.getElementById("checkbox").addEventListener("change",function(){
 if (common.key != null && common.uuid != undefined) {
   document.getElementById("continue text").innerHTML = common.first_name+" "+common.last_name
   document.getElementById("continue").style.display = "block"
-  if (common.readBoolCookie("connect") && document.getElementById("checkbox").checked == true) {
-    connect()
-  }else{
-    document.getElementById("continue").addEventListener("click",function(){
-      if(document.getElementById("checkbox").checked == true){
-        connect()
-      } else {
-        document.getElementById("infos").innerHTML += "Vous devez accepter la politique de confidentialité des données et les Cookies<br>"
-      }
-    })
-  }
+  document.getElementById("continue").addEventListener("click",function(){
+    if(document.getElementById("checkbox").checked == true){
+      connect()
+    } else {
+      document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies<br>"
+    }
+  })
 }
 
 document.getElementById("change").addEventListener("click",function(){
