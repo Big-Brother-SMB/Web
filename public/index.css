@@ -110,7 +110,7 @@ input[type="checkbox"] {
   html,body {
     position: relative;
     top:0px; /*pour être en dessous de a*/
-    bottom:0px;
+    height: 100vh;
     width: 100%;
     padding: 0 0;
     margin: 0 0;
@@ -127,7 +127,7 @@ input[type="checkbox"] {
     background-size: 50px;
     background-color: #00341c9e;
     width:800px;
-    min-height: 99.5vh;
+    min-height: 100vh;
     position: unset;
     border-right: rgb(0, 0, 0) solid 5px;
   }
@@ -144,7 +144,6 @@ input[type="checkbox"] {
     display:inline-block;
     padding: 0 0;
     margin: 0 0;
-    overflow:hidden;
     text-align:left;
   }
 }
