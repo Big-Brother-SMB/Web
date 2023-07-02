@@ -10,40 +10,43 @@
   </head>
   
   <body>
+    <section id="main_section">
+      <div id="login_window">
+        <div id="title_bar">
+          <img class="login_img" src="Images/logo.png">
+          <h1 id="title"><u>Authentification</u></h1>
+        </div>
+    
+        <div>
+          <p class="cgu">
+            J'accepte la <a href="https://drive.google.com/file/d/12HP5ANpmbFvX-njjuSX2sTS0YAUAeDRE/view?usp=sharing" download> politique de confidentialité des données</a> et <a href="cgu/cookie.html">les cookies</a> : <input id="checkbox" type="checkbox" value="RGPD"/>
+          </p>
+        </div>
+    
+        <div>
+          <div id="list_accounts">
+            <div id="continue" class="account">
+              <img class="account_img" src="Images/account.png">
+              <p id="continue text">Continuer</p>
+            </div>
+          </div>
   
-    <div id="login_window">
-      <div id="title_bar">
-        <img class="login_img" src="Images/logo.png">
-        <h1 id="title"><u>Authentification</u></h1>
-      </div>
+          <hr style="width: 75%;" />
   
-      <div>
-        <p class="cgu">
-          J'accepte la <a href="https://drive.google.com/file/d/12HP5ANpmbFvX-njjuSX2sTS0YAUAeDRE/view?usp=sharing" download> politique de confidentialité des données</a> et <a href="cgu/cookie.html">les cookies</a> : <input id="checkbox" type="checkbox" value="RGPD"/>
-        </p>
-      </div>
-  
-      <div>
-        <div id="list_accounts">
-          <div id="continue" class="account">
-            <img class="account_img" src="Images/account.png">
-            <p id="continue text">Continuer</p>
+          <div id="change">
+              <img class="account_img" src="Images/account.png">
+              <p>Changer de Compte</p>
           </div>
         </div>
-
-        <hr style="width: 75%;" />
-
-        <div id="change">
-            <img class="account_img" src="Images/account.png">
-            <p>Changer de Compte</p>
+        
+        <div id="div_informative">
+          <p class="soustitre">(Adresse mail Beaucamps uniquement)</p>
+          <p id="infos" style="color:#ffdd00"></p>
         </div>
       </div>
-      
-      <div id="div_informative">
-        <p class="soustitre">(Adresse mail Beaucamps uniquement)</p>
-        <p id="infos" style="color:#ffdd00"></p>
-      </div>
-    </div>
+    </section>
+
+    <div id="img_section"></div> 
   
     <script type="module" src="index.js"></script>
   </body>
