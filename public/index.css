@@ -38,10 +38,6 @@ p{
   font-size: 2em;
 }
 
-.login_img{
-  height: 200px;
-}
-
 #change,.account{
   border: 3px ridge #28394d;
   background-color: #6883A1;
@@ -57,8 +53,7 @@ p{
   position: relative;
   z-index: 1;
 
-  margin-left: 0;
-  margin-right: 0;
+  margin: auto 10px;
   display: unset;
 }
 
@@ -110,7 +105,7 @@ input[type="checkbox"] {
   html,body {
     position: relative;
     top:0px; /*pour être en dessous de a*/
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     padding: 0 0;
     margin: 0 0;
