@@ -52,8 +52,10 @@ p{
 #change *,.account *{
   position: relative;
   z-index: 1;
+  overflow: hidden;
 
   margin: auto 10px;
+  margin-top: 7px;
   display: unset;
 }
 
@@ -80,6 +82,10 @@ p{
   height: 70px;
 }
 
+.login_img{
+  height: 200px;
+}
+
 #div_informative{
   text-align: center;
 }
@@ -89,16 +95,16 @@ input[type="checkbox"] {
   height: 20px;
 }
 
-@media (min-width: 1000px) and (max-width: 1400px){
-  body {
-    background-image: url("https://drive.google.com/uc?export=view&id=1qds_DFmGtIrnlWe9Q7zNZ-Dzm-08ep5X");
-    background-size: 170%;
-  }
-}
 @media (max-width: 1000px) {
   body {
-    background-image: url("https://drive.google.com/uc?export=view&id=1rrgwmi8m2bb1BBwfrZ5xJqQuv5ugLGR5");
+    background-image: url("Images/Portrait.jpg");
     background-size: 150%;
+  }
+}
+@media (min-width: 1000px) and (max-width: 1400px){
+  body {
+    background-image: url("Images/Paysage.jpg");
+    background-size: 170%;
   }
 }
 @media (min-width: 1400px) {
@@ -111,6 +117,7 @@ input[type="checkbox"] {
     margin: 0 0;
   }
   #login_window{
+    margin-top: 30px;
     max-width: 90%;
     width: 90%;
     margin-left: 5%;
@@ -132,7 +139,7 @@ input[type="checkbox"] {
     background-size: cover;
     background-position-x: center;
     background-position-y: center;
-    background-image: url("https://drive.google.com/uc?export=view&id=1rrgwmi8m2bb1BBwfrZ5xJqQuv5ugLGR5");
+    background-image: url("Images/Portrait.jpg");
   }
   #img_section,#main_section{
     height: 100%;

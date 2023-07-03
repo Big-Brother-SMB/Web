@@ -1,3 +1,36 @@
+
+html,body{
+  margin: 0;
+  padding: 0;
+}
+
+#logo{
+  height: 8em;
+}
+
+.nav_img{
+  height: 8em;
+  right: 10px;
+  position: absolute;
+  filter: invert(100%);
+}
+
+h1 {
+  margin: auto 10px;
+  padding-left: 15px;
+  font-size: 5em;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align:left;
+}
+
+header{
+  border-bottom: black solid 3px;
+  background-color: #6883A1;
+  display: flex;
+  padding: 15px 10px;
+}
+
 /*input,select{
   text-align: center;
   border-radius:10px;

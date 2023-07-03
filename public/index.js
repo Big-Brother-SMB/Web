@@ -1,5 +1,6 @@
 //#00341c9e vert
 //#ad5558b5 red
+//#6883A1  bleu
 import * as common from "./common.js";
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -48,9 +49,9 @@ async function connect(){
     common.writeCookie("week",common.actualWeek)
     common.writeCookie("connect",true)
     if(common.id_data.admin==2){
-      window.location.href = "/admin/menu/menu.html";
+      window.location.href = "/admin/accueil/accueil.html";
     } else {
-      window.location.href = "/menu/menu.html";
+      window.location.href = "/accueil/accueil.html";
     }
   } else {
     common.writeCookie("connect",false)
