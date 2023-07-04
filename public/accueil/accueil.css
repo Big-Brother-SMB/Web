@@ -1,13 +1,18 @@
 .container{
   position: relative;
   width: 100%;
+  min-height: calc(100vh - 8em - 33px);
+}
+
+#main{
+  background-color: #849e5d;
+  min-height: calc(50px * 12 + 15px);
 }
 
 #mySidenav{
   top: 0px;
   bottom: 0px;
   position: absolute;
-  border-right: #000000 solid 3px;
   z-index: 1;
   background-color: #252e19 ;
   overflow-x: hidden;
@@ -48,15 +53,33 @@
 
 
 @media (max-width: 1400px) {
+  #mySidenav a p{
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+  }
+  #mySidenav a{
+    padding-bottom: 50px;
+    padding-right: 140px;
+  }
+  .nav_img{
+    margin-left: 100px;
+    margin-right: 0;
+  }
   #mySidenav{
+    align-content: center;
     height: 0;
     width: 100vw;
+    border-right: #000000 solid 0px;
   }
 }
 
 @media (max-width: 1000px) {
   #mySidenav a{
-    height: 2em;
+    height: 1.7em;
     font-size: 3em;
   }
 
@@ -65,24 +88,17 @@
   }
 }
 
-
-
 @media (min-width: 1400px) {
+  #main{
+    margin-left: 83px;
+  }
+
   .menu_img{
     display: none;
   }
 
-  .container{
-    min-height: calc(100vh - 8em - 33px);
-  }
-
-  #main{
-    margin-left: 83px;
-    background-color: #849e5d;
-    min-height: calc(50px * 12 + 15px);
-  }
-
   #mySidenav{
+    border-right: #000000 solid 3px;
     min-height: calc(100vh - 8em - 33px);
     width: 80px;
   }
