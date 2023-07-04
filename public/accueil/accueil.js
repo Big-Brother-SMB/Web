@@ -24,6 +24,10 @@ btn_menu.addEventListener("click",function() {
     }
 });
 
-/*side.addEventListener("mouseleave",function() {
-    side.style.width = "80px";
-});*/
+//verification_navbar()
+function verification_navbar(){
+    if(window.innerWidth>=1400 && (side.style.height=="0px" || side.style.height=="")){
+        side.style.height=="auto"
+    }
+    setTimeout(verification_navbar, 1000);
+}

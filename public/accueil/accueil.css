@@ -1,14 +1,18 @@
+.container{
+  position: relative;
+  width: 100%;
+}
+
 #mySidenav{
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
   border-right: #000000 solid 3px;
-  height: 0;
-  width: 100vw;
-  position: fixed;
   z-index: 1;
-  top: calc(8em + 33px); 
-  left: 0;
   background-color: #252e19 ;
   overflow-x: hidden;
   transition: 0.5s;
+  float: left;
 }
 
 #mySidenav a{
@@ -41,6 +45,8 @@
   margin: auto 20px;
   position: relative;
 }
+
+/*
 @media (max-width: 1400px) {
   #mySidenav{
     height: 0;
@@ -48,19 +54,40 @@
   }
 }
 
+@media (max-width: 1000px) {
+  #mySidenav a{
+    height: 2em;
+    font-size: 3em;
+  }
+
+  .nav_img{
+    height: 2em;
+  }
+}
 
 
-@media (min-width: 1400px) {
+
+@media (min-width: 1400px) {*/
   .menu_img{
     display: none;
   }
 
+  .container{
+    min-height: calc(100vh - 8em - 33px);
+  }
+
+  #main{
+    margin-left: 83px;
+    background-color: #849e5d;
+    min-height: calc(50px * 12 + 15px);
+  }
+
   #mySidenav{
-    height: calc(100vh - 8em - 33px);
+    min-height: calc(100vh - 8em - 33px);
     width: 80px;
   }
 
   #mySidenav:hover{
     background-color: #849e5d;
   }
-}
+/*}*/

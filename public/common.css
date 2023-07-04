@@ -8,10 +8,14 @@ html,body{
   height: 8em;
 }
 
+.menu_img_a{
+  height: 8em;
+  right: 1px;
+  margin-left: auto;
+}
+
 .menu_img{
   height: 8em;
-  right: 10px;
-  position: absolute;
   filter: invert(100%);
 }
 
