@@ -1,34 +1,66 @@
-.sidenav{
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: calc(8em+30px); 
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
-    transition: 0.5s;
+#mySidenav{
+  border-right: #000000 solid 3px;
+  height: 0;
+  width: 100vw;
+  position: fixed;
+  z-index: 1;
+  top: calc(8em + 33px); 
+  left: 0;
+  background-color: #252e19 ;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+#mySidenav a{
+  height: 30px;
+  padding: 10px 0px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #FFF;
+  display: flex;
+  transition: 0.3s;
+}
+
+#mySidenav a p{
+  text-overflow: clip;
+  white-space: nowrap;
+  margin: auto 0;
+}
+
+#mySidenav a *{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#mySidenav a:hover {
+  color: #b6b6b6;
+}
+
+.nav_img{
+  height: 40px;
+  margin: auto 20px;
+  position: relative;
+}
+@media (max-width: 1400px) {
+  #mySidenav{
+    height: 0;
+    width: 100vw;
   }
-  
-  /* The navigation menu links */
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
+}
+
+
+
+@media (min-width: 1400px) {
+  .menu_img{
+    display: none;
   }
-  
-  /* When you mouse over the navigation links, change their color */
-  .sidenav a:hover {
-    color: #f1f1f1;
+
+  #mySidenav{
+    height: calc(100vh - 8em - 33px);
+    width: 80px;
   }
-  
-  
-  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+
+  #mySidenav:hover{
+    background-color: #849e5d;
   }
+}

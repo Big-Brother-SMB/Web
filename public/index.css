@@ -5,13 +5,13 @@ a{
 #login_window{
   color: white;
   border-radius:40px;
-  margin-top: 80px;
+  margin-top: 120px;
   margin-left: auto;
   margin-right: auto;
   border: 10px ridge black;
   padding: 20%,20%;
   max-width: 70%;
-  background-color: #ad5558b5;
+  background-color: #BF5656b5;
 }
 
 div *{
@@ -91,8 +91,8 @@ p{
 }
 
 input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
+  width: 2em;
+  height: 2em;
 }
 
 @media (max-width: 1000px) {
@@ -127,7 +127,7 @@ input[type="checkbox"] {
   #main_section{
     background-image: repeating-linear-gradient(36deg, rgb(255, 255, 255), rgba(255, 255, 255, 0) 1px, transparent 0px, transparent 2px);
     background-size: 50px;
-    background-color: #00341c9e;
+    background-color: #89a75d;
     width:800px;
     min-height: 100vh;
     position: unset;
