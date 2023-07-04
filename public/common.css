@@ -1,4 +1,3 @@
-
 html,body{
   margin: 0;
   padding: 0;
@@ -35,6 +34,131 @@ header{
   padding: 15px 10px;
 }
 
+.container{
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 8em - 33px);
+}
+
+#main{
+  min-height: calc(50px * 12 + 18px * 2 + 15px);
+}
+
+#mySidenav{
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
+  z-index: 1;
+  background: linear-gradient(#4c5f33 50%,#92b164);
+  overflow-x: hidden;
+  transition: 0.5s;
+  float: left;
+}
+
+#mySidenav a{
+  height: 30px;
+  padding: 10px 0px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #FFF;
+  display: flex;
+  transition: 0.3s;
+}
+
+#mySidenav a p{
+  text-overflow: clip;
+  white-space: nowrap;
+  margin: auto 0;
+}
+
+#mySidenav a *{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#mySidenav a:hover {
+  color: #c0c0c0;
+}
+
+.nav_img{
+  height: 40px;
+  margin: auto 20px;
+  position: relative;
+}
+
+.nav_split{
+  border: 1px solid #0000003f;
+  width: 75%;
+}
+
+@media (max-width: 1000px) {
+  .nav_split{
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  #mySidenav{
+    height: 0;
+    width: 100vw;
+    border-right: #000000 solid 0px;
+  }
+  #mySidenav a p{
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+  }
+  #mySidenav a{
+    padding-bottom: 25px;
+    padding-top: 25px;
+    padding-right: 140px;
+  }
+  .nav_img{
+    margin-left: 100px;
+    margin-right: 0;
+  }
+  #mySidenav{
+    align-content: center;
+    height: 0;
+    width: 100vw;
+    border-right: #000000 solid 0px;
+  }
+
+  #mySidenav a{
+    height: 1.7em;
+    font-size: 3em;
+  }
+
+  .nav_img{
+    height: 2em;
+  }
+
+  #mySidenav.active{
+    height: calc(100vh - 8em - 33px);
+  }
+}
+
+@media (min-width: 1000px) {
+  #main{
+    margin-left: 83px;
+  }
+
+  .menu_img{
+    display: none;
+  }
+
+  #mySidenav{
+    border-right: #000000 solid 3px;
+    min-height: calc(100vh - 8em - 33px);
+    width: 80px;
+  }
+
+  #mySidenav.active{
+    width: 250px;
+  }
+}
 /*input,select{
   text-align: center;
   border-radius:10px;

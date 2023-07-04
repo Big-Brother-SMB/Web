@@ -164,6 +164,7 @@ if (readBoolCookie("connect")) {
 }
 
 export function deco(){
+  return//%
   let path = window.location.pathname
   if(path!="/index.html"){
     delCookie("connect");
@@ -449,6 +450,67 @@ export function autocomplete(inp, arr, func) {
 try{
   document.getElementById("version").innerHTML = "Crédit"
 }catch(e){}
+
+
+
+//system de navbar
+let side = document.getElementById("mySidenav")
+console.log(side)
+if(side!=null){
+  side.addEventListener("mouseenter",function() {
+    if(window.innerWidth>=1000){
+        side.style.width = "250px";
+    }
+  });
+
+  side.addEventListener("mouseleave",function() {
+    if(window.innerWidth>=1000){
+        side.style.width = "80px";   
+    }
+  });
+
+  let btn_menu = document.getElementById("btn_menu")
+  btn_menu.addEventListener("click",function() {
+    if(window.innerWidth<1000){
+        if(side.style.height=="0px" || side.style.height==""){
+            side.style.height = "calc(100vh - 8em - 33px)";
+            side.style.width = "100%";
+        }else{
+            side.style.height = "0";
+            side.style.width = "100%";
+        }
+    }
+  });
+
+  /*verification_navbar()
+  function verification_navbar(){
+    if(window.innerWidth>=1000 && (side.style.height=="0px" || side.style.height=="")){
+        side.style.height=="auto"
+    }
+    setTimeout(verification_navbar, 1000);
+  }*/
+
+  const transition = document.querySelector("#mySidenav")
+  setTimeout(function(){
+    transition.classList.remove("active")
+  }, 10)
+  // on sélectionne les liens de pages qui joueront l'animation
+  const liens = document.querySelectorAll('nav a')
+
+  for(let i=0; i< liens.length; i++){
+    let lien = liens[i]
+
+    // on écoute le clic sur ces liens
+    lien.addEventListener('click' , function(event){
+
+        //on empêche le lien de nous diriger vers une autre page
+        event.preventDefault();
+
+        //on ajoute alors la classe "active" pour ajouter le fondu au noir
+        transition.classList.add('active')
+    })
+  }
+}
 
 
 /*
