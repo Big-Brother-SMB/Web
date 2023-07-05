@@ -455,7 +455,7 @@ try{
 
 //system de navbar
 let side = document.getElementById("mySidenav")
-console.log(side)
+
 if(side!=null){
   side.addEventListener("mouseenter",function() {
     if(window.innerWidth>=1000){
@@ -482,13 +482,50 @@ if(side!=null){
     }
   });
 
-  /*verification_navbar()
+
+  let list_nav_bnt = document.getElementsByClassName('nav_bnt')
+
+  for (var i = 0; i < list_nav_bnt.length; i++) {
+    const index = i;
+    list_nav_bnt[i].addEventListener('click', async ()=>{
+      let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+      document.getElementById("css_page").href=window.origin+'/auto0'+url+url+'.css'
+      await readFileHTML(url,'tete','EN-TETE')
+      await readFileHTML(url,'titre','TITRE')
+      await readFileHTML(url,'main','main')
+      window.history.pushState({id:"100"},"", url);
+      import(url+".js").then((module) => {
+        module
+        return
+      })
+    });
+  }
+
+  async function readFileHTML(url,idFile,idHTML){
+    let path = url+url+'.'+idFile+'.html'
+    const response = await fetch(window.origin+'/auto0'+path);
+    const data = await response.blob();
+    let file = new File([data], "test.html", {type: data.type || "text/html",})
+    var reader  = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      if(!response.ok && idHTML!='main'){
+        document.getElementById(idHTML).innerHTML=''
+      }else{
+        document.getElementById(idHTML).innerHTML=reader.result
+      }
+    };
+  }
+}
+
+  
+/*  verification_navbar()
   function verification_navbar(){
     if(window.innerWidth>=1000 && (side.style.height=="0px" || side.style.height=="")){
         side.style.height=="auto"
     }
     setTimeout(verification_navbar, 1000);
-  }*/
+  }
 
   const transition = document.querySelector("#mySidenav")
   setTimeout(function(){
@@ -511,7 +548,7 @@ if(side!=null){
     })
   }
 }
-
+*/
 
 /*
 //--------------------database functions--------------------
