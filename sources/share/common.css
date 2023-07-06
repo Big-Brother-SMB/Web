@@ -192,11 +192,17 @@ header{
   min-height: calc(var(--screenH));
 }
 
+/*---------------------main--------------------------*/
 #main{
   min-height: calc(50px * 12 + 18px * 2 + 15px);
   padding-top:20px;
 }
 
+#main p{
+  font-size: 40px;
+  font-family: system-ui;
+  text-align: center;
+}
 
 
 /*-------------------------pop-up-----------------*/
@@ -307,7 +313,7 @@ header{
   text-align: center;
 }
 
-.semaine_bnt{
+.bnt{
   background: #3d546e;
   color: white;
   width: 20%;
@@ -362,6 +368,10 @@ header{
   width: 15%;
 }
 
+.case.info.heure.jour{
+  visibility: hidden;
+}
+
 .case.default{
   background-color: gray;
 }
@@ -399,6 +409,19 @@ header{
     height: 2.5em;
   }
 }
+
+/*------------------------------demande--------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
 
 /*input,select{
   text-align: center;

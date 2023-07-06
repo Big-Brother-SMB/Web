@@ -59,12 +59,12 @@ for (var i = 0; i < list_nav_bnt.length; i++) {
 
 async function loadpage(url){
     console.log(url)
+    window.history.pushState({id:"100"},"", url);
     url=url.split('?')[0]
     document.getElementById("css_page").href=url+'.css'
     await readFileHTML(url,'tete','EN-TETE')
     await readFileHTML(url,'titre','TITRE')
     await readFileHTML(url,'main','main')
-    window.history.pushState({id:"100"},"", url);
     import(url+".js").then((module) => {
         module.init(exportClass)
         return
