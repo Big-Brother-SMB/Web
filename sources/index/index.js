@@ -1,7 +1,8 @@
 //#00341c9e vert
 //#ad5558b5 red
 //#6883A1  bleu
-import * as common from "/common.js";
+import {common} from "/common.js";
+await common.init()
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),

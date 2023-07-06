@@ -1,5 +1,6 @@
 // il reste les pop-up à faire + msg
-import * as common from "../common.js";
+import {common} from "/common.js";
+await common.init()
 
 document.getElementById("pass").addEventListener("click", function () {
     window.location.href = "../pass/pass.html";
