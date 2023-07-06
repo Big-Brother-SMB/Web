@@ -26,7 +26,7 @@ module.exports = async(req_url) => {
   let fichier
   let err404=false
 
-  if(baseName=='common'){
+  if(baseName=='common' || baseName=='manager'){
     subFolder = "share"
   }
   try{
@@ -39,19 +39,17 @@ module.exports = async(req_url) => {
         fichier = await readFileAsync(sources_url+pathName,READ_OPTIONS)
       }
     }else if(extName == ''){
-      const [modele,tete,titre,main,script] = await Promise.all([
+      const [modele,tete,titre,main] = await Promise.all([
         readFileAsync(sources_url+'/share/model.html'),
         readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.tete.html',READ_OPTIONS),
         readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.titre.html',READ_OPTIONS),
-        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.main.html',READ_OPTIONS),
-        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.script.html',READ_OPTIONS)
+        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.main.html',READ_OPTIONS)
       ])
       fichier = modele.toString()
         .replace('{{CSS}}',pathName+'.css')
         .replace('{{EN-TETE}}',tete.toString())
         .replace('{{TITRE}}',titre.toString())
         .replace('{{MAIN}}',main.toString())
-        .replace('{{SCRIPT}}',script.toString())
     }
   }catch(e){
     console.error(e)

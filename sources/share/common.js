@@ -3,6 +3,8 @@ import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
 
 //-----------------------------date----------------------------------
+let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
+
 Date.prototype.getWeekYear = function() {
     var date = new Date(this.getTime());
     date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
@@ -26,7 +28,7 @@ export class common{
   static get actualWeek(){
     return actualWeek
   }
-  static get day(){
+  /*static get day(){
     return ["Lundi", "Mardi","Jeudi","Vendredi"];
   }
   static get dayMer(){
@@ -51,13 +53,13 @@ export class common{
   }
   static get month(){
     return ["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
-  }
+  }*/
   static get nomNiveau(){
     return ["secondes","premières","terminales","adultes"]
   }
 
 
-  static async init(){
+  static async init(exportClass){
     //---------------------------cookie---------------------------
     let tablecookie = document.cookie.split('; ');
     this.cookie = {};
@@ -157,7 +159,7 @@ export class common{
         }
       }
     } else {
-      if(!window.location.pathname.includes("index.html")) deco()
+      //if(!window.location.pathname.includes("index.html")) deco()
     }
 
     //---------------------------listes---------------------------
@@ -166,94 +168,26 @@ export class common{
     ,"1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"
     ,"TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"
     ,"PCSI","PC","professeur-personnel"]*/
-    
+
+    //--------------------------banderole--------------------------------
+
+    let banderole = await common.socketAsync("banderole",null)
+    banderole=''
+    if (banderole != null && banderole != '') {
+      document.getElementById("banderole").innerHTML = banderole
+      document.getElementsByClassName("marquee-rtl")[0].style.display = "block"
+      document.querySelector(':root').style.setProperty("--screenH","calc(100vh - 11.8em - 32px)")
+    }
 
     //---------------------------color function---------------------------
 
     if(window.location.pathname.split("/").pop()!= "pass.html"){
       this.setColorMode(this.colorMode,this.backgroundColor,this.textColor)
     }
-
-    //system de navbar
-    let side = document.getElementById("mySidenav")
-
-    if(side!=null){
-      side.addEventListener("mouseenter",function() {
-        if(window.innerWidth>=1000){
-          side.style.width = "250px";
-          document.body.style.overflow = "unset"; 
-        }
-      });
-
-      side.addEventListener("mouseleave",function() {
-        if(window.innerWidth>=1000){
-          side.style.width = "80px";
-          document.body.style.overflow = "unset"; 
-        }
-      });
-
-      let btn_menu = document.getElementById("btn_menu")
-      btn_menu.addEventListener("click",function() {
-        if(window.innerWidth<1000){
-          if(side.style.height=="0px" || side.style.height==""){
-            side.style.height = "calc(100vh - 11.8em - 32px)";
-            side.style.width = "100%";
-            document.body.style.overflow = "hidden";
-          }else{
-            side.style.height = "0";
-            side.style.width = "100%";
-            document.body.style.overflow = "unset";  
-          }
-        }
-      });
-
-
-      let list_nav_bnt = document.getElementsByClassName('nav_bnt')
-
-      for (var i = 0; i < list_nav_bnt.length; i++) {
-        const index = i;
-        list_nav_bnt[i].addEventListener('click', async ()=>{
-          let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
-          document.getElementById("css_page").href=window.origin+'/auto0'+url+url+'.css'
-          await readFileHTML(url,'tete','EN-TETE')
-          await readFileHTML(url,'titre','TITRE')
-          await readFileHTML(url,'main','main')
-          window.history.pushState({id:"100"},"", url);
-          import(url+".js").then((module) => {
-            module
-            return
-          })
-        });
-      }
-
-      async function readFileHTML(url,idFile,idHTML){
-        let path = url+url+'.'+idFile+'.html'
-        const response = await fetch(window.origin+'/auto0'+path);
-        const data = await response.blob();
-        let file = new File([data], "truc.html", {type: data.type || "text/html",})
-        var reader  = new FileReader();
-        reader.readAsText(file);
-        reader.onload = () => {
-          if(!response.ok && idHTML!='main'){
-            document.getElementById(idHTML).innerHTML=''
-          }else{
-            document.getElementById(idHTML).innerHTML=reader.result
-          }
-        };
-      }
-
-      verification_navbar()
-      function verification_navbar(){
-        if(window.innerWidth>=1000){
-          side.style.height="unset"
-        }
-        setTimeout(verification_navbar, 1000);
-      }
-    }
   }
 
 
-//cookie
+  //cookie
   static writeCookie(key, value){
     document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
     this.cookie[key]=value
@@ -345,12 +279,15 @@ export class common{
   }
 
   //---------------------------les fonctions dates---------------------------
-
   static getDayText(j,week){
+    this.getDayText(j,week,false)
+  }
+
+  static getDayText(j,week,withMer){
     let date = new Date();
     let ajd=date.getDay()-1;
     let jour = j
-    if(j > 1){
+    if(j > 1 && !withMer){
       jour++
     }
     let dateBeg=(Date.now()+604800000*(week - actualWeek))-(ajd-jour)*86400000;
@@ -361,7 +298,7 @@ export class common{
     if(dateBeg[0] != "0"){
       text += dateBeg[0]
     }
-    text += dateBeg[1] + " " + month[mBeg]
+    text += dateBeg[1] + " " + mois[mBeg]
     return text
   }
 
@@ -389,7 +326,6 @@ export class common{
     dateEnd=new Date(dateEnd);
     dateBeg = dateBeg.toLocaleString();
     dateEnd = dateEnd.toLocaleString();
-    let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
     let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
     let mEnd = parseInt(dateEnd[3]+dateEnd[4] - 1)
     let text = ""

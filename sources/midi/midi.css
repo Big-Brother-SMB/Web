@@ -1,3 +1,6 @@
+
+
+/*
 article {
     margin-top: 30px;
   }
@@ -267,11 +270,10 @@ article {
   .semainediv {
     text-align: center;
   }
-  .heurediv {
-    text-align: center;
-  }
+  .heurediv,
   .creneaudiv {
     text-align: center;
+    padding-right: 15%;
   }
   .passdiv {
     text-align: center;
@@ -305,7 +307,6 @@ article {
   }
   
   #heure11 {
-    /*margin: 0px -4px;*/
     border-radius: 8px 8px 8px 8px;
     padding: 0.25rem;
     margin: 0.25em;
@@ -314,11 +315,18 @@ article {
   }
   
   #heure12 {
-    /*margin: 0px -4px;*/
     border-radius: 8px 8px 8px 8px;
     padding: 0.25rem;
     margin: 0.25em;
     margin-left: -0.125em;
+  }
+
+  
+  .heurediv *{
+    height: 2em;
+    background: radial-gradient(#009DCF 10%,#004155);
+    color: #111;
+    border: unset;
   }
   
   .ferme {
@@ -392,7 +400,7 @@ article {
   }
   
   /* Inspired by Web Dev Simplified */
-  
+  /*
   .modal{
     position : fixed;
     top : 50% ;
@@ -483,4 +491,4 @@ article {
     opacity: 1;
     pointer-events: all;
   }
-  
+*/

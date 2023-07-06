@@ -10,19 +10,44 @@
 {{EN-TETE}}
     </mybalise>
   </head>
+
+
+
   <body>
-    <header>
-        <img id="logo" src="/Images/logo.png">
-        <mybalise id="TITRE">
-{{TITRE}}
-        </mybalise>
-        <a class="menu_img_a"><img src="/Images/nav.png" id="btn_menu" class="menu_img"></a>
-      </header>
-      <div class="marquee-rtl">
-        <div id="banderole">test</div>
+
+    <div id='popup' class=".active">
+      <div id='popup-header'>
+        <img src="/Images/logo.png">
+        <div id="popup-title">
+          <b>Bienvenue sur le site du Foyer !</b>
+        </div>
       </div>
-      <div class="container">
-        <div id="mySidenav">
+      <div id="popup-body">
+        Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée et d'y passer leurs heures de permanence.
+        Avant de naviguer dessus vous devez comprendre comment il fonctionne pour cela vous devez :
+      </div>
+      <div id="popup-option">
+        <button id='popup_nbnt' style="text-decoration : none; color :black;">Lire le mode d'emploi</button>
+      </div>
+    </div>
+    <div id="overlay" class=".active"></div>
+
+    <header>
+      <img id="logo" src="/Images/logo.png">
+      <mybalise id="TITRE">
+{{TITRE}}
+      </mybalise>
+      <a class="menu_img_a"><img src="/Images/nav.png" id="btn_menu" class="menu_img"></a>
+    </header>
+
+
+    <div class="marquee-rtl">
+      <div id="banderole">test</div>
+    </div>
+
+
+    <div class="container">
+      <div id="mySidenav">
           <a url="/accueil" class="nav_bnt"><img class="nav_img" src="/Images/accueil.png"></img><p>Accueil</p></a>
           <a url="/pass" class="nav_bnt"><img class="nav_img" src="/Images/analyse-qr.png"></img><p>Pass</p></a>
           <a url="/menu" class="nav_bnt"><img class="nav_img" src="/Images/menu.png"></img><p>Menu</p></a>
@@ -37,15 +62,16 @@
           <a url="/listeArcade" class="nav_bnt"><img class="nav_img" src="/Images/arcade.png"></img><p>Liste de jeux</p></a>
           <hr class="nav_split">
           <a url="/admin" class="nav_bnt"><img class="nav_img" src="/Images/reglages.png"></img><p>Admin</p></a>
-        </div>
-  
-        <div id="main">
-{{MAIN}}
-        </div>
       </div>
-      <mybalise id="script">
-{{SCRIPT}}
-      </mybalise>
+
+
+      <div id="main">
+{{MAIN}}
+      </div>
+    </div>
+
+
+    <script type="module" src="/manager.js"></script>
   </body>
 </html>
 <!--

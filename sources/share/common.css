@@ -1,3 +1,8 @@
+/*-----------------------header-----------------------*/
+html {
+  scroll-behavior: smooth;
+}
+
 html,body{
   margin: 0;
   padding: 0;
@@ -31,21 +36,46 @@ h1 {
 
 header{
   border-bottom: black solid 3px;
-  background-color: #6883A1;
+  background: linear-gradient(90deg,#004155 20%,#009DCF);
   display: flex;
   padding: 15px 10px;
 }
 
-.container{
-  position: relative;
+/*----------------------------banderole------------------*/
+.marquee-rtl{
+  display: none;
+  overflow: hidden;
   width: 100%;
-  min-height: calc(100vh - 11.8em - 32px);
+  height: 1.2em;
+  color: black;
+  background-color: #b5c3e4;
+  font-size: 3em;
+  border-bottom: 2px solid gray;
 }
 
-#main{
-  min-height: calc(50px * 12 + 18px * 2 + 15px);
+.marquee-rtl :first-child {
+  display: inline-block;
+  padding-right: 2em;
+  padding-left: 100%;
+  white-space: nowrap;
+  animation: defilement-rtl 15s infinite linear;
 }
 
+@keyframes defilement-rtl {
+  0% {
+    transform: translate3d(0,0,0);
+  }
+  100% {
+    transform: translate3d(-100%,0,0);
+  }
+}
+
+:root{
+  /* sidebar min-height: hauteur de la page moins header et banderole*/
+  --screenH : calc(100vh - 8em - 33px);
+}
+
+/*-----------------side navbar----------------*/
 #mySidenav{
   top: 0px;
   bottom: 0px;
@@ -125,7 +155,7 @@ header{
     align-content: center;
     height: 0;
     width: 100vw;
-    max-height: calc(100vh - 11.8em - 32px);
+    max-height: calc(var(--screenH));
     border-right: #000000 solid 0px;
   }
 
@@ -142,6 +172,7 @@ header{
 @media (min-width: 1000px) {
   #main{
     margin-left: 83px;
+    /*margin-right: 83px;*/
   }
 
   .menu_img{
@@ -150,40 +181,222 @@ header{
 
   #mySidenav{
     border-right: #000000 solid 3px;
-    min-height: calc(100vh - 11.8em - 32px);
+    min-height: calc(var(--screenH));
     width: 80px;
   }
 }
 
+.container{
+  position: relative;
+  width: 100%;
+  min-height: calc(var(--screenH));
+}
+
 #main{
+  min-height: calc(50px * 12 + 18px * 2 + 15px);
   padding-top:20px;
 }
 
 
-.marquee-rtl{
-  overflow: hidden;
-  width: 100%;
-  height: 1.2em;
-  color: black;
+
+/*-------------------------pop-up-----------------*/
+/*//%A refaire popup css/js*/
+#popup{
+  display: none;
+  position : fixed;
+  top : 50% ;
+  left : 50% ;
+  transform: translate(-50%,-50%) scale(0);
+  transition: 200ms ease-in-out;
+  border-radius :25px;
+  z-index: 99;
+  background-color: white;
+  width : 85%;
+  height: auto;
+}
+
+#popup.active {
+  display: unset;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#popup-header {
+  padding: 10px 65px 10px 10px;
+  display: flex;
+  align-items: center;
+  border-radius :25px 25px 0px 0px;
+  background-color: rgb(60,80,112);
+  color: white;
+  font-size: 40px;
+}
+
+#popup-header b{
+  padding-left: 30px;
+}
+
+#popup-header img{
+  position : relative;
+  width : 150px;
+  height: 135px ;
+}
+
+#popup-header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+}
+
+#popup-body {
+  padding: 20px 50px;
+  font-size : 150%;
+  text-align: justify;
+}
+
+#popup-option{
+  display: flex;
+  padding-left: 10% ;
+  padding-right: 10% ;
+  padding-bottom: 5%;
+}
+
+#popup-option button{
+  cursor : pointer;
   background-color: #b5c3e4;
+  color: rgb(0, 0, 0);
+  font-size: 2.5rem;
+  width : 50%;
+  height: auto;
+  border-radius: 15px;
+  position : relative;
+  bottom : 5%;
+  left: 25%;
+}
+
+#overlay {
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .5);
+  pointer-events: none;
+  z-index: 98;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+
+/*------------------tableau de réservation-------------*/
+#semaine{
+  font-weight: bold;
+  text-align: center;
   font-size: 3em;
-  border-bottom: 2px solid gray;
+  font-family: system-ui;
 }
 
-.marquee-rtl > :first-child {
-  display: inline-block;
-  padding-right: 2em;
-  padding-left: 100%;
-  white-space: nowrap;
-  animation: defilement-rtl 15s infinite linear;
+.semainediv{
+  text-align: center;
 }
 
-@keyframes defilement-rtl {
-  0% {
-    transform: translate3d(0,0,0);      /* position initiale à droite */
+.semaine_bnt{
+  background: #3d546e;
+  color: white;
+  width: 20%;
+  font-size: 1.5em;
+  border-radius: 8px 8px 8px 8px;
+  padding: 0.25rem;
+  margin: 0.25em;
+}
+
+#menuSemaine{
+  margin-top: 2.5em;
+  text-align: center;
+  font-size: 2em;
+}
+
+#creneaudiv{
+  width: 100%;
+}
+
+#creneaudiv *{
+  text-align: center;
+}
+
+.case {
+  cursor : pointer;
+  padding: 5px 5px;
+  width: 25%;
+  height: 230px;
+  border-radius: 12px;
+  margin:2px 2px;
+  font-size: 1.5em;
+  font-family: DejaVu Sans Mono, monospace;
+  text-align: center;
+  vertical-align: text-top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #111;
+  border: unset;
+}
+
+.case.info{
+  background: radial-gradient(#F25D50 20%,#8F5656);
+  color: #111;
+  cursor: auto;
+}
+
+.case.heure{
+  height: 2.5em;
+}
+
+.case.jour{
+  width: 15%;
+}
+
+.case.default{
+  background-color: gray;
+}
+
+@media (min-width: 1000px) {
+  #menuSemaine{
+    margin: 0.5em;
   }
-  100% {
-    transform: translate3d(-100%,0,0);  /* position finale à gauche */
+
+  #creneaudiv{
+    display: flex;
+  }
+  #creneaudiv :first-child{
+    width: 12%;
+  }
+  #creneaudiv div :first-child{
+    width: 97%;
+  }
+  #creneaudiv div{
+    width: 22%;
+  }
+  #creneaudiv div *{
+    display: block;
+  }
+  .case{
+    width: 97%;
+    height: 270px;
+  }
+  .case.heure{
+    width: 97%;
+    height: 270px;
+  }
+  .case.jour{
+    width: 97%;
+    height: 2.5em;
   }
 }
 
