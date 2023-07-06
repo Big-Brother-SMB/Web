@@ -60,7 +60,7 @@ for (var i = 0; i < list_nav_bnt.length; i++) {
 async function loadpage(url){
     console.log(url)
     url=url.split('?')[0]
-    document.getElementById("css_page").href=window.origin+'/auto0'+url+url+'.css'
+    document.getElementById("css_page").href=url+'.css'
     await readFileHTML(url,'tete','EN-TETE')
     await readFileHTML(url,'titre','TITRE')
     await readFileHTML(url,'main','main')
@@ -72,7 +72,7 @@ async function loadpage(url){
 }
 
 async function readFileHTML(url,idFile,idHTML){
-    let path = url+url+'.'+idFile+'.html'
+    let path = url+'/'+url.split('/').pop()+'.'+idFile+'.html'
     const response = await fetch(window.origin+'/auto0'+path);
     const data = await response.blob();
     let file = new File([data], "truc.html", {type: data.type || "text/html",})

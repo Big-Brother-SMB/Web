@@ -378,7 +378,7 @@ header{
     width: 12%;
   }
   #creneaudiv div :first-child{
-    width: 97%;
+    width: 99%;
   }
   #creneaudiv div{
     width: 22%;
@@ -387,15 +387,15 @@ header{
     display: block;
   }
   .case{
-    width: 97%;
+    width: 99%;
     height: 270px;
   }
   .case.heure{
-    width: 97%;
+    width: 99%;
     height: 270px;
   }
   .case.jour{
-    width: 97%;
+    width: 99%;
     height: 2.5em;
   }
 }
