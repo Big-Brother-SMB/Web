@@ -195,7 +195,8 @@ header{
 /*---------------------main--------------------------*/
 #main{
   min-height: calc(50px * 12 + 18px * 2 + 15px);
-  padding-top:20px;
+  padding-top: 1em;
+  padding: 1em;
 }
 
 #main p{
