@@ -121,6 +121,7 @@ export async function init(exportClass){
                 } else {
                     ouvert[j][h] = info_horaire.ouvert
                 }
+                ouvert=[[0,1],[2,3],[4,5],[6,0]]//%
 
                 if (info_horaire.cout != null) {
                     cout[j][h] = parseFloat(info_horaire.cout)
@@ -197,20 +198,20 @@ export async function init(exportClass){
                 break;
             case 1:
                 text = "ouvert à tous";
-                bouton[j][h].className="inscrit tableau"
+                bouton[j][h].className="case green"
                 break;
             case 2:
-                bouton[j][h].className = "places tableau"
+                bouton[j][h].className = "case blue"
                 if (places[j][h] <= 0) {
-                    bouton[j][h].className = "zero tableau"
+                    bouton[j][h].className = "case red"
                     text = "Plein"+ textcout;
                 } else {
-                    bouton[j][h].className = "places tableau"
+                    bouton[j][h].className = "case blue"
                     text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
                 }
                 break;
             case 3:
-                bouton[j][h].className="bloque tableau"
+                bouton[j][h].className="case yellow"
                 if (places[j][h] <= 0) {
                     text = "Plein"+ textcout;
                 } else {
@@ -219,23 +220,23 @@ export async function init(exportClass){
                 break;
             case 4:
                 text = "Foyer fermé"
-                bouton[j][h].className="zero tableau"
+                bouton[j][h].className="case red"
                 break;
             case 5:
                 text = "Fini"
-                bouton[j][h].className="zero tableau"
+                bouton[j][h].className="case red"
                 break;
             case 6:
                 text = "Vacances"
-                bouton[j][h].className="ferme tableau"
+                bouton[j][h].className="case default"
                 break;
         }
         if(ouvert[j][h]===2 || ouvert[j][h]===3){
             if (inscrit[j][h]) {
-                bouton[j][h].className = "inscrit tableau"
+                bouton[j][h].className = "case green"
                 text = "Vous êtes inscrit"
             } else if (demande[j][h]) {
-                bouton[j][h].className = "demande tableau"
+                bouton[j][h].className = "case blue"
                 text = "Demande enregistrée"
             }
 
