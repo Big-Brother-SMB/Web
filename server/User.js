@@ -341,6 +341,9 @@ module.exports = class User{
     delMidiDemande(semaine,creneau){
       let uuid = this.uuid
       db.run("delete from midi_list where semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid])
+      db.serialize(()=>{
+        db.run("delete from midi_amis WHERE semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid])
+      })
     }
 
     //perm

@@ -24,6 +24,10 @@ Date.prototype.getWeek = function() {
 const actualWeek = new Date().getWeek();
 let date = new Date();
 
+
+
+
+
 export class common{
   static get actualWeek(){
     return actualWeek
@@ -59,7 +63,46 @@ export class common{
   }
 
 
-  static async init(exportClass){
+  static async loadpage(url){
+    console.log(url)
+    window.history.pushState({id:"100"},"", url);
+    url=url.split('?')[0]
+    document.getElementById("css_page").href=url+'.css'
+    await this.readFileHTML(url,'tete','EN-TETE')
+    await this.readFileHTML(url,'titre','TITRE')
+    await this.readFileHTML(url,'main','main')
+    import(url+".js").then(async (module) => {
+        await common.reloadCommon()
+        await module.init(common)
+        return
+    })
+  }
+
+  static async readFileHTML(url,idFile,idHTML){
+    let path = url+'/'+url.split('/').pop()+'.'+idFile+'.html'
+    const response = await fetch(window.origin+'/auto0'+path);
+    const data = await response.blob();
+    let file = new File([data], "truc.html", {type: data.type || "text/html",})
+    var reader  = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+        if(!response.ok && idHTML!='main'){
+            document.getElementById(idHTML).innerHTML=''
+        }else{
+            document.getElementById(idHTML).innerHTML=reader.result
+        }
+    };
+  }
+
+
+
+  static async reloadCommon(){
+    this.reloadCommon(false)
+  }
+
+  
+
+  static async reloadCommon(startup){
     //---------------------------cookie---------------------------
     let tablecookie = document.cookie.split('; ');
     this.cookie = {};
@@ -71,28 +114,106 @@ export class common{
     }
     console.log("cookie", this.cookie)
 
-    //---------------------------socket---------------------------
 
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-      get: (searchParams, prop) => searchParams.get(prop),
-    });
-    if(params.token!=null){
-      this.writeCookie("key",params.token)
+
+    if (startup){
+      //---------------------------socket---------------------------
+      const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      });
+      if(params.token!=null){
+        this.writeCookie("key",params.token)
+      }
+
+      this.key=this.readCookie("key")
+
+      this.socket = io({
+        auth: {
+          token: this.key
+        }
+      });
+      let socket = this.socket
+      await new Promise(function(resolve, reject) {
+        socket.once("connect", () => {
+          resolve(null)
+        });
+      })
+
+
+      let side = document.getElementById("mySidenav")
+
+      if(side!=null){
+        //system de navbar
+
+        side.addEventListener("mouseenter",function() {
+          if(window.innerWidth>=1000){
+              side.style.width = "250px";
+              document.body.style.overflow = "unset"; 
+          }
+        });
+  
+        side.addEventListener("mouseleave",function() {
+          if(window.innerWidth>=1000){
+              side.style.width = "80px";
+              document.body.style.overflow = "unset"; 
+          }
+        });
+  
+        let btn_menu = document.getElementById("btn_menu")
+        btn_menu.addEventListener("click",function() {
+          if(window.innerWidth<1000){
+              if(side.style.height=="0px" || side.style.height==""){
+                  side.style.height = "calc(var(--screenH))";
+                  side.style.width = "100%";
+                  document.body.style.overflow = "hidden";
+                  window.scrollTo(0,0);
+              }else{
+                  side.style.height = "0";
+                  side.style.width = "100%";
+                  document.body.style.overflow = "unset";  
+              }
+          }
+        });
+  
+  
+        let list_nav_bnt = document.getElementsByClassName('nav_bnt')
+  
+        for (var i = 0; i < list_nav_bnt.length; i++) {
+          const index = i;
+          list_nav_bnt[i].addEventListener('click', async ()=>{
+              side.style.height = "0";
+              document.body.style.overflow = "unset";
+              let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+              this.loadpage(url)
+          });
+        }
+  
+        verification_navbar()
+        function verification_navbar(){
+          if(window.innerWidth>=1000){
+            side.style.height="unset"
+          }
+          setTimeout(verification_navbar, 1000);
+        }
+      }
     }
 
-    this.key=this.readCookie("key")
 
-    this.socket = io({
-      auth: {
-        token: this.key
-      }
-    });
-    let socket = this.socket
-    await new Promise(function(resolve, reject) {
-      socket.once("connect", () => {
-        resolve(null)
-      });
-    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     //---------------------------récupération de l'identité et des cookie/variable---------------------------
 
@@ -127,12 +248,12 @@ export class common{
     this.backgroundColor = this.readCookie("color background")
     this.textColor = this.readCookie("color text")
     this.week = this.readIntCookie("week")
+    if(this.week==undefined || this.week==null)this.week=actualWeek
 
     //---------------------------securité page admin + deco---------------------------
 
 
-    this.socketAdmin
-    if(this.admin>0){
+    if(this.admin>0 && this.socketAdmin==null){
       this.socketAdmin = io("/admin",{
         auth: {
           token: this.key
@@ -145,7 +266,6 @@ export class common{
         });
       })
     }
-
 
 
     if (this.readBoolCookie("connect")) {
@@ -171,7 +291,7 @@ export class common{
 
     //--------------------------banderole--------------------------------
 
-    let banderole = await common.socketAsync("banderole",null)
+    let banderole = await common.socketAsync("getBanderole",null)
     banderole=''
     if (banderole != null && banderole != '') {
       document.getElementById("banderole").innerHTML = banderole
@@ -222,41 +342,41 @@ export class common{
     }
   }
 
-//socket
+  //------------------ socket----------------------------
   static async socketAsync(channel,msg,time){
-    let socket = this.socket
-    return new Promise(function(resolve, reject) {
-      socket.emit(channel,msg);
-      socket.once(channel,result => {
-        resolve(result)
-      });
-      if(time==undefined){
-        time=5000
-      }
-      setTimeout(reject,time)
-    })
+        let socket = this.socket
+        return new Promise(function(resolve, reject) {
+          socket.emit(channel,msg);
+          socket.once(channel,result => {
+            resolve(result)
+          });
+        if(time==undefined){
+            time=5000
+        }
+        setTimeout(reject,time)
+        })
   }
 
   static async socketAdminAsync(channel,msg,time){
-    let socketAdmin = this.socketAdmin
-    if(this.admin>0){
-      return new Promise(function(resolve, reject) {
-        socketAdmin.emit(channel,msg);
-        socketAdmin.once(channel,result => {
-          resolve(result)
-        });
-        if(time==undefined){
-          time=5000
+        let socketAdmin = this.socketAdmin
+        if(this.admin>0){
+            return new Promise(function(resolve, reject) {
+                socketAdmin.emit(channel,msg);
+                socketAdmin.once(channel,result => {
+                resolve(result)
+                });
+                if(time==undefined){
+                time=5000
+                }
+                setTimeout(reject,time)
+            })
+        } else {
+            console.log('err')
+            return null
         }
-        setTimeout(reject,time)
-      })
-    } else {
-      console.log('err')
-      return null
-    }
   }
 
-//deco
+  //deco
   static deco(){
     return//%
     let path = window.location.pathname
@@ -500,4 +620,13 @@ export class common{
       closeAllLists(e.target);
     });
   }
+}
+
+//démarre le script qui correspond à la page
+if(document.location.pathname!='/'||document.location.pathname!='index.html'){
+  import(document.location.pathname+".js").then(async (module) => {
+    await common.reloadCommon(true)
+    await module.init(common)
+    return
+  })
 }

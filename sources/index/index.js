@@ -1,8 +1,8 @@
 //#00341c9e vert
 //#ad5558b5 red
 //#6883A1  bleu
-import {common} from "/common.js";
-await common.init({})
+const {common} = await import("/common.js");
+await common.reloadCommon()
 
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -40,7 +40,7 @@ if (common.key != null && common.uuid != undefined) {
 }
 
 document.getElementById("change").addEventListener("click",function(){
-  window.location.href = window.location.origin;
+  window.location.href = window.location.origin+"/connexion/apigoogle";
 })
 
 

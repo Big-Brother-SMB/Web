@@ -1,11 +1,7 @@
-import {common} from "/common.js";
-
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"]
 
-
 // il reste les pop-up à faire + msg
-export async function init(exportClass){
-    await common.init(exportClass)
+export async function init(common){
     let week = common.week
     document.getElementById("semainePrecedente").addEventListener("click", function () {
         week--
@@ -89,7 +85,7 @@ export async function init(exportClass){
 
 
     async function refreshDatabase() {
-        let info_menu = await common.socketAsync("info_menu_semaine",week)
+        let info_menu = await common.socketAsync("getMenuThisWeek",week)
         if (week == common.actualWeek) {
             document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.semaine(week) + ")"
         } else {
@@ -104,12 +100,11 @@ export async function init(exportClass){
         }
         document.getElementById("menuSemaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + menu
 
-
         for (let j = 0; j < 4; j++) {
             for (let h = 0; h < 2; h++) {
-                let info_horaire = await common.socketAsync("info_horaire",[week,j,h])
-                let my_demande = await common.socketAsync("my_demande",[week,j,h])
-                let list_demandes = await common.socketAsync("list_demandes",[week,j,h])
+                let info_horaire = await common.socketAsync("getDataThisCreneau",{w:week,j:j,h:h})
+                let my_demande = await common.socketAsync("getMyDemande",{w:week,j:j,h:h})
+                let list_demandes = await common.socketAsync("listDemandes",{w:week,j:j,h:h})
 
                 placesTotal[j][h] = info_horaire["places"];
                 if(placesTotal[j][h]==null || placesTotal[j][h]==""){
@@ -121,7 +116,6 @@ export async function init(exportClass){
                 } else {
                     ouvert[j][h] = info_horaire.ouvert
                 }
-                ouvert=[[0,1],[2,3],[4,5],[6,0]]//%
 
                 if (info_horaire.cout != null) {
                     cout[j][h] = parseFloat(info_horaire.cout)
@@ -236,7 +230,7 @@ export async function init(exportClass){
                 bouton[j][h].className = "case green"
                 text = "Vous êtes inscrit"
             } else if (demande[j][h]) {
-                bouton[j][h].className = "case blue"
+                bouton[j][h].className = "case demande"
                 text = "Demande enregistrée"
             }
 
@@ -279,11 +273,11 @@ export async function init(exportClass){
 
     function select(j, h) {
         const hInv = h==0?1:0
-        exportClass.loadpage("/midi/demande?j="+j+"&h="+h+"&w="+week)
+        common.loadpage("/midi/demande?j="+j+"&h="+h+"&w="+week)
         if((ouvert[j][h] == 2 && demande[j][h])
             && (ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h])
             && ((ouvert[j][h] == 2 || ouvert[j][h] == 3) && inscrit[j][h])){
-            exportClass.loadpage("/midi/demande?j="+j+"&h="+h+"&w="+week)
+            common.loadpage("/midi/demande?j="+j+"&h="+h+"&w="+week)
         }/*
         if (ouvert[j][h] == 2 && demande[j][h]) {
             window.location.href = "../confirmation/modifier/modifier.html?j="+j+"&h="+h+"&w="+week;

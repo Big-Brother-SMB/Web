@@ -1,4 +1,16 @@
-/*-----------------------header-----------------------*/
+/*-----------------------font-family-------------------------*/
+/*
+@font-face {
+  font-family: "arial";
+  src: url(".ttf");
+}
+
+@font-face {
+  font-family: "arial";
+  src: url(".ttf");
+}*/
+
+/*-----------------------header------------------------------*/
 html {
   scroll-behavior: smooth;
 }
@@ -315,13 +327,18 @@ header{
 }
 
 .bnt{
-  background: #3d546e;
-  color: white;
-  width: 17%;
-  font-size: 1.5em;
-  border-radius: 8px 8px 8px 8px;
-  padding: 0.25rem;
-  margin: 0.25em;
+  width: 20%;
+  border-radius: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  color: #eeeeee;
+  font-weight: 600;
+  font-size: 1.4em;
+  padding: 15px 10px;
+  border-radius:20px;
+  background-color: #3d546e;
 }
 
 #menuSemaine{
@@ -397,6 +414,17 @@ header{
   background-color: #78abbd;
 }
 
+.case.demande{
+  background: radial-gradient(#347a94 70%,#3a535c);
+}
+
+rouge{
+  color: red;
+}
+vert{
+  color: green;
+}
+
 @media (min-width: 1000px) {
   #menuSemaine{
     margin: 0.5em;
@@ -435,7 +463,86 @@ header{
 
 
 
+.doubleListe{
+  display:flex;
+  align-items: center;
+  column-count: 2;
+}
+.doubleListe div {
+  width:90%;
+  text-align: center;
+}
+.zonecadre{
+  font-size: 40px;
+  height:500px;
+  width:90%;
+  border:solid 2px rgb(38, 61, 92);
+  overflow:scroll;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  margin-left: auto;
+  margin-right: auto;
+  display:block;
+}
 
+#attentionAmis{
+  color: red;
+}
+
+#DIVdepot,#DIVmodif,#DIVinscrit,#sandwich{
+  text-align: center;
+}
+#sandwich{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  width: 25em;
+}
+#sandwich p {
+  text-align: center;
+}
+.envoyer  {
+  border-radius:8px 8px 8px 8px;
+  background-color: #3d546e;
+  margin: 10px;
+  margin-bottom: 0px;
+  width: 25%;
+}
+
+.zonecadre{
+  margin-top: 40px;
+}
+
+label{
+  font-size: 1.3em;
+  font-family: system-ui;
+}
+
+input[type="radio"]{
+  width: 1.7em;
+  height: 1.7em;
+}
+
+#retour{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  height: 9em;
+  width: 9em;
+  border-radius: 4.5em;
+  padding: 0;
+}
+
+#retour img{
+  height: 70%;    
+}
+
+.bnt.list{
+  width: 50%;
+}
+#DIVdepot,#DIVmodif,#DIVinscrit{
+  display: none;
+}
 
 
 

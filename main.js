@@ -70,10 +70,8 @@ let address = jsonObj.address
 const oauth2Client = new google.auth.OAuth2(
   jsonObj.client_id,
   jsonObj.code_secret,
-  address+"oauth2callback"
+  address+"connexion/oauth2callback"
 );
-
-
 
 let mimeTypes = {
   '.html': 'text/html',
@@ -102,6 +100,8 @@ let User = require('./server/User.js')
 
 let funcDB = require('./server/functionsDB.js')
 
+const funcSocket = require('./server/functionsSocket.js')
+
 const UserSelect = require('./server/UserSelect.js')
 
 const init_DB = require('./server/initDB.js')
@@ -115,14 +115,15 @@ async function main() {
     db.serialize(init_DB(db))
     User.setDB(db)
     funcDB.setDB(db)
+    funcSocket.setDB(db)
     UserSelect.setDB(db)
   })
 
   server = http.createServer(async function (req, res) {
-    if (req.url == '/') {
+    if (req.url == '/connexion/apigoogle') {
       res.writeHead(301, { "Location": authorizationUrl });
       res.end();
-    } else if (req.url.startsWith('/oauth2callback')) {
+    } else if (req.url.startsWith('/connexion/oauth2callback')) {
       let q = url.parse(req.url, true).query;
       if (q.error || q.code===undefined) {
         console.log('Error:' + q.error);
@@ -350,153 +351,26 @@ async function main() {
       let user = await User.searchToken(socket.handshake.auth.token)
       if(user!=null)console.log("uuid socket: " + await user.uuid)
 
-      socket.on('id_data', async msg => {
-        try{
-          let data = await user.all
-          if(data!=null){
-            socket.emit('id_data',data)
-          }else{
-            socket.emit('id_data',"err")
-          }
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('my_score', async msg => {
-        try{
-          if(msg=="int"){
-            let score = await user.score
-            if(score==null) score=-500
-            socket.emit('my_score',score)
-          }else{
-            socket.emit('my_score',await user.listPoint)
-          }
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('info_menu_semaine', async msg => {
-        try{
-          socket.emit('info_menu_semaine',await funcDB.getMidiMenu(msg))
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('info_horaire', async msg => {
-        try{
-          let info = await funcDB.getMidiInfo(msg[0],msg[1]*2+msg[2])
-          socket.emit('info_horaire',info)
-        }catch(e){console.error(e)}
-      });
-  
-  
-      socket.on('tuto', msg => {
-        try{
-          user.tuto = msg
-          socket.emit('tuto','ok')
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('amis', async msg => {
-        try{
-          if(msg=='get'){
-            socket.emit('amis',await user.amis)
-          }else if (msg.class==[].class){
-            user.amis=msg
-            socket.emit('amis','ok')
-          }
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('list_users', async msg => {
-        try{
-          socket.emit('list_users',await User.listUsersName())
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('banderole', async msg => {
-        try{
-          socket.emit('banderole',await funcDB.getVar('banderole'))
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('my_demande', async msg => {
-        try{
-          if(msg.length==3){
-            socket.emit('my_demande',await user.getMidiDemande(msg[0],msg[1]*2+msg[2]))
-          }else if(msg[3]===false){
-            if((await user.getMidiDemande(msg[0],msg[1]*2+msg[2])).DorI!=true){
-              await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
-              socket.emit('my_demande',"ok")
-            }
-          } else if(msg.length==4){
-            if((await user.getMidiDemande(msg[0],msg[1]*2+msg[2])).DorI!=true){
-              await user.setMidiDemande(msg[0],msg[1]*2+msg[2],msg[3],false,false)
-              socket.emit('my_demande',"ok")
-            }
-          }
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('list_demandes', async msg => {
-        try{
-          socket.emit('list_demandes',await funcDB.listMidiDemandes(msg[0],msg[1]*2+msg[2]))
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on('list_demandes_perm', async msg => {
-        try{
-          socket.emit('list_demandes_perm',await funcDB.listPermDemandes(msg[0],msg[1],msg[2]))
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on("ouvert_perm", async msg => {
-        try{
-          socket.emit("ouvert_perm",await funcDB.getPermOuvert(msg[0],msg[1],msg[2]))
-        }catch(e){console.error(e)}
-      });
-  
-      socket.on("my_demande_perm", async msg => {
-        try{
-          if(msg.length==3){
-            socket.emit("my_demande_perm",await user.getPermDemande(msg[0],msg[1],msg[2]))
-          }else if(msg[3]===false){
-            if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
-              await user.delPermDemande(msg[0],msg[1],msg[2])
-              socket.emit('my_demande_perm',"ok")
-            }
-          } else if(msg.length==5){
-            if((await user.getPermDemande(msg[0],msg[1],msg[2])).DorI!=true){
-              await socket.emit("my_demande_perm",await user.setPermDemande(msg[0],msg[1],msg[2],msg[3],msg[4],false))
-              socket.emit('my_demande_perm',"ok")
-            }
-          }
-        }catch(e){console.error(e)}
-      });
-
-      socket.on("my msgs", async msg => {
-        try{
-          socket.emit("my msgs",await user.getAllMessages())
-        }catch(e){console.error(e)}
-      });
-
-      socket.on("msg lu", async msg => {
-        try{
-          user.messageLu(msg)
-          socket.emit("msg lu",'ok')
-        }catch(e){console.error(e)}
-      });
-
-      socket.on("add msg", async msg => {
-        try{
-          funcDB.addMessage(user.uuid,"admin",false,msg.texte,msg.title,hashHour())
-          socket.emit("add msg",'ok')
-        }catch(e){console.error(e)}
-      });
-
-      socket.on("rep sondage", async msg => {
-        try{
-          user.sondage_reponse(msg.id,msg.rep)
-          socket.emit("rep sondage",'ok')
-        }catch(e){console.error(e)}
-      });
+      funcSocket.id_data(socket,user)
+      funcSocket.score(socket,user)
+      funcSocket.historiquePoints(socket,user)
+      funcSocket.getMenuThisWeek(socket,user)
+      funcSocket.getDataThisCreneau(socket,user)
+      funcSocket.getTuto(socket,user)
+      funcSocket.setTuto(socket,user)
+      funcSocket.getAmis(socket,user)
+      funcSocket.setAmis(socket,user)
+      funcSocket.listUsersName(socket,user)
+      funcSocket.getBanderole(socket,user)
+      funcSocket.getMyDemande(socket,user)
+      funcSocket.setMyDemande(socket,user)
+      funcSocket.delMyDemande(socket,user)
+      funcSocket.listDemandes(socket,user)
+      funcSocket.listDemandesPerm(socket,user)
+      funcSocket.getOuvertPerm(socket,user)
+      funcSocket.getMyDemandePerm(socket,user)
+      funcSocket.setMyDemandePerm(socket,user)
+      funcSocket.delMyDemandePerm(socket,user)
     } catch (e) {console.error(e)}
   });
 

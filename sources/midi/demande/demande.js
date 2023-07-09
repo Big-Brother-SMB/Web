@@ -1,9 +1,6 @@
-import {common} from "/common.js";
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"]
 
-
-export async function init(exportClass){
-    await common.init(exportClass)
+export async function init(common){
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
     });
@@ -18,6 +15,34 @@ export async function init(exportClass){
     }
     if(params.w!=null){
         w = parseInt(params.w)
+    }
+
+    const suppMyDemande = async function() {
+        if(await common.socketAsync('delMyDemande',{w:w,j:j,h:h})=='ok'){
+            common.loadpage("/midi")
+        }
+    }
+
+    const setMyDemande = async function() {
+        console.log(w,j,h)
+        let str = ""
+        let amis = []
+        for(let i in boolAmis){
+            if(boolAmis[i]){
+                str += listAmisUuid[i] + "/"
+                amis.push(listAmisUuid[i])
+            }
+
+        }
+        common.writeCookie("derniere demande",str)
+
+        if(await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:amis})=='ok'){
+            common.loadpage("/midi")
+        }
+    }
+
+    const quitDemande = async function() {
+        common.loadpage("/midi")
     }
 
 
@@ -58,20 +83,33 @@ export async function init(exportClass){
 
 
 
-    let info = await common.socketAsync('info_horaire',[w,j,h])
-    let listDemandes = await common.socketAsync('list_demandes',[w,j,h])
-    let my_demande = await common.socketAsync("my_demande",[w,j,h])
+    let info = await common.socketAsync('getDataThisCreneau',{w:w,j:j,h:h})
+    let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
+    let my_demande = await common.socketAsync("getMyDemande",{w:w,j:j,h:h})
+
+    if(info.ouvert==2 && Object.keys(await common.socketAsync('getMyDemande',{w:w,j:j,h:Math.abs(h-1)})).length === 0){
+        if(Object.keys(my_demande).length === 0){
+            document.getElementById("DIVdepot").style.display='initial'
+        }else if(my_demande.DorI==1){
+            document.getElementById("DIVinscrit").style.display='initial'
+        }else{
+            document.getElementById("DIVmodif").style.display='initial'
+        }
+    }else{
+        quitDemande()
+    }
+
 
     let textScore = ""
-    let score = await common.socketAsync("my_score","int")
+    let score = await common.socketAsync("score",null)
     if (score <2) {
         textScore = score + " pt"
     }else{
         textScore = score + " pts"
     }
 
-    let listUsers = await common.socketAsync('list_users',null)
-    let listAmisUuid = await common.socketAsync('amis','get')
+    let listUsers = await common.socketAsync('listUsersName',null)
+    let listAmisUuid = await common.socketAsync('getAmis',null)
     let listAmis=[]
     listUsers.forEach(child=>{
         if(listAmisUuid.indexOf(child.uuid)!=-1){
@@ -103,7 +141,7 @@ export async function init(exportClass){
 
 
     if(info.ouvert != 2 || my_demande.amis==undefined){
-        //exportClass.loadpage("/midi")
+        //common.loadpage("/midi")
     }
 
     let i=0
@@ -165,33 +203,20 @@ export async function init(exportClass){
     + inscrits + " acceptées pour " + places + " places)<br>" + demandes
     + " demandes en cours<br>Votre score: " + textScore
 
-    document.getElementById("retirer").addEventListener("click", async function() {
-        if(await common.socketAsync('my_demande',[w,j,h,false])=='ok'){
-            //exportClass.loadpage("/midi")
-        }
+
+
+    document.getElementById("envoyer").addEventListener("click", setMyDemande);
+    document.getElementById("annuler").addEventListener("click", quitDemande);
+
+    document.getElementById("retirer").addEventListener("click", suppMyDemande);
+    document.getElementById("modif").addEventListener("click", setMyDemande);
+    document.getElementById("PASmodif").addEventListener("click", quitDemande);
+
+    document.getElementById("pass").addEventListener("click", async () => {
+        //common.loadpage("/pass")
     });
 
+    document.getElementById("retour").addEventListener("click", quitDemande);
 
-
-    document.getElementById("modif").addEventListener("click", async function() {
-        let str = ""
-        let amis = []
-        for(let i in boolAmis){
-            if(boolAmis[i]){
-                str += listAmisUuid[i] + "/"
-                amis.push(listAmisUuid[i])
-            }
-
-        }
-        common.writeCookie("derniere demande",str)
-
-        if(await common.socketAsync('my_demande',[w,j,h,amis])=='ok'){
-            //exportClass.loadpage("/midi")
-        }
-    });
-
-    document.getElementById("annuler").addEventListener("click", function() {
-        //exportClass.loadpage("/midi")
-    });
     updateConfirmation()
 }
