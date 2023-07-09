@@ -6,8 +6,6 @@ let db
 module.exports = class UserSelect{
     static setDB(newdb){
         db=newdb;
-        User.setDB(db)
-        funcDB.setDB(db)
     }
 
     static usersList = []

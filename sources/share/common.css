@@ -16,6 +16,7 @@ html {
 }
 
 html,body{
+  font-family: Arial;
   margin: 0;
   padding: 0;
 }
@@ -135,7 +136,7 @@ header{
   width: 75%;
 }
 
-@media (max-width: 1000px) {
+@media screen and (max-width: 1000px) {
   .nav_split{
     margin-top: 25px;
     margin-bottom: 25px;
@@ -181,7 +182,7 @@ header{
   }
 }
 
-@media (min-width: 1000px) {
+@media screen and (min-width: 1000px) {
   #main{
     margin-left: 83px;
     /*margin-right: 83px;*/
@@ -425,7 +426,7 @@ vert{
   color: green;
 }
 
-@media (min-width: 1000px) {
+@media screen and (min-width: 1000px) {
   #menuSemaine{
     margin: 0.5em;
   }
@@ -468,21 +469,26 @@ vert{
   align-items: center;
   column-count: 2;
 }
-.doubleListe div {
+.doubleListe div{
   width:90%;
   text-align: center;
 }
-.zonecadre{
-  font-size: 40px;
+.listAmis{
   height:500px;
   width:90%;
   border:solid 2px rgb(38, 61, 92);
+  border-radius:10px;
   overflow:scroll;
   overflow-x:hidden;
-  overflow-y:scroll;
+  overflow-y:visible;
   margin-left: auto;
   margin-right: auto;
-  display:block;
+}
+
+@media screen and (max-width:1000px){
+  .listAmis::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 #attentionAmis{
@@ -545,11 +551,61 @@ input[type="radio"]{
 }
 
 
+/*----------------------------amis------------------*/
+.amis{
+  background-color: #8b9fc9;
+  border-radius:8px;
+  padding: .5em;
+  margin: .2em;
+  width: 97%;
+  font-size: 2em;
+}
 
+input[type="text"] {
+  font-size: 40px;
+  width: 50%;
+  height: 1.5em;
+}
 
+/*-----------------------auto-complete---------------------*/
 
+.autocomplete {
+  position: relative;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+.autocomplete input[type="text"] {
+  width: auto;
+}
 
+.autocomplete-list {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-list div{
+  font-size: 40px;
+  height: 1.5em;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #999999;
+}
+.autocomplete-list div:hover {
+  background-color: DodgerBlue !important;
+}
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
 
 /*input,select{
   text-align: center;

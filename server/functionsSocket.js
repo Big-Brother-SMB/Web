@@ -6,8 +6,6 @@ let db;
 module.exports = class funcSocket{
     static setDB(newdb){
       db=newdb;
-      funcDB.setDB(newdb)
-      User.setDB(newdb)
     }
 
     static id_data(socket,user){

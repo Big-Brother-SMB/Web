@@ -2,7 +2,7 @@
 //#ad5558b5 red
 //#6883A1  bleu
 const {common} = await import("/common.js");
-await common.reloadCommon()
+await common.reloadCommon(true)
 
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
