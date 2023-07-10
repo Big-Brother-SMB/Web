@@ -29,7 +29,7 @@ module.exports = class User{
         })
     }
       //user et  plus
-    static createUser(email){
+    static createUser(email,picture){
         return new Promise(function(resolve, reject) {
           try{
             let uuid = uuidG.v4()
@@ -45,9 +45,10 @@ module.exports = class User{
                         }
                         first_name=first_name[0].toUpperCase()+first_name.slice(1)
                         last_name=last_name.toUpperCase();
-                        db.run("INSERT INTO users(email,uuid,first_name,last_name,admin) VALUES(?,?,?,?,?)", [email,uuid,first_name,last_name,0])
+                        db.run("INSERT INTO users(email,uuid,first_name,last_name,admin,picture) VALUES(?,?,?,?,?,?)", [email,uuid,first_name,last_name,0,picture])
                     }else{
                         uuid=data.uuid
+                        db.run("UPDATE users SET picture=? where email=?", [picture,email])
                     }
                     resolve(new User(uuid))
                 }catch(e){console.error(e);resolve(null)}

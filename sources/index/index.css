@@ -80,6 +80,7 @@ p{
 
 .account_img{
   height: 70px;
+  border-radius: 50%;
 }
 
 .login_img{

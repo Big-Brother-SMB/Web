@@ -112,13 +112,6 @@ export class common{
 
     if (startup){
       //---------------------------socket---------------------------
-      const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-      });
-      if(params.token!=null){
-        this.writeCookie("key",params.token)
-      }
-
       this.key=this.readCookie("key")
 
       this.socket = io({

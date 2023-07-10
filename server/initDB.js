@@ -14,7 +14,7 @@ module.exports = (db)=>{
     //users / amis / user-group / token
     db.get("SELECT * FROM sqlite_master where type='table' AND name='users'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, tuto boolean,admin int2)')
+        db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, tuto boolean,admin int2,picture text)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='amis'", (err, data) => {
       if(data==undefined)
