@@ -72,7 +72,7 @@ export class common{
     await this.readFileHTML(url,'titre','TITRE')
     await this.readFileHTML(url,'main','main')
     import(url+".js").then(async (module) => {
-        await common.reloadCommon()
+        await common.reloadCommon(false)
         await module.init(common)
         return
     })
@@ -92,12 +92,6 @@ export class common{
             document.getElementById(idHTML).innerHTML=reader.result
         }
     };
-  }
-
-
-
-  static async reloadCommon(){
-    this.reloadCommon(false)
   }
 
   
@@ -608,6 +602,21 @@ export class common{
     document.addEventListener("click", function (e) {
       closeAllLists(e.target);
     });
+  }
+
+  //---------------------------------pop-up-----------------------------------------
+  static popUp_Active(titre,body,action){
+    document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'
+    document.getElementById("popup-body").innerHTML = body
+    document.getElementById("popup-option").innerHTML="<button id='popup_bnt' style='text-decoration : none; color :black;'>OK</button>"
+    document.getElementById("popup").classList.add('active')
+    document.getElementById("overlay").classList.add('active')
+    action(document.getElementById("popup_bnt"))
+  }
+
+  static popUp_Stop(){
+    document.getElementById("popup").classList.remove('active')
+    document.getElementById("overlay").classList.remove('active')
   }
 }
 

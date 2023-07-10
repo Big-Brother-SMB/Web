@@ -18,9 +18,47 @@ export async function init(common){
     }
 
     const suppMyDemande = async function() {
-        if(await common.socketAsync('delMyDemande',{w:w,j:j,h:h})=='ok'){
-            common.loadpage("/midi")
-        }
+        common.popUp_Active('Procuration:','attente',async (bnt)=>{
+            bnt.innerHTML='Confirmer'
+            let from = document.createElement('from')
+            document.getElementById('popup-body').innerHTML=''
+            document.getElementById('popup-body').appendChild(from)
+            let passProcuration=true
+            listeAmisPris.forEach(child=>{
+                let ami = listAmis[listAmisUUID.indexOf(child)]
+                if(ami.procuration==1 && ami.DorI!=1){
+                    passProcuration=false
+                    let box = document.createElement('input')
+                    box.setAttribute("type","checkbox")
+                    box.setAttribute("name","procuration")
+                    box.setAttribute("value",child)
+                    from.appendChild(box)
+
+                    let label = document.createElement('label')
+                    label.setAttribute("for","procuration")
+                    label.innerHTML=ami.first_name + " " + ami.last_name
+                    from.appendChild(label)
+                    from.innerHTML+='<br>'
+                }
+            })
+            if(passProcuration){
+                await common.socketAsync('delMyDemande',{w:w,j:j,h:h})
+                common.popUp_Stop()
+                common.loadpage("/midi")
+            }else{
+                bnt.addEventListener('click',async ()=>{
+                    const checkBoxs = document.querySelectorAll('input[name="procuration"]');
+                    for (const checkBox of checkBoxs) {
+                        if (checkBox.checked) {
+                            await common.socketAsync('delAmiDemande',{uuidAmi:checkBox.value,w:w,j:j,h:h})
+                        }
+                    }
+                    await common.socketAsync('delMyDemande',{w:w,j:j,h:h})
+                    common.popUp_Stop()
+                    common.loadpage("/midi")
+                }, { once: true })
+            }
+        })
     }
 
     const setMyDemande = async function() {
@@ -39,9 +77,50 @@ export async function init(common){
             }
         }
 
-        if(await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listeAmisPris,sandwich:choiceOfSandwich})=='ok'){
-            common.loadpage("/midi")
-        }
+        common.popUp_Active('Procuration:','attente',async (bnt)=>{
+            bnt.innerHTML='Confirmer'
+            let from = document.createElement('from')
+            document.getElementById('popup-body').innerHTML=''
+            document.getElementById('popup-body').appendChild(from)
+            let passProcuration=true
+            listeAmisPris.forEach(child=>{
+                let ami = listAmis[listAmisUUID.indexOf(child)]
+                if(ami.procuration==1 && ami.DorI!=1){
+                    passProcuration=false
+                    let box = document.createElement('input')
+                    box.setAttribute("type","checkbox")
+                    box.setAttribute("name","procuration")
+                    box.setAttribute("value",child)
+                    if(ami.DorI==null){
+                        box.setAttribute("checked",true)
+                    }
+                    from.appendChild(box)
+
+                    let label = document.createElement('label')
+                    label.setAttribute("for","procuration")
+                    label.innerHTML=ami.first_name + " " + ami.last_name
+                    from.appendChild(label)
+                    from.innerHTML+='<br>'
+                }
+            })
+            if(passProcuration){
+                await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listeAmisPris,sandwich:choiceOfSandwich})
+                common.popUp_Stop()
+                common.loadpage("/midi")
+            }else{
+                bnt.addEventListener('click',async ()=>{
+                    const checkBoxs = document.querySelectorAll('input[name="procuration"]');
+                    for (const checkBox of checkBoxs) {
+                        if (checkBox.checked) {
+                            await common.socketAsync('setAmiDemande',{uuidAmi:checkBox.value,w:w,j:j,h:h,amis:listeAmisPris})
+                        }
+                    }
+                    await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listeAmisPris,sandwich:choiceOfSandwich})
+                    common.popUp_Stop()
+                    common.loadpage("/midi")
+                }, { once: true })
+            }
+        })
     }
 
     const quitDemande = async function() {

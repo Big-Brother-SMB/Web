@@ -1,4 +1,4 @@
-*ecosystem.config.js
+ecosystem.config.js
 *.csv
 *.db
 key.json

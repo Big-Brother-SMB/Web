@@ -26,7 +26,7 @@ module.exports = async(req_url) => {
   let fichier
   let err404=false
 
-  if(baseName=='common' || baseName=='manager'){
+  if((baseName=='common' || baseName=='favicon') && modeAuto){
     subFolder = "share"
   }
   try{

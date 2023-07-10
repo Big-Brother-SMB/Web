@@ -145,7 +145,7 @@ module.exports = class funcSocket{
                         hasPermission=true
                     }
                 })
-                let ami = await User(req.uuidAmi)
+                let ami = await new User(req.uuidAmi)
                 if((hasPermission && await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     await ami.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,null)
                     socket.emit('setAmiDemande',"ok")
@@ -164,7 +164,7 @@ module.exports = class funcSocket{
                         hasPermission=true
                     }
                 })
-                let ami = await User(req.uuidAmi)
+                let ami = await new User(req.uuidAmi)
                 if((await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     await ami.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delAmiDemande',"ok")
