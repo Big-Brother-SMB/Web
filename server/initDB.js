@@ -18,7 +18,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='amis'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE amis(uuid uuid,ami uuid)')
+        db.run('CREATE TABLE amis(uuid uuid,ami uuid,procuration boolean)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='user_groups'", (err, data) => {
       if(data==undefined)
@@ -50,7 +50,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_list'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE midi_list(semaine int2,creneau int2,uuid uuid,scan boolean,DorI boolean)')
+        db.run('CREATE TABLE midi_list(semaine int2,creneau int2,uuid uuid,scan boolean,DorI boolean,sandwich int2)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_prio'", (err, data) => {
       if(data==undefined)

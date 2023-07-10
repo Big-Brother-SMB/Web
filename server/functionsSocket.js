@@ -117,7 +117,7 @@ module.exports = class funcSocket{
         socket.on('setMyDemande', async req => {
             try{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
-                    await user.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false)
+                    await user.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,req.sandwich)
                     socket.emit('setMyDemande',"ok")
                 }
             }catch(e){console.error(e)}
@@ -130,6 +130,44 @@ module.exports = class funcSocket{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     await user.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delMyDemande',"ok")
+                }
+            }catch(e){console.error(e)}
+        });
+    }
+
+    static setAmiDemande(socket,user){
+        socket.on('setAmiDemande', async req => {
+            try{
+                let listAmisBrut = await user.amis
+                let hasPermission=false
+                listAmisBrut.forEach(child=>{
+                    if(req.uuidAmi==child.uuid && child.HeGiveMeProc==1){
+                        hasPermission=true
+                    }
+                })
+                let ami = await User(req.uuidAmi)
+                if((hasPermission && await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                    await ami.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,null)
+                    socket.emit('setAmiDemande',"ok")
+                }
+            }catch(e){console.error(e)}
+        });
+    }
+
+    static delAmiDemande(socket,user){
+        socket.on('delAmiDemande', async req => {
+            try{
+                let listAmisBrut = await user.amis
+                let hasPermission=false
+                listAmisBrut.forEach(child=>{
+                    if(req.uuidAmi==child.uuid && child.HeGiveMeProc==1){
+                        hasPermission=true
+                    }
+                })
+                let ami = await User(req.uuidAmi)
+                if((await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                    await ami.delMidiDemande(req.w,req.j*2+req.h)
+                    socket.emit('delAmiDemande',"ok")
                 }
             }catch(e){console.error(e)}
         });

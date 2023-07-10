@@ -612,6 +612,7 @@ export class common{
 }
 
 //démarre le script qui correspond à la page
+console.log(document.location.pathname+".js")
 if(document.location.pathname!='/' && document.location.pathname!='/index.html'){
   import(document.location.pathname+".js").then(async (module) => {
     await common.reloadCommon(true)

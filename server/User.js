@@ -241,14 +241,23 @@ module.exports = class User{
     get amis(){
         let uuid=this.uuid
         return new Promise(function(resolve, reject) {
-            db.all("SELECT * FROM amis WHERE uuid=?",[uuid], (err, data) => {
+            db.all("SELECT * FROM amis WHERE uuid=?",[uuid], async (err, data) => {
                 try{
                     if(data!=undefined){
                         let list=[]
-                        data.forEach(e=>{
-                            list.push(e.ami)
+                        await data.forEach(async e=>{
+                            list.push(new Promise(function(resolve, reject) {
+                              db.get("SELECT * FROM amis WHERE uuid=? and ami=?",[e.ami,uuid], (err, data2) => {
+                                console.log(data2,uuid,e.ami)
+                                if(data2!=undefined){
+                                  resolve({uuid:e.ami,IgiveProc:e.procuration,HeGiveMeProc:data2.procuration})
+                                }else{
+                                  resolve({uuid:e.ami,IgiveProc:e.procuration,HeGiveMeProc:null})
+                                }
+                              })
+                            }))
                         })
-                        resolve(list)
+                        resolve(await Promise.all(list))
                     }else{
                         resolve([])
                     }
@@ -262,7 +271,7 @@ module.exports = class User{
         db.serialize(()=>{
           db.run("delete from amis WHERE uuid=?",[uuid])
           list.forEach(e=>{
-              db.run("INSERT INTO amis(uuid,ami) VALUES (?,?)",[uuid,e])
+              db.run("INSERT INTO amis(uuid,ami,procuration) VALUES (?,?,?)",[uuid,e.uuid,e.IgiveProc])
           })
         })
     }
@@ -320,13 +329,14 @@ module.exports = class User{
         setTimeout(reject,1000)
       })
     }
-    setMidiDemande(semaine,creneau,amis,DorI,scan){
+    setMidiDemande(semaine,creneau,amis,DorI,scan,sandwich){
       let uuid = this.uuid
       db.get("SELECT * FROM midi_list where semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid], (err, data) => {
         if(data==undefined){
-          db.run("INSERT INTO midi_list(semaine,creneau,uuid,scan,DorI) VALUES (?,?,?,?,?)",[semaine,creneau,uuid,scan,DorI])
+          db.run("INSERT INTO midi_list(semaine,creneau,uuid,scan,DorI,sandwich) VALUES (?,?,?,?,?,?)",[semaine,creneau,uuid,scan,DorI,sandwich])
         } else{
-          db.run("UPDATE midi_list SET scan=?,DorI=? where semaine=? and creneau=? and uuid=?",[scan,DorI,semaine,creneau,uuid])
+          if(sandwich==null)sandwich=data.sandwich
+          db.run("UPDATE midi_list SET scan=?,DorI=?,sandwich=? where semaine=? and creneau=? and uuid=?",[scan,DorI,sandwich,semaine,creneau,uuid])
         }
       })
       db.serialize(()=>{

@@ -24,19 +24,22 @@ export async function init(common){
     }
 
     const setMyDemande = async function() {
-        console.log(w,j,h)
         let str = ""
-        let amis = []
-        for(let i in boolAmis){
-            if(boolAmis[i]){
-                str += listAmisUuid[i] + "/"
-                amis.push(listAmisUuid[i])
-            }
-
-        }
+        listAmisUUID.forEach(child=>{
+            str += child + "/"
+        })
         common.writeCookie("derniere demande",str)
 
-        if(await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:amis})=='ok'){
+        const radioButtons = document.querySelectorAll('input[name="sandwich"]');
+        let choiceOfSandwich=0
+        for (const radioButton of radioButtons) {
+            if (radioButton.checked) {
+                choiceOfSandwich = parseInt(radioButton.value);
+                break;
+            }
+        }
+
+        if(await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listeAmisPris,sandwich:choiceOfSandwich})=='ok'){
             common.loadpage("/midi")
         }
     }
@@ -46,13 +49,131 @@ export async function init(common){
     }
 
 
-    function updateConfirmation(){
+    document.getElementById("toutAjouter").addEventListener("click", function() {
+        listeAmisPris.concat(listeAmisNonPris);
+        listeAmisNonPris = []
+        update()
+    })
+
+
+    document.getElementById("toutRetirer").addEventListener("click", function() {
+        listeAmisNonPris.concat(listeAmisPris);
+        listeAmisPris = []
+        update()
+    })
+
+    /*
+    listUsers => liste Nom/Prénom/uuid de tout les utilisateur
+    listAmisUUID => UUID de tout amis
+    listAmis => liste Nom/Prénom/uuid/procuration de tout les amis
+    */
+    let listUsers = await common.socketAsync('listUsersName',null)
+    let listAmisBrut = await common.socketAsync('getAmis',null)
+    console.log("brut",listAmisBrut)
+    let listAmisUUID=[]
+    listAmisBrut.forEach(child=>{
+        listAmisUUID.push(child.uuid)
+    })
+
+    let listAmis=[]
+    listUsers.forEach(child=>{
+        let index = listAmisUUID.indexOf(child.uuid)
+        if(index != -1){
+            child.procuration=listAmisBrut[index].HeGiveMeProc
+            child.DorI=null
+            listAmis.push(child)
+        }
+    })
+
+
+    let info = await common.socketAsync('getDataThisCreneau',{w:w,j:j,h:h})
+    let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
+    let my_demande = await common.socketAsync("getMyDemande",{w:w,j:j,h:h})
+    
+    let divListeAmis = document.getElementById("listeAmis")
+    let divAmisAjoute = document.getElementById("listeMange")
+
+    //les listes des amis qui sont ou pas dans la demande(en UUID)
+    let listeAmisNonPris = []
+    let listeAmisPris = []
+
+    //en fonction de l'étét de la demande on fait des truc
+    if(info.ouvert==2 && Object.keys(await common.socketAsync('getMyDemande',{w:w,j:j,h:Math.abs(h-1)})).length === 0){
+        document.querySelectorAll('input[name="sandwich"]')[0].checked=true
+        if(Object.keys(my_demande).length === 0){
+            //pas encore de demande
+            document.getElementById("DIVdepot").style.display='initial'
+            const AllAmis = common.readBoolCookie("allAmis")
+            if(AllAmis){
+                listeAmisPris=listAmisUUID
+            }else{
+                try{
+                    listeAmisPris = common.readCookie("derniere demande").split("/")
+                    listeAmisPris.pop()
+                }catch(Exception){
+                    listeAmisPris=[]
+                }
+            }
+        }else if(my_demande.DorI==1){
+            //inscrit
+            document.getElementById("DIVinscrit").style.display='initial'
+            document.getElementById("sandwich").style.display='none'
+            listeAmisPris=my_demande.amis
+        }else{
+            //modif
+            document.getElementById("DIVmodif").style.display='initial'
+            listeAmisPris=my_demande.amis
+            if(my_demande.sandwich==null){my_demande.sandwich=0}
+            document.querySelectorAll('input[name="sandwich"]')[my_demande.sandwich].checked=true
+        }
+    }else{
+        //n'a pas le droit de posser de demande sur le créneau
+        quitDemande()
+    }
+
+    //complete la listeAmisnonPris avec les amis qui ne sont pas dans la liste pris
+    listAmisUUID.forEach(child=>{
+        let index = listeAmisPris.indexOf(child)
+        if(index == -1){
+            listeAmisNonPris.push(child)
+        }
+    })
+
+    //ajoute les personnes qui sont dans la liste Pris met pas dans la liste d'ami global(s'elle de "/amis") dans listAmisUUID et listAmis
+    listeAmisPris.forEach(child=>{
+        let index = listAmisUUID.indexOf(child)
+        if(index == -1){
+            listAmisUUID.push(child)
+            listUsers.forEach(user=>{
+                if(child == user.uuid){
+                    user.procuration=null
+                    listAmis.push(user)
+                }
+            })
+        }
+    })
+
+    //info
+    let textScore = ""
+    let score = await common.socketAsync("score",null)
+    if (score <2) {
+        textScore = score + " pt"
+    }else{
+        textScore = score + " pts"
+    }
+    let places = info.places
+
+    let inscrits = 0
+    let demandes = 0
+
+    function update(){
         let pb = 0
-        for(let i in boolAmis){
-            if(boolAmis[i] && demandesAmis[i] == 0){
+        listeAmisPris.forEach(child=>{
+            const index = listAmisUUID.indexOf(child)
+            if(listAmis[index].DorI==0 || listAmis[index].DorI==null){
                 pb++
             }
-        }
+        })
         let p = document.getElementById("attentionAmis")
         if(pb == 0){
             p.innerHTML = ""
@@ -62,139 +183,67 @@ export async function init(common){
             p.innerHTML = "Attention, " + pb + " amis n'ont pas encore fait de demande"
         }
 
-    }
-
-    document.getElementById("toutAjouter").addEventListener("click", function() {
-        for(let i in boolAmis){
-            boolAmis[i] = true;
-            divAmisAjoute.appendChild(butAmis[i]);
-        }
-        updateConfirmation()
-    })
 
 
-    document.getElementById("toutRetirer").addEventListener("click", function() {
-        for(let i in boolAmis){
-            boolAmis[i] = false;
-            divListeAmis.appendChild(butAmis[i]);
-        }
-        updateConfirmation()
-    })
+        divListeAmis.innerHTML=""
+        divAmisAjoute.innerHTML=""
+        listeAmisNonPris.forEach(function(child) {
+            let ami = listAmis[listAmisUUID.indexOf(child)]
+            const name = ami.first_name + " " + ami.last_name
+            let buttom = document.createElement("button")
+            buttom.classList.add("ami")
+            buttom.setAttribute("id", child);
+            buttom.innerHTML = name
+            divListeAmis.appendChild(buttom);
+            buttom.addEventListener("click", function() {
+                listeAmisPris.push(child)
+                listeAmisNonPris.splice(listeAmisNonPris.indexOf(child),1)
 
-
-
-    let info = await common.socketAsync('getDataThisCreneau',{w:w,j:j,h:h})
-    let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
-    let my_demande = await common.socketAsync("getMyDemande",{w:w,j:j,h:h})
-
-    if(info.ouvert==2 && Object.keys(await common.socketAsync('getMyDemande',{w:w,j:j,h:Math.abs(h-1)})).length === 0){
-        if(Object.keys(my_demande).length === 0){
-            document.getElementById("DIVdepot").style.display='initial'
-        }else if(my_demande.DorI==1){
-            document.getElementById("DIVinscrit").style.display='initial'
-        }else{
-            document.getElementById("DIVmodif").style.display='initial'
-        }
-    }else{
-        quitDemande()
-    }
-
-
-    let textScore = ""
-    let score = await common.socketAsync("score",null)
-    if (score <2) {
-        textScore = score + " pt"
-    }else{
-        textScore = score + " pts"
-    }
-
-    let listUsers = await common.socketAsync('listUsersName',null)
-    let listAmisUuid = await common.socketAsync('getAmis',null)
-    let listAmis=[]
-    listUsers.forEach(child=>{
-        if(listAmisUuid.indexOf(child.uuid)!=-1){
-            listAmis.push(child)
-        }
-    })
-    listAmisUuid=[]
-    listAmis.forEach(child=>{
-        listAmisUuid.push(child.uuid)
-    })
-
-
-
-    let divListeAmis = document.getElementById("liste d'amis")
-    let divAmisAjoute = document.getElementById("amis ajoutés")
-    let demandesAmis = []
-    let amisCookie = []
-    try{
-        amisCookie = commmon.readCookie("derniere demande").split("/")
-    }catch(Exception){}
-
-    let boolAmis = []
-    let butAmis = []
-    let inscrits = 0
-    let places = info.places
-    let demandes = 0
-
-    const boolAllAmis = common.readBoolCookie("allAmis")
-
-
-    if(info.ouvert != 2 || my_demande.amis==undefined){
-        //common.loadpage("/midi")
-    }
-
-    let i=0
-    listAmis.forEach(function(child) {
-        const amiID = child.uuid
-        const name = child.first_name + " " + child.last_name
-        demandesAmis.push(0)
-        boolAmis.push(my_demande.amis.indexOf(child.uuid) != -1)
-        butAmis[i] = document.createElement("button")
-        butAmis[i].classList.add("amis")
-        butAmis[i].innerHTML = name
-        if(boolAmis[i]){
-            divAmisAjoute.appendChild(butAmis[i]);
-        }else{
-            divListeAmis.appendChild(butAmis[i]);
-        }
-
-        const num = i
-        butAmis[num].addEventListener("click", function() {
-            if(boolAmis[num]){
-                divListeAmis.appendChild(butAmis[num]);
-            }else{
-                divAmisAjoute.appendChild(butAmis[num]);
-            }
-            boolAmis[num] = !boolAmis[num]
-            updateConfirmation()
+                update()
+            })
         })
+        listeAmisPris.forEach(function(child) {
+            let ami = listAmis[listAmisUUID.indexOf(child)]
+            const name = ami.first_name + " " + ami.last_name
+            let buttom = document.createElement("button")
+            buttom.classList.add("ami")
+            buttom.setAttribute("id", child);
+            buttom.innerHTML = name
+            divAmisAjoute.appendChild(buttom);
+            buttom.addEventListener("click", function() {
+                listeAmisNonPris.push(child)
+                listeAmisPris.splice(listeAmisPris.indexOf(child),1)
 
-        i++
-    })
+                update()
+            })
+        })
+        for(let i in listAmis){
+            console.log(listAmis)
+            if(listAmis[i].DorI == 0){
+                document.getElementById(listAmis[i].uuid).innerHTML += " (a fait une demande)"
+            }else if(listAmis[i].DorI == 1){
+                document.getElementById(listAmis[i].uuid).innerHTML += " (est inscrit)"
+            }
+            if(listAmis[i].procuration == null){
+                document.getElementById(listAmis[i].uuid).classList.add('partiel')
+            }
+        }
+    }
 
     listDemandes.forEach(function(child) {
-        const index = listAmisUuid.indexOf(child.uuid)
+        const index = listAmisUUID.indexOf(child.uuid)
         if(child.DorI==true){
             inscrits++
             if(index != -1){
-                demandesAmis[index] = 2
+                listAmis[index].DorI = 1
             }
         }else{
             demandes++
             if(index != -1){
-                demandesAmis[index] = 1
+                listAmis[index].DorI = 0
             }
         }
     });
-
-    for(let i in demandesAmis){
-        if(demandesAmis[i] == 1){
-            butAmis[i].innerHTML += " (a fait une demande)"
-        }else if(demandesAmis[i] == 2){
-            butAmis[i].innerHTML += " (est inscrit)"
-        }
-    }
 
     let reste = places - inscrits
 
@@ -213,10 +262,10 @@ export async function init(common){
     document.getElementById("PASmodif").addEventListener("click", quitDemande);
 
     document.getElementById("pass").addEventListener("click", async () => {
-        //common.loadpage("/pass")
+        common.loadpage("/pass")
     });
 
     document.getElementById("retour").addEventListener("click", quitDemande);
 
-    updateConfirmation()
+    update()
 }

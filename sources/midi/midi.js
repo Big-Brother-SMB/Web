@@ -273,19 +273,9 @@ export async function init(common){
 
     function select(j, h) {
         const hInv = h==0?1:0
-        common.loadpage("/midi/demande?j="+j+"&h="+h+"&w="+week)
-        if((ouvert[j][h] == 2 && demande[j][h])
-            && (ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h])
-            && ((ouvert[j][h] == 2 || ouvert[j][h] == 3) && inscrit[j][h])){
+        if(ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv]){
             common.loadpage("/midi/demande?j="+j+"&h="+h+"&w="+week)
-        }/*
-        if (ouvert[j][h] == 2 && demande[j][h]) {
-            window.location.href = "../confirmation/modifier/modifier.html?j="+j+"&h="+h+"&w="+week;
-        }else if(ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]){
-            window.location.href = "../confirmation/demande/demande.html?j="+j+"&h="+h+"&w="+week;
-        }else if((ouvert[j][h] == 2 || ouvert[j][h] == 3) && inscrit[j][h]){
-            window.location.href = "../confirmation/inscrit/inscrit.html?j="+j+"&h="+h+"&w="+week;
-        }*/
+        }
     }
 
     refreshDatabase();

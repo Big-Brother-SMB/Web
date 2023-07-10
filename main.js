@@ -365,6 +365,8 @@ async function main() {
       funcSocket.getMyDemande(socket,user)
       funcSocket.setMyDemande(socket,user)
       funcSocket.delMyDemande(socket,user)
+      funcSocket.setAmiDemande(socket,user)
+      funcSocket.delAmiDemande(socket,user)
       funcSocket.listDemandes(socket,user)
       funcSocket.listDemandesPerm(socket,user)
       funcSocket.getOuvertPerm(socket,user)

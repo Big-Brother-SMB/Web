@@ -552,13 +552,40 @@ input[type="radio"]{
 
 
 /*----------------------------amis------------------*/
-.amis{
+.ami{
   background-color: #8b9fc9;
   border-radius:8px;
-  padding: .5em;
-  margin: .2em;
   width: 97%;
   font-size: 2em;
+  height: 2.5em;
+}
+
+.ami.small{
+  width: calc(97% - 2.5em);
+}
+
+.amiDiv{
+  display: flex;
+  width: 100%;
+  padding: .5em;
+  margin: .2em;
+}
+
+.amiProc{
+  width: 2.5em;
+}
+
+.amiProc img{
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.ami.partiel{
+  filter: opacity(0.5);
+}
+
+.ami.procuration{
+  background-color: #4c5f33;
 }
 
 input[type="text"] {
