@@ -62,10 +62,9 @@ export class common{
     return ["secondes","premières","terminales","adultes"]
   }
 
-
   static async loadpage(url){
     console.log(url)
-    window.history.pushState({id:"100"},"", url);
+    window.history.pushState({url:url},"", url);
     url=url.split('?')[0]
     document.getElementById("css_page").href=url+'.css'
     await this.readFileHTML(url,'tete','EN-TETE')
@@ -111,6 +110,14 @@ export class common{
 
 
     if (startup){
+      //----------------------historique-----------------------
+
+      window.addEventListener("popstate", (event) => {
+        this.loadpage(event.state.url)
+      });
+
+
+
       //---------------------------socket---------------------------
       this.key=this.readCookie("key")
 

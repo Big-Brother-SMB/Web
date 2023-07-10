@@ -107,8 +107,8 @@ header{
 }
 
 #mySidenav a{
-  height: 30px;
-  padding: 10px 0px;
+  height: 50px;
+  padding: 0px 0px;
   text-decoration: none;
   font-size: 25px;
   color: #FFF;
@@ -118,8 +118,10 @@ header{
 
 #mySidenav a p{
   text-overflow: clip;
-  white-space: nowrap;
+  white-space: nowrap; 
   margin: auto 0;
+  height: calc(100% - 25px);
+  padding: calc((50px - 25px)/2);
 }
 
 #mySidenav a *{
@@ -213,7 +215,7 @@ header{
 
 /*---------------------main--------------------------*/
 #main{
-  min-height: calc(50px * 12 + 18px * 2 + 15px);
+  min-height: calc(50px * 13 + 18px * 2 + 15px);
   padding-top: 1em;
   padding: 1em;
 }

@@ -138,7 +138,7 @@ async function main() {
           
           let {data} = await oauth2.userinfo.get();
           console.log("email",data.email)
-          if(true){//%if(data.email.split("@")[1]=="stemariebeaucamps.fr"){ + changer page de connection api
+          if(true){//%if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
             let tokenAuth = await (await User.createUser(data.email,data.picture)).createToken()
             res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
             res.end();        
