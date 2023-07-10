@@ -129,14 +129,14 @@ export async function init(common){
 
 
     document.getElementById("toutAjouter").addEventListener("click", function() {
-        listeAmisPris.concat(listeAmisNonPris);
+        listeAmisPris = listeAmisPris.concat(listeAmisNonPris);
         listeAmisNonPris = []
         update()
     })
 
 
     document.getElementById("toutRetirer").addEventListener("click", function() {
-        listeAmisNonPris.concat(listeAmisPris);
+        listeAmisNonPris = listeAmisNonPris.concat(listeAmisPris);
         listeAmisPris = []
         update()
     })
@@ -269,12 +269,12 @@ export async function init(common){
         listeAmisNonPris.forEach(function(child) {
             let ami = listAmis[listAmisUUID.indexOf(child)]
             const name = ami.first_name + " " + ami.last_name
-            let buttom = document.createElement("button")
-            buttom.classList.add("ami")
-            buttom.setAttribute("id", child);
-            buttom.innerHTML = name
-            divListeAmis.appendChild(buttom);
-            buttom.addEventListener("click", function() {
+            let button = document.createElement("button")
+            button.classList.add("ami")
+            button.setAttribute("id", child);
+            button.innerHTML = name
+            divListeAmis.appendChild(button);
+            button.addEventListener("click", function() {
                 listeAmisPris.push(child)
                 listeAmisNonPris.splice(listeAmisNonPris.indexOf(child),1)
 
@@ -284,12 +284,12 @@ export async function init(common){
         listeAmisPris.forEach(function(child) {
             let ami = listAmis[listAmisUUID.indexOf(child)]
             const name = ami.first_name + " " + ami.last_name
-            let buttom = document.createElement("button")
-            buttom.classList.add("ami")
-            buttom.setAttribute("id", child);
-            buttom.innerHTML = name
-            divAmisAjoute.appendChild(buttom);
-            buttom.addEventListener("click", function() {
+            let button = document.createElement("button")
+            button.classList.add("ami")
+            button.setAttribute("id", child);
+            button.innerHTML = name
+            divAmisAjoute.appendChild(button);
+            button.addEventListener("click", function() {
                 listeAmisNonPris.push(child)
                 listeAmisPris.splice(listeAmisPris.indexOf(child),1)
 

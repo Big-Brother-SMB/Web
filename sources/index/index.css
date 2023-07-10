@@ -82,7 +82,7 @@ p{
 
 .account_img{
   height: 70px;
-  border-radius: 50%;
+  border-right: 2px solid black;
   margin: 0;
 }
 

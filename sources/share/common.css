@@ -336,6 +336,7 @@ header{
 }
 
 .bnt{
+  cursor: pointer;
   width: 20%;
   border-radius: 20px;
   text-align: center;
@@ -404,6 +405,7 @@ header{
 
 .case.default{
   background-color: gray;
+  cursor: auto;
 }
 
 .case.red{
@@ -553,6 +555,7 @@ input[type="radio"]{
 
 .bnt.list{
   width: 50%;
+  margin-bottom: 15px;
 }
 #DIVdepot,#DIVmodif,#DIVinscrit{
   display: none;
@@ -561,22 +564,25 @@ input[type="radio"]{
 
 /*----------------------------amis------------------*/
 .ami{
+  cursor: pointer;
   background-color: #8b9fc9;
   border-radius:8px;
   width: 97%;
   font-size: 2em;
   height: 2.5em;
+  padding: 0;
+  margin-top: 0.2em;
 }
 
 .ami.small{
-  width: calc(97% - 2.5em);
+  width: calc(100% - 2.5em);
 }
 
 .amiDiv{
   display: flex;
-  width: 100%;
-  padding: .5em;
-  margin: .2em;
+  width: 98%;
+  padding: 0;
+  margin: auto;
 }
 
 .amiProc{

@@ -2,16 +2,21 @@ export async function init(common){
     let divAmis = document.getElementById("amis")
 
     let listUsers=await common.socketAsync('listUsersName',null)
+    let users=[]
+    let usersNames=[]
 
+    let listAmisUUID=[]
+    let listAmisBrut=[]
+    let listAmis=[]
     async function reload(){
-        let listAmisBrut=await common.socketAsync('getAmis',null)
+        listAmisBrut=await common.socketAsync('getAmis',null)
 
-        let listAmisUUID=[]
+        listAmisUUID=[]
         listAmisBrut.forEach(child=>{
             listAmisUUID.push(child.uuid)
         })
     
-        let listAmis=[]
+        listAmis=[]
         listUsers.forEach(child=>{
             let index = listAmisUUID.indexOf(child.uuid)
             if(index != -1){
@@ -31,14 +36,14 @@ export async function init(common){
             ami.classList.add("small")
 
             ami.innerHTML = child.first_name + " " + child.last_name
-            ami.addEventListener("click", function() {
+            ami.addEventListener("click", async function() {
                 listAmisUUID.splice(listAmisUUID.indexOf(child.uuid),1)
                 listAmis.splice(listAmis.indexOf(child),1)
                 listAmisBrut=[]
                 for(let i=0;i<listAmisUUID.length;i++){
                     listAmisBrut[i]={uuid:listAmisUUID[i],IgiveProc:1}
                 }
-                common.socketAsync('setAmis',listAmisBrut)
+                await common.socketAsync('setAmis',listAmisBrut)
                 reload()
             })
             if(child.HeGiveMeProc == 1){
@@ -52,13 +57,13 @@ export async function init(common){
             amiProc.classList.add("amiProc")
             amiProc.innerHTML="<img src='/Images/document.png'></img>"
 
-            amiProc.addEventListener("click", function() {
+            amiProc.addEventListener("click", async function() {
                 listAmis[listAmis.indexOf(child)].IgiveProc=!listAmis[listAmis.indexOf(child)].IgiveProc
                 listAmisBrut=[]
                 for(let i=0;i<listAmisUUID.length;i++){
                     listAmisBrut[i]={uuid:listAmisUUID[i],IgiveProc:listAmis[i].IgiveProc}
                 }
-                common.socketAsync('setAmis',listAmisBrut)
+                await common.socketAsync('setAmis',listAmisBrut)
                 reload()
             })
             if(child.IgiveProc == 1){
@@ -74,8 +79,8 @@ export async function init(common){
         })
 
 
-        let users=[]
-        let usersNames=[]
+        users=[]
+        usersNames=[]
 
         listUsers.forEach(function(child) {
             if(child.uuid != common.uuid && listAmisUUID.indexOf(child.uuid) == -1){
@@ -85,10 +90,11 @@ export async function init(common){
         })
         common.autocomplete(document.getElementById("addAmi"), usersNames,()=>{});
 
-        document.getElementById("ajout").addEventListener("click", function() {
+        document.getElementById("ajout").addEventListener("click", async function() {
             let ami = document.getElementById("addAmi").value
             document.getElementById("addAmi").value=''
             if(usersNames.indexOf(ami) != -1){
+                console.log(users[usersNames.indexOf(ami)].uuid)
                 if(listAmisUUID.indexOf(users[usersNames.indexOf(ami)].uuid) == -1){
                     listAmisUUID.push(users[usersNames.indexOf(ami)].uuid)
                     listAmis.push(users[usersNames.indexOf(ami)])
@@ -96,7 +102,7 @@ export async function init(common){
                     for(let i=0;i<listAmisUUID.length;i++){
                         listAmisBrut[i]={uuid:listAmisUUID[i],IgiveProc:listAmis[i].IgiveProc}
                     }
-                    common.socketAsync('setAmis',listAmisBrut)
+                    await common.socketAsync('setAmis',listAmisBrut)
                     reload()
                 }
             }
@@ -104,5 +110,4 @@ export async function init(common){
     }
 
     reload()
-    
 }
