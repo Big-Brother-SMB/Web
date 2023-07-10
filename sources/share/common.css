@@ -28,6 +28,7 @@ html,body{
 .menu_img_a{
   height: 8em;
   right: 1px;
+  position: absolute;
   margin-left: auto;
 }
 
@@ -48,6 +49,11 @@ h1 {
 }
 
 header{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100vw;
+
   border-bottom: black solid 3px;
   background: linear-gradient(90deg,#004155 20%,#009DCF);
   display: flex;

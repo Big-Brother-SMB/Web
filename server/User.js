@@ -248,7 +248,6 @@ module.exports = class User{
                         await data.forEach(async e=>{
                             list.push(new Promise(function(resolve, reject) {
                               db.get("SELECT * FROM amis WHERE uuid=? and ami=?",[e.ami,uuid], (err, data2) => {
-                                console.log(data2,uuid,e.ami)
                                 if(data2!=undefined){
                                   resolve({uuid:e.ami,IgiveProc:e.procuration,HeGiveMeProc:data2.procuration})
                                 }else{

@@ -262,18 +262,18 @@ export class common{
     }
 
 
-    if (this.readBoolCookie("connect")) {
+    if (this.readCookie("key")) {
       if(this.admin==2){
         if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option")){
-          window.location.href = window.location.origin + "/admin/menu/menu.html"
+          window.location.href = window.location.origin + "/admin/menu/menu.html"//%
         }
       } else if(this.admin==0){
         if(window.location.pathname.includes("admin")){
-          window.location.href = window.location.origin + "/menu/menu.html"
+          window.location.href = window.location.origin + "/accueil"
         }
       }
     } else {
-      //if(!window.location.pathname.includes("index.html")) deco()
+      if(!window.location.pathname.includes("index.html")) deco()
     }
 
     //---------------------------listes---------------------------
@@ -370,12 +370,11 @@ export class common{
         }
   }
 
-  //deco
+  //----------------------------deco---------------------------
   static deco(){
-    return//%
     let path = window.location.pathname
     if(path!="/index.html"){
-      this.delCookie("connect");
+      this.delCookie("key");
       window.location.href = window.location.origin + "/index.html";
     }
   }
@@ -621,7 +620,6 @@ export class common{
 }
 
 //démarre le script qui correspond à la page
-console.log(document.location.pathname+".js")
 if(document.location.pathname!='/' && document.location.pathname!='/index.html'){
   import(document.location.pathname+".js").then(async (module) => {
     await common.reloadCommon(true)
