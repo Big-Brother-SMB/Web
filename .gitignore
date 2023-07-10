@@ -1,5 +1,4 @@
-.firebaserc
-firebase.json
+*ecosystem.config.js
 *.csv
 *.db
 key.json
