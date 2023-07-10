@@ -546,7 +546,7 @@ export class common{
           //selection d'un élément
           divElement.addEventListener("click", function(e) {
             textInput.value = this.getElementsByTagName("input")[0].value;
-            action();
+            action(this.getElementsByTagName("input")[0].value);
             closeAllLists();
           });
           divlist.appendChild(divElement);

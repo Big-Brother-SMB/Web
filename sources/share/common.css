@@ -605,6 +605,7 @@ input[type="text"] {
 /*-----------------------auto-complete---------------------*/
 
 .autocomplete {
+  margin-top: 10px;
   position: relative;
   width: 50%;
   margin-left: auto;
@@ -612,7 +613,11 @@ input[type="text"] {
 }
 
 .autocomplete input[type="text"] {
-  width: auto;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  border-radius:10px;
 }
 
 .autocomplete-list {
@@ -624,11 +629,12 @@ input[type="text"] {
   top: 100%;
   left: 0;
   right: 0;
+  width: auto;
 }
 .autocomplete-list div{
   font-size: 40px;
   height: 1.5em;
-  padding: 10px;
+  padding: 10px 0;
   width: 100%;
   cursor: pointer;
   background-color: #fff;
