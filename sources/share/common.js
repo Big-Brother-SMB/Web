@@ -57,10 +57,12 @@ export class common{
   }
   static get month(){
     return ["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
-  }*/
+  }
   static get nomNiveau(){
     return ["secondes","premières","terminales","adultes"]
-  }
+  }*/
+
+  //---------------------charge corps de la page------------------
 
   static async loadpage(url){
     console.log(url)
@@ -71,7 +73,7 @@ export class common{
     await this.readFileHTML(url,'titre','TITRE')
     await this.readFileHTML(url,'main','main')
     import(url+".js").then(async (module) => {
-        await common.reloadCommon(false)
+        await common.reloadCommon()
         await module.init(common)
         return
     })
@@ -93,9 +95,14 @@ export class common{
     };
   }
 
-  
 
-  static async reloadCommon(startup){
+
+
+
+
+
+
+  static async startUp(){
     //---------------------------cookie---------------------------
     let tablecookie = document.cookie.split('; ');
     this.cookie = {};
@@ -107,108 +114,89 @@ export class common{
     }
     console.log("cookie", this.cookie)
 
+    //----------------------historique-----------------------
+
+    window.addEventListener("popstate", (event) => {
+      this.loadpage(event.state.url)
+    });
 
 
-    if (startup){
-      //----------------------historique-----------------------
 
-      window.addEventListener("popstate", (event) => {
-        this.loadpage(event.state.url)
+    //---------------------------socket---------------------------
+    this.key=this.readCookie("key")
+
+    this.socket = io({
+      auth: {
+        token: this.key
+      }
+    });
+    let socket = this.socket
+    await new Promise(function(resolve, reject) {
+      socket.once("connect", () => {
+        resolve(null)
+      });
+    })
+
+    //-------------------system de navbar-----------------------
+    
+    let side = document.getElementById("mySidenav")
+
+    if(side!=null){
+      side.addEventListener("mouseenter",function() {
+        if(window.innerWidth>=1000){
+            side.style.width = "250px";
+            document.body.style.overflow = "unset"; 
+        }
+      });
+
+      side.addEventListener("mouseleave",function() {
+        if(window.innerWidth>=1000){
+            side.style.width = "80px";
+            document.body.style.overflow = "unset"; 
+        }
+      });
+
+      let btn_menu = document.getElementById("btn_menu")
+      btn_menu.addEventListener("click",function() {
+        if(window.innerWidth<1000){
+            if(side.style.height=="0px" || side.style.height==""){
+                side.style.height = "calc(var(--screenH))";
+                side.style.width = "100%";
+                document.body.style.overflow = "hidden";
+                window.scrollTo(0,0);
+            }else{
+                side.style.height = "0";
+                side.style.width = "100%";
+                document.body.style.overflow = "unset";  
+            }
+        }
       });
 
 
+      let list_nav_bnt = document.getElementsByClassName('nav_bnt')
 
-      //---------------------------socket---------------------------
-      this.key=this.readCookie("key")
+      for (var i = 0; i < list_nav_bnt.length; i++) {
+        const index = i;
+        list_nav_bnt[i].addEventListener('click', async ()=>{
+            side.style.height = "0";
+            document.body.style.overflow = "unset";
+            let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+            this.loadpage(url)
+        });
+      }
 
-      this.socket = io({
-        auth: {
-          token: this.key
+      verification_navbar()
+      function verification_navbar(){
+        if(window.innerWidth>=1000){
+          side.style.height="unset"
         }
-      });
-      let socket = this.socket
-      await new Promise(function(resolve, reject) {
-        socket.once("connect", () => {
-          resolve(null)
-        });
-      })
-
-
-      let side = document.getElementById("mySidenav")
-
-      if(side!=null){
-        //system de navbar
-
-        side.addEventListener("mouseenter",function() {
-          if(window.innerWidth>=1000){
-              side.style.width = "250px";
-              document.body.style.overflow = "unset"; 
-          }
-        });
-  
-        side.addEventListener("mouseleave",function() {
-          if(window.innerWidth>=1000){
-              side.style.width = "80px";
-              document.body.style.overflow = "unset"; 
-          }
-        });
-  
-        let btn_menu = document.getElementById("btn_menu")
-        btn_menu.addEventListener("click",function() {
-          if(window.innerWidth<1000){
-              if(side.style.height=="0px" || side.style.height==""){
-                  side.style.height = "calc(var(--screenH))";
-                  side.style.width = "100%";
-                  document.body.style.overflow = "hidden";
-                  window.scrollTo(0,0);
-              }else{
-                  side.style.height = "0";
-                  side.style.width = "100%";
-                  document.body.style.overflow = "unset";  
-              }
-          }
-        });
-  
-  
-        let list_nav_bnt = document.getElementsByClassName('nav_bnt')
-  
-        for (var i = 0; i < list_nav_bnt.length; i++) {
-          const index = i;
-          list_nav_bnt[i].addEventListener('click', async ()=>{
-              side.style.height = "0";
-              document.body.style.overflow = "unset";
-              let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
-              this.loadpage(url)
-          });
-        }
-  
-        verification_navbar()
-        function verification_navbar(){
-          if(window.innerWidth>=1000){
-            side.style.height="unset"
-          }
-          setTimeout(verification_navbar, 1000);
-        }
+        setTimeout(verification_navbar, 1000);
       }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }
 
     
-
+  static async reloadCommon(){
     //---------------------------récupération de l'identité et des cookie/variable---------------------------
 
     let id_data = await this.socketAsync("id_data","")
@@ -238,9 +226,6 @@ export class common{
       this.deco()
     }
 
-    this.colorMode = this.readIntCookie("color mode")
-    this.backgroundColor = this.readCookie("color background")
-    this.textColor = this.readCookie("color text")
     this.week = this.readIntCookie("week")
     if(this.week==undefined || this.week==null)this.week=actualWeek
 
@@ -259,21 +244,22 @@ export class common{
           resolve(null)
         });
       })
+    }else{
+      if(this.socketAdmin!=undefined){
+        this.socketAdmin.disconnected
+        this.socketAdmin=undefined
+      }
     }
 
 
-    if (this.readCookie("key")) {
-      if(this.admin==2){
-        if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("option")){
-          window.location.href = window.location.origin + "/admin/menu/menu.html"//%
-        }
-      } else if(this.admin==0){
-        if(window.location.pathname.includes("admin")){
-          window.location.href = window.location.origin + "/accueil"
-        }
+    if(this.admin==2){
+      if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("options")){
+        window.location.href = window.location.origin + "/admin"
       }
-    } else {
-      if(!window.location.pathname.includes("index.html")) deco()
+    } else if(this.admin==0){
+      if(window.location.pathname.includes("admin")){
+        window.location.href = window.location.origin + "/accueil"
+      }
     }
 
     //---------------------------listes---------------------------
@@ -293,10 +279,15 @@ export class common{
       document.querySelector(':root').style.setProperty("--screenH","calc(100vh - 11.8em - 32px)")
     }
 
-    //---------------------------color function---------------------------
+    //---------------------------theme function---------------------------
 
-    if(window.location.pathname.split("/").pop()!= "pass.html"){
-      this.setColorMode(this.colorMode,this.backgroundColor,this.textColor)
+    this.themeMode = this.readIntCookie("theme mode")
+    if(this.themeMode<0 || this.themeMode>1){
+      this.writeCookie("theme mode",0)
+      this.themeMode = 0
+    }
+    if(window.location.pathname!= "/pass"){
+      this.setThemeMode(this.themeMode)
     }
   }
 
@@ -487,34 +478,30 @@ export class common{
     + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
   }
 
-  static setColorMode(colorMode,backgroundColor,textColor){
+  //-------------------------fonction theme css---------------------------
+
+  static setThemeMode(themeMode){
     try{
-      document.getElementById("css").href = ""
       let name = ""
-      switch(colorMode){
-      case 1:
-        name = "light"
-        break;
-      case 2:
-        name = "dark"
-        break;
+      switch(themeMode){
+        case 0:
+          //light
+          name = ""
+          break;
+        case 1:
+          name = "/dark.css"
+          break;
+        default:
+          break;
       }
-      if(colorMode == 0){
-        document.body.style.backgroundColor = backgroundColor
-        document.body.style.color = textColor
-      }else{
-        document.body.style.backgroundColor = "";
-        document.body.style.color = "";
-        if(name!="")
-          document.getElementById("css").href = window.location.origin + "/css/" + name + ".css";
-      }
+      document.getElementById("css").href = name;
     }catch(Exception){
       console.log("error with color mode")
     }
   }
   
   //---------------------------autocomplete---------------------------
-  static autocomplete(textInput,list,action){
+  static autocomplete(textInput,list,action,debut){
     var currentFocus;
     textInput.addEventListener("input", function(e) {
       let val = this.value;
@@ -533,11 +520,16 @@ export class common{
       //ajout des elements dans la divlist correspondant à la valeur(val)
       for (let i = 0; i < list.length; i++) {
         //vérifie si l'élément correspond sans prise en compte des majuscule et minuscule
-        if (list[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {    //list[i].toLowerCase().includes(val.toLowerCase())
+        if ((list[i].substr(0, val.length).toUpperCase() == val.toUpperCase() && debut)
+            || (list[i].toLowerCase().includes(val.toLowerCase()) && !debut)) {
           //ajout de l'élément
           let divElement = document.createElement("div");
-          divElement.innerHTML = "<strong>" + list[i].substr(0, val.length) + "</strong>";
-          divElement.innerHTML += list[i].substr(val.length);
+          if(debut){
+            divElement.innerHTML = "<strong>" + list[i].substr(0, val.length) + "</strong>";
+            divElement.innerHTML += list[i].substr(val.length);
+          }else{
+            divElement.innerHTML += list[i];
+          }
 
           //ajout d'un input avec la valeur de l'élement
           divElement.innerHTML += "<input type='hidden' value=''>";
@@ -620,10 +612,9 @@ export class common{
 }
 
 //démarre le script qui correspond à la page
-if(document.location.pathname!='/' && document.location.pathname!='/index.html'){
-  import(document.location.pathname+".js").then(async (module) => {
-    await common.reloadCommon(true)
-    await module.init(common)
-    return
-  })
-}
+import(document.location.pathname+".js").then(async (module) => {
+  await common.startUp()
+  await common.reloadCommon()
+  await module.init(common)
+  return
+})

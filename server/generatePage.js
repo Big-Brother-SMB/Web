@@ -26,7 +26,7 @@ module.exports = async(req_url) => {
   let fichier
   let err404=false
 
-  if(baseName=='common' && modeAuto){
+  if((baseName=='common' || baseName=='dark')&& modeAuto){
     subFolder = "share"
   }
   try{

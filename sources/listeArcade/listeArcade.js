@@ -4,5 +4,5 @@ export async function init(common){
 
     common.autocomplete(document.getElementById("jeu"), listName, (val)=>{
         document.getElementById("num").innerHTML = "Numéro du jeu:" + listNum[listName.indexOf(val)]
-    });
+    },false);
 }

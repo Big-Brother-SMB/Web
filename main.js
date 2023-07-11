@@ -162,7 +162,7 @@ async function main() {
           res.end();
         }else{
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=3600'});
+            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=1'});
             res.end(file);
           }else {
             res.writeHead(404);
@@ -350,6 +350,7 @@ async function main() {
     try {
       let user = await User.searchToken(socket.handshake.auth.token)
       if(user!=null)console.log("uuid socket: " + await user.uuid)
+      //user.admin=1
 
       funcSocket.id_data(socket,user)
       funcSocket.score(socket,user)

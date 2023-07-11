@@ -88,7 +88,7 @@ export async function init(common){
                 usersNames.push(child.first_name + " " + child.last_name)
             }
         })
-        common.autocomplete(document.getElementById("addAmi"), usersNames,()=>{});
+        common.autocomplete(document.getElementById("addAmi"), usersNames,()=>{},true);
 
         document.getElementById("ajout").addEventListener("click", async function() {
             let ami = document.getElementById("addAmi").value
