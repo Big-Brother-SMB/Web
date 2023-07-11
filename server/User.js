@@ -72,8 +72,12 @@ module.exports = class User{
     static searchToken(token){
         return new Promise(function(resolve, reject) {
           try{
+          db.get("SELECT * FROM token",[], (err, data) => {
+            console.log(data)
+          })
           db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
             try {
+              console.log(token,data)
               if(data!=undefined){
                 db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
                 resolve(new User(data.uuid))
