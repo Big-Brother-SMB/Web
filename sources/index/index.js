@@ -60,7 +60,7 @@ try{
         token: element
       }
     });
-    list_id_data.push(new Promise(function(resolve, reject) {
+    list_id_data.push(new Promise(async function(resolve, reject) {
       socket.emit("id_data","");
       socket.once("id_data",result => {
         socket.disconnected
