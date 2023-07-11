@@ -52,6 +52,7 @@ if(params.err!=null){
 
 //---------------------------socket---------------------------
 let list_id_data=[]
+
 try{
   listKey = listKey.filter((x, i) => listKey.indexOf(x) === i)
   for(const element of listKey){
@@ -73,7 +74,8 @@ try{
 
 
   for(let i=0;i<list_id_data.length;i++){
-    list_id_data[i].key=listKey[i]
+    if(list_id_data[i]!='err')
+      list_id_data[i].key=listKey[i]
   }
 
 
@@ -99,7 +101,7 @@ try{
   console.log(listKey,list_id_data)
 }catch(Exception){
   console.log(Exception)
-  window.location.reload()
+  //window.location.reload()
 }
 
 //---------------------------RGPD---------------------------
