@@ -157,12 +157,12 @@ async function main() {
       
       try{
         if(extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg' || extName == '.gif'){
-          res.writeHead(200, {'Content-Type': mimeTypes[extName]});
+          res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=3600'});
           res.write(file, 'binary');
           res.end();
         }else{
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypes[extName]});
+            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=3600'});
             res.end(file);
           }else {
             res.writeHead(404);
