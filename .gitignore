@@ -1,4 +1,3 @@
-ecosystem.config.js
 *.csv
 *.db
 key.json
