@@ -229,7 +229,7 @@ export class common{
     this.week = this.readIntCookie("week")
     if(this.week==undefined || this.week==null)this.week=actualWeek
 
-    //---------------------------securité page admin + deco---------------------------
+    //---------------------------securité page admin + deco + tuto---------------------------
 
 
     if(this.admin>0 && this.socketAdmin==null){
@@ -260,6 +260,17 @@ export class common{
       if(window.location.pathname.includes("admin")){
         window.location.href = window.location.origin + "/accueil"
       }
+    }
+
+    if(!this.tuto && window.location.pathname!="/tuto"){
+      this.popUp_Active("Bienvenue sur le site du Foyer !"
+        ,"Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée et d'y passer leurs heures de permanence.Avant de naviguer dessus vous devez comprendre comment il fonctionne pour cela vous devez :"
+        ,(bnt)=>{
+          bnt.addEventListener("click",()=>{
+            this.loadpage("/tuto")
+            this.popUp_Stop()
+          },{once:true})
+        })
     }
 
     //---------------------------listes---------------------------
