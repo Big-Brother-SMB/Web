@@ -11,7 +11,7 @@ module.exports = {
       repo : 'git@github.com:Big-Brother-SMB/Web.git',
       path : '/home/site',
       'pre-deploy-local': '',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
+      'post-deploy' : 'cd /home/site/source/ && npm install && pm2 reload ecosystem.config.js --env production',
       'pre-setup': ''
     }
   }
