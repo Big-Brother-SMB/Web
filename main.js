@@ -113,7 +113,8 @@ async function main() {
     if (err)
       throw err
     db.serialize(()=>{
-      db.run("PRAGMA synchronous = OFF")
+      db.run("PRAGMA synchronous =  NORMAL")
+      db.run('PRAGMA mode_journal=WAL')
       init_DB(db)
     })
     User.setDB(db)

@@ -9,7 +9,7 @@ module.exports = class funcSocket{
     }
 
     static id_data(socket,user){
-        socket.on('id_data', async req => {console.log('top');
+        socket.on('id_data', async req => {
             try{
                 let id_data = await user.all
                 if(id_data==null){
@@ -21,7 +21,7 @@ module.exports = class funcSocket{
     }
 
     static score(socket,user){
-        socket.on('score', async req => {console.log('top');
+        socket.on('score', async req => {
             try{
                 let score = await user.score
                 if(score==null) score=-500
@@ -31,7 +31,7 @@ module.exports = class funcSocket{
     }
 
     static historiquePoints(socket,user){
-        socket.on('historiquePoints', async req => {console.log('top');
+        socket.on('historiquePoints', async req => {
             try{
                 socket.emit('historiquePoints',await user.listPoint)
             }catch(e){console.error(e);console.log('b3');}
@@ -39,7 +39,7 @@ module.exports = class funcSocket{
     }
 
     static getMenuThisWeek(socket,user){
-        socket.on('getMenuThisWeek', async req => {console.log('top');
+        socket.on('getMenuThisWeek', async req => {
             try{
                 socket.emit('getMenuThisWeek',await funcDB.getMidiMenu(req))
             }catch(e){console.error(e);console.log('b4');}
@@ -47,7 +47,7 @@ module.exports = class funcSocket{
     }
 
     static getDataThisCreneau(socket,user){
-        socket.on('getDataThisCreneau', async req => {console.log('top');
+        socket.on('getDataThisCreneau', async req => {
             try{
                 let info = await funcDB.getMidiInfo(req.w,req.j*2+req.h)
                 socket.emit('getDataThisCreneau',info)
@@ -73,7 +73,7 @@ module.exports = class funcSocket{
     }
 
     static getAmis(socket,user){
-        socket.on('getAmis', async req => {console.log('top');
+        socket.on('getAmis', async req => {
             try{
                 socket.emit('getAmis',await user.amis)
             }catch(e){console.error(e);console.log('b8');}
@@ -81,7 +81,7 @@ module.exports = class funcSocket{
     }
 
     static setAmis(socket,user){
-        socket.on('setAmis', async req => {console.log('top');
+        socket.on('setAmis', async req => {
             try{
                 user.amis=req
                 socket.emit('setAmis','ok')
@@ -90,7 +90,7 @@ module.exports = class funcSocket{
     }
 
     static listUsersName(socket,user){
-        socket.on('listUsersName', async req => {console.log('top');
+        socket.on('listUsersName', async req => {
             try{
                 socket.emit('listUsersName',await User.listUsersName())
             }catch(e){console.error(e);console.log('b10');}
@@ -98,7 +98,7 @@ module.exports = class funcSocket{
     }
 
     static getBanderole(socket,user){
-        socket.on('getBanderole', async req => {console.log('top');
+        socket.on('getBanderole', async req => {
             try{
                 socket.emit('getBanderole',await funcDB.getVar('banderole'))
             }catch(e){console.error(e);console.log('b11');}
@@ -106,7 +106,7 @@ module.exports = class funcSocket{
     }
   
     static getMyDemande(socket,user){
-        socket.on('getMyDemande', async req => {console.log('top');
+        socket.on('getMyDemande', async req => {
             try{
                 socket.emit('getMyDemande',await user.getMidiDemande(req.w,req.j*2+req.h))
             }catch(e){console.error(e);console.log('b12');}
@@ -114,7 +114,7 @@ module.exports = class funcSocket{
     }
 
     static setMyDemande(socket,user){
-        socket.on('setMyDemande', async req => {console.log('top');
+        socket.on('setMyDemande', async req => {
             try{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     await user.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,req.sandwich)
@@ -125,7 +125,7 @@ module.exports = class funcSocket{
     }
 
     static delMyDemande(socket,user){
-        socket.on('delMyDemande', async req => {console.log('top');
+        socket.on('delMyDemande', async req => {
             try{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     await user.delMidiDemande(req.w,req.j*2+req.h)
@@ -136,7 +136,7 @@ module.exports = class funcSocket{
     }
 
     static setAmiDemande(socket,user){
-        socket.on('setAmiDemande', async req => {console.log('top');
+        socket.on('setAmiDemande', async req => {
             try{
                 let listAmisBrut = await user.amis
                 let hasPermission=false
@@ -155,7 +155,7 @@ module.exports = class funcSocket{
     }
 
     static delAmiDemande(socket,user){
-        socket.on('delAmiDemande', async req => {console.log('top');
+        socket.on('delAmiDemande', async req => {
             try{
                 let listAmisBrut = await user.amis
                 let hasPermission=false
@@ -174,7 +174,7 @@ module.exports = class funcSocket{
     }
 
     static listDemandes(socket,user){
-        socket.on('listDemandes', async req => {console.log('top');
+        socket.on('listDemandes', async req => {
             try{
                 socket.emit('listDemandes',await funcDB.listMidiDemandes(req.w,req.j*2+req.h))
             }catch(e){console.error(e);console.log('b17');}
@@ -182,7 +182,7 @@ module.exports = class funcSocket{
     }
 
     static listDemandesPerm(socket,user){
-        socket.on('listDemandesPerm', async req => {console.log('top');
+        socket.on('listDemandesPerm', async req => {
             try{
                 socket.emit('listDemandesPerm',await funcDB.listPermDemandes(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b18');}
@@ -190,7 +190,7 @@ module.exports = class funcSocket{
     }
 
     static getOuvertPerm(socket,user){
-        socket.on("getOuvertPerm", async req => {console.log('top');
+        socket.on("getOuvertPerm", async req => {
             try{
                 socket.emit("getOuvertPerm",await funcDB.getPermOuvert(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b19');}
@@ -198,7 +198,7 @@ module.exports = class funcSocket{
     }
   
     static getMyDemandePerm(socket,user){
-        socket.on("getMyDemandePerm", async req => {console.log('top');
+        socket.on("getMyDemandePerm", async req => {
             try{
                 socket.emit("getMyDemandePerm",await user.getPermDemande(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b20');}
@@ -206,7 +206,7 @@ module.exports = class funcSocket{
     }
 
     static setMyDemandePerm(socket,user){
-        socket.on("setMyDemandePerm", async req => {console.log('top');
+        socket.on("setMyDemandePerm", async req => {
             try{
                 if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
                     await socket.emit("setMyDemandePerm",await user.setPermDemande(req.w,req.j,req.h,req.group,req.nb))
@@ -217,7 +217,7 @@ module.exports = class funcSocket{
     }
 
     static delMyDemandePerm(socket,user){
-        socket.on("delMyDemandePerm", async req => {console.log('top');
+        socket.on("delMyDemandePerm", async req => {
             try{
                 if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
                     await user.delPermDemande(req.w,req.j,req.h)
@@ -263,7 +263,7 @@ module.exports = class funcSocket{
 
 
     static m1(socket,user){
-        socket.on("my msgs", async req => {console.log('top');
+        socket.on("my msgs", async req => {
             try{
                 socket.emit("my msgs",await user.getAllMessages())
             }catch(e){console.error(e);console.log('b23');}
@@ -271,7 +271,7 @@ module.exports = class funcSocket{
     }
 
     static m2(socket,user){
-        socket.on("msg lu", async req => {console.log('top');
+        socket.on("msg lu", async req => {
             try{
                 user.messageLu(req)
                 socket.emit("msg lu",'ok')
@@ -280,7 +280,7 @@ module.exports = class funcSocket{
     }
 
     static m3(socket,user){
-        socket.on("add msg", async req => {console.log('top');
+        socket.on("add msg", async req => {
             try{
                 funcDB.addMessage(user.uuid,"admin",false,req.texte,req.title,hashHour())
                 socket.emit("add msg",'ok')
@@ -289,7 +289,7 @@ module.exports = class funcSocket{
     }
 
     static m4(socket,user){
-        socket.on("rep sondage", async req => {console.log('top');
+        socket.on("rep sondage", async req => {
             try{
                 user.sondage_reponse(req.id,req.rep)
                 socket.emit("rep sondage",'ok')
