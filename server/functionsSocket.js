@@ -8,8 +8,8 @@ module.exports = class funcSocket{
       db=newdb;
     }
 
-    static id_data(socket,user){console.log('top');
-        socket.on('id_data', async req => {
+    static id_data(socket,user){
+        socket.on('id_data', async req => {console.log('top');
             try{
                 let id_data = await user.all
                 if(id_data==null){
@@ -20,8 +20,8 @@ module.exports = class funcSocket{
         });
     }
 
-    static score(socket,user){console.log('top');
-        socket.on('score', async req => {
+    static score(socket,user){
+        socket.on('score', async req => {console.log('top');
             try{
                 let score = await user.score
                 if(score==null) score=-500
@@ -30,24 +30,24 @@ module.exports = class funcSocket{
         });    
     }
 
-    static historiquePoints(socket,user){console.log('top');
-        socket.on('historiquePoints', async req => {
+    static historiquePoints(socket,user){
+        socket.on('historiquePoints', async req => {console.log('top');
             try{
                 socket.emit('historiquePoints',await user.listPoint)
             }catch(e){console.error(e);console.log('b3');}
         });    
     }
 
-    static getMenuThisWeek(socket,user){console.log('top');
-        socket.on('getMenuThisWeek', async req => {
+    static getMenuThisWeek(socket,user){
+        socket.on('getMenuThisWeek', async req => {console.log('top');
             try{
                 socket.emit('getMenuThisWeek',await funcDB.getMidiMenu(req))
             }catch(e){console.error(e);console.log('b4');}
         }); 
     }
 
-    static getDataThisCreneau(socket,user){console.log('top');
-        socket.on('getDataThisCreneau', async req => {
+    static getDataThisCreneau(socket,user){
+        socket.on('getDataThisCreneau', async req => {console.log('top');
             try{
                 let info = await funcDB.getMidiInfo(req.w,req.j*2+req.h)
                 socket.emit('getDataThisCreneau',info)
@@ -55,7 +55,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static getTuto(socket,user){console.log('top');
+    static getTuto(socket,user){
         socket.on('setTuto', req => {
             try{
                 socket.emit('setTuto',user.tuto)
@@ -63,7 +63,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static setTuto(socket,user){console.log('top');
+    static setTuto(socket,user){
         socket.on('setTuto', req => {
             try{
                 user.tuto = req
@@ -72,16 +72,16 @@ module.exports = class funcSocket{
         });
     }
 
-    static getAmis(socket,user){console.log('top');
-        socket.on('getAmis', async req => {
+    static getAmis(socket,user){
+        socket.on('getAmis', async req => {console.log('top');
             try{
                 socket.emit('getAmis',await user.amis)
             }catch(e){console.error(e);console.log('b8');}
         });
     }
 
-    static setAmis(socket,user){console.log('top');
-        socket.on('setAmis', async req => {
+    static setAmis(socket,user){
+        socket.on('setAmis', async req => {console.log('top');
             try{
                 user.amis=req
                 socket.emit('setAmis','ok')
@@ -89,32 +89,32 @@ module.exports = class funcSocket{
         });
     }
 
-    static listUsersName(socket,user){console.log('top');
-        socket.on('listUsersName', async req => {
+    static listUsersName(socket,user){
+        socket.on('listUsersName', async req => {console.log('top');
             try{
                 socket.emit('listUsersName',await User.listUsersName())
             }catch(e){console.error(e);console.log('b10');}
         });
     }
 
-    static getBanderole(socket,user){console.log('top');
-        socket.on('getBanderole', async req => {
+    static getBanderole(socket,user){
+        socket.on('getBanderole', async req => {console.log('top');
             try{
                 socket.emit('getBanderole',await funcDB.getVar('banderole'))
             }catch(e){console.error(e);console.log('b11');}
         });
     }
   
-    static getMyDemande(socket,user){console.log('top');
-        socket.on('getMyDemande', async req => {
+    static getMyDemande(socket,user){
+        socket.on('getMyDemande', async req => {console.log('top');
             try{
                 socket.emit('getMyDemande',await user.getMidiDemande(req.w,req.j*2+req.h))
             }catch(e){console.error(e);console.log('b12');}
         });
     }
 
-    static setMyDemande(socket,user){console.log('top');
-        socket.on('setMyDemande', async req => {
+    static setMyDemande(socket,user){
+        socket.on('setMyDemande', async req => {console.log('top');
             try{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     await user.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,req.sandwich)
@@ -124,8 +124,8 @@ module.exports = class funcSocket{
         });
     }
 
-    static delMyDemande(socket,user){console.log('top');
-        socket.on('delMyDemande', async req => {
+    static delMyDemande(socket,user){
+        socket.on('delMyDemande', async req => {console.log('top');
             try{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     await user.delMidiDemande(req.w,req.j*2+req.h)
@@ -135,8 +135,8 @@ module.exports = class funcSocket{
         });
     }
 
-    static setAmiDemande(socket,user){console.log('top');
-        socket.on('setAmiDemande', async req => {
+    static setAmiDemande(socket,user){
+        socket.on('setAmiDemande', async req => {console.log('top');
             try{
                 let listAmisBrut = await user.amis
                 let hasPermission=false
@@ -154,8 +154,8 @@ module.exports = class funcSocket{
         });
     }
 
-    static delAmiDemande(socket,user){console.log('top');
-        socket.on('delAmiDemande', async req => {
+    static delAmiDemande(socket,user){
+        socket.on('delAmiDemande', async req => {console.log('top');
             try{
                 let listAmisBrut = await user.amis
                 let hasPermission=false
@@ -173,40 +173,40 @@ module.exports = class funcSocket{
         });
     }
 
-    static listDemandes(socket,user){console.log('top');
-        socket.on('listDemandes', async req => {
+    static listDemandes(socket,user){
+        socket.on('listDemandes', async req => {console.log('top');
             try{
                 socket.emit('listDemandes',await funcDB.listMidiDemandes(req.w,req.j*2+req.h))
             }catch(e){console.error(e);console.log('b17');}
         });
     }
 
-    static listDemandesPerm(socket,user){console.log('top');
-        socket.on('listDemandesPerm', async req => {
+    static listDemandesPerm(socket,user){
+        socket.on('listDemandesPerm', async req => {console.log('top');
             try{
                 socket.emit('listDemandesPerm',await funcDB.listPermDemandes(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b18');}
         });
     }
 
-    static getOuvertPerm(socket,user){console.log('top');
-        socket.on("getOuvertPerm", async req => {
+    static getOuvertPerm(socket,user){
+        socket.on("getOuvertPerm", async req => {console.log('top');
             try{
                 socket.emit("getOuvertPerm",await funcDB.getPermOuvert(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b19');}
         });
     }
   
-    static getMyDemandePerm(socket,user){console.log('top');
-        socket.on("getMyDemandePerm", async req => {
+    static getMyDemandePerm(socket,user){
+        socket.on("getMyDemandePerm", async req => {console.log('top');
             try{
                 socket.emit("getMyDemandePerm",await user.getPermDemande(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b20');}
         });
     }
 
-    static setMyDemandePerm(socket,user){console.log('top');
-        socket.on("setMyDemandePerm", async req => {
+    static setMyDemandePerm(socket,user){
+        socket.on("setMyDemandePerm", async req => {console.log('top');
             try{
                 if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
                     await socket.emit("setMyDemandePerm",await user.setPermDemande(req.w,req.j,req.h,req.group,req.nb))
@@ -216,8 +216,8 @@ module.exports = class funcSocket{
         });
     }
 
-    static delMyDemandePerm(socket,user){console.log('top');
-        socket.on("delMyDemandePerm", async req => {
+    static delMyDemandePerm(socket,user){
+        socket.on("delMyDemandePerm", async req => {console.log('top');
             try{
                 if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
                     await user.delPermDemande(req.w,req.j,req.h)
@@ -262,16 +262,16 @@ module.exports = class funcSocket{
 
 
 
-    static m1(socket,user){console.log('top');
-        socket.on("my msgs", async req => {
+    static m1(socket,user){
+        socket.on("my msgs", async req => {console.log('top');
             try{
                 socket.emit("my msgs",await user.getAllMessages())
             }catch(e){console.error(e);console.log('b23');}
         });
     }
 
-    static m2(socket,user){console.log('top');
-        socket.on("msg lu", async req => {
+    static m2(socket,user){
+        socket.on("msg lu", async req => {console.log('top');
             try{
                 user.messageLu(req)
                 socket.emit("msg lu",'ok')
@@ -279,8 +279,8 @@ module.exports = class funcSocket{
         });
     }
 
-    static m3(socket,user){console.log('top');
-        socket.on("add msg", async req => {
+    static m3(socket,user){
+        socket.on("add msg", async req => {console.log('top');
             try{
                 funcDB.addMessage(user.uuid,"admin",false,req.texte,req.title,hashHour())
                 socket.emit("add msg",'ok')
@@ -288,8 +288,8 @@ module.exports = class funcSocket{
         });
     }
 
-    static m4(socket,user){console.log('top');
-        socket.on("rep sondage", async req => {
+    static m4(socket,user){
+        socket.on("rep sondage", async req => {console.log('top');
             try{
                 user.sondage_reponse(req.id,req.rep)
                 socket.emit("rep sondage",'ok')
