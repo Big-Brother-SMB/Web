@@ -8,7 +8,7 @@ module.exports = class funcSocket{
       db=newdb;
     }
 
-    static id_data(socket,user){
+    static id_data(socket,user){console.log('top');
         socket.on('id_data', async req => {
             try{
                 let id_data = await user.all
@@ -20,7 +20,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static score(socket,user){
+    static score(socket,user){console.log('top');
         socket.on('score', async req => {
             try{
                 let score = await user.score
@@ -30,7 +30,7 @@ module.exports = class funcSocket{
         });    
     }
 
-    static historiquePoints(socket,user){
+    static historiquePoints(socket,user){console.log('top');
         socket.on('historiquePoints', async req => {
             try{
                 socket.emit('historiquePoints',await user.listPoint)
@@ -38,7 +38,7 @@ module.exports = class funcSocket{
         });    
     }
 
-    static getMenuThisWeek(socket,user){
+    static getMenuThisWeek(socket,user){console.log('top');
         socket.on('getMenuThisWeek', async req => {
             try{
                 socket.emit('getMenuThisWeek',await funcDB.getMidiMenu(req))
@@ -46,7 +46,7 @@ module.exports = class funcSocket{
         }); 
     }
 
-    static getDataThisCreneau(socket,user){
+    static getDataThisCreneau(socket,user){console.log('top');
         socket.on('getDataThisCreneau', async req => {
             try{
                 let info = await funcDB.getMidiInfo(req.w,req.j*2+req.h)
@@ -55,7 +55,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static getTuto(socket,user){
+    static getTuto(socket,user){console.log('top');
         socket.on('setTuto', req => {
             try{
                 socket.emit('setTuto',user.tuto)
@@ -63,7 +63,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static setTuto(socket,user){
+    static setTuto(socket,user){console.log('top');
         socket.on('setTuto', req => {
             try{
                 user.tuto = req
@@ -72,7 +72,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static getAmis(socket,user){
+    static getAmis(socket,user){console.log('top');
         socket.on('getAmis', async req => {
             try{
                 socket.emit('getAmis',await user.amis)
@@ -80,7 +80,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static setAmis(socket,user){
+    static setAmis(socket,user){console.log('top');
         socket.on('setAmis', async req => {
             try{
                 user.amis=req
@@ -89,7 +89,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static listUsersName(socket,user){
+    static listUsersName(socket,user){console.log('top');
         socket.on('listUsersName', async req => {
             try{
                 socket.emit('listUsersName',await User.listUsersName())
@@ -97,7 +97,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static getBanderole(socket,user){
+    static getBanderole(socket,user){console.log('top');
         socket.on('getBanderole', async req => {
             try{
                 socket.emit('getBanderole',await funcDB.getVar('banderole'))
@@ -105,7 +105,7 @@ module.exports = class funcSocket{
         });
     }
   
-    static getMyDemande(socket,user){
+    static getMyDemande(socket,user){console.log('top');
         socket.on('getMyDemande', async req => {
             try{
                 socket.emit('getMyDemande',await user.getMidiDemande(req.w,req.j*2+req.h))
@@ -113,7 +113,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static setMyDemande(socket,user){
+    static setMyDemande(socket,user){console.log('top');
         socket.on('setMyDemande', async req => {
             try{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
@@ -124,7 +124,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static delMyDemande(socket,user){
+    static delMyDemande(socket,user){console.log('top');
         socket.on('delMyDemande', async req => {
             try{
                 if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
@@ -135,7 +135,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static setAmiDemande(socket,user){
+    static setAmiDemande(socket,user){console.log('top');
         socket.on('setAmiDemande', async req => {
             try{
                 let listAmisBrut = await user.amis
@@ -154,7 +154,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static delAmiDemande(socket,user){
+    static delAmiDemande(socket,user){console.log('top');
         socket.on('delAmiDemande', async req => {
             try{
                 let listAmisBrut = await user.amis
@@ -173,7 +173,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static listDemandes(socket,user){
+    static listDemandes(socket,user){console.log('top');
         socket.on('listDemandes', async req => {
             try{
                 socket.emit('listDemandes',await funcDB.listMidiDemandes(req.w,req.j*2+req.h))
@@ -181,7 +181,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static listDemandesPerm(socket,user){
+    static listDemandesPerm(socket,user){console.log('top');
         socket.on('listDemandesPerm', async req => {
             try{
                 socket.emit('listDemandesPerm',await funcDB.listPermDemandes(req.w,req.j,req.h))
@@ -189,7 +189,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static getOuvertPerm(socket,user){
+    static getOuvertPerm(socket,user){console.log('top');
         socket.on("getOuvertPerm", async req => {
             try{
                 socket.emit("getOuvertPerm",await funcDB.getPermOuvert(req.w,req.j,req.h))
@@ -197,7 +197,7 @@ module.exports = class funcSocket{
         });
     }
   
-    static getMyDemandePerm(socket,user){
+    static getMyDemandePerm(socket,user){console.log('top');
         socket.on("getMyDemandePerm", async req => {
             try{
                 socket.emit("getMyDemandePerm",await user.getPermDemande(req.w,req.j,req.h))
@@ -205,7 +205,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static setMyDemandePerm(socket,user){
+    static setMyDemandePerm(socket,user){console.log('top');
         socket.on("setMyDemandePerm", async req => {
             try{
                 if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
@@ -216,7 +216,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static delMyDemandePerm(socket,user){
+    static delMyDemandePerm(socket,user){console.log('top');
         socket.on("delMyDemandePerm", async req => {
             try{
                 if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
@@ -262,7 +262,7 @@ module.exports = class funcSocket{
 
 
 
-    static m1(socket,user){
+    static m1(socket,user){console.log('top');
         socket.on("my msgs", async req => {
             try{
                 socket.emit("my msgs",await user.getAllMessages())
@@ -270,7 +270,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static m2(socket,user){
+    static m2(socket,user){console.log('top');
         socket.on("msg lu", async req => {
             try{
                 user.messageLu(req)
@@ -279,7 +279,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static m3(socket,user){
+    static m3(socket,user){console.log('top');
         socket.on("add msg", async req => {
             try{
                 funcDB.addMessage(user.uuid,"admin",false,req.texte,req.title,hashHour())
@@ -288,7 +288,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static m4(socket,user){
+    static m4(socket,user){console.log('top');
         socket.on("rep sondage", async req => {
             try{
                 user.sondage_reponse(req.id,req.rep)
