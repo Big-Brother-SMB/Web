@@ -1,4 +1,8 @@
 module.exports = (db)=>{
+    //pragma
+    db.run("PRAGMA synchronous = NORMAL")
+    //db.run("PRAGMA journal_mode  = WAL")
+
     //var
     db.get("SELECT * FROM sqlite_master where type='table' AND name='var'", (err, data) => {
       if(data==undefined)
