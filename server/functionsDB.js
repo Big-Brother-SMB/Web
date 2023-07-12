@@ -17,7 +17,7 @@ module.exports = class funcDB{
             }
             })
         }catch(e){console.error(e);console.log('a1');;resolve(null)}
-        setTimeout(reject,1000)
+        setTimeout(reject,10000)
     })
   }
   static setVar(key,value){
@@ -43,7 +43,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a2');;resolve(null)}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static setPermOuvert(semaine,day,creneau,ouvert){
@@ -66,7 +66,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a3');;resolve([])}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static setPermInscrit(semaine,day,creneau,groups){
@@ -89,7 +89,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a4');;resolve({})}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static setMidiMenu(semaine,menu){
@@ -119,7 +119,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a5');;resolve({prio:[]})}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio){
@@ -157,7 +157,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a6');;resolve([])}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   
@@ -183,7 +183,7 @@ module.exports = class funcDB{
             resolve(list)
         }catch(e){console.error(e);console.log('a7');;resolve([])}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   
@@ -200,7 +200,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a8');;resolve([])}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static setGroup(list){
@@ -222,7 +222,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a9');;resolve(null)}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static setClasse(list){
@@ -266,7 +266,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a10');;resolve(null)}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static delSondage(id){
@@ -311,7 +311,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a11');;resolve(null)}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static delNews(id){
@@ -338,7 +338,7 @@ module.exports = class funcDB{
           }
         }catch(e){console.error(e);console.log('a12');;resolve(null)}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
   static delMessage(id){
@@ -389,7 +389,7 @@ module.exports = class funcDB{
               })
           }catch(e){console.error(e);console.log('a15');;resolve(null)}
       })
-      setTimeout(reject,1000)
+      setTimeout(reject,10000)
     })
   }
 }
