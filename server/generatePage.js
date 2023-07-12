@@ -52,7 +52,7 @@ module.exports = async(req_url) => {
         .replace('{{MAIN}}',main.toString())
     }
   }catch(e){
-    console.error(e)
+    console.error(e);console.log('c1');
     fichier = await readFileAsync(sources_url+'/share/404.html',READ_OPTIONS)
     err404=true
   }

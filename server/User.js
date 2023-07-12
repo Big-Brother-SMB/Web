@@ -22,10 +22,10 @@ module.exports = class User{
                     }else{
                         resolve(null)
                     }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){console.error(e);console.log('d1');;resolve(null)}
             })
             setTimeout(reject,1000)
-          } catch (e) {console.error(e)}
+          } catch (e) {console.error(e);console.log('d2');}
         })
     }
       //user et  plus
@@ -51,10 +51,10 @@ module.exports = class User{
                         db.run("UPDATE users SET picture=? where email=?", [picture,email])
                     }
                     resolve(new User(uuid))
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){console.error(e);console.log('d3');;resolve(null)}
             })
             setTimeout(reject,1000)
-          } catch (e) {console.error(e)}
+          } catch (e) {console.error(e);console.log('d4');}
         })
     }
 
@@ -66,7 +66,7 @@ module.exports = class User{
             let date = hashHour()
             db.run("INSERT INTO token(token,uuid,creation,last_use) VALUES(?,?,?,?)", [tokenAuth,uuid,date,date])
             resolve(tokenAuth)
-          } catch (e) {console.error(e)}
+          } catch (e) {console.error(e);console.log('d5');}
         })
       }
     static searchToken(token){
@@ -80,10 +80,10 @@ module.exports = class User{
               }else{
                 resolve(new User(null))
               }
-            }catch(e){console.error(e);resolve(null)}
+            }catch(e){console.error(e);console.log('d6');;resolve(null)}
           })
           setTimeout(reject,1000)
-          } catch (e) {console.error(e)}
+          } catch (e) {console.error(e);console.log('d7');}
         })
       }
 
@@ -97,10 +97,10 @@ module.exports = class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){console.error(e);resolve([])}
+                }catch(e){console.error(e);console.log('d8');;resolve([])}
             })
             setTimeout(reject,1000)
-          } catch (e) {console.error(e)}
+          } catch (e) {console.error(e);console.log('d9');}
         })
     }
 
@@ -118,10 +118,10 @@ module.exports = class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){console.error(e);resolve([])}
+              }catch(e){console.error(e);console.log('d10');;resolve([])}
           })
           setTimeout(reject,1000)
-        } catch (e) {console.error(e)}
+        } catch (e) {console.error(e);console.log('d11');}
       })
     }
 
@@ -137,7 +137,7 @@ module.exports = class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){console.error(e);resolve([])}
+              }catch(e){console.error(e);console.log('d12');;resolve([])}
           })
           setTimeout(reject,1000)
       })
@@ -153,7 +153,7 @@ module.exports = class User{
                   }else{
                     resolve(null)
                   }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){console.error(e);console.log('d13');;resolve(null)}
             })
             setTimeout(reject,1000)
         })
@@ -179,7 +179,7 @@ module.exports = class User{
                     }else{
                         resolve(null)
                     }
-                }catch(e){console.error(e);resolve(null)}
+                }catch(e){console.error(e);console.log('d14');;resolve(null)}
             })
             setTimeout(reject,1000)
         })
@@ -261,7 +261,7 @@ module.exports = class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){console.error(e);resolve([])}
+                }catch(e){console.error(e);console.log('d15');;resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -290,7 +290,7 @@ module.exports = class User{
                     }else{
                         resolve([])
                     }
-                }catch(e){console.error(e);resolve([])}
+                }catch(e){console.error(e);console.log('d16');;resolve([])}
             })
             setTimeout(reject,1000)
         })
@@ -324,7 +324,7 @@ module.exports = class User{
             }else{
               resolve({})
             }
-          }catch(e){console.error(e);resolve({})}
+          }catch(e){console.error(e);console.log('d17');;resolve({})}
         })
         setTimeout(reject,1000)
       })
@@ -367,7 +367,7 @@ module.exports = class User{
             }else{
               resolve({})
             }
-          }catch(e){console.error(e);resolve({})}
+          }catch(e){console.error(e);console.log('d18');;resolve({})}
         })
         setTimeout(reject,1000)
       })
@@ -440,11 +440,11 @@ module.exports = class User{
                               }
                             }
                             resolve(lists)
-                        }catch(e){console.error(e);resolve([])}
+                        }catch(e){console.error(e);console.log('d19');;resolve([])}
                       })
-                  }catch(e){console.error(e);resolve([])}
+                  }catch(e){console.error(e);console.log('d20');;resolve([])}
                 })
-            }catch(e){console.error(e);resolve([])}
+            }catch(e){console.error(e);console.log('d21');;resolve([])}
         })
         setTimeout(reject,1000)
       })
@@ -496,11 +496,11 @@ module.exports = class User{
                                 }
                             }
                             resolve(score)
-                        }catch(e){console.error(e);resolve(null)}
+                        }catch(e){console.error(e);console.log('d22');;resolve(null)}
                       })
-                  }catch(e){console.error(e);resolve(null)}
+                  }catch(e){console.error(e);console.log('d23');;resolve(null)}
                 })
-            }catch(e){console.error(e);resolve(null)}
+            }catch(e){console.error(e);console.log('d24');;resolve(null)}
         })
         setTimeout(reject,1000)
       })
@@ -547,11 +547,11 @@ module.exports = class User{
                                 }
                             }
                             resolve(msg)
-                        }catch(e){console.error(e);resolve(null)}
+                        }catch(e){console.error(e);console.log('d25');;resolve(null)}
                       })
-                  }catch(e){console.error(e);resolve(null)}
+                  }catch(e){console.error(e);console.log('d26');;resolve(null)}
                 })
-            }catch(e){console.error(e);resolve(null)}
+            }catch(e){console.error(e);console.log('d27');;resolve(null)}
         })
         setTimeout(reject,1000)
       })

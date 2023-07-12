@@ -16,7 +16,7 @@ module.exports = class funcSocket{
                     id_data="err"
                 }
                 socket.emit('id_data',id_data)
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b1');}
         });
     }
 
@@ -26,7 +26,7 @@ module.exports = class funcSocket{
                 let score = await user.score
                 if(score==null) score=-500
                 socket.emit('score',score)
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b2');}
         });    
     }
 
@@ -34,7 +34,7 @@ module.exports = class funcSocket{
         socket.on('historiquePoints', async req => {
             try{
                 socket.emit('historiquePoints',await user.listPoint)
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b3');}
         });    
     }
 
@@ -42,7 +42,7 @@ module.exports = class funcSocket{
         socket.on('getMenuThisWeek', async req => {
             try{
                 socket.emit('getMenuThisWeek',await funcDB.getMidiMenu(req))
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b4');}
         }); 
     }
 
@@ -51,7 +51,7 @@ module.exports = class funcSocket{
             try{
                 let info = await funcDB.getMidiInfo(req.w,req.j*2+req.h)
                 socket.emit('getDataThisCreneau',info)
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b5');}
         });
     }
 
@@ -59,7 +59,7 @@ module.exports = class funcSocket{
         socket.on('setTuto', req => {
             try{
                 socket.emit('setTuto',user.tuto)
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b6');}
         });
     }
 
@@ -68,7 +68,7 @@ module.exports = class funcSocket{
             try{
                 user.tuto = req
                 socket.emit('setTuto','ok')
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b7');}
         });
     }
 
@@ -76,7 +76,7 @@ module.exports = class funcSocket{
         socket.on('getAmis', async req => {
             try{
                 socket.emit('getAmis',await user.amis)
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b8');}
         });
     }
 
@@ -85,7 +85,7 @@ module.exports = class funcSocket{
             try{
                 user.amis=req
                 socket.emit('setAmis','ok')
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b9');}
         });
     }
 
@@ -93,7 +93,7 @@ module.exports = class funcSocket{
         socket.on('listUsersName', async req => {
             try{
                 socket.emit('listUsersName',await User.listUsersName())
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b10');}
         });
     }
 
@@ -101,7 +101,7 @@ module.exports = class funcSocket{
         socket.on('getBanderole', async req => {
             try{
                 socket.emit('getBanderole',await funcDB.getVar('banderole'))
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b11');}
         });
     }
   
@@ -109,7 +109,7 @@ module.exports = class funcSocket{
         socket.on('getMyDemande', async req => {
             try{
                 socket.emit('getMyDemande',await user.getMidiDemande(req.w,req.j*2+req.h))
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b12');}
         });
     }
 
@@ -120,7 +120,7 @@ module.exports = class funcSocket{
                     await user.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,req.sandwich)
                     socket.emit('setMyDemande',"ok")
                 }
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b13');}
         });
     }
 
@@ -131,7 +131,7 @@ module.exports = class funcSocket{
                     await user.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delMyDemande',"ok")
                 }
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b14');}
         });
     }
 
@@ -150,7 +150,7 @@ module.exports = class funcSocket{
                     await ami.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,null)
                     socket.emit('setAmiDemande',"ok")
                 }
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b15');}
         });
     }
 
@@ -169,7 +169,7 @@ module.exports = class funcSocket{
                     await ami.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delAmiDemande',"ok")
                 }
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b16');}
         });
     }
 
@@ -177,7 +177,7 @@ module.exports = class funcSocket{
         socket.on('listDemandes', async req => {
             try{
                 socket.emit('listDemandes',await funcDB.listMidiDemandes(req.w,req.j*2+req.h))
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b17');}
         });
     }
 
@@ -185,7 +185,7 @@ module.exports = class funcSocket{
         socket.on('listDemandesPerm', async req => {
             try{
                 socket.emit('listDemandesPerm',await funcDB.listPermDemandes(req.w,req.j,req.h))
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b18');}
         });
     }
 
@@ -193,7 +193,7 @@ module.exports = class funcSocket{
         socket.on("getOuvertPerm", async req => {
             try{
                 socket.emit("getOuvertPerm",await funcDB.getPermOuvert(req.w,req.j,req.h))
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b19');}
         });
     }
   
@@ -201,7 +201,7 @@ module.exports = class funcSocket{
         socket.on("getMyDemandePerm", async req => {
             try{
                 socket.emit("getMyDemandePerm",await user.getPermDemande(req.w,req.j,req.h))
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b20');}
         });
     }
 
@@ -212,7 +212,7 @@ module.exports = class funcSocket{
                     await socket.emit("setMyDemandePerm",await user.setPermDemande(req.w,req.j,req.h,req.group,req.nb))
                     socket.emit('setMyDemandePerm',"ok")
                 }
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b21');}
         });
     }
 
@@ -223,7 +223,7 @@ module.exports = class funcSocket{
                     await user.delPermDemande(req.w,req.j,req.h)
                     socket.emit('delMyDemandePerm',"ok")
                 }
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b22');}
         });
     }
 
@@ -266,7 +266,7 @@ module.exports = class funcSocket{
         socket.on("my msgs", async req => {
             try{
                 socket.emit("my msgs",await user.getAllMessages())
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b23');}
         });
     }
 
@@ -275,7 +275,7 @@ module.exports = class funcSocket{
             try{
                 user.messageLu(req)
                 socket.emit("msg lu",'ok')
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b24');}
         });
     }
 
@@ -284,7 +284,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.addMessage(user.uuid,"admin",false,req.texte,req.title,hashHour())
                 socket.emit("add msg",'ok')
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b25');}
         });
     }
 
@@ -293,7 +293,7 @@ module.exports = class funcSocket{
             try{
                 user.sondage_reponse(req.id,req.rep)
                 socket.emit("rep sondage",'ok')
-            }catch(e){console.error(e)}
+            }catch(e){console.error(e);console.log('b26');}
         });
     }
 }
