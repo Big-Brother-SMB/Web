@@ -1,6 +1,6 @@
 module.exports = (db)=>{
     //pragma
-    db.run("PRAGMA synchronous = NORMAL")
+    db.run("PRAGMA synchronous = OFF")
     //db.run("PRAGMA journal_mode  = WAL")
 
     //var

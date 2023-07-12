@@ -99,7 +99,7 @@ header{
   top: 0px;
   bottom: 0px;
   position: absolute;
-  z-index: 1;
+  z-index: 50;
   background: linear-gradient(#4c5f33 50%,#92b164);
   overflow-x: hidden;
   transition: 0.5s;
