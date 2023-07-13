@@ -1,0 +1,37 @@
+@media screen and (min-width: 1000px) {
+    .case{
+        width: 12%;
+        height: 150px;
+    }
+      
+    .case.heure{
+        height: 2.5em;
+    }
+}  
+
+@media screen and (max-width: 1000px) {
+    #menuSemaine{
+      margin: 0.5em;
+    }
+    #creneaudiv{
+      display: flex;
+    }
+    #creneaudiv div{
+        width: 17.5%;
+    }
+    #creneaudiv div *{
+      display: block;
+    }
+    .case{
+        height: 170px;
+        width: 99%;
+    }
+
+    div.heure{
+        width: 12% !important;
+    }
+      
+    .case.jour{
+        height: 2.5em;
+    }
+}

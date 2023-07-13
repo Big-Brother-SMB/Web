@@ -67,7 +67,7 @@ header{
 /*---------------------main--------------------------*/
 #main{
   min-height: calc(50px * 13 + 18px * 2 + 25px);
-  padding-top: 1em;
+  padding: 1em;
   text-align: center;
 }
 
@@ -399,8 +399,6 @@ header{
 .case {
   cursor : pointer;
   padding: 5px 5px;
-  width: 25%;
-  height: 230px;
   border-radius: 12px;
   margin: 2px;
   font-size: 1.5em;
@@ -419,13 +417,11 @@ header{
 }
 
 .case.heure{
-  height: 2.5em;
   background-color: #004155;
   color: white;
 }
 
 .case.jour{
-  width: 15%;
   background-color: #019ccd;
   color: white;
 }
@@ -467,39 +463,6 @@ vert{
   color: green;
 }
 
-@media screen and (min-width: 1000px) {
-  #menuSemaine{
-    margin: 0.5em;
-  }
-
-  #creneaudiv{
-    display: flex;
-  }
-  #creneaudiv :first-child{
-    width: 12%;
-  }
-  #creneaudiv div :first-child{
-    width: 99%;
-  }
-  #creneaudiv div{
-    width: 22%;
-  }
-  #creneaudiv div *{
-    display: block;
-  }
-  .case{
-    width: 99%;
-    height: 270px;
-  }
-  .case.heure{
-    width: 99%;
-    height: 270px;
-  }
-  .case.jour{
-    width: 99%;
-    height: 2.5em;
-  }
-}
 
 /*------------------------------demande--------------------------------*/
 
@@ -514,7 +477,7 @@ vert{
   width:90%;
   text-align: center;
 }
-.listAmis{
+.listAmis,.listDemandes{
   height:500px;
   width:90%;
   border:solid 2px rgb(38, 61, 92);
@@ -631,10 +594,14 @@ input[type="radio"]{
   background-color: #4c5f33;
 }
 
-input[type="text"] {
+input[type="text"],input[type="number"]{
   font-size: 40px;
   width: 50%;
   height: 1.5em;
+  border-radius: 15px;
+}
+input[type="number"]{
+  width: 150px;
 }
 
 /*-----------------------auto-complete---------------------*/
