@@ -246,7 +246,7 @@ export class common{
     //---------------------------securité page admin + deco + tuto---------------------------
 
 
-    if(this.admin>0 && this.socketAdmin==null){
+    if(this.admin>0 && (this.socketAdmin==undefined || this.socketAdmin==undefined)){
       this.socketAdmin = io("/admin",{
         auth: {
           token: this.key
