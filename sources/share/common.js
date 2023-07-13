@@ -267,7 +267,6 @@ export class common{
 
     if(this.admin > 0){
       let bnt = document.getElementById("nav_bnt_admin")
-      console.log(bnt)
       if(bnt){
         bnt.classList.remove("cache")
       }
@@ -386,7 +385,7 @@ export class common{
                 setTimeout(reject,time)
             })
         } else {
-            console.log('err')
+            console.log('error: admin = 0')
             return null
         }
   }
@@ -524,7 +523,7 @@ export class common{
       }
       document.getElementById("css").href = name;
     }catch(Exception){
-      console.log("error with color mode")
+      console.log(Exception)
     }
   }
   

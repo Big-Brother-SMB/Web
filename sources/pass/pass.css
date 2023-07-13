@@ -1,0 +1,49 @@
+
+.generer {
+  border-radius: 8px 8px 8px 8px;
+  background-color: #3d546e;
+  margin: 10px;
+  margin-bottom: 0px;
+  width: 20%;
+}
+.generer:hover {
+  background: #2e3f53;
+}
+
+
+button {
+  border: none;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+
+  font-weight: 600;
+  font-size: 20px;
+  background-color: grey;
+  padding: 15px 50px;
+}
+#main p {
+  text-align: center;
+  font-size: 5em !important;
+  margin:5px;
+  margin-top: 30px;
+}
+
+.pass {
+  width: 40%;
+}
+.barcode {
+  width: 80%;
+}
+
+#code{
+  font-size: 200px;
+  margin: 0px;
+}
+
+
+#qr-reader,#pass{
+  margin: 0 auto;
+  border-radius: 3px;
+}
