@@ -265,10 +265,16 @@ export class common{
       }
     }
 
-
-    if(this.admin==2){
+    if(this.admin > 0){
+      let bnt = document.getElementById("nav_bnt_admin")
+      console.log(bnt)
+      if(bnt){
+        bnt.classList.remove("cache")
+      }
+    }
+    if(this.admin == 2){
       if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("options")){
-        window.location.href = window.location.origin + "/admin"
+        window.location.href = window.location.origin + "/admin/admin"
       }
     } else if(this.admin==0){
       if(window.location.pathname.includes("admin")){

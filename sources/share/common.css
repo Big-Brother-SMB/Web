@@ -64,6 +64,18 @@ header{
   padding: 15px 10px;
 }
 
+/*---------------------main--------------------------*/
+#main{
+  min-height: calc(50px * 13 + 18px * 2 + 25px);
+  padding-top: 1em;
+}
+
+#main p{
+  font-size: 40px;
+  font-family: system-ui;
+  text-align: center;
+}
+
 /*----------------------------banderole------------------*/
 .marquee-rtl{
   display: none;
@@ -99,9 +111,6 @@ header{
 }
 
 /*-----------------side navbar----------------*/
-.cache{
-  display: none;
-}
 
 #mySidenav{
   top: 0px;
@@ -120,7 +129,7 @@ header{
   background: linear-gradient(#750c0c 50%,#cc3737);
 }
 #mySidenav.asso{
-  background-color: lightblue;
+  background: linear-gradient(#0c6075 50%,#37c2cc);
 }
 
 #mySidenav a{
@@ -240,19 +249,6 @@ header{
   position: relative;
   width: 100%;
   min-height: calc(var(--screenH));
-}
-
-/*---------------------main--------------------------*/
-#main{
-  min-height: calc(50px * 13 + 18px * 2 + 25px);
-  padding-top: 1em;
-  padding: 1em;
-}
-
-#main p{
-  font-size: 40px;
-  font-family: system-ui;
-  text-align: center;
 }
 
 
@@ -542,6 +538,7 @@ vert{
 
 #DIVdepot,#DIVmodif,#DIVinscrit,#sandwich{
   text-align: center;
+  display: none;
 }
 #sandwich{
   margin-left: auto;
@@ -590,9 +587,6 @@ input[type="radio"]{
 .bnt.list{
   width: 50%;
   margin-bottom: 15px;
-}
-#DIVdepot,#DIVmodif,#DIVinscrit{
-  display: none;
 }
 
 
@@ -787,8 +781,10 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-
-
+/*---------cache---------*/
+.cache{
+  display: none !important;
+}
 /*input,select{
   text-align: center;
   border-radius:10px;

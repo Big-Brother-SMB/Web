@@ -155,7 +155,7 @@ async function connect(id_data){
   if(id_data!='err'){
     writeCookie("key",id_data.key)
     if(id_data.admin==2){
-      window.location.href = "/admin/accueil";
+      window.location.href = "/admin/menu";
     } else {
       window.location.href = "/accueil";
     }
