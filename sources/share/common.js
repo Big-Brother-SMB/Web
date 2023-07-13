@@ -70,7 +70,10 @@ export class common{
     if(typeSideBar!="admin" && typeSideBar!="asso"){
       typeSideBar="user"
     }
-    document.getElementById("mySidenav").className=typeSideBar
+    document.getElementById("mySidenav").classList.remove("user")
+    document.getElementById("mySidenav").classList.remove("admin")
+    document.getElementById("mySidenav").classList.remove("asso")
+    document.getElementById("mySidenav").classList.add(typeSideBar)
     await this.readFileHTMLPath('mySidenav','/share/'+ typeSideBar +'_sidebar.html')
 
     window.history.pushState({url:url},"", url);

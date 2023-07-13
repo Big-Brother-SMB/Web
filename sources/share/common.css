@@ -502,7 +502,6 @@ vert{
 
 #DIVdepot,#DIVmodif,#DIVinscrit,#sandwich{
   text-align: center;
-  display: none;
 }
 #sandwich{
   margin-left: auto;

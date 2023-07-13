@@ -181,7 +181,7 @@ export async function init(common){
         document.querySelectorAll('input[name="sandwich"]')[0].checked=true
         if(Object.keys(my_demande).length === 0){
             //pas encore de demande
-            document.getElementById("DIVdepot").style.display='initial'
+            document.getElementById("DIVdepot").classList.remove("cache")
             const AllAmis = common.readBoolCookie("allAmis")
             if(AllAmis){
                 listeAmisPris=listAmisUUID
@@ -193,17 +193,22 @@ export async function init(common){
                     listeAmisPris=[]
                 }
             }
+            if(true){
+                document.getElementById("sandwich").classList.remove("cache")
+            }
         }else if(my_demande.DorI==1){
             //inscrit
-            document.getElementById("DIVinscrit").style.display='initial'
-            document.getElementById("sandwich").style.display='none'
+            document.getElementById("DIVinscrit").classList.remove("cache")
             listeAmisPris=my_demande.amis
         }else{
             //modif
-            document.getElementById("DIVmodif").style.display='initial'
+            document.getElementById("DIVmodif").classList.remove("cache")
             listeAmisPris=my_demande.amis
             if(my_demande.sandwich==null){my_demande.sandwich=0}
             document.querySelectorAll('input[name="sandwich"]')[my_demande.sandwich].checked=true
+            if(true){
+                document.getElementById("sandwich").classList.remove("cache")
+            }
         }
     }else{
         //n'a pas le droit de posser de demande sur le créneau
