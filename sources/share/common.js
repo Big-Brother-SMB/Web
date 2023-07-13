@@ -258,11 +258,6 @@ export class common{
           resolve(null)
         });
       })
-    }else{
-      if(this.socketAdmin!=undefined){
-        this.socketAdmin.disconnected
-        this.socketAdmin=undefined
-      }
     }
 
     if(this.admin > 0){
