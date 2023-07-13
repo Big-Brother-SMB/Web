@@ -18,7 +18,7 @@ export async function init(common){
     let divDemandes = document.getElementById("demandes")
     
     
-    let listDemandes = await common.socketAsync("listDemandesPerm",[w,j,h])
+    let listDemandes = await common.socketAsync("listDemandesPerm",{w:w,j:j,h:h})
     let listUsers = await common.socketAsync('listUsersName',null)
     
     if(listDemandes.lenght!=0){
@@ -33,7 +33,7 @@ export async function init(common){
             }
         })
         let but = document.createElement("button")
-        but.classList.add("amis")
+        but.classList.add("ami")
         but.innerHTML = child.group2 +  " : " + child.nb +" (" + name + ")"
     
         if(child.uuid == common.uuid){
@@ -55,4 +55,7 @@ export async function init(common){
             common.loadpage("/perm")
         }
     })
+    document.getElementById("non").addEventListener("click", async function() {
+      common.loadpage("/perm")
+  })
 }
