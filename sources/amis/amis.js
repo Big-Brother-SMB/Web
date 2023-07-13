@@ -25,9 +25,8 @@ export async function init(common){
                 listAmis.push(child)
             }
         })
-        console.log(listAmisBrut,listAmisUUID,listAmis)
 
-
+        console.log(listAmis)
 
         divAmis.innerHTML = ""
         listAmis.forEach(child=>{
@@ -40,8 +39,8 @@ export async function init(common){
                 listAmisUUID.splice(listAmisUUID.indexOf(child.uuid),1)
                 listAmis.splice(listAmis.indexOf(child),1)
                 listAmisBrut=[]
-                for(let i=0;i<listAmisUUID.length;i++){
-                    listAmisBrut[i]={uuid:listAmisUUID[i],IgiveProc:1}
+                for(let i=0;i<listAmis.length;i++){
+                    listAmisBrut[i]={uuid:listAmis[i].uuid,IgiveProc:listAmis[i].IgiveProc}
                 }
                 await common.socketAsync('setAmis',listAmisBrut)
                 reload()
@@ -58,10 +57,10 @@ export async function init(common){
             amiProc.innerHTML="<img src='/Images/document.png'></img>"
 
             amiProc.addEventListener("click", async function() {
-                listAmis[listAmis.indexOf(child)].IgiveProc=!listAmis[listAmis.indexOf(child)].IgiveProc
+                child.IgiveProc=!child.IgiveProc
                 listAmisBrut=[]
-                for(let i=0;i<listAmisUUID.length;i++){
-                    listAmisBrut[i]={uuid:listAmisUUID[i],IgiveProc:listAmis[i].IgiveProc}
+                for(let i=0;i<listAmis.length;i++){
+                    listAmisBrut[i]={uuid:listAmis[i].uuid,IgiveProc:listAmis[i].IgiveProc}
                 }
                 await common.socketAsync('setAmis',listAmisBrut)
                 reload()
@@ -94,13 +93,12 @@ export async function init(common){
             let ami = document.getElementById("addAmi").value
             document.getElementById("addAmi").value=''
             if(usersNames.indexOf(ami) != -1){
-                console.log(users[usersNames.indexOf(ami)].uuid)
                 if(listAmisUUID.indexOf(users[usersNames.indexOf(ami)].uuid) == -1){
                     listAmisUUID.push(users[usersNames.indexOf(ami)].uuid)
                     listAmis.push(users[usersNames.indexOf(ami)])
                     listAmisBrut=[]
-                    for(let i=0;i<listAmisUUID.length;i++){
-                        listAmisBrut[i]={uuid:listAmisUUID[i],IgiveProc:listAmis[i].IgiveProc}
+                    for(let i=0;i<listAmis.length;i++){
+                        listAmisBrut[i]={uuid:listAmis[i].uuid,IgiveProc:listAmis[i].IgiveProc}
                     }
                     await common.socketAsync('setAmis',listAmisBrut)
                     reload()
