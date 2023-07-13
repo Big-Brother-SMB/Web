@@ -1,6 +1,3 @@
-const day = ["Lundi", "Mardi","Jeudi","Vendredi"]
-
-// il reste les pop-up à faire + msg
 export async function init(common){
     let week = common.week
     document.getElementById("semainePrecedente").addEventListener("click", function () {
@@ -22,10 +19,6 @@ export async function init(common){
     });
 
     const creneaudiv = document.getElementById("creneaudiv");
-    Date.prototype.getWeek = function () {
-        var onejan = new Date(this.getFullYear(), 0, 1);
-        return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 0) / 7);
-    }
 
 
     let bouton = [];
@@ -46,12 +39,6 @@ export async function init(common){
     let inscrit = []
 
     for (let j = 0; j < 4; j++) {
-        let div = document.createElement("div")
-        let bnt_info = document.createElement("button")
-        bnt_info.className = "case info jour";
-        bnt_info.innerHTML = day[j]
-        div.appendChild(bnt_info);
-
         bouton[j] = []
         placesTotal[j] = []
         places[j] = []
@@ -69,27 +56,19 @@ export async function init(common){
         ouvert[j] = [0, 0]
         cout[j] = [1, 1]
         for (let h = 0; h < 2; h++) {
-            bouton[j][h] = document.createElement("button")
-            bouton[j][h].id = "" + j + h;
+            bouton[j][h] = document.getElementById("" + j + h)
             bouton[j][h].onclick = function () { select(j, h) };
-            bouton[j][h].className = "case default"
-            div.appendChild(bouton[j][h]);
         }
-        creneaudiv.appendChild(div);
-
-        bnt_info = document.createElement("button")
-        bnt_info.className = "case info jour";
-        bnt_info.innerHTML = common.getDayText(j,week)
-        div.appendChild(bnt_info);
+        bouton[j][2] = document.getElementById(j + "2")
     }
 
 
     async function refreshDatabase() {
         let info_menu = await common.socketAsync("getMenuThisWeek",week)
         if (week == common.actualWeek) {
-            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.semaine(week) + ")"
+            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
         } else {
-            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.semaine(week)
+            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
         }
         let menu
         try{
@@ -167,6 +146,12 @@ export async function init(common){
                 }
                 update(j, h);
             }
+
+        let jcorriger=j
+        if(jcorriger>1){
+            jcorriger++;
+        }
+        bouton[j][2].innerHTML = common.getDayText(jcorriger,week)
         }
     }
 

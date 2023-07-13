@@ -11,6 +11,9 @@ const sources_url = `${__dirname}/../sources`;
 
 module.exports = async(req_url) => {
   let pathName = url.parse(req_url).path.split('?')[0];
+
+  console.log(pathName)
+  
   if(pathName === '/'){
     pathName = '/index.html';
   }
@@ -39,17 +42,23 @@ module.exports = async(req_url) => {
         fichier = await readFileAsync(sources_url+pathName,READ_OPTIONS)
       }
     }else if(extName == ''){
-      const [modele,tete,titre,main] = await Promise.all([
-        readFileAsync(sources_url+'/share/model.html'),
+      let typeSideBar=dirName.split("/")[1]
+      if(typeSideBar!="admin" && typeSideBar!="asso"){
+        typeSideBar="user"
+      }
+      const [modele,tete,titre,main,sidebar] = await Promise.all([
+        readFileAsync(sources_url+'/share/model.html',READ_OPTIONS),
         readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.tete.html',READ_OPTIONS),
         readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.titre.html',READ_OPTIONS),
-        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.main.html',READ_OPTIONS)
+        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.main.html',READ_OPTIONS),
+        readFileAsync(sources_url+'/share/'+ typeSideBar +'_sidebar.html',READ_OPTIONS)
       ])
       fichier = modele.toString()
         .replace('{{CSS}}',pathName+'.css')
         .replace('{{EN-TETE}}',tete.toString())
         .replace('{{TITRE}}',titre.toString())
         .replace('{{MAIN}}',main.toString())
+        .replace('{{SIDEBAR}}',sidebar.toString())
     }
   }catch(e){
     console.error(e);console.log('c1');

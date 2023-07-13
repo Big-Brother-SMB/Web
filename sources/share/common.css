@@ -21,6 +21,10 @@ html,body{
   padding: 0;
 }
 
+body.stop{
+  overflow:hidden;
+}
+
 #logo{
   height: 8em;
 }
@@ -95,15 +99,28 @@ header{
 }
 
 /*-----------------side navbar----------------*/
+.cache{
+  display: none;
+}
+
 #mySidenav{
   top: 0px;
   bottom: 0px;
   position: absolute;
   z-index: 50;
-  background: linear-gradient(#4c5f33 50%,#92b164);
   overflow-x: hidden;
   transition: 0.5s;
   float: left;
+}
+
+#mySidenav.user{
+  background: linear-gradient(#4c5f33 50%,#92b164);
+}
+#mySidenav.admin{
+  background: linear-gradient(#750c0c 50%,#cc3737);
+}
+#mySidenav.asso{
+  background-color: lightblue;
 }
 
 #mySidenav a{
@@ -155,6 +172,7 @@ header{
     width: 100vw;
     border-right: #000000 solid 0px;
   }
+
   #mySidenav a p{
     text-align: center;
     width: 100%;
@@ -163,15 +181,18 @@ header{
     margin-right: auto;
     position: relative;
   }
+
   #mySidenav a{
     padding-bottom: 25px;
     padding-top: 25px;
     padding-right: 140px;
   }
+
   .nav_img{
     margin-left: 100px;
     margin-right: 0;
   }
+
   #mySidenav{
     align-content: center;
     height: 0;
@@ -187,6 +208,10 @@ header{
 
   .nav_img{
     height: 2em;
+  }
+
+  #mySidenav.open{
+    height: calc(var(--screenH));
   }
 }
 
@@ -205,6 +230,10 @@ header{
     min-height: calc(var(--screenH));
     width: 80px;
   }
+
+  #mySidenav.open{
+    width: 250px;
+  }
 }
 
 .container{
@@ -215,7 +244,7 @@ header{
 
 /*---------------------main--------------------------*/
 #main{
-  min-height: calc(50px * 13 + 18px * 2 + 15px);
+  min-height: calc(50px * 13 + 18px * 2 + 25px);
   padding-top: 1em;
   padding: 1em;
 }
@@ -322,6 +351,11 @@ header{
   pointer-events: all;
 }
 
+#popup_bnt{
+  text-decoration : none;
+  color :black;
+}
+
 
 /*------------------tableau de réservation-------------*/
 #semaine{
@@ -371,7 +405,7 @@ header{
   width: 25%;
   height: 230px;
   border-radius: 12px;
-  margin:2px 2px;
+  margin: 2px;
   font-size: 1.5em;
   font-family: DejaVu Sans Mono, monospace;
   text-align: center;
@@ -751,10 +785,6 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
-}
-
-#adminP{
-  display: none;
 }
 
 

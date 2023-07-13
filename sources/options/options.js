@@ -31,7 +31,7 @@ export async function init(common){
     let adminS = document.getElementById("admin switch")
 
     if (common.admin==1 || common.admin===2){
-        adminP.style.display="block";
+        adminP.classList.remove("cache")
     }
     adminS.addEventListener("change", function () {
         if(adminS.checked){

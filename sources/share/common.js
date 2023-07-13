@@ -5,27 +5,27 @@ import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 //-----------------------------date----------------------------------
 let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
 
-Date.prototype.getWeekYear = function() {
-    var date = new Date(this.getTime());
-    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-    return date.getFullYear();
-}
 Date.prototype.getWeek = function() {
-  var date = new Date(this.getTime());
-  date.setHours(0, 0, 0, 0);
-  // Thursday in current week decides the year.
-  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-  // January 4 is always in week 1.
-  var week1 = new Date(date.getFullYear(), 0, 4);
-  // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-  return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
-    - 3 + (week1.getDay() + 6) % 7) / 7);
+  let now = new Date(this.getFullYear(), this.getMonth(), this.getDate());
+  let firstSept = new Date(now.getFullYear(), 8, 1);
+
+  if(now.getTime()+7*86400000<firstSept.getTime()){
+    firstSept = new Date(now.getFullYear()-1, 8, 1);
+  }
+
+
+  let diff = now - firstSept
+  //diff en jour
+  diff = diff/86400000
+  //diff en jour, prenant compte du décalage de jour de la semaine
+  diff = diff + firstSept.getDay() - now.getDay()
+  //diff en semaine
+  diff = diff/7
+  return diff+1
 }
+
 const actualWeek = new Date().getWeek();
 let date = new Date();
-
-
-
 
 
 export class common{
@@ -66,6 +66,13 @@ export class common{
 
   static async loadpage(url){
     console.log(url)
+    let typeSideBar = url.split("/")[1]
+    if(typeSideBar!="admin" && typeSideBar!="asso"){
+      typeSideBar="user"
+    }
+    document.getElementById("mySidenav").className=typeSideBar
+    await this.readFileHTMLPath('mySidenav','/share/'+ typeSideBar +'_sidebar.html')
+
     window.history.pushState({url:url},"", url);
     url=url.split('?')[0]
     document.getElementById("css_page").href=url+'.css'
@@ -81,18 +88,37 @@ export class common{
 
   static async readFileHTML(url,idFile,idHTML){
     let path = url+'/'+url.split('/').pop()+'.'+idFile+'.html'
-    const response = await fetch(window.origin+'/auto0'+path);
-    const data = await response.blob();
-    let file = new File([data], "truc.html", {type: data.type || "text/html",})
-    var reader  = new FileReader();
-    reader.readAsText(file);
-    reader.onload = () => {
-        if(!response.ok && idHTML!='main'){
+    await this.readFileHTMLPath(idHTML,path)
+  }
+
+  static async readFileHTMLPath(idHTML,path){
+    await new Promise(async (resolve, reject) => {
+      const response = await fetch(window.origin+'/auto0'+path);
+      const data = await response.blob();
+      let file = new File([data], "truc.html", {type: data.type || "text/html",})
+      var reader  = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => {
+          if(!response.ok && idHTML!='main'){
             document.getElementById(idHTML).innerHTML=''
-        }else{
+          }else{
             document.getElementById(idHTML).innerHTML=reader.result
-        }
-    };
+          }
+          if(idHTML=='mySidenav'){
+            let list_nav_bnt = document.getElementsByClassName('nav_bnt')
+            for (var i = 0; i < list_nav_bnt.length; i++) {
+              const index = i;
+              list_nav_bnt[i].addEventListener('click', async ()=>{
+                document.getElementById('mySidenav').classList.remove("open");
+                document.body.classList.remove("stop");
+                let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+                this.loadpage(url)
+              });
+            }
+          }
+          resolve()
+      };
+    })
   }
 
 
@@ -144,31 +170,27 @@ export class common{
     if(side!=null){
       side.addEventListener("mouseenter",function() {
         if(window.innerWidth>=1000){
-            side.style.width = "250px";
-            document.body.style.overflow = "unset"; 
+            side.classList.add("open");
+            document.body.classList.remove("stop");
         }
       });
 
       side.addEventListener("mouseleave",function() {
         if(window.innerWidth>=1000){
-            side.style.width = "80px";
-            document.body.style.overflow = "unset"; 
+          side.classList.remove("open");
+          document.body.classList.remove("stop");
         }
       });
 
       let btn_menu = document.getElementById("btn_menu")
       btn_menu.addEventListener("click",function() {
-        if(window.innerWidth<1000){
-            if(side.style.height=="0px" || side.style.height==""){
-                side.style.height = "calc(var(--screenH))";
-                side.style.width = "100%";
-                document.body.style.overflow = "hidden";
-                window.scrollTo(0,0);
-            }else{
-                side.style.height = "0";
-                side.style.width = "100%";
-                document.body.style.overflow = "unset";  
-            }
+        if(!side.classList.contains("open")){//
+          side.classList.add("open");
+          document.body.classList.add("stop");
+          window.scrollTo(0,0);
+        }else{
+          side.classList.remove("open");
+          document.body.classList.remove("stop");
         }
       });
 
@@ -178,19 +200,11 @@ export class common{
       for (var i = 0; i < list_nav_bnt.length; i++) {
         const index = i;
         list_nav_bnt[i].addEventListener('click', async ()=>{
-            side.style.height = "0";
-            document.body.style.overflow = "unset";
-            let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
-            this.loadpage(url)
+          side.classList.remove("open");
+          document.body.classList.remove("stop");
+          let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+          this.loadpage(url)
         });
-      }
-
-      verification_navbar()
-      function verification_navbar(){
-        if(window.innerWidth>=1000){
-          side.style.height="unset"
-        }
-        setTimeout(verification_navbar, 1000);
       }
     }
   }
@@ -283,7 +297,6 @@ export class common{
     //--------------------------banderole--------------------------------
 
     let banderole = await common.socketAsync("getBanderole",null)
-    banderole=''
     if (banderole != null && banderole != '') {
       document.getElementById("banderole").innerHTML = banderole
       document.getElementsByClassName("marquee-rtl")[0].style.display = "block"
@@ -394,30 +407,26 @@ export class common{
   }
 
   //---------------------------les fonctions dates---------------------------
-  static getDayText(j,week){
-    this.getDayText(j,week,false)
-  }
 
-  static getDayText(j,week,withMer){
-    let date = new Date();
-    let ajd=date.getDay()-1;
-    let jour = j
-    if(j > 1 && !withMer){
-      jour++
-    }
-    let dateBeg=(Date.now()+604800000*(week - actualWeek))-(ajd-jour)*86400000;
-    dateBeg=new Date(dateBeg);
-    dateBeg = dateBeg.toLocaleString();
-    let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
-    let text = ""
-    if(dateBeg[0] != "0"){
-      text += dateBeg[0]
-    }
-    text += dateBeg[1] + " " + mois[mBeg]
+  //prend en entrer le jour de la semaine (0-4) et le numéro de la semaine
+  //renvoie sous forme (4 juin)
+  static getDayText(jour,week){
+    //différence de semaine en minisecondes depuis aujourd'hui
+    let diff_week_ms = 604800000 * (week - actualWeek)
+    //semaine de la date chercher en minisecondes
+    let dateWeek_ms = Date.now() + diff_week_ms
+    //calcule le nombre de jour à retirer
+    let nbJour = new Date().getDay()-1-jour
+    //calcule la date en ms puis en Date()
+    let date = dateWeek_ms - nbJour * 86400000;
+    date=new Date(date);
+
+    let text = date.getDate() + " " + mois[date.getMonth()]
     return text
   }
 
-  static getDayHash(j,week,h){
+  //renvoie sous forme (2000-07-4 7:00:00)
+  /*static getDayHash(j,week,h){
     let date = new Date();
     let ajd=date.getDay()-1;
     let jour = j
@@ -431,9 +440,10 @@ export class common{
     let text = ""
     text = dateBeg[6]+dateBeg[7]+dateBeg[8]+dateBeg[9] + "-" + mBeg + "-" + dateBeg[0]+dateBeg[1] + " " + h+":00:00"
     return text
-  }
+  }*/
 
-  static semaine(semaine){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer
+  //renvoie sous forme (4 au 11 juin)
+  static intervalSemaine(semaine){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer
     let jour = date.getDay()-1;
     let dateBeg=(Date.now()+604800000*(semaine - actualWeek))-jour*86400000; //86400000ms=1 jour et 604800000ms= 1semaine
     let dateEnd=dateBeg+4*86400000;
@@ -459,27 +469,28 @@ export class common{
     return text
   }
 
-  //---------------------------les fonctions de hash---------------------------
-
+  //renvoie sous forme (07:00:00)
   static getHour(){
     let d = new Date()
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
   }
   
   
-  static hashControl(){
+  /*static hashControl(){
     let d = new Date()
     return (d.getHours() + d.getMinutes() +Math.floor(d.getSeconds()/10))**3 %1000
-  }
+  }*/
   
-  static hashDay(){
+  //renvoie sous forme (2000-6-4)
+  static getDate(){
     let d =  new Date()
     return d.getFullYear()
     + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
     + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
   }
-  
-  static hashHour(){
+
+  //renvoie sous forme (2000-6-4 07:00:00)
+  static getDateHour(){
     let d =  new Date()
     return d.getFullYear()
     + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
@@ -610,7 +621,7 @@ export class common{
   static popUp_Active(titre,body,action){
     document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'
     document.getElementById("popup-body").innerHTML = body
-    document.getElementById("popup-option").innerHTML="<button id='popup_bnt' style='text-decoration : none; color :black;'>OK</button>"
+    document.getElementById("popup-option").innerHTML="<button id='popup_bnt'>OK</button>"
     document.getElementById("popup").classList.add('active')
     document.getElementById("overlay").classList.add('active')
     action(document.getElementById("popup_bnt"))
@@ -623,6 +634,11 @@ export class common{
 }
 
 //démarre le script qui correspond à la page
+let typeSideBar = document.location.pathname.split("/")[1]
+if(typeSideBar!="admin" && typeSideBar!="asso"){
+  typeSideBar="user"
+}
+document.getElementById("mySidenav").className=typeSideBar
 import(document.location.pathname+".js").then(async (module) => {
   await common.startUp()
   await common.reloadCommon()
