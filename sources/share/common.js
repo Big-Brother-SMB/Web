@@ -273,7 +273,7 @@ export class common{
     }
     if(this.admin == 2){
       if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("options")){
-        window.location.href = window.location.origin + "/admin/admin"
+        window.location.href = window.location.origin + "/admin/menu"
       }
     } else if(this.admin==0){
       if(window.location.pathname.includes("admin")){
