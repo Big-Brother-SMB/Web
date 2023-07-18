@@ -1,6 +1,7 @@
 
   #main h2{
-    font-size: 4em;
+    border-radius: 5px;
+    font-size: 3.5em;
     color: white;
     background-color: rgb(60,80,112);
     padding-left: 30px;
@@ -10,12 +11,15 @@
   }
   
   #main h3{
+    border-radius: 5px;
     font-size: 2.5em;
     color : white;
-    background-color: rgb(100,120,152);
+    background-color: rgb(119, 129, 145);
     padding-left: 60px;
     margin-block-start: 0.75em;
     margin-block-end: 0em;
+    margin-left: 40px;
+    margin-right: 40px;
   }
   
   #main p{

@@ -24,35 +24,21 @@ export async function init(common){
     let bouton = [];
     let placesTotal = [];
     let nbDemandes = [];
-    let demandes = []
-    let demande = []
     let places = [];
 
     let ouvert = []
     let cout = []
-    let nbAmis = []
-    let nbAmisDemande = []
-    let nbAmisInscrit = []
 
-    let nbInscrits = []
-    let inscrits = [];
-    let inscrit = []
+    let nbInscrits = [];
 
     for (let j = 0; j < 4; j++) {
         bouton[j] = []
         placesTotal[j] = []
         places[j] = []
 
-        nbAmis[j] = []
-        nbAmisDemande[j] = []
-        nbAmisInscrit[j] = []
         nbDemandes[j] = []
-        demandes[j] = []
-        demande[j] = [false, false]
 
         nbInscrits[j] = []
-        inscrits[j] = []
-        inscrit[j] = [false, false]
         ouvert[j] = [0, 0]
         cout[j] = [1, 1]
         for (let h = 0; h < 2; h++) {
@@ -84,7 +70,7 @@ export async function init(common){
             for (let h = 0; h < 2; h++) {
                 let info_horaire = await common.socketAsync("getDataThisCreneau",{w:week,j:j,h:h})
                 let my_demande = await common.socketAsync("getMyDemande",{w:week,j:j,h:h})
-                let list_demandes = await common.socketAsync("listDemandes",{w:week,j:j,h:h})
+                let list_nbDemandes = await common.socketAsync("listDemandes",{w:week,j:j,h:h})
 
                 placesTotal[j][h] = info_horaire["places"];
                 if(placesTotal[j][h]==null || placesTotal[j][h]==""){
@@ -104,47 +90,16 @@ export async function init(common){
                 //demande en cours
 
                 nbDemandes[j][h] = 0
-                demandes[j][h] = []
-                demande[j][h] = false;
 
                 nbInscrits[j][h] = 0
-                inscrits[j][h] = []
-                inscrit[j][h] = false;
 
-                nbAmis[j][h] = 0
-                nbAmisDemande[j][h] = 0
-                nbAmisInscrit[j][h] = 0
-
-                list_demandes.forEach(e => {
+                list_nbDemandes.forEach(e => {
                     if(e.DorI == 0){
                         nbDemandes[j][h]++
-                        if (e.uuid == common.uuid) {
-                            demande[j][h] = true;
-                        } else {
-                            demandes[j][h].push(e.uuid)
-                        }
                     }else if(e.DorI == 1){
                         nbInscrits[j][h]++
-                        if (e.uuid == common.uuid) {
-                            inscrit[j][h] = true;
-                        } else {
-                            inscrits[j][h].push(e.uuid)
-                        }
                     }
                 });
-
-
-                if(my_demande.amis!=null){
-                    my_demande.amis.forEach(e=>{
-                        nbAmis[j][h]++
-                        if (demandes[j][h].indexOf(e) != -1) {
-                            nbAmisDemande[j][h]++
-                        }
-                        if (inscrits[j][h].indexOf(e) != -1) {
-                            nbAmisInscrit[j][h]++
-                        }
-                    })
-                }
                 update(j, h);
             }
 
@@ -181,21 +136,20 @@ export async function init(common){
                 bouton[j][h].className="case green"
                 break;
             case 2:
-                if (places[j][h] <= 0) {
-                    bouton[j][h].className = "case red"
-                    text = "Plein"+ textcout;
-                } else {
-                    bouton[j][h].className = "case blue"
-                    text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
+                bouton[j][h].className = "case blue"
+                text = nbInscrits[j][h]+" nbInscrits/"+total[j][h]  + " places"
+                if(nbInscrits[j][h]>=total[j][h]){
+                    text+="<rouge></br>PLEIN</rouge>"
                 }
+                text+="</br>("+nbDemandes[j][h]+" nbDemandes pour " + places[j][h] + " places restantes)"+textcout
                 break;
             case 3:
                 bouton[j][h].className="case yellow"
-                if (places[j][h] <= 0) {
-                    text = "Plein"+ textcout;
-                } else {
-                    text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
+                text = nbInscrits[j][h]+" nbInscrits/"+total[j][h]  + " places"
+                if(nbInscrits[j][h]>=total[j][h]){
+                    text+="<rouge></br>PLEIN</rouge>"
                 }
+                text+="</br>("+nbDemandes[j][h]+" nbDemandes pour " + places[j][h] + " places restantes)"+textcout
                 break;
             case 4:
                 text = "Foyer fermé"
@@ -210,60 +164,12 @@ export async function init(common){
                 bouton[j][h].className="case default"
                 break;
         }
-        if(ouvert[j][h]===2 || ouvert[j][h]===3){
-            if (inscrit[j][h]) {
-                bouton[j][h].className = "case green"
-                text = "Vous êtes inscrit"
-            } else if (demande[j][h]) {
-                bouton[j][h].className = "case demande"
-                text = "Demande enregistrée"
-            }
-
-            if (nbAmis[j][h] == 1) {
-                text += " avec 1 ami"
-                if (nbAmisDemande[j][h] == 1) {
-                    text += " qui a fait une demande"
-                } else if (nbAmisInscrit[j][h] == 1) {
-                    text += " qui a été inscrit"
-                }else{
-                    text += " qui n'a pas fait de demande"
-                }
-            } else if (nbAmis[j][h] > 1) {
-                text += " avec " + nbAmis[j][h] + " amis"
-                if(nbAmis[j][h] == nbAmisDemande[j][h]){
-                    text += " qui ont tous fait une demande"
-                }else if(nbAmis[j][h] == nbAmisInscrit[j][h]){
-                    text += " qui ont tous été inscrit"
-                }else if(0 == nbAmisDemande[j][h] && 0 == nbAmisInscrit[j][h]){
-                    text += " qui n'ont pas fait de demandes"
-                }else {
-                    if (nbAmisDemande[j][h] == 1) {
-                        text += " dont un seul a fait une demande"
-                    } else if(nbAmisDemande[j][h]>1){
-                        text += " dont " + nbAmisDemande[j][h] + " ont fait une demande"
-                    }
-                    if(nbAmisDemande[j][h] != 0 && nbAmisInscrit[j][h] != 0){
-                        text += " et"
-                    }
-                    if (nbAmisInscrit[j][h] == 1) {
-                        text += " dont un seul a été inscrit"
-                    } else if(nbAmisInscrit[j][h]>1){
-                        text += " dont " + nbAmisInscrit[j][h] + " ont été inscrits"
-                    }
-                }
-            }
-        }
         bouton[j][h].innerHTML = text;
     }
 
     function select(j, h) {
-        const hInv = h==0?1:0
-        if(ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv]){
-            common.loadpage("/midi/demande?j="+j+"&h="+h+"&w="+week)
-        }
+        common.loadpage("/admin/midi/demande?j="+j+"&h="+h+"&w="+week)
     }
 
     refreshDatabase();
 }
-
-

@@ -383,9 +383,15 @@ header{
 }
 
 #menuSemaine{
-  margin-top: 2.5em;
   text-align: center;
   font-size: 2em;
+}
+
+.bnt.menu{
+  min-width: 50%;
+  min-height: 100px;
+
+  text-transform: none;
 }
 
 #creneaudiv{
