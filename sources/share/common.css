@@ -10,15 +10,24 @@
   src: url(".ttf");
 }*/
 
+:root{
+  /* sidebar min-height: hauteur de la page moins header et banderole*/
+  --screenH : calc(calc(var(--vh, 1vh) * 100) - 8em - 33px);
+  --vh: 1vh;
+}
+
 /*-----------------------header------------------------------*/
 html {
   scroll-behavior: smooth;
+  height: -webkit-fill-available;
 }
 
-html,body{
+body{
   font-family: Arial;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 body.stop{
@@ -104,11 +113,6 @@ header{
   100% {
     transform: translate3d(-100%,0,0);
   }
-}
-
-:root{
-  /* sidebar min-height: hauteur de la page moins header et banderole*/
-  --screenH : calc(100vh - 8em - 33px - 1000px);
 }
 
 /*-----------------side navbar----------------*/
