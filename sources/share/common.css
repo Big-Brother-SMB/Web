@@ -108,7 +108,7 @@ header{
 
 :root{
   /* sidebar min-height: hauteur de la page moins header et banderole*/
-  --screenH : calc(100vh - 8em - 33px);
+  --screenH : calc(100vh - 8em - 33px + 100px);
 }
 
 /*-----------------side navbar----------------*/

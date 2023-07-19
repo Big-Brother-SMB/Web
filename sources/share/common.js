@@ -303,7 +303,7 @@ export class common{
     if (banderole != null && banderole != '') {
       document.getElementById("banderole").innerHTML = banderole
       document.getElementsByClassName("marquee-rtl")[0].style.display = "block"
-      document.querySelector(':root').style.setProperty("--screenH","calc(100vh - 11.8em - 32px)")
+      document.querySelector(':root').style.setProperty("--screenH","calc(100vh - 8em - 33px - 3.8em + 100px)")
     }
 
     //---------------------------theme function---------------------------
