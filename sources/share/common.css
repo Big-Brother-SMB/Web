@@ -114,6 +114,7 @@ header{
 /*-----------------side navbar----------------*/
 
 #mySidenav{
+  overflow:visible;
   top: 0px;
   bottom: 0px;
   position: absolute;
