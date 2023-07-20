@@ -112,7 +112,10 @@ export async function init(common){
                     const checkBoxs = document.querySelectorAll('input[name="procuration"]');
                     for (const checkBox of checkBoxs) {
                         if (checkBox.checked) {
-                            await common.socketAsync('setAmiDemande',{uuidAmi:checkBox.value,w:w,j:j,h:h,amis:listeAmisPris})
+                            let listAmisDeLAmi = listeAmisPris.concat([])
+                            listAmisDeLAmi.remove(checkBox.value)
+                            listAmisDeLAmi.push(common.uuid)
+                            await common.socketAsync('setAmiDemande',{uuidAmi:checkBox.value,w:w,j:j,h:h,amis:listAmisDeLAmi})
                         }
                     }
                     await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listeAmisPris,sandwich:choiceOfSandwich})

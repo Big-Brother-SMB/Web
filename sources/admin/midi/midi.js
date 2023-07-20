@@ -137,19 +137,19 @@ export async function init(common){
                 break;
             case 2:
                 bouton[j][h].className = "case blue"
-                text = nbInscrits[j][h]+" nbInscrits/"+total[j][h]  + " places"
-                if(nbInscrits[j][h]>=total[j][h]){
+                text = nbInscrits[j][h]+" inscrits/"+placesTotal[j][h]  + " places"
+                if(nbInscrits[j][h]>=placesTotal[j][h]){
                     text+="<rouge></br>PLEIN</rouge>"
                 }
-                text+="</br>("+nbDemandes[j][h]+" nbDemandes pour " + places[j][h] + " places restantes)"+textcout
+                text+="</br>("+nbDemandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
                 break;
             case 3:
                 bouton[j][h].className="case yellow"
-                text = nbInscrits[j][h]+" nbInscrits/"+total[j][h]  + " places"
-                if(nbInscrits[j][h]>=total[j][h]){
+                text = nbInscrits[j][h]+" inscrits/"+placesTotal[j][h]  + " places"
+                if(nbInscrits[j][h]>=placesTotal[j][h]){
                     text+="<rouge></br>PLEIN</rouge>"
                 }
-                text+="</br>("+nbDemandes[j][h]+" nbDemandes pour " + places[j][h] + " places restantes)"+textcout
+                text+="</br>("+nbDemandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
                 break;
             case 4:
                 text = "Foyer fermé"
@@ -168,7 +168,7 @@ export async function init(common){
     }
 
     function select(j, h) {
-        common.loadpage("/admin/midi/demande?j="+j+"&h="+h+"&w="+week)
+        common.loadpage("/admin/midi/creneau?j="+j+"&h="+h+"&w="+week)
     }
 
     refreshDatabase();

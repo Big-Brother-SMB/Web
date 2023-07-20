@@ -16,6 +16,10 @@
   --vh: 1vh;
 }
 
+.cache{
+  display: none !important;
+}
+
 /*-----------------------header------------------------------*/
 html {
   scroll-behavior: smooth;
@@ -759,9 +763,30 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-/*---------cache---------*/
-.cache{
-  display: none !important;
+/*---------creneau---------*/
+
+select{
+  height: 2.2em;
+  font-size: 1.7em;
+  width: 90%;
+  border-radius: 10px;
+}
+
+h2{
+  color: rgb(255, 0, 0);
+  font-size: 3em;
+}
+
+.bnt.algo{
+  width: 500px;
+}
+
+.bnt.select{
+  width: 30%;
+}
+
+.bnt.cent{
+  width: 100%;
 }
 /*input,select{
   text-align: center;
