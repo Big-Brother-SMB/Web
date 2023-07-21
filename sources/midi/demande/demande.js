@@ -313,6 +313,8 @@ export async function init(common){
             }
             if(listAmis[i].procuration == null){
                 document.getElementById(listAmis[i].uuid).classList.add('partiel')
+            }else if(listAmis[i].procuration == 1){
+                document.getElementById(listAmis[i].uuid).classList.add('procuration')
             }
         }
     }
