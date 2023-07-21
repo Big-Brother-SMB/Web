@@ -306,6 +306,7 @@ export async function init(common){
         })
         for(let i in listAmis){
             let ami = listAmis[i];
+            console.log(listAmis[i])
             if(ami.DorI == 0){
                 document.getElementById(ami.uuid).innerHTML += " (a fait une demande)"
             }else if(ami.DorI == 1){
