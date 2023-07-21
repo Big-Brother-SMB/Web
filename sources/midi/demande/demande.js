@@ -275,7 +275,6 @@ export async function init(common){
         divListeAmis.innerHTML=""
         divAmisAjoute.innerHTML=""
         const func = function(ami,pris){
-            const ami = listAmis[listAmisUUID.indexOf(child)]
             const name = ami.first_name + " " + ami.last_name
             let button = document.createElement("button")
             button.classList.add("ami")
