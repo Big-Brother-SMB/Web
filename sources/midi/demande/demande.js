@@ -274,37 +274,45 @@ export async function init(common){
 
         divListeAmis.innerHTML=""
         divAmisAjoute.innerHTML=""
-        const func = function(ami,pris){
-            const name = ami.first_name + " " + ami.last_name
-            const pris2 = pris
+
+        const func = function(ami2,pris2){
+            const ami = ami2
+            const pris = pris2
             let button = document.createElement("button")
             button.classList.add("ami")
-            button.setAttribute("id", ami.uuid);
-            button.innerHTML = name
-            divListeAmis.appendChild(button);
+            button.innerHTML = ami.first_name + " " + ami.last_name
+
+            if(ami.DorI == 0){
+                button.innerHTML += " (a fait une demande)"
+            }else if(ami.DorI == 1){
+                button.innerHTML += " (est inscrit)"
+            }
+            if(ami.procuration == null){
+                button.classList.add('partiel')
+            }else if(ami.procuration == 1){
+                button.classList.add('procuration')
+            }
+
+
             button.addEventListener("click", function() {
-                if(pris2){
-                    listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
-                    listeAmisPris.push(ami.uuid)
-                }else{
+                if(pris){
                     listeAmisPris.splice(listeAmisPris.indexOf(ami.uuid),1)
                     listeAmisNonPris.push(ami.uuid)
+                }else{
+                    listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
+                    listeAmisPris.push(ami.uuid) 
                 }
 
                 update()
             })
 
-            if(ami.DorI == 0){
-                document.getElementById(ami.uuid).innerHTML += " (a fait une demande)"
-            }else if(ami.DorI == 1){
-                document.getElementById(ami.uuid).innerHTML += " (est inscrit)"
-            }
-            if(ami.procuration == null){
-                document.getElementById(ami.uuid).classList.add('partiel')
-            }else if(ami.procuration == 1){
-                document.getElementById(ami.uuid).classList.add('procuration')
+            if(pris){
+                divAmisAjoute.appendChild(button);
+            }else{
+                divListeAmis.appendChild(button);
             }
         }
+
         listeAmisNonPris.forEach(function(child) {
             func(listAmis[listAmisUUID.indexOf(child)],false)
         })
