@@ -305,10 +305,10 @@ export async function init(common){
             }
         }
         listeAmisNonPris.forEach(function(child) {
-            func(listAmis[listAmisUUID.indexOf(child)],true)
+            func(listAmis[listAmisUUID.indexOf(child)],false)
         })
         listeAmisPris.forEach(function(child) {
-            func(listAmis[listAmisUUID.indexOf(child)],false)
+            func(listAmis[listAmisUUID.indexOf(child)],true)
         })
     }
 
