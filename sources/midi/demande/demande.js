@@ -276,18 +276,19 @@ export async function init(common){
         divAmisAjoute.innerHTML=""
         const func = function(ami,pris){
             const name = ami.first_name + " " + ami.last_name
+            const pris2 = pris
             let button = document.createElement("button")
             button.classList.add("ami")
             button.setAttribute("id", ami.uuid);
             button.innerHTML = name
             divListeAmis.appendChild(button);
             button.addEventListener("click", function() {
-                if(pris){
-                    listeAmisPris.push(ami.uuid)
+                if(pris2){
                     listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
+                    listeAmisPris.push(ami.uuid)
                 }else{
-                    listeAmisNonPris.push(ami.uuid)
                     listeAmisPris.splice(listeAmisPris.indexOf(ami.uuid),1)
+                    listeAmisNonPris.push(ami.uuid)
                 }
 
                 update()
