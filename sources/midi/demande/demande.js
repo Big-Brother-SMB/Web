@@ -305,16 +305,16 @@ export async function init(common){
             })
         })
         for(let i in listAmis){
-            console.log(listAmis[i])
-            if(listAmis[i].DorI == 0){
-                document.getElementById(listAmis[i].uuid).innerHTML += " (a fait une demande)"
-            }else if(listAmis[i].DorI == 1){
-                document.getElementById(listAmis[i].uuid).innerHTML += " (est inscrit)"
+            let ami = listAmis[i];
+            if(ami.DorI == 0){
+                document.getElementById(ami.uuid).innerHTML += " (a fait une demande)"
+            }else if(ami.DorI == 1){
+                document.getElementById(ami.uuid).innerHTML += " (est inscrit)"
             }
-            if(listAmis[i].procuration == null){
-                document.getElementById(listAmis[i].uuid).classList.add('partiel')
-            }else if(listAmis[i].procuration == 1){
-                document.getElementById(listAmis[i].uuid).classList.add('procuration')
+            if(ami.procuration == null){
+                document.getElementById(ami.uuid).classList.add('partiel')
+            }else if(ami.procuration == 1){
+                document.getElementById(ami.uuid).classList.add('procuration')
             }
         }
     }
