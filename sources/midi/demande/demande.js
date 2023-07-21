@@ -275,7 +275,7 @@ export async function init(common){
         divListeAmis.innerHTML=""
         divAmisAjoute.innerHTML=""
         listeAmisNonPris.forEach(function(child) {
-            let ami = listAmis[listAmisUUID.indexOf(child)]
+            const ami = listAmis[listAmisUUID.indexOf(child)]
             const name = ami.first_name + " " + ami.last_name
             let button = document.createElement("button")
             button.classList.add("ami")
@@ -290,7 +290,7 @@ export async function init(common){
             })
         })
         listeAmisPris.forEach(function(child) {
-            let ami = listAmis[listAmisUUID.indexOf(child)]
+            const ami = listAmis[listAmisUUID.indexOf(child)]
             const name = ami.first_name + " " + ami.last_name
             let button = document.createElement("button")
             button.classList.add("ami")
@@ -305,7 +305,7 @@ export async function init(common){
             })
         })
         for(let i in listAmis){
-            let ami = listAmis[i];
+            const ami = listAmis[i];
             console.log(listAmis[i])
             if(ami.DorI == 0){
                 document.getElementById(ami.uuid).innerHTML += " (a fait une demande)"
