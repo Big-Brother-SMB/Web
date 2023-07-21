@@ -113,7 +113,7 @@ export async function init(common){
                     for (const checkBox of checkBoxs) {
                         if (checkBox.checked) {
                             let listAmisDeLAmi = listeAmisPris.concat([])
-                            listAmisDeLAmi.remove(checkBox.value)
+                            listAmisDeLAmi.splice(listAmisDeLAmi.indexOf(checkBox.value),1);
                             listAmisDeLAmi.push(common.uuid)
                             await common.socketAsync('setAmiDemande',{uuidAmi:checkBox.value,w:w,j:j,h:h,amis:listAmisDeLAmi})
                         }
