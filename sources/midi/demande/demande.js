@@ -279,12 +279,12 @@ export async function init(common){
             const name = ami.first_name + " " + ami.last_name
             let button = document.createElement("button")
             button.classList.add("ami")
-            button.setAttribute("id", child);
+            button.setAttribute("id", ami.uuid);
             button.innerHTML = name
             divListeAmis.appendChild(button);
             button.addEventListener("click", function() {
-                listeAmisPris.push(child)
-                listeAmisNonPris.splice(listeAmisNonPris.indexOf(child),1)
+                listeAmisPris.push(ami.uuid)
+                listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
 
                 update()
             })
@@ -294,12 +294,12 @@ export async function init(common){
             const name = ami.first_name + " " + ami.last_name
             let button = document.createElement("button")
             button.classList.add("ami")
-            button.setAttribute("id", child);
+            button.setAttribute("id", ami.uuid);
             button.innerHTML = name
             divAmisAjoute.appendChild(button);
             button.addEventListener("click", function() {
-                listeAmisNonPris.push(child)
-                listeAmisPris.splice(listeAmisPris.indexOf(child),1)
+                listeAmisNonPris.push(ami.uuid)
+                listeAmisPris.splice(listeAmisPris.indexOf(ami.uuid),1)
 
                 update()
             })
