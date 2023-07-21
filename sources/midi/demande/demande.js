@@ -298,9 +298,11 @@ export async function init(common){
                 if(pris){
                     listeAmisPris.splice(listeAmisPris.indexOf(ami.uuid),1)
                     listeAmisNonPris.push(ami.uuid)
+                    console.log(ami)
                 }else{
                     listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
-                    listeAmisPris.push(ami.uuid) 
+                    listeAmisPris.push(ami.uuid)
+                    console.log(ami)
                 }
 
                 update()
