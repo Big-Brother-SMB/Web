@@ -274,7 +274,7 @@ export async function init(common){
 
         divListeAmis.innerHTML=""
         divAmisAjoute.innerHTML=""
-        listeAmisNonPris.forEach(function(child) {
+        const func = function(ami,pris){
             const ami = listAmis[listAmisUUID.indexOf(child)]
             const name = ami.first_name + " " + ami.last_name
             let button = document.createElement("button")
@@ -283,30 +283,17 @@ export async function init(common){
             button.innerHTML = name
             divListeAmis.appendChild(button);
             button.addEventListener("click", function() {
-                listeAmisPris.push(ami.uuid)
-                listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
+                if(pris){
+                    listeAmisPris.push(ami.uuid)
+                    listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
+                }else{
+                    listeAmisNonPris.push(ami.uuid)
+                    listeAmisPris.splice(listeAmisPris.indexOf(ami.uuid),1)
+                }
 
                 update()
             })
-        })
-        listeAmisPris.forEach(function(child) {
-            const ami = listAmis[listAmisUUID.indexOf(child)]
-            const name = ami.first_name + " " + ami.last_name
-            let button = document.createElement("button")
-            button.classList.add("ami")
-            button.setAttribute("id", ami.uuid);
-            button.innerHTML = name
-            divAmisAjoute.appendChild(button);
-            button.addEventListener("click", function() {
-                listeAmisNonPris.push(ami.uuid)
-                listeAmisPris.splice(listeAmisPris.indexOf(ami.uuid),1)
 
-                update()
-            })
-        })
-        for(let i in listAmis){
-            const ami = listAmis[i];
-            console.log(listAmis[i])
             if(ami.DorI == 0){
                 document.getElementById(ami.uuid).innerHTML += " (a fait une demande)"
             }else if(ami.DorI == 1){
@@ -318,6 +305,12 @@ export async function init(common){
                 document.getElementById(ami.uuid).classList.add('procuration')
             }
         }
+        listeAmisNonPris.forEach(function(child) {
+            func(listAmis[listAmisUUID.indexOf(child)],true)
+        })
+        listeAmisPris.forEach(function(child) {
+            func(listAmis[listAmisUUID.indexOf(child)],false)
+        })
     }
 
     listDemandes.forEach(function(child) {
