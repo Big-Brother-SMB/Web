@@ -209,7 +209,7 @@ export class common{
 
       let btn_menu = document.getElementById("btn_menu")
       btn_menu.addEventListener("click",function() {
-        if(!side.classList.contains("open")){//
+        if(!side.classList.contains("open")){
           side.classList.add("open");
           document.body.classList.add("stop");
           window.scrollTo(0,0);
@@ -225,9 +225,11 @@ export class common{
       for (var i = 0; i < list_nav_bnt.length; i++) {
         const index = i;
         list_nav_bnt[i].addEventListener('click', async ()=>{
-          side.classList.remove("open");
-          document.body.classList.remove("stop");
           let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+          if(url.substring(0,8)!="sidebar:"){
+            side.classList.remove("open");
+            document.body.classList.remove("stop");
+          }
           this.loadpage(url)
         });
       }
