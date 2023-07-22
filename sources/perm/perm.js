@@ -46,7 +46,7 @@ export async function init(common){
         creneaudiv.appendChild(div);
     }
 
-    let week = common.readCookie("week")
+    let week = common.week
 
     document.getElementById("semainePrecedente").addEventListener("click", function () {
         week = week - 1

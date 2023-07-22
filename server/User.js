@@ -162,7 +162,7 @@ module.exports = class User{
       let uuid=this.uuid
         db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
             if(data!=undefined){
-                db.run("UPDATE users SET "+ key +" = ? where uuid=?",[value,uuid])
+                db.run("UPDATE users SET "+ key +"=? where uuid=?",[value,uuid])
             }
         })
     }

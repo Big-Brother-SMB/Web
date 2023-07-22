@@ -178,7 +178,7 @@ async function main() {
     let user = await User.searchToken(socket.handshake.auth.token)
     console.log("uuid admin socket: " + await user.uuid)
 
-    if(await user.admin>0){
+    if(await user.admin > 0){
       socket.on('my_admin_mode',async msg => {
         try{
           user.admin = msg
@@ -350,7 +350,7 @@ async function main() {
     try {
       let user = await User.searchToken(socket.handshake.auth.token)
       if(user!=null)console.log("uuid socket: " + await user.uuid)
-      user.admin=1
+      if(await user.admin == 0)user.admin=1
 
       funcSocket.id_data(socket,user)
       funcSocket.score(socket,user)

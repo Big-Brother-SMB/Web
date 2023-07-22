@@ -65,28 +65,53 @@ export class common{
   //---------------------charge corps de la page------------------
 
   static async loadpage(url){
-    console.log(url)
-    let typeSideBar = url.split("/")[1]
-    if(typeSideBar!="admin" && typeSideBar!="asso"){
-      typeSideBar="user"
-    }
-    document.getElementById("mySidenav").classList.remove("user")
-    document.getElementById("mySidenav").classList.remove("admin")
-    document.getElementById("mySidenav").classList.remove("asso")
-    document.getElementById("mySidenav").classList.add(typeSideBar)
-    await this.readFileHTMLPath('mySidenav','/share/'+ typeSideBar +'_sidebar.html')
+    if(url.substring(0,8)=="sidebar:"){
+      let typeSideBar = url.substring(8,url.length)
+      if(typeSideBar!="admin" && typeSideBar!="asso" && typeSideBar!="user"){
+        typeSideBar="user"
+      }
+      document.getElementById("mySidenav").classList.remove("user")
+      document.getElementById("mySidenav").classList.remove("admin")
+      document.getElementById("mySidenav").classList.remove("asso")
+      document.getElementById("mySidenav").classList.add(typeSideBar)
+      await this.readFileHTMLPath('mySidenav','/share/'+ typeSideBar +'_sidebar.html')
 
-    window.history.pushState({url:url},"", url);
-    url=url.split('?')[0]
-    document.getElementById("css_page").href=url+'.css'
-    await this.readFileHTML(url,'tete','EN-TETE')
-    await this.readFileHTML(url,'titre','TITRE')
-    await this.readFileHTML(url,'main','main')
-    import(url+".js").then(async (module) => {
-        await common.reloadCommon()
-        await module.init(common)
-        return
-    })
+      if(this.admin > 0){
+        let bnt = document.getElementById("nav_bnt_admin")
+        if(bnt){
+          bnt.classList.remove("cache")
+        }
+      }
+      if(this.admin == 2){
+        let bnt = document.getElementById("nav_bnt_user")
+        if(bnt){
+          bnt.classList.add("cache")
+        }
+      }
+
+      let list_nav_bnt = document.getElementsByClassName('nav_bnt')
+      for (var i = 0; i < list_nav_bnt.length; i++) {
+        const index = i;
+        list_nav_bnt[i].addEventListener('click', async ()=>{
+          document.getElementById('mySidenav').classList.remove("open");
+          document.body.classList.remove("stop");
+          let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+          this.loadpage(url)
+        });
+      }
+    }else{
+      window.history.pushState({url:url},"", url);
+      url=url.split('?')[0]
+      document.getElementById("css_page").href=url+'.css'
+      await this.readFileHTML(url,'tete','EN-TETE')
+      await this.readFileHTML(url,'titre','TITRE')
+      await this.readFileHTML(url,'main','main')
+      import(url+".js").then(async (module) => {
+          await common.reloadCommon()
+          await module.init(common)
+          return
+      })
+    }
   }
 
   static async readFileHTML(url,idFile,idHTML){
@@ -106,18 +131,6 @@ export class common{
             document.getElementById(idHTML).innerHTML=''
           }else{
             document.getElementById(idHTML).innerHTML=reader.result
-          }
-          if(idHTML=='mySidenav'){
-            let list_nav_bnt = document.getElementsByClassName('nav_bnt')
-            for (var i = 0; i < list_nav_bnt.length; i++) {
-              const index = i;
-              list_nav_bnt[i].addEventListener('click', async ()=>{
-                document.getElementById('mySidenav').classList.remove("open");
-                document.body.classList.remove("stop");
-                let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
-                this.loadpage(url)
-              });
-            }
           }
           resolve()
       };
@@ -272,12 +285,6 @@ export class common{
       })
     }
 
-    if(this.admin > 0){
-      let bnt = document.getElementById("nav_bnt_admin")
-      if(bnt){
-        bnt.classList.remove("cache")
-      }
-    }
     if(this.admin == 2){
       if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("options")){
         window.location.href = window.location.origin + "/admin/menu"
@@ -324,6 +331,20 @@ export class common{
     }
     if(window.location.pathname!= "/pass"){
       this.setThemeMode(this.themeMode)
+    }
+
+    //----------------------cacher les boutons de changement de side bar-----------------------------
+    if(this.admin > 0){
+      let bnt = document.getElementById("nav_bnt_admin")
+      if(bnt){
+        bnt.classList.remove("cache")
+      }
+    }
+    if(this.admin == 2){
+      let bnt = document.getElementById("nav_bnt_user")
+      if(bnt){
+        bnt.classList.add("cache")
+      }
     }
   }
 

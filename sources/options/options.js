@@ -26,19 +26,21 @@ export async function init(common){
     });
 
 
-    
+
     let adminP = document.getElementById("adminP")
     let adminS = document.getElementById("admin switch")
 
-    if (common.admin==1 || common.admin===2){
+    if (common.admin==1 || common.admin==2){
         adminP.classList.remove("cache")
     }
     adminS.addEventListener("change", function () {
         if(adminS.checked){
             common.socketAdminAsync('my_admin_mode',2)
+            common.loadpage("sidebar:admin")
             common.admin=2
         } else {
             common.socketAdminAsync('my_admin_mode',1)
+            common.loadpage("sidebar:user")
             common.admin=1
         }
     })

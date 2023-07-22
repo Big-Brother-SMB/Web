@@ -157,10 +157,12 @@ export async function init(common){
         listAmisUUID.push(child.uuid)
     })
 
+    //créer la liste d'amis global
     let listAmis=[]
     listUsers.forEach(child=>{
         let index = listAmisUUID.indexOf(child.uuid)
         if(index != -1){
+            child.inMyFriendList = 1
             child.procuration=listAmisBrut[index].HeGiveMeProc
             child.DorI=null
             listAmis.push(child)
@@ -234,6 +236,7 @@ export async function init(common){
             listUsers.forEach(user=>{
                 if(child == user.uuid){
                     user.procuration=null
+                    user.inMyFriendList = 0
                     listAmis.push(user)
                 }
             })
@@ -287,10 +290,8 @@ export async function init(common){
             }else if(ami.DorI == 1){
                 button.innerHTML += " (est inscrit)"
             }
-            if(ami.procuration == null){
+            if(ami.inMyFriendList == 0){
                 button.classList.add('partiel')
-            }else if(ami.procuration == 1){
-                button.classList.add('procuration')
             }
 
 
