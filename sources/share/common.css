@@ -883,6 +883,12 @@ h2{
     display: none;
   }
 }
+#qr-reader{
+  font-size: 3em;
+}
+#qr-reader div button{
+  font-size: 1em;
+}
 
 /*-------------------chargement-----------------------*/
 #chargement{
