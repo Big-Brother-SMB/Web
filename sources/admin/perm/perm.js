@@ -69,11 +69,12 @@ export async function init(common){
 
 
     async function refreshDatabase() {
+
+        let text = "Semaine n°" + week + " du " + common.intervalSemaine(week)
         if (week == common.actualWeek) {
-            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
-        } else {
-            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
+            text = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
         }
+        document.getElementById("semaine").innerHTML = text
 
 
 
@@ -82,7 +83,7 @@ export async function init(common){
                 let nbDemandesPerm = 0
                 let groupsInscrits = []
 
-                let listDemandes = await common.socketAsync("listDemandesPerm",{w:week,j:j,h:h})
+                let listDemandes = await common.socketAsync("listDemandesPerm",[week,j,h])
 
                 bouton[j][h].className = "case perm blue"
                 listDemandes.forEach(function(child){
@@ -90,13 +91,10 @@ export async function init(common){
                         groupsInscrits.push(child.group2)
                     }else{
                         nbDemandesPerm++
-                        if(common.uuid==child.uuid){
-                            bouton[j][h].className = "case perm demande"
-                        }
                     }
                 })
 
-                let ouv = await common.socketAsync("getOuvertPerm",{w:week,j:j,h:h})
+                let ouv = await common.socketAsync("getOuvertPerm",[week,j,h])
                 if (ouv == null){
                     ouv = 0
                 }
@@ -157,11 +155,18 @@ export async function init(common){
             }
         }
     }
+
+    /*
+    function loop() {
+        console.log("update database")
+        refreshDatabase();
+        setTimeout(loop, 20000);
+    }
+    loop();*/
     refreshDatabase();
 
     function select(j, h){
-        if (ouvert[j][h] == 0) {
-            common.loadpage("/perm/demande?j="+j+"&h="+h+"&w="+week)
-        }
+        window.location.href = "../crenau/crenauPerm.html?j="+j+"&h="+h+"&w="+week;
     }
+
 }

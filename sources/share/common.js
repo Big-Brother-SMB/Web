@@ -93,9 +93,11 @@ export class common{
       for (var i = 0; i < list_nav_bnt.length; i++) {
         const index = i;
         list_nav_bnt[i].addEventListener('click', async ()=>{
-          document.getElementById('mySidenav').classList.remove("open");
-          document.body.classList.remove("stop");
           let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+          if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){
+            document.getElementById("mySidenav").classList.remove("open");
+            document.body.classList.remove("stop");
+          }
           this.loadpage(url)
         });
       }
@@ -226,7 +228,7 @@ export class common{
         const index = i;
         list_nav_bnt[i].addEventListener('click', async ()=>{
           let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
-          if(url.substring(0,8)!="sidebar:"){
+          if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){
             side.classList.remove("open");
             document.body.classList.remove("stop");
           }

@@ -471,6 +471,93 @@ header{
   background: radial-gradient(#347a94 70%,#3a535c);
 }
 
+
+#menuSemaine{
+  margin: 0.5em;
+}
+
+/*------------------PERM---------------*/
+
+@media screen and (min-width: 1000px) {
+  .case.perm{
+      width: 12%;
+      height: 150px;
+  }
+    
+  .case.perm.heure{
+      height: 2.5em;
+  }
+}  
+
+@media screen and (max-width: 1000px) {
+  #creneaudiv.perm{
+    display: flex;
+  }
+
+  #creneaudiv.perm div{
+      width: 17.5%;
+  }
+
+  .case.perm{
+      height: 170px;
+      width: 99%;
+  }
+
+  div.perm.heure{
+      width: 12% !important;
+  }
+    
+  .case.perm.jour{
+      height: 2.5em;
+  }
+}
+
+/*------------------MIDI---------------*/
+
+@media screen and (max-width: 1000px) {
+  .case.midi{
+      width: 25%;
+      height: 230px;
+  }
+    
+  .case.midi.heure{
+      height: 2.5em;
+  }
+    
+  .case.midi.jour{
+      width: 15%;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #creneaudiv.midi{
+    display: flex;
+  }
+
+  #creneaudiv.midi :first-child{
+      width: 12%;
+  }
+  #creneaudiv.midi div :first-child{
+      width: 99%;
+  }
+  #creneaudiv.midi div{
+      width: 22%;
+  }
+
+  .case.midi{
+      width: 99%;
+      height: 270px;
+  }
+  .case.midi.heure{
+      width: 99%;
+      height: 270px;
+  }
+  .case.midi.jour{
+      width: 99%;
+      height: 2.5em;
+  }
+}
+
 rouge{
   color: red;
 }

@@ -174,23 +174,23 @@ export async function init(common){
         switch (ouvert[j][h]) {
             case 0:
                 text = "horaire non planifié"
-                bouton[j][h].className="case default"
+                bouton[j][h].className="case midi default"
                 break;
             case 1:
                 text = "ouvert à tous";
-                bouton[j][h].className="case green"
+                bouton[j][h].className="case midi green"
                 break;
             case 2:
                 if (places[j][h] <= 0) {
-                    bouton[j][h].className = "case red"
+                    bouton[j][h].className = "case midi red"
                     text = "Plein"+ textcout;
                 } else {
-                    bouton[j][h].className = "case blue"
+                    bouton[j][h].className = "case midi blue"
                     text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
                 }
                 break;
             case 3:
-                bouton[j][h].className="case yellow"
+                bouton[j][h].className="case midi yellow"
                 if (places[j][h] <= 0) {
                     text = "Plein"+ textcout;
                 } else {
@@ -199,23 +199,23 @@ export async function init(common){
                 break;
             case 4:
                 text = "Foyer fermé"
-                bouton[j][h].className="case red"
+                bouton[j][h].className="case midi red"
                 break;
             case 5:
                 text = "Fini"
-                bouton[j][h].className="case red"
+                bouton[j][h].className="case midi red"
                 break;
             case 6:
                 text = "Vacances"
-                bouton[j][h].className="case default"
+                bouton[j][h].className="case midi default"
                 break;
         }
         if(ouvert[j][h]===2 || ouvert[j][h]===3){
             if (inscrit[j][h]) {
-                bouton[j][h].className = "case green"
+                bouton[j][h].className = "case midi green"
                 text = "Vous êtes inscrit"
             } else if (demande[j][h]) {
-                bouton[j][h].className = "case demande"
+                bouton[j][h].className = "case midi demande"
                 text = "Demande enregistrée"
             }
 
