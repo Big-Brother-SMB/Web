@@ -102,6 +102,7 @@ export class common{
         });
       }
     }else{
+      document.getElementById("container").classList.add('loading')
       window.history.pushState({url:url},"", url);
       url=url.split('?')[0]
       document.getElementById("css_page").href=url+'.css'
@@ -109,9 +110,10 @@ export class common{
       await this.readFileHTML(url,'titre','TITRE')
       await this.readFileHTML(url,'main','main')
       import(url+".js").then(async (module) => {
-          await common.reloadCommon()
-          await module.init(common)
-          return
+        document.getElementById("container").classList.remove('loading')
+        await common.reloadCommon()
+        await module.init(common)
+        return
       })
     }
   }

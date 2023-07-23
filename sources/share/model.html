@@ -45,7 +45,7 @@
     </div>
 
 
-    <div class="container">
+    <div id="container" class="container">
       <div id="mySidenav" class="user">
 {{SIDEBAR}}
       </div>
@@ -54,8 +54,19 @@
       <div id="main">
 {{MAIN}}
       </div>
+      <div id="chargement">
+        <p class="loading-text">Chargement en cours</p>
+        <div class="loader">
+            <div class="circle-1 circle">
+              <div class="circle-2 circle">
+                <div class="circle-3 circle">
+                  <div class="circle-4 circle"></div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
     </div>
-
 
     <script type="module" src="/common.js"></script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js"></script>
