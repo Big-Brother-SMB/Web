@@ -1,5 +1,6 @@
 const uuidG = require('uuid');
 const rand = require("generate-key");
+const funcDB = require('./functionsDB.js')
 
 let db
 
@@ -418,7 +419,7 @@ module.exports = class User{
                             if(data!=undefined){
                               for (let i in data){
                                 let r = await new Promise(async function(resolve2, reject2) {
-                                  let info=await getMidiInfo(data[i].semaine,data[i].creneau)
+                                  let info=await funcDB.getMidiInfo(data[i].semaine,data[i].creneau)
                                     if(info.gratuit_prio){
                                       let groups = await moi.groups
                                       let classe = await moi.classe
@@ -473,7 +474,7 @@ module.exports = class User{
                             if(data!=undefined){
                                 for (let i in data){
                                   let r = await new Promise(async function(resolve2, reject2) {
-                                    let info=await getMidiInfo(data[i].semaine,data[i].creneau)
+                                    let info=await funcDB.getMidiInfo(data[i].semaine,data[i].creneau)
                                     if(info.gratuit_prio){
                                       let groups = await moi.groups
                                       let classe = await moi.classe

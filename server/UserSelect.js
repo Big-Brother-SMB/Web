@@ -1,5 +1,5 @@
-let User = require('./User.js')
-let funcDB = require('./functionsDB.js')
+const User = require('./User.js')
+const funcDB = require('./functionsDB.js')
 
 let db
 

@@ -134,7 +134,7 @@ module.exports = class funcDB{
               resolve(data)
             })
           }else{
-            resolve({prio:[]})
+            resolve(undefined)
           }
         }catch(e){console.error(e);console.log('a5');;resolve({prio:[]})}
       })

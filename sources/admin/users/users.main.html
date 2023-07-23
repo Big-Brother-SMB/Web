@@ -1,0 +1,36 @@
+        <div class="autocomplete">
+          <input id="search" type="text" placeholder="Rechercher un utilisateur">
+        </div>
+
+        <section id="sectionGeneral">
+          <p id="info">Veuillez écrire le nom d'un utilisateur</p>
+          <button id="key button" class="bnt envoyer">se connecter</button>
+          <p>Nom : <input id="name" type="text" placeholder="Prénom Nom"></p>
+          <p>Classe :</p>
+          <select id="classe"></select>
+          <p>Code carte : <input id="code carte" type="number" placeholder="XXXXX"></p>
+          <p id="info code barre" style="color: red;"></p>
+          <p>Admin:<input id="admin" type="checkbox"></p>
+        </section>
+
+        <section id="divScore">
+          <p id="score">Score : 0pt</p>
+          <p>Timeline du score (cliquez pour retirer)</p>
+          <div class="listDemandes" id="divScoreEvent"></div>
+            
+          <p>Ajouter des points : </p>
+          <p>Valeur : <input id="score value" type="number" placeholder="pts"></p>
+          <p>Nom : <input id="score name" type="text" placeholder="nom"></p>
+          <button id="score ajouter" class="bnt envoyer">Ajouter</button>
+        </section>
+
+        <section id="sectionPrio">
+          <p>
+            Priorité : (appuyez pour retirer)
+          </p>
+          <div id="prio" class="listDemandes"></div>
+          <p>ajouter : </p>
+          <select id="addPrio">
+            <option>---</option>
+          </select>
+        </section>

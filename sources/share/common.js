@@ -467,7 +467,7 @@ export class common{
   }
 
   //renvoie sous forme (2000-07-4 7:00:00)
-  /*static getDayHash(j,week,h){
+  static generedDateHour(j,week,h){
     let date = new Date();
     let ajd=date.getDay()-1;
     let jour = j
@@ -481,7 +481,7 @@ export class common{
     let text = ""
     text = dateBeg[6]+dateBeg[7]+dateBeg[8]+dateBeg[9] + "-" + mBeg + "-" + dateBeg[0]+dateBeg[1] + " " + h+":00:00"
     return text
-  }*/
+  }
 
   //renvoie sous forme (4 au 11 juin)
   static intervalSemaine(semaine){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer

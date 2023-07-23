@@ -109,7 +109,7 @@ export async function init(common){
                 inputCodeBar.value = child.code_barre
             }
         })
-    }); 
+    },true); 
 
 
     function search(c,scan){

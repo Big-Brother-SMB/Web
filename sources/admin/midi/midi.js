@@ -69,7 +69,7 @@ export async function init(common){
         for (let j = 0; j < 4; j++) {
             for (let h = 0; h < 2; h++) {
                 let info_horaire = await common.socketAsync("getDataThisCreneau",{w:week,j:j,h:h})
-                let my_demande = await common.socketAsync("getMyDemande",{w:week,j:j,h:h})
+                if(info_horaire==undefined) info_horaire={prio:[]}
                 let list_nbDemandes = await common.socketAsync("listDemandes",{w:week,j:j,h:h})
 
                 placesTotal[j][h] = info_horaire["places"];

@@ -51,6 +51,7 @@ export async function init(common){
 
 
     let info = await common.socketAsync('getDataThisCreneau',{w:w,j:j,h:h})
+    if(info==undefined) info={prio:[]}
     cout = info.cout
     if(cout==null){
         cout=1

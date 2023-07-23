@@ -22,6 +22,11 @@ export async function init(common){
             bnt.innerHTML='Confirmer'
             let from = document.createElement('from')
             document.getElementById('popup-body').innerHTML=''
+
+            let textIntro = document.createElement('p')
+            textIntro.innerHTML="Supprimer la demande de:"
+            document.getElementById('popup-body').appendChild(textIntro)
+
             document.getElementById('popup-body').appendChild(from)
             let passProcuration=true
             listeAmisPris.forEach(child=>{
@@ -81,6 +86,11 @@ export async function init(common){
             bnt.innerHTML='Confirmer'
             let from = document.createElement('from')
             document.getElementById('popup-body').innerHTML=''
+
+            let textIntro = document.createElement('p')
+            textIntro.innerHTML="Déposer une demande pour:"
+            document.getElementById('popup-body').appendChild(textIntro)
+            
             document.getElementById('popup-body').appendChild(from)
             let passProcuration=true
             listeAmisPris.forEach(child=>{
