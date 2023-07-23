@@ -320,11 +320,10 @@ export class common{
     //--------------------------banderole--------------------------------
 
     let banderole = await common.socketAsync("getBanderole",null)
-    banderole='aaa'
     if (banderole != null && banderole != '') {
       document.getElementById("banderole").innerHTML = banderole
       document.getElementsByClassName("marquee-rtl")[0].style.display = "block"
-      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em)")
+      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
     }
 
     //---------------------------theme function---------------------------
