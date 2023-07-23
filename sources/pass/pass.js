@@ -48,23 +48,27 @@ export async function init(common){
 
     document.getElementById("user").innerHTML = common.first_name + " " + common.last_name + " " + common.classe
 
-    function loop(){
-        let d2 = new Date();
-        if((((d2.getMinutes() >= 54 && d2.getHours() == 11) ||
-        (d2.getHours() >= 12)) 
-        && h == 0) ||
-        (((d2.getMinutes() < 54 && d2.getHours() == 11) ||
-        (d2.getHours() < 11)) 
-        && h == 1) ||
-        d2.getWeek() != d.getWeek() ||
-        d2.getDay() != d.getDay()){
-            window.location.href = window.location.href;
-        }
 
-        document.getElementById("heure").innerHTML = common.getHour()
-        setTimeout(loop,500);
+    function loop(){
+        try{
+            let d2 = new Date();
+            if((((d2.getMinutes() >= 54 && d2.getHours() == 11) ||
+            (d2.getHours() >= 12)) 
+            && h == 0) ||
+            (((d2.getMinutes() < 54 && d2.getHours() == 11) ||
+            (d2.getHours() < 11)) 
+            && h == 1) ||
+            d2.getWeek() != d.getWeek() ||
+            d2.getDay() != d.getDay()){
+                window.location.href = window.location.href;
+            }
+    
+            document.getElementById("heure").innerHTML = common.getHour()
+            setTimeout(loop,500);
+        }catch(Exception){}
     }
     loop();
+
 
 
     const containerElement = document.getElementById('single');

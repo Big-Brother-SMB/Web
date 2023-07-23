@@ -69,12 +69,11 @@ export async function init(common){
 
 
     async function refreshDatabase() {
-
-        let text = "Semaine n°" + week + " du " + common.intervalSemaine(week)
         if (week == common.actualWeek) {
-            text = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
+            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
+        } else {
+            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
         }
-        document.getElementById("semaine").innerHTML = text
 
 
 
@@ -83,7 +82,7 @@ export async function init(common){
                 let nbDemandesPerm = 0
                 let groupsInscrits = []
 
-                let listDemandes = await common.socketAsync("listDemandesPerm",[week,j,h])
+                let listDemandes = await common.socketAsync("listDemandesPerm",{w:week,j:j,h:h})
 
                 bouton[j][h].className = "case perm blue"
                 listDemandes.forEach(function(child){
@@ -94,7 +93,7 @@ export async function init(common){
                     }
                 })
 
-                let ouv = await common.socketAsync("getOuvertPerm",[week,j,h])
+                let ouv = await common.socketAsync("getOuvertPerm",{w:week,j:j,h:h})
                 if (ouv == null){
                     ouv = 0
                 }
@@ -111,9 +110,6 @@ export async function init(common){
                     case 0:
                         let str = ""
                         groupsInscrits.forEach(function (child) {
-                            if(child == common.classe || common.groups.indexOf(child)!=-1){
-                                bouton[j][h].className = "case perm green"
-                            }
                             if(str != ""){
                                 str += ", "
                             }
@@ -137,9 +133,6 @@ export async function init(common){
                         
                         let str2 = ""
                         groupsInscrits.forEach(function (child) {
-                            if(child == common.classe || common.groups.indexOf(child)!=-1){
-                                bouton[j][h].className = "case perm green"
-                            }
                             if(str2 != ""){
                                 str2 += ", "
                             }
@@ -155,18 +148,9 @@ export async function init(common){
             }
         }
     }
-
-    /*
-    function loop() {
-        console.log("update database")
-        refreshDatabase();
-        setTimeout(loop, 20000);
-    }
-    loop();*/
     refreshDatabase();
 
     function select(j, h){
-        window.location.href = "../crenau/crenauPerm.html?j="+j+"&h="+h+"&w="+week;
+        common.loadpage("/admin/perm/creneau?j="+j+"&h="+h+"&w="+week)
     }
-
 }

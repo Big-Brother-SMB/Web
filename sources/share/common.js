@@ -320,6 +320,7 @@ export class common{
     //--------------------------banderole--------------------------------
 
     let banderole = await common.socketAsync("getBanderole",null)
+    banderole='aaa'
     if (banderole != null && banderole != '') {
       document.getElementById("banderole").innerHTML = banderole
       document.getElementsByClassName("marquee-rtl")[0].style.display = "block"
