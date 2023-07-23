@@ -110,10 +110,12 @@ export class common{
       await this.readFileHTML(url,'titre','TITRE')
       await this.readFileHTML(url,'main','main')
       import(url+".js").then(async (module) => {
-        document.getElementById("container").classList.remove('loading')
         await common.reloadCommon()
         await module.init(common)
+        document.getElementById("container").classList.remove('loading')
         return
+      }).catch(async (err) => {
+        document.getElementById("container").classList.remove('loading')
       })
     }
   }
