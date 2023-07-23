@@ -3,9 +3,17 @@ const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samed
 export async function init(common){
     let d = new Date();
 
-    let j = d.getDay()-1;
-    if(j>1) j++
-    document.getElementById("day").innerHTML = allDay[d.getDay()]
+    let jBrut = d.getDay();
+    if(jBrut==3){
+        jBrut=2
+    }else if(jBrut==6 || jBrut==0){
+        jBrut=5
+    }
+    let j = jBrut-1
+    if(j>1){
+        j--
+    }
+    document.getElementById("day").innerHTML = allDay[jBrut]
     let h;
     if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
         h = 0;

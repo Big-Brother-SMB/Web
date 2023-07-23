@@ -710,7 +710,7 @@ input[type="number"]{
 .autocomplete {
   margin-top: 10px;
   position: relative;
-  width: 50%;
+  width: 65%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -874,6 +874,14 @@ h2{
 
 .bnt.cent{
   width: 100%;
+}
+
+/*-----------------------pass--------------------*/
+
+@media screen and (min-width:1000px){
+  #qr-reader{
+    display: none;
+  }
 }
 
 /*-------------------chargement-----------------------*/

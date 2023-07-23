@@ -1,52 +1,50 @@
-<article>
-    <p id="info"></p>
+        <p id="info"></p>
 
-    <div class="doubleListe">
-        <div>
-            <p>Liste d'amis</p>
-            <button id="toutAjouter" class="bnt list">Tout ajouter</button>
-            <div class="listAmis" id="listeAmis"></div>
+        <div class="doubleListe">
+            <div>
+                <p>Liste d'amis</p>
+                <button id="toutAjouter" class="bnt list">Tout ajouter</button>
+                <div class="listAmis" id="listeAmis"></div>
+            </div>
+            <div>
+                <p>Je mange avec :</p>
+                <button id="toutRetirer" class="bnt list">Tout retirer</button>
+                <div class="listAmis" id="listeMange" ></div>
+            </div>
         </div>
-        <div>
-            <p>Je mange avec :</p>
-            <button id="toutRetirer" class="bnt list">Tout retirer</button>
-            <div class="listAmis" id="listeMange" ></div>
+
+        <p id="attentionAmis"></p>
+
+        <form id="sandwich">
+            <p>Sandwich?</p>
+            <input type="radio" name="sandwich" value="0"/><label for="sandwich">Je ne veux pas</label><br>
+            <input type="radio" name="sandwich" value="1"/><label for="sandwich">J'aimerai un sandwich</label><br>
+            <input type="radio" name="sandwich" value="2"/><label for="sandwich">Je veux ABSOLUMENT un sandwich</label>
+        </form>
+
+
+        <div id="DIVdepot" class="cache">
+            <p>Déposer la demande?</p>
+            <div>
+                <button id="envoyer" class="bnt envoyer">OUI</button>
+                <button id="annuler" class="bnt envoyer">NON</button>
+            </div>
         </div>
-    </div>
 
-    <p id="attentionAmis"></p>
-
-    <form id="sandwich">
-        <p>Sandwich?</p>
-        <input type="radio" name="sandwich" value="0"/><label for="sandwich">Je ne veux pas</label><br>
-        <input type="radio" name="sandwich" value="1"/><label for="sandwich">J'aimerai un sandwich</label><br>
-        <input type="radio" name="sandwich" value="2"/><label for="sandwich">Je veux ABSOLUMENT un sandwich</label>
-    </form>
-
-
-    <div id="DIVdepot" class="cache">
-        <p>Déposer la demande?</p>
-        <div>
-            <button id="envoyer" class="bnt envoyer">OUI</button>
-            <button id="annuler" class="bnt envoyer">NON</button>
+        <div id="DIVmodif" class="cache">
+            <div>
+                <button id="modif" class="bnt envoyer">Enregistrer les modifications</button>
+                <button id="PASmodif" class="bnt envoyer">Retour sans enregistrer</button>
+            </div>
+            <p>Se désinscrire ?</p>
+            <div>
+                <button id="retirer" class="bnt envoyer">Se désinscrire</button>
+            </div>
         </div>
-    </div>
 
-    <div id="DIVmodif" class="cache">
-        <div>
-            <button id="modif" class="bnt envoyer">Enregistrer les modifications</button>
-            <button id="PASmodif" class="bnt envoyer">Retour sans enregistrer</button>
+        <div id="DIVinscrit" class="cache">
+            <div>
+                <button id="pass" class="bnt envoyer">Pass</button>
+            </div>
         </div>
-        <p>Se désinscrire ?</p>
-        <div>
-            <button id="retirer" class="bnt envoyer">Se désinscrire</button>
-        </div>
-    </div>
-
-    <div id="DIVinscrit" class="cache">
-        <div>
-            <button id="pass" class="bnt envoyer">Pass</button>
-        </div>
-    </div>
-    <button id="retour"><img src="/Images/courbe-de-la-fleche-de-retour-pointant-vers-la-gauche.png"></img></button>
-</article>
+        <button id="retour"><img src="/Images/courbe-de-la-fleche-de-retour-pointant-vers-la-gauche.png"></img></button>
