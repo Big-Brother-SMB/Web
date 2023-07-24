@@ -357,7 +357,7 @@ header{
   pointer-events: all;
 }
 
-#popup_bnt{
+#popup_btn{
   text-decoration : none;
   color :black;
 }
@@ -375,7 +375,7 @@ header{
   text-align: center;
 }
 
-.bnt{
+.btn{
   cursor: pointer;
   width: 20%;
   border-radius: 20px;
@@ -396,7 +396,7 @@ header{
   font-size: 2em;
 }
 
-.bnt.menu{
+.btn.menu{
   min-width: 50%;
   min-height: 100px;
 
@@ -649,7 +649,7 @@ input[type="radio"]{
   height: 70%;    
 }
 
-.bnt.list{
+.btn.list{
   width: 50%;
   margin-bottom: 15px;
 }
@@ -864,15 +864,15 @@ h2{
   font-size: 3em;
 }
 
-.bnt.algo{
+.btn.algo{
   width: 500px;
 }
 
-.bnt.select{
+.btn.select{
   width: 30%;
 }
 
-.bnt.cent{
+.btn.cent{
   width: 100%;
 }
 

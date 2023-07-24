@@ -118,7 +118,10 @@ export async function init(common){
                 console.log(child)
                 obj.name = "Repas du " + dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
                 obj.value = -child.cout
-                obj.date = common.generedDateHour(Math.floor(child.creneau / 2),child.semaine,(11 + (child.creneau % 2)))
+                let jourForDate = Math.floor(child.creneau / 2)
+                jourForDate++
+                if(jourForDate>2)jourForDate++
+                obj.date = common.getDateHour(common.generedDate(child.semaine,jourForDate,(11 + (child.creneau % 2))))
                 obj.type = 0
                 scoreObjs.push(obj)
             })

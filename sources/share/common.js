@@ -25,7 +25,6 @@ Date.prototype.getWeek = function() {
 }
 
 const actualWeek = new Date().getWeek();
-let date = new Date();
 
 
 export class common{
@@ -77,23 +76,23 @@ export class common{
       await this.readFileHTMLPath('mySidenav','/share/'+ typeSideBar +'_sidebar.html')
 
       if(this.admin > 0){
-        let bnt = document.getElementById("nav_bnt_admin")
-        if(bnt){
-          bnt.classList.remove("cache")
+        let btns = document.getElementsByClassName("obj_admin")
+        for (var i=0; i<btns.length; i++) {
+          btns[i].classList.remove("cache")
         }
       }
       if(this.admin == 2){
-        let bnt = document.getElementById("nav_bnt_user")
-        if(bnt){
-          bnt.classList.add("cache")
+        let btns = document.getElementsByClassName("obj_user")
+        for (var i=0; i<btns.length; i++) {
+          btns[i].classList.add("cache")
         }
       }
 
-      let list_nav_bnt = document.getElementsByClassName('nav_bnt')
-      for (var i = 0; i < list_nav_bnt.length; i++) {
+      let list_nav_btn = document.getElementsByClassName('nav_btn')
+      for (var i = 0; i < list_nav_btn.length; i++) {
         const index = i;
-        list_nav_bnt[i].addEventListener('click', async ()=>{
-          let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+        list_nav_btn[i].addEventListener('click', async ()=>{
+          let url = document.getElementsByClassName('nav_btn')[index].attributes.url.value
           if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){
             document.getElementById("mySidenav").classList.remove("open");
             document.body.classList.remove("stop");
@@ -226,12 +225,12 @@ export class common{
       });
 
 
-      let list_nav_bnt = document.getElementsByClassName('nav_bnt')
+      let list_nav_btn = document.getElementsByClassName('nav_btn')
 
-      for (var i = 0; i < list_nav_bnt.length; i++) {
+      for (var i = 0; i < list_nav_btn.length; i++) {
         const index = i;
-        list_nav_bnt[i].addEventListener('click', async ()=>{
-          let url = document.getElementsByClassName('nav_bnt')[index].attributes.url.value
+        list_nav_btn[i].addEventListener('click', async ()=>{
+          let url = document.getElementsByClassName('nav_btn')[index].attributes.url.value
           if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){
             side.classList.remove("open");
             document.body.classList.remove("stop");
@@ -306,8 +305,8 @@ export class common{
     if(!this.tuto && window.location.pathname!="/tuto"){
       this.popUp_Active("Bienvenue sur le site du Foyer !"
         ,"Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée et d'y passer leurs heures de permanence.Avant de naviguer dessus vous devez comprendre comment il fonctionne pour cela vous devez :"
-        ,(bnt)=>{
-          bnt.addEventListener("click",()=>{
+        ,(btn)=>{
+          btn.addEventListener("click",()=>{
             this.loadpage("/tuto")
             this.popUp_Stop()
           },{once:true})
@@ -343,15 +342,15 @@ export class common{
 
     //----------------------cacher les boutons de changement de side bar-----------------------------
     if(this.admin > 0){
-      let bnt = document.getElementById("nav_bnt_admin")
-      if(bnt){
-        bnt.classList.remove("cache")
+      let btns = document.getElementsByClassName("obj_admin")
+      for (var i=0; i<btns.length; i++) {
+        btns[i].classList.remove("cache")
       }
     }
     if(this.admin == 2){
-      let bnt = document.getElementById("nav_bnt_user")
-      if(bnt){
-        bnt.classList.add("cache")
+      let btns = document.getElementsByClassName("obj_user")
+      for (var i=0; i<btns.length; i++) {
+        btns[i].classList.add("cache")
       }
     }
   }
@@ -452,7 +451,7 @@ export class common{
   //prend en entrer le jour de la semaine (0-4) et le numéro de la semaine
   //renvoie sous forme (4 juin)
   static getDayText(jour,week){
-    //différence de semaine en minisecondes depuis aujourd'hui
+    /*//différence de semaine en minisecondes depuis aujourd'hui
     let diff_week_ms = 604800000 * (week - actualWeek)
     //semaine de la date chercher en minisecondes
     let dateWeek_ms = Date.now() + diff_week_ms
@@ -460,32 +459,16 @@ export class common{
     let nbJour = new Date().getDay()-1-jour
     //calcule la date en ms puis en Date()
     let date = dateWeek_ms - nbJour * 86400000;
-    date=new Date(date);
+    date=new Date(date);*/
+    let date = this.generedDate(week,jour,0,0,0)
 
     let text = date.getDate() + " " + mois[date.getMonth()]
     return text
   }
 
-  //renvoie sous forme (2000-07-4 7:00:00)
-  static generedDateHour(j,week,h){
-    let date = new Date();
-    let ajd=date.getDay()-1;
-    let jour = j
-    if(j > 1){
-      jour++
-    }
-    let dateBeg=(Date.now()+604800000*(week - actualWeek))-(ajd-jour)*86400000;
-    dateBeg=new Date(dateBeg);
-    dateBeg = dateBeg.toLocaleString();
-    let mBeg = dateBeg[3]+dateBeg[4]
-    let text = ""
-    text = dateBeg[6]+dateBeg[7]+dateBeg[8]+dateBeg[9] + "-" + mBeg + "-" + dateBeg[0]+dateBeg[1] + " " + h+":00:00"
-    return text
-  }
-
   //renvoie sous forme (4 au 11 juin)
   static intervalSemaine(semaine){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer
-    let jour = date.getDay()-1;
+    let jour = new Date().getDay()-1;
     let dateBeg=(Date.now()+604800000*(semaine - actualWeek))-jour*86400000; //86400000ms=1 jour et 604800000ms= 1semaine
     let dateEnd=dateBeg+4*86400000;
     dateBeg=new Date(dateBeg);
@@ -511,10 +494,10 @@ export class common{
   }
 
   //renvoie sous forme (07:00:00)
-  static getHour(){
+  /*static getHour(){
     let d = new Date()
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
-  }
+  }*/
   
   
   /*static hashControl(){
@@ -523,22 +506,47 @@ export class common{
   }*/
   
   //renvoie sous forme (2000-6-4)
-  static getDate(){
+  /*static getDate(){
     let d =  new Date()
     return d.getFullYear()
     + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
     + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
+  }*/
+
+  //renvoie sous forme (2000-07-4 7:00:00)
+  static generedDate(week,jour,h,min,s){
+    if (jour==0) week++
+    let nowDate = new Date()
+    let jourActuel = nowDate.getDay();
+    //jour++;if(j > 1)jour++
+    let date_in_ms=(Date.now()+604800000*(week - actualWeek))-(jourActuel-jour)*86400000;
+    date_in_ms+= (h-nowDate.getHours())*3600000 + (min-nowDate.getMinutes())*60000 + (s-nowDate.getSeconds())*1000
+    return new Date(date_in_ms);
   }
 
+  /*static generedDateHour(date){
+    let date = new Date();
+    let jourActuel =date.getDay();//-1
+    let jour = j
+    //if(j > 1)jour++
+    let dateBeg=(Date.now()+604800000*(week - actualWeek))-(jourActuel-jour)*86400000;
+    dateBeg=new Date(dateBeg);
+    dateBeg = dateBeg.toLocaleString();
+    let mBeg = dateBeg[3]+dateBeg[4]
+    let text = ""
+    text = dateBeg[6]+dateBeg[7]+dateBeg[8]+dateBeg[9] + "-" + mBeg + "-" + dateBeg[0]+dateBeg[1] + " " + h+":00:00"
+    return text
+  }*/
+
   //renvoie sous forme (2000-6-4 07:00:00)
-  static getDateHour(){
-    let d =  new Date()
-    return d.getFullYear()
-    + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
-    + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
-    + " " + (String(d.getHours()).length == 1?"0":"") + d.getHours()
-    + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes()
-    + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+  static getDateHour(date){
+    if(date==undefined) date = new Date()
+    return date.getFullYear()
+    + "-" + (String((date.getMonth() + 1)).length == 1?"0":"") + (date.getMonth() + 1)
+    + "-" + (String(date.getDate()).length == 1?"0":"") + date.getDate()
+    + " " + (String(date.getHours()).length == 1?"0":"") + date.getHours()
+    + ":" + (String(date.getMinutes()).length == 1?"0":"") + date.getMinutes()
+    + ":" + (String(date.getSeconds()).length == 1?"0":"") + date.getSeconds()
   }
 
   //-------------------------fonction theme css---------------------------
@@ -662,10 +670,10 @@ export class common{
   static popUp_Active(titre,body,action){
     document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'
     document.getElementById("popup-body").innerHTML = body
-    document.getElementById("popup-option").innerHTML="<button id='popup_bnt'>OK</button>"
+    document.getElementById("popup-option").innerHTML="<button id='popup_btn'>OK</button>"
     document.getElementById("popup").classList.add('active')
     document.getElementById("overlay").classList.add('active')
-    action(document.getElementById("popup_bnt"))
+    action(document.getElementById("popup_btn"))
   }
 
   static popUp_Stop(){

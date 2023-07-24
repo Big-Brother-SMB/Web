@@ -104,7 +104,8 @@ export async function init(common){
             }
 
         let jcorriger=j
-        if(jcorriger>1){
+        jcorriger++
+        if(jcorriger>2){
             jcorriger++;
         }
         bouton[j][2].innerHTML = common.getDayText(jcorriger,week)

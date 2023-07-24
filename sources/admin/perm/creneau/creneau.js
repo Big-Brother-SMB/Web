@@ -135,7 +135,7 @@ export async function init(common){
     divNiveau.style="display: inline-block;*display: inline;width:23%;vertical-align: top;"
 
     let nSelectAll = document.createElement("button")
-    nSelectAll.className = "bnt cent"
+    nSelectAll.className = "btn cent"
     nSelectAll.innerHTML ="selectionner tous les " + nomNiveau[n]
     nSelectAll.addEventListener("click", async function() {
         console.log("niveau " + n + " select all")
@@ -150,7 +150,7 @@ export async function init(common){
     divNiveau.appendChild(nSelectAll);
 
     let nSelectNone = document.createElement("button")
-    nSelectNone.className = "bnt cent"
+    nSelectNone.className = "btn cent"
     nSelectNone.innerHTML ="retirer tous les " + nomNiveau[n]
     nSelectNone.addEventListener("click", async function() {
         console.log("niveau " + n + " select none")
@@ -165,7 +165,7 @@ export async function init(common){
     divNiveau.appendChild(nSelectNone);
 
     let nInversed = document.createElement("button")
-    nInversed.className = "bnt cent"
+    nInversed.className = "btn cent"
     nInversed.innerHTML ="Inverser tous les " + nomNiveau[n]
     nInversed.addEventListener("click", async function() {
         console.log("niveau " + n + " inversed")
