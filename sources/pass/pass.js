@@ -23,6 +23,7 @@ export async function init(common){
 
 
     let info_horaire = await common.socketAsync("getDataThisCreneau",{w:common.actualWeek,j:j,h:h})
+    if(info_horaire==undefined)info_horaire={prio:[]}
     let my_demande = await common.socketAsync("getMyDemande",{w:common.actualWeek,j:j,h:h})
 
     try{

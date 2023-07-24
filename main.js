@@ -109,7 +109,7 @@ const init_DB = require('./server/initDB.js')
 const generatePage = require('./server/generatePage.js')
 
 async function main() {
-  db = new sqlite3.Database(__dirname+'/../main.sql', err => {
+  db = new sqlite3.Database(__dirname+'/../main.db', err => {
     if (err)
       throw err
     db.serialize(init_DB(db))
