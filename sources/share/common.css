@@ -228,6 +228,10 @@ header{
     height: 2em;
   }
 
+  #btn_retour{
+    display: none;
+  }
+
   #mySidenav.open{
     height: calc(var(--screenH));
   }
@@ -239,7 +243,7 @@ header{
     /*margin-right: 83px;*/
   }
 
-  .menu_img{
+  #btn_menu{
     display: none;
   }
 

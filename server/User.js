@@ -420,11 +420,15 @@ module.exports = class User{
                               for (let i in data){
                                 let r = await new Promise(async function(resolve2, reject2) {
                                   let info=await funcDB.getMidiInfo(data[i].semaine,data[i].creneau)
+                                  if(info==undefined){
+                                    resolve2(undefined)
+                                    return
+                                  }
                                     if(info.gratuit_prio){
                                       let groups = await moi.groups
                                       let classe = await moi.classe
                                       if(info.prio.indexOf(classe)!=-1){
-                                        info.cout
+                                        info.cout=-info.cout
                                       }
                                       groups.forEach(e=>{
                                         if(info.prio.indexOf(e)!=-1){
@@ -475,6 +479,10 @@ module.exports = class User{
                                 for (let i in data){
                                   let r = await new Promise(async function(resolve2, reject2) {
                                     let info=await funcDB.getMidiInfo(data[i].semaine,data[i].creneau)
+                                    if(info==undefined){
+                                      resolve2(undefined)
+                                      return
+                                    }
                                     if(info.gratuit_prio){
                                       let groups = await moi.groups
                                       let classe = await moi.classe
