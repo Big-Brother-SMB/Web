@@ -56,10 +56,19 @@ export async function init(common){
 
     document.getElementById("editbanner").addEventListener("click",async function(){
         let banderole = await common.socketAsync("getBanderole",null)
-        let p=window.prompt("Message de la banderole:",banderole);
-        if (p!=null){
-            await common.socketAdminAsync("set_banderole",p)
-            document.getElementById("banderole").innerHTML = p
+        banderole=window.prompt("Message de la banderole:",banderole);
+        if (banderole!=null){
+            await common.socketAdminAsync("set_banderole",banderole)
+            document.getElementById("banderole").innerHTML = banderole
+
+            if (banderole != null && banderole != '') {
+                document.getElementById("banderole").innerHTML = banderole
+                document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
+                document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
+            }else{
+                document.getElementsByClassName("marquee-rtl")[0].classList.add("cache")
+                document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px)")
+            }
         }
     })
     
