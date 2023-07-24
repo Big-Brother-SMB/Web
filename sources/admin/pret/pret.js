@@ -1,4 +1,5 @@
 export async function init(common){
+    var interval;
     let barcodeLaser = '';
     document.addEventListener('keydown', function(evt) {
         console.log(evt.key)
@@ -7,8 +8,7 @@ export async function init(common){
         }
         if (evt.code == 'Enter') {
             if (barcodeLaser){
-                search(barcodeLaser,true)
-                showAct()
+                search(barcodeLaser)
                 inputCodeBar.value = barcodeLaser;
             }
             barcodeLaser = '';
@@ -20,13 +20,53 @@ export async function init(common){
         interval = setInterval(() => barcodeLaser = '', 20);
     })
 
+    let inputCodeBar = document.getElementById("code")
+    inputCodeBar.addEventListener("input",function(){
+        let val = inputCodeBar.value
+        if(String(val).length  == 5){
+            search(val)
+        }
+    })
+
+
+
     let inputName = document.getElementById("name")
     let inputNameId = null
 
-    let inputCodeBar = document.getElementById("code")
-
     let utilisateurs = []
     let utilisateursNames = []
+
+    let code = 0
+    let users_code= new Map();
+
+    let listUsers=await common.socketAdminAsync('list pass',null)
+
+
+
+    listUsers.forEach(function(child) {
+        utilisateurs.push(child.uuid)
+        users_code.set(child.code_barre,child.uuid)
+        utilisateursNames.push(child.first_name+" "+child.last_name)
+    })
+    common.autocomplete(inputName, utilisateursNames,function(val){
+        val = utilisateurs[utilisateursNames.indexOf(val)]
+        inputNameId=val
+        listUsers.forEach(function(child) {
+            if(child.uuid==val){
+                inputCodeBar.value = child.code_barre
+            }
+        })
+    },true); 
+
+
+    function search(c){
+        code = c
+        inputCodeBar.value = code
+        
+        let name = users_code.get(code)
+        inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
+        inputNameId = name
+    }
 
     function search(c){
         code = c
@@ -42,9 +82,7 @@ export async function init(common){
             search(inputCodeBar.value)
         }
     })
-
-    let code = 0
-    users_code= new Map();
+/*
     database.ref("users").once("value", function(snapshot){
         database.ref("names").once("value", function(snapshotNames){
             snapshot.forEach(function(child) {
@@ -64,59 +102,55 @@ export async function init(common){
             });  
         })
     })
-
+*/
 
     var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker","Echec","Jungle Speed","Jeu de cartes"]
 
     function debutPret(elem){
-        if (inputName.value!="" && inputName.value!="undefined"){
-            today=new Date()
-            date=('0'+today.getDate()).slice(-2)+"-"+('0'+(today.getMonth()+1)).slice(-2)+"-"+today.getFullYear()+" : "+('0'+today.getHours()).slice(-2)+":"+('0'+today.getMinutes()).slice(-2)
-            database.ref("pret/!enCours/"+elem+"/nom").set(inputName.value)
-            database.ref("pret/!enCours/"+elem+"/date").set(date)
+        if (inputNameId!=null){
+            common.socketAdminAsync("addPret",{obj:elem,debut:new Date(),uuid:inputNameId})
             document.getElementById(elem+"-Name").innerHTML=inputName.value
-            document.getElementById(elem).style.filter="grayscale(1)"
+            document.getElementById(elem).classList.add("grayscale")
         }
         inputName.value=""
         inputCodeBar.value=""
+        inputNameId=null
     }
 
-    function finPret(elem){
-        database.ref("pret/!enCours/"+elem+"/nom").once("value",function(name){
-            database.ref("pret/!enCours/"+elem+"/date").once("value",function(begDate){
-                if (name.val()!="Libre"){
-                    today=new Date()
-                    EndDate=('0'+today.getHours()).slice(-2)+":"+('0'+today.getMinutes()).slice(-2)
-                    database.ref("pret/"+elem+"/"+begDate.val()+" à "+EndDate).set(name.val())
-                    if (inputName.value!="" && inputName.value!="undefined"){
-                        debutPret(elem)
-                    }
-                    else{
-                        database.ref("pret/!enCours/"+elem+"/nom").set("Libre")
-                        database.ref("pret/!enCours/"+elem+"/date").set("NaN")
-                        document.getElementById(elem).style.filter="grayscale(0)"
-                        document.getElementById(elem+"-Name").innerHTML="Libre"
-                    }
-                }
-            })
+    async function finPret(elem){
+        listPret.forEach((child)=>{
+            if(child.objet==elem){
+                common.socketAdminAsync("finPret",{obj:elem,debut:child.debut,uuid:child.uuid,fin:new Date()})
+                document.getElementById(elem).classList.remove("grayscale")
+                document.getElementById(elem+"-Name").innerHTML="Libre"
+            }
         })
     }
 
-    for (const elem of listAct){
-        document.getElementById(elem).addEventListener("click",function(){
-            if (document.getElementById(elem).style.filter=="grayscale(1)"){
-                finPret(elem)
+
+    let listPret;
+    async function actualiserPret(){
+        listPret = await common.socketAdminAsync("getPretsActuel",null)
+        for (const elem of listAct){
+            document.getElementById(elem).classList.remove("grayscale");
+        }
+        listPret.forEach((e)=>{
+            let element = document.getElementById(e.objet)
+            if(element!=null){
+                document.getElementById(e.objet+"-Name").innerHTML= utilisateursNames[utilisateurs.indexOf(e.uuid)]
+                element.classList.add("grayscale");
             }
-            else{
+        })
+    }
+    actualiserPret()
+    for (const elem of listAct){
+        document.getElementById(elem).addEventListener("click",async function(){
+            await actualiserPret()
+            if (document.getElementById(elem).classList.contains("grayscale")){
+                finPret(elem)
+            }else{
                 debutPret(elem)
             }
-        })
-
-        database.ref("pret/!enCours/"+elem+"/nom").once("value",function(snapshot){
-            if (snapshot.val()!="Libre"){
-                document.getElementById(elem).style.filter="grayscale(1)"
-            }
-            document.getElementById(elem+"-Name").innerHTML=snapshot.val()
         })
     }
 }

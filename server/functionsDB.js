@@ -253,7 +253,56 @@ module.exports = class funcDB{
     })
   }
 
-  
+
+
+  //------------------------------emprunt--------------------------------
+//objet text,uuid UUID,debut DATE,fin DATE,commantaire text
+  static addPret(obj,uuid,debut){
+    db.run("INSERT INTO emprunt(objet,uuid,debut) VALUES (?,?,?)",obj,uuid,debut)
+  }
+
+  static finPret(obj,uuid,debut,fin,commantaire){
+    db.run("UPDATE emprunt SET fin=? where objet=? and uuid=? and debut=?",[fin,obj,uuid,debut])
+  }
+
+  static commantairePret(obj,uuid,debut,commantaire){
+    db.run("UPDATE emprunt SET commantaire=? where objet=? and uuid=? and debut=?",[commantaire,obj,uuid,debut])
+  }
+
+  static getPretsActuel(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM emprunt WHERE fin IS NULL", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-1');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  static getAllPrets(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM emprunt", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-2');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+
+
+
+
   //% messages / news / sondages
 
   static addSondage(from,texte,title,date,mode,choix){

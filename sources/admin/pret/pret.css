@@ -30,3 +30,7 @@ tfoot {
     width: 150px;
     height: 50px;
  }
+
+ .grayscale{
+    filter: grayscale(1);
+ }

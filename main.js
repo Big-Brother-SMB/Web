@@ -344,6 +344,39 @@ async function main() {
           socket.emit("add sondage",'ok')
         }catch(e){console.error(e);console.log('28');}
       });
+
+      socket.on("addPret", async req => {
+        try{
+          funcDB.addPret(req.obj,req.uuid,req.debut)
+          socket.emit("addPret",'ok')
+        }catch(e){console.error(e);console.log('29');}
+      });
+
+      socket.on("finPret", async req => {
+        try{
+          funcDB.finPret(req.obj,req.uuid,req.debut,req.fin)
+          socket.emit("finPret",'ok')
+        }catch(e){console.error(e);console.log('30');}
+      });
+
+      socket.on("commantairePret", async req => {
+        try{
+          funcDB.commantairePret(req.obj,req.uuid,req.debut,req.com)
+          socket.emit("commantairePret",'ok')
+        }catch(e){console.error(e);console.log('31');}
+      });
+
+      socket.on("getPretsActuel", async req => {
+        try{
+          socket.emit("getPretsActuel",await funcDB.getPretsActuel())
+        }catch(e){console.error(e);console.log('32');}
+      });
+
+      socket.on("getAllPrets", async req => {
+        try{
+          socket.emit("getAllPrets",await funcDB.getAllPrets())
+        }catch(e){console.error(e);console.log('33');}
+      });
     }
   })
   io.on("connection", async (socket) => {
@@ -374,7 +407,7 @@ async function main() {
       funcSocket.getMyDemandePerm(socket,user)
       funcSocket.setMyDemandePerm(socket,user)
       funcSocket.delMyDemandePerm(socket,user)
-    } catch (e) {console.error(e);console.log('29');}
+    } catch (e) {console.error(e);console.log('34');}
   });
 
   //db.run('drop table midi_list')
