@@ -1,0 +1,21 @@
+table{
+  font-size: 40px;
+  width:95%;
+  /*border:solid 0px rgb(38, 61, 92);
+  border-radius:10px;*/
+  overflow:scroll;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td {
+    border: 1px solid #333;
+}
+
+thead,
+tfoot {
+    background-color: #333;
+    color: #fff;
+}
