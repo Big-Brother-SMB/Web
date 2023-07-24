@@ -20,7 +20,10 @@ export async function init(common){
         refreshDatabase()
     });
 
-    /*document.getElementById("add point").addEventListener("click",async function(){
+
+    //point global / edit banderole
+
+    document.getElementById("add point").addEventListener("click",async function(){
         var nbpts=prompt("Nombre de point(s) à ajouter :","1")
         nbpts = parseFloat(nbpts.replaceAll(",","."))
         let nomgain
@@ -32,8 +35,8 @@ export async function init(common){
             }
         }
         if (conf==="OUI"){
-            await common.socketAdminAsync("add_global_point",[common.hashHour(),nomgain,nbpts])
-            if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("notif plus").style.visibility = "hidden"
+            await common.socketAdminAsync("add_global_point",[common.getDateHour(),nomgain,nbpts])
+            if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("add point").style.backgroundColor= "unset"
             alert("Ajout de points effectués")
         }
     });
@@ -47,12 +50,22 @@ export async function init(common){
         }
     })
     if(test){
-        document.getElementById("notif plus").style.visibility = "visible"
+        document.getElementById("add point").style.backgroundColor= "red"
     }
+
+
+    document.getElementById("editbanner").addEventListener("click",async function(){
+        let banderole = await common.socketAsync("getBanderole",null)
+        let p=window.prompt("Message de la banderole:",banderole);
+        if (p!=null){
+            await common.socketAdminAsync("set_banderole",p)
+            document.getElementById("banderole").innerHTML = p
+        }
+    })
     
     
     
-    let bouton = [];
+    /*let bouton = [];
     let total = [];
     let demandes = [];
     let places = [];
