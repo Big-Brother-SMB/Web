@@ -85,7 +85,7 @@ export async function init(common){
 
         col= document.createElement("td")
         if(user.demande.scan==true){
-            col.innerHTML="Passer"
+            col.innerHTML="S"
         }else{
             col.innerHTML="X"
         }

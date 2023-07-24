@@ -153,6 +153,7 @@ export async function init(common){
             }
         
             let info_horaire = await common.socketAsync("getDataThisCreneau",{w:common.actualWeek,j:j,h:h})
+            if(info_horaire==undefined) info_horaire={prio:[]}
 
             console.log(info_horaire,j,h)
         
