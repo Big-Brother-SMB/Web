@@ -130,14 +130,14 @@ export async function init(common){
         switch (ouvert[j][h]) {
             case 0:
                 text = "horaire non planifié"
-                bouton[j][h].className="case default"
+                bouton[j][h].className="case midi default"
                 break;
             case 1:
                 text = "ouvert à tous";
-                bouton[j][h].className="case green"
+                bouton[j][h].className="case midi green"
                 break;
             case 2:
-                bouton[j][h].className = "case blue"
+                bouton[j][h].className = "case midi blue"
                 text = nbInscrits[j][h]+" inscrits/"+placesTotal[j][h]  + " places"
                 if(nbInscrits[j][h]>=placesTotal[j][h]){
                     text+="<rouge></br>PLEIN</rouge>"
@@ -145,7 +145,7 @@ export async function init(common){
                 text+="</br>("+nbDemandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
                 break;
             case 3:
-                bouton[j][h].className="case yellow"
+                bouton[j][h].className="case midi yellow"
                 text = nbInscrits[j][h]+" inscrits/"+placesTotal[j][h]  + " places"
                 if(nbInscrits[j][h]>=placesTotal[j][h]){
                     text+="<rouge></br>PLEIN</rouge>"
@@ -154,15 +154,15 @@ export async function init(common){
                 break;
             case 4:
                 text = "Foyer fermé"
-                bouton[j][h].className="case red"
+                bouton[j][h].className="case midi red"
                 break;
             case 5:
                 text = "Fini"
-                bouton[j][h].className="case red"
+                bouton[j][h].className="case midi red"
                 break;
             case 6:
                 text = "Vacances"
-                bouton[j][h].className="case default"
+                bouton[j][h].className="case midi default"
                 break;
         }
         bouton[j][h].innerHTML = text;
