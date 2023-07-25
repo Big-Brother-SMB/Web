@@ -69,7 +69,12 @@ module.exports = class User{
             resolve(tokenAuth)
           } catch (e) {console.error(e);console.log('d5');}
         })
-      }
+    }
+    
+    suppAllToken(){
+        db.run("delete from token WHERE uuid=?",[this.uuid])
+    }
+
     static searchToken(token){
         return new Promise(function(resolve, reject) {
           try{

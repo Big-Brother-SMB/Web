@@ -229,7 +229,14 @@ module.exports = class funcSocket{
 
 
 
-
+    static suppAllToken(socket,user){
+        socket.on("suppAllToken", async req => {
+            try{
+                user.suppAllToken()
+                socket.emit('suppAllToken',"ok")
+            }catch(e){console.error(e);console.log('b22');}
+        });
+    }
 
 
 

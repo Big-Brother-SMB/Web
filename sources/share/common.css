@@ -80,8 +80,8 @@ header{
 /*---------------------main--------------------------*/
 #main{
   min-height: calc(50px * 13 + 18px * 2 + 25px);
-  padding: 1em;
   text-align: center;
+  padding: 1em 0;
 }
 
 #main p{

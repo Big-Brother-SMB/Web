@@ -21,6 +21,12 @@ export async function init(common){
 
 
 
+    document.getElementById("suppToken").addEventListener("click", function () {
+        common.socketAsync("suppAllToken",null)
+        common.deco()
+    });
+
+
     document.getElementById("disconnect").addEventListener("click", function () {
         common.deco()
     });
@@ -43,18 +49,4 @@ export async function init(common){
     if(common.admin===2){
         adminS.checked=true
     }
-
-
-    /*let key2 = document.getElementById("key2")
-    let key2Val = common.readCookie("key2")
-    if (key2Val!=undefined){
-        key2.style.visibility="visible";
-        key2.style.height="auto";
-    }
-
-    key2.addEventListener("click", function () {
-        common.writeCookie("key",key2Val)
-        common.delCookie("key2")
-        window.location.reload()
-    })*/
 }

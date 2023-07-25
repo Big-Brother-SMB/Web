@@ -1,59 +1,19 @@
-/*#addPrio{
-  width: 500px;
+section{
+  margin: 0;
+  padding: 20px;
+  border-top: black solid 2px;
+}
+#sectionGeneral{
+  background-color: #9cd62f4d;
 }
 
-.envoyer  {
-  border-radius:8px 8px 8px 8px;
-  background-color: #3d546e;
-  margin: 10px;
-  margin-bottom: 0px;
-  width: 20%;
+#sectionScore{
+  background-color: #d6562f4d;
 }
 
-.retour:hover  {
-  background:#2e3f53;
+#sectionPrio{
+  background-color: #2f64d64d;
 }
-
-button {
-  border: none;
-  text-align: center;
-  text-transform: uppercase;
-  outline: none;
-  overflow: hidden;
-  color: #eeeeee;
-  font-weight: 600;
-  font-size: 20px;
-  background-color: grey;
-  padding: 15px 50px;
-}
-
-input {
-    width: 500px;
-  border: 1px solid transparent;
-  background-color: #f1f1f1;
-  padding: 10px;
-  font-size: 50px;
-}
-
-input[type=submit] {
-  background-color: DodgerBlue;
-  color: #fff;
-}
-
-input[type=number]{
-  width: 200px;
-}
-
-input[type=checkbox] {
-  width: 30px;
-  height: 30px;
-}
-
-#divScore{
-  align-items: center;
-  border: 1px solid black;
-}
-*/
 
 .eventM{
   background-color: #8bc995;

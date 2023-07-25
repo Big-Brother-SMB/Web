@@ -304,11 +304,20 @@ export async function init(common){
                 divPrio.appendChild(prio);
             }
 
-            connect.addEventListener("click",fu6=async function(){
+            let shiftActive = false;
+            document.addEventListener('keydown', (event) => {
+                if(event.which==16) shiftActive = true
+            });
+            document.addEventListener('keyup', (event) => {
+                if(event.which==16) shiftActive = false
+            });
+            connect.addEventListener("click",fu6=async function(event){
                 let key = await common.socketAdminAsync('copy key',utilisateur.uuid)
-                common.writeCookie("key2",common.key)
-                common.writeCookie("key",key)
-                window.location.reload()
+                common.writeCookie("listKey",common.readCookie("listKey")+ key +"/")
+                if(!shiftActive){
+                    common.writeCookie("key",key)
+                    window.location.reload()
+                }
             })
         }
     },true);

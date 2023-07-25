@@ -133,11 +133,27 @@ list_id_data.forEach(id_data=>{
     text.innerHTML = id_data.first_name+" "+id_data.last_name
     div.appendChild(text)
 
-    div.addEventListener("click",function(){
-      if(document.getElementById("checkbox").checked == true){
-        connect(id_data)
-      } else {
-        document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies<br>"
+    let supp = document.createElement('img')
+    supp.classList.add('account_img')
+    supp.classList.add('account_supp')
+    supp.setAttribute("src","/Images/croix.png")
+    supp.innerHTML = id_data.first_name+" "+id_data.last_name
+    supp.addEventListener('click',()=>{
+      const index = list_id_data.indexOf(id_data)
+      list_id_data.splice(index,1)
+      listKey.splice(index,1)
+      saveListKey()
+      document.getElementById("list_accounts").removeChild(div)
+    })
+    div.appendChild(supp)
+
+    div.addEventListener("click",function(event){
+      if(!event.target.classList.contains("account_supp")){
+        if(document.getElementById("checkbox").checked == true){
+          connect(id_data)
+        } else {
+          document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies<br>"
+        }
       }
     })
     document.getElementById("list_accounts").appendChild(div)
