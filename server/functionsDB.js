@@ -111,12 +111,12 @@ module.exports = class funcDB{
       setTimeout(reject,5000)
     })
   }
-  static setMidiMenu(semaine,menu){
+  static setMidiMenu(semaine,menu,self){
     db.get("SELECT * FROM midi_menu where semaine=?",[semaine], (err, data) => {
       if(data==undefined){
-        db.run("INSERT INTO midi_menu(menu,semaine) VALUES (?,?)",[menu,semaine])
+        db.run("INSERT INTO midi_menu(menu,self,semaine) VALUES (?,?,?)",[menu,self,semaine])
       } else{
-        db.run("UPDATE midi_menu SET menu=? where semaine=?",[menu,semaine])
+        db.run("UPDATE midi_menu SET menu=?, self=? where semaine=?",[menu,self,semaine])
       }
     })
   }

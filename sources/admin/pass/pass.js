@@ -8,24 +8,29 @@ export async function init(common){
 
     var interval;
     let barcodeLaser = '';
-    document.addEventListener('keydown', function(evt) {
-        console.log(evt.key)
-        if (interval){
-            clearInterval(interval);
-        }
-        if (evt.code == 'Enter') {
-            if (barcodeLaser){
-                search(barcodeLaser,true)
-                inputCodeBar.value = barcodeLaser;
+    const keydown = function(evt) {
+        if(window.location.pathname=="/admin/pass"){
+            console.log(evt.key)
+            if (interval){
+                clearInterval(interval);
             }
-            barcodeLaser = '';
-            return;
+            if (evt.code == 'Enter') {
+                if (barcodeLaser){
+                    search(barcodeLaser,true)
+                    inputCodeBar.value = barcodeLaser;
+                }
+                barcodeLaser = '';
+                return;
+            }
+            if (evt.key != 'Shift'){
+                barcodeLaser += evt.key;
+            }
+            interval = setInterval(() => barcodeLaser = '', 20);
+        }else{
+            document.removeEventListener('keydown', keydown)
         }
-        if (evt.key != 'Shift'){
-            barcodeLaser += evt.key;
-        }
-        interval = setInterval(() => barcodeLaser = '', 20);
-    })
+    }
+    document.addEventListener('keydown', keydown)
 
 
 
@@ -280,7 +285,7 @@ export async function init(common){
 
             document.getElementById("heure").innerHTML = common.getHour()
             setTimeout(loop,500);
-        } catch (Exception) {console.log('exit1')}
+        } catch (Exception) {}
     }
     loop();
 

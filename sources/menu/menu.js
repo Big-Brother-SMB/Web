@@ -36,6 +36,8 @@ export async function init(common){
         }
         menu=menu.replaceAll("/","<br>")
         document.getElementById("menuSemaine").innerHTML = "<u>Menu du foyer :</u><br>" + menu
+
+        document.getElementById("menu self").setAttribute("src",info_menu.self)
     }
 
     refreshDatabase();

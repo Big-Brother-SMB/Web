@@ -12,7 +12,6 @@ export async function init(common){
 
     async function update(){
         let listPret = await common.socketAdminAsync("getAllPrets",null)
-        console.log(listPret)
         tbody.innerHTML=''
         listPret.forEach(child => {
             let ligne = document.createElement("tr")
@@ -26,18 +25,19 @@ export async function init(common){
             ligne.appendChild(col)
         
             col = document.createElement("td")
-            col.innerHTML = child.debut
+            col.innerHTML = common.getDateHour(new Date(child.debut))
             ligne.appendChild(col)
         
             col = document.createElement("td")
             if(child.fin==null){
                 col.innerHTML = "En cours"
             }else{
-                col.innerHTML = child.fin
+                col.innerHTML = common.getDateHour(new Date(child.fin))
             }
             ligne.appendChild(col)
         
             col = document.createElement("td")
+            col.style.maxWidth = "50vw"
             if(child.commentaire==null){
                 col.innerHTML = "RAS"
             }else{
@@ -46,13 +46,15 @@ export async function init(common){
             col.addEventListener('click',()=>{
                 common.popUp_Active('Commentaire','attente',async (bnt)=>{
                     let text = document.createElement('textarea')
+                    text.value = child.commentaire
                     document.getElementById('popup-body').innerHTML=''
                     document.getElementById('popup-body').appendChild(text)
             
                     bnt.innerHTML='Confirmer'
                     bnt.addEventListener('click',async ()=>{
-                        console.log(text.value)
-                        await common.socketAdminAsync("commentairePret",{obj:child.objet,uuid:child.uuid,debut:child.debut,com:text.value})
+                        let com = text.value
+                        if(com=="") com=null
+                        await common.socketAdminAsync("commentairePret",{obj:child.objet,uuid:child.uuid,debut:child.debut,com:com})
                         common.popUp_Stop()
                         update()
                     }, { once: true })

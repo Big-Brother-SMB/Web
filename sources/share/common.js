@@ -513,7 +513,7 @@ export class common{
     + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
   }*/
 
-  //renvoie sous forme (2000-07-4 7:00:00)
+  //renvoie sous forme de DATE
   static generedDate(week,jour,h,min,s){
     if (jour==0) week++
     let nowDate = new Date()

@@ -214,10 +214,10 @@ async function main() {
           socket.emit('set_banderole',"ok")
         }catch(e){console.error(e);console.log('7');}
       })
-      socket.on('set_menu',async msg => {
+      socket.on('set_menu',async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
-          funcDB.setMidiMenu(msg[0],msg[1])
+          funcDB.setMidiMenu(req.semaine,req.menu,req.self)
           socket.emit('set_menu',"ok")
         }catch(e){console.error(e);console.log('8');}
       })
