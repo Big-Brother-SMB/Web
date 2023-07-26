@@ -1,4 +1,7 @@
 export async function init(common){
+    document.getElementById("btn_retour").classList.remove("cache")
+    document.getElementById("btn_retour").setAttribute("url","/admin/pret")
+
     let tbody = document.getElementById("tbody")
 
     let utilisateursUUID=[]

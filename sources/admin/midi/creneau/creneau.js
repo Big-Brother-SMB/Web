@@ -1,6 +1,9 @@
 const nomNiveau = ["secondes","premières","terminales","adultes"]
 
 export async function init(common){
+    document.getElementById("btn_retour").classList.remove("cache")
+    document.getElementById("btn_retour").setAttribute("url","/admin/midi")
+
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
     });
@@ -85,7 +88,7 @@ export async function init(common){
 
 
 
-    const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
+    const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","fermé","fini","vacances"]
     let divMode = document.getElementById("mode")
     for(let i in listMode){
         let opt = document.createElement("option")

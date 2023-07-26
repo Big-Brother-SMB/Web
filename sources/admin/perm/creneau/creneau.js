@@ -1,6 +1,9 @@
 const nomNiveau = ["secondes","premières","terminales","adultes"]
 
 export async function init(common){
+  document.getElementById("btn_retour").classList.remove("cache")
+  document.getElementById("btn_retour").setAttribute("url","/admin/perm")
+
   const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
   });

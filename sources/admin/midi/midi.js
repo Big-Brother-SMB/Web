@@ -145,22 +145,14 @@ export async function init(common){
                 text+="</br>("+nbDemandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
                 break;
             case 3:
-                bouton[j][h].className="case midi yellow"
-                text = nbInscrits[j][h]+" inscrits/"+placesTotal[j][h]  + " places"
-                if(nbInscrits[j][h]>=placesTotal[j][h]){
-                    text+="<rouge></br>PLEIN</rouge>"
-                }
-                text+="</br>("+nbDemandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
-                break;
-            case 4:
                 text = "Foyer fermé"
                 bouton[j][h].className="case midi red"
                 break;
-            case 5:
+            case 4:
                 text = "Fini"
                 bouton[j][h].className="case midi red"
                 break;
-            case 6:
+            case 5:
                 text = "Vacances"
                 bouton[j][h].className="case midi default"
                 break;

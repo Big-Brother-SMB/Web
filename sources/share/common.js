@@ -239,10 +239,25 @@ export class common{
         });
       }
     }
+
+    //-------------------------------------retour--------------------------------------
+
+    document.getElementById("btn_retour").addEventListener('click', async ()=>{
+      let url = document.getElementById("btn_retour").attributes.url.value
+      if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){
+        side.classList.remove("open");
+        document.body.classList.remove("stop");
+      }
+      this.loadpage(url)
+    });
   }
 
     
   static async reloadCommon(){
+    //-------------------------------------retour--------------------------------------
+
+    document.getElementById("btn_retour").classList.add("cache")
+
     //---------------------------récupération de l'identité et des cookie/variable---------------------------
 
     let id_data = await this.socketAsync("id_data","")

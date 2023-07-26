@@ -1,6 +1,9 @@
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"]
 
 export async function init(common){
+    document.getElementById("btn_retour").classList.remove("cache")
+    document.getElementById("btn_retour").setAttribute("url","/midi")
+
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
     });
@@ -368,8 +371,6 @@ export async function init(common){
     document.getElementById("pass").addEventListener("click", async () => {
         common.loadpage("/pass")
     });
-
-    document.getElementById("retour").addEventListener("click", quitDemande);
 
     update()
 }

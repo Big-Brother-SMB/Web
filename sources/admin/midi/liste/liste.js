@@ -15,6 +15,10 @@ export async function init(common){
         w = parseInt(params.w)
     }
 
+
+    document.getElementById("btn_retour").classList.remove("cache")
+    document.getElementById("btn_retour").setAttribute("url","/admin/midi/creneau?j="+j+"&h="+h+"&w="+w)
+
     let table = document.getElementById("tbody")
 
     let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})

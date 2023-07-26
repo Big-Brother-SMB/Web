@@ -1,4 +1,7 @@
 export async function init(common){
+    document.getElementById("btn_retour").classList.remove("cache")
+    document.getElementById("btn_retour").setAttribute("url","/perm")
+    
     const params = new Proxy(new URLSearchParams(window.location.search), {
       get: (searchParams, prop) => searchParams.get(prop),
     });

@@ -192,27 +192,19 @@ export async function init(common){
                 }
                 break;
             case 3:
-                bouton[j][h].className="case midi yellow"
-                if (places[j][h] <= 0) {
-                    text = "Plein"+ textcout;
-                } else {
-                    text = nbDemandes[j][h] + " demandes pour " + places[j][h] + " places" + textcout
-                }
-                break;
-            case 4:
                 text = "Foyer fermé"
                 bouton[j][h].className="case midi red"
                 break;
-            case 5:
+            case 4:
                 text = "Fini"
                 bouton[j][h].className="case midi red"
                 break;
-            case 6:
+            case 5:
                 text = "Vacances"
                 bouton[j][h].className="case midi default"
                 break;
         }
-        if(ouvert[j][h]===2 || ouvert[j][h]===3){
+        if(ouvert[j][h]===2){
             if (inscrit[j][h]) {
                 bouton[j][h].className = "case midi green"
                 text = "Vous êtes inscrit"
