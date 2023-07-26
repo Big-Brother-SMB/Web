@@ -630,7 +630,7 @@ export class common{
         } else if (e.keyCode == 13) {//ENTER
           e.preventDefault();
           if (currentFocus > -1) {
-            divlist[currentFocus].click();
+            divlist.getElementsByTagName("div")[currentFocus].click();
           }
         }
       }

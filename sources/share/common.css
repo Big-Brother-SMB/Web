@@ -745,7 +745,7 @@ input[type="number"]{
   background-color: #fff;
   border-bottom: 1px solid #999999;
 }
-.autocomplete-list div:focus {
+.autocomplete-list div:hover, .autocomplete-active {
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
