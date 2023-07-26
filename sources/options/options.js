@@ -1,4 +1,11 @@
 export async function init(common){
+    let name_mode = document.getElementById("name_mode")
+    name_mode.checked = common.readBoolCookie("name_mode")
+    name_mode.addEventListener("change", function () {
+        common.writeCookie("name_mode", this.checked)
+    })
+
+
     let switchAllAmis = document.getElementById("allAmis")
     switchAllAmis.checked = common.readBoolCookie("allAmis")
     switchAllAmis.addEventListener("change", function () {

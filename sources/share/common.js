@@ -359,7 +359,7 @@ export class common{
   //cookie
   static writeCookie(key, value){
     document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
-    this.cookie[key]=value
+    this.cookie[key]=String(value)
   }
 
   static readCookie(key){
@@ -680,6 +680,20 @@ export class common{
     document.getElementById("popup").classList.remove('active')
     document.getElementById("overlay").classList.remove('active')
   }
+
+  //-------------------------------------Name-----------------------------------------
+
+  static name(first_name,last_name) {
+    if(this.readBoolCookie("name_mode")==true){
+      return last_name  + " " + first_name 
+    }else{
+      return first_name + " " + last_name
+    }
+  }
+
+
+
+
 }
 
 //démarre le script qui correspond à la page

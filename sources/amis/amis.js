@@ -34,7 +34,7 @@ export async function init(common){
             ami.classList.add("ami")
             ami.classList.add("small")
 
-            ami.innerHTML = child.first_name + " " + child.last_name
+            ami.innerHTML = common.name(child.first_name,child.last_name)
             ami.addEventListener("click", async function() {
                 listAmisUUID.splice(listAmisUUID.indexOf(child.uuid),1)
                 listAmis.splice(listAmis.indexOf(child),1)
@@ -84,7 +84,7 @@ export async function init(common){
         listUsers.forEach(function(child) {
             if(child.uuid != common.uuid && listAmisUUID.indexOf(child.uuid) == -1){
                 users.push(child)
-                usersNames.push(child.first_name + " " + child.last_name)
+                usersNames.push(common.name(child.first_name,child.last_name))
             }
         })
         common.autocomplete(document.getElementById("addAmi"), usersNames,()=>{},true);

@@ -41,7 +41,7 @@ export async function init(common){
 
                     let label = document.createElement('label')
                     label.setAttribute("for","procuration")
-                    label.innerHTML=ami.first_name + " " + ami.last_name
+                    label.innerHTML = common.name(ami.first_name,ami.last_name)
                     from.appendChild(label)
                     from.innerHTML+='<br>'
                 }
@@ -108,7 +108,7 @@ export async function init(common){
 
                     let label = document.createElement('label')
                     label.setAttribute("for","procuration")
-                    label.innerHTML=ami.first_name + " " + ami.last_name
+                    label.innerHTML = common.name(ami.first_name,ami.last_name)
                     from.appendChild(label)
                     from.innerHTML+='<br>'
                 }
@@ -293,7 +293,7 @@ export async function init(common){
             const pris = pris2
             let button = document.createElement("button")
             button.classList.add("ami")
-            button.innerHTML = ami.first_name + " " + ami.last_name
+            button.innerHTML = common.name(ami.first_name,ami.last_name)
 
             if(ami.DorI == 0){
                 button.innerHTML += " (a fait une demande)"

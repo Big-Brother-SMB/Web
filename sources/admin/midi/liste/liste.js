@@ -22,7 +22,7 @@ export async function init(common){
     let usersList = await common.socketAdminAsync('list pass',null)
 
     for(let i in usersList){
-        usersList[i].name = usersList[i].first_name+" "+usersList[i].last_name
+        usersList[i].name = common.name(usersList[i].first_name,usersList[i].last_name)
         //await common.socketAdminAsync('set DorI',[w,j,h,usersList[i].uuid,false])
     }
 

@@ -55,7 +55,7 @@ export async function init(common){
     let listUsers = await common.socketAdminAsync('list pass',null)
 
     listUsers.forEach(function(child) {
-        utilisateursNames.push(child.first_name + " " + child.last_name)
+        utilisateursNames.push(common.name(child.first_name,child.last_name))
     })
     console.log(utilisateursNames)
     common.autocomplete(document.getElementById("search"), utilisateursNames,async function(){
@@ -63,7 +63,7 @@ export async function init(common){
         listUsers = await common.socketAdminAsync('list pass',null)
         utilisateursNames=[]
         listUsers.forEach(function(child) {
-            utilisateursNames.push(child.first_name + " " + child.last_name)
+            utilisateursNames.push(common.name(child.first_name,child.last_name))
         })
         let utilisateur = listUsers[utilisateursNames.indexOf(document.getElementById("search").value)]
         let codeBar = utilisateur.code_barre
@@ -71,12 +71,11 @@ export async function init(common){
         let listGroups = utilisateur.groups
         let first_name = utilisateur.first_name
         let last_name = utilisateur.last_name
-        
 
-        if(utilisateursNames.indexOf(utilisateur.first_name + " " + utilisateur.last_name) == -1){
+        if(utilisateursNames.indexOf(common.name(utilisateur.first_name,utilisateur.last_name)) == -1){
             document.getElementById("info").innerHTML = "cet utilisateur n'existe pas"
         }else{
-            document.getElementById("info").innerHTML = "Page de " + utilisateur.first_name + " " + utilisateur.last_name
+            document.getElementById("info").innerHTML = "Page de " + common.name(utilisateur.first_name,utilisateur.last_name)
             divClasse.selectedIndex=-1
             for(let c in g_c[1]){
                 if(g_c[1][c].classe==utilisateur.classe){
@@ -94,7 +93,7 @@ export async function init(common){
                     let name = dName.value.split(' ')
                     first_name=name[0]
                     if(name.length>1){
-                    last_name=name[1] 
+                        last_name=name[1] 
                     }
                     common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                 }
@@ -257,7 +256,7 @@ export async function init(common){
                         let codeBar2 = child.code_barre
                         if(codeBar2==val && child!=utilisateur){
                             test=false
-                            infoCodeCarte.innerHTML += "déjà utiliser par: " + utilisateur.first_name + " " + utilisateur.last_name
+                            infoCodeCarte.innerHTML += "déjà utiliser par: " + common.name(utilisateur.first_name,utilisateur.last_name)
                         }
                     })
                     if(test){

@@ -103,7 +103,7 @@ export async function init(common){
     listUsers.forEach(function(child) {
         utilisateurs.push(child.uuid)
         users_code.set(child.code_barre,child.uuid)
-        utilisateursNames.push(child.first_name+" "+child.last_name)
+        utilisateursNames.push(common.name(child.first_name,child.last_name))
     })
     common.autocomplete(inputName, utilisateursNames,function(val){
         val = utilisateurs[utilisateursNames.indexOf(val)]

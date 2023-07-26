@@ -7,7 +7,7 @@ export async function init(common){
     let listUsers=await common.socketAdminAsync('list pass',null)
     listUsers.forEach(function(child) {
         utilisateursUUID.push(child.uuid)
-        utilisateursNames.push(child.first_name+" "+child.last_name)
+        utilisateursNames.push(common.name(child.first_name,child.last_name))
     })
 
     async function update(){
@@ -37,11 +37,11 @@ export async function init(common){
             ligne.appendChild(col)
         
             col = document.createElement("td")
-            col.style.maxWidth = "50vw"
+            col.style.maxWidth = "2em"
             if(child.commentaire==null){
                 col.innerHTML = "RAS"
             }else{
-                col.innerHTML = col.innerHTML = child.commentaire
+                col.innerHTML = "..."
             }
             col.addEventListener('click',()=>{
                 common.popUp_Active('Commentaire','attente',async (bnt)=>{

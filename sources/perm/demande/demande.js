@@ -29,7 +29,7 @@ export async function init(common){
         let name
         listUsers.forEach(child2=>{
             if(child.uuid==child2.uuid){
-                name=child2.first_name+" "+child2.last_name
+                name= common.name(child2.first_name,child2.last_name)
             }
         })
         let but = document.createElement("button")

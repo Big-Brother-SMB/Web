@@ -1,5 +1,5 @@
 export async function init(common){
-    document.getElementById("user").innerHTML = common.first_name + " " + common.last_name
+    document.getElementById("user").innerHTML = common.name(common.first_name,common.last_name)
 
     document.getElementById("classe").innerHTML = common.classe
 
