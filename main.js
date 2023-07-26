@@ -387,11 +387,11 @@ async function main() {
         }catch(e){console.error(e);console.log('30');}
       });
 
-      socket.on("commantairePret", async req => {
+      socket.on("commentairePret", async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
-          funcDB.commantairePret(req.obj,req.uuid,req.debut,req.com)
-          socket.emit("commantairePret",'ok')
+          funcDB.commentairePret(req.obj,req.uuid,req.debut,req.com)
+          socket.emit("commentairePret",'ok')
         }catch(e){console.error(e);console.log('31');}
       });
 

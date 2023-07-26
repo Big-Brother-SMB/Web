@@ -12,7 +12,7 @@ module.exports = (db)=>{
     //emprunt
     db.get("SELECT * FROM sqlite_master where type='table' AND name='emprunt'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE emprunt(objet text,uuid UUID,debut DATE,fin DATE,commantaire text)')
+        db.run('CREATE TABLE emprunt(objet text,uuid UUID,debut DATE,fin DATE,commentaire text)')
     })
 
     //users / amis / user-group / token

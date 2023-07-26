@@ -256,17 +256,16 @@ module.exports = class funcDB{
 
 
   //------------------------------emprunt--------------------------------
-//objet text,uuid UUID,debut DATE,fin DATE,commantaire text
   static addPret(obj,uuid,debut){
     db.run("INSERT INTO emprunt(objet,uuid,debut) VALUES (?,?,?)",obj,uuid,debut)
   }
 
-  static finPret(obj,uuid,debut,fin,commantaire){
+  static finPret(obj,uuid,debut,fin){
     db.run("UPDATE emprunt SET fin=? where objet=? and uuid=? and debut=?",[fin,obj,uuid,debut])
   }
 
-  static commantairePret(obj,uuid,debut,commantaire){
-    db.run("UPDATE emprunt SET commantaire=? where objet=? and uuid=? and debut=?",[commantaire,obj,uuid,debut])
+  static commentairePret(obj,uuid,debut,commentaire){
+    db.run("UPDATE emprunt SET commentaire=? where objet=? and uuid=? and debut=?",[commentaire,obj,uuid,debut])
   }
 
   static getPretsActuel(){

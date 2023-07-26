@@ -153,4 +153,8 @@ export async function init(common){
             }
         })
     }
+
+    document.getElementById("historique").addEventListener("click",()=>{
+        common.loadpage("/admin/pret/historique")
+    })
 }
