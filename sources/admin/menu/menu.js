@@ -116,7 +116,7 @@ export async function init(common){
 
     document.getElementById("menu self").addEventListener("click",async function(){
         let info_menu = await common.socketAsync("getMenuThisWeek",week)
-        let p = info_menu.menu
+        let p = info_menu.self
         p=window.prompt("Menu du self de la semaine "+week+":",p);
         if (p==null){
             p=info_menu.self
