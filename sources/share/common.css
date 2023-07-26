@@ -611,7 +611,7 @@ vert{
   margin-left: auto;
   margin-right: auto;
   text-align: left;
-  width: 25em;
+  width: 30em;
 }
 #sandwich p {
   text-align: center;
@@ -628,7 +628,7 @@ vert{
 }
 
 label{
-  font-size: 1.3em;
+  font-size: 1.7em;
   font-family: system-ui;
 }
 
