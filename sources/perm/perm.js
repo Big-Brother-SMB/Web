@@ -1,5 +1,5 @@
 const Day = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"]
-const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h"]
+const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h","16h-17h"]
 
 export async function init(common){
     let bouton = [];
@@ -14,12 +14,11 @@ export async function init(common){
     text.className = "case perm info jour heure";
     divHoraires.appendChild(text);
     
-    for (let h = 0; h < 7; h++) {
+    for (let h = 0; h < 8; h++) {
         let horaire = document.createElement("button")
         horaire.innerHTML = horaires[h]
         horaire.className = "case perm info heure"
         divHoraires.appendChild(horaire);
-
     }
     creneaudiv.appendChild(divHoraires);
 
@@ -33,7 +32,7 @@ export async function init(common){
         bouton[j] = []
         demande[j] = []
         ouvert[j] = []
-        for (let h = 0; h < 7; h++) {
+        for (let h = 0; h < 8; h++) {
             bouton[j][h] = document.createElement("button")
             if((j == 2 && h >3) || (h == 3 && j != 2)){
                 bouton[j][h].style.visibility = "hidden";
@@ -78,7 +77,7 @@ export async function init(common){
 
 
         for (let j = 0; j < 5; j++) {
-            for (let h = 0; h < 7; h++) {
+            for (let h = 0; h < 8; h++) {
                 let nbDemandesPerm = 0
                 let groupsInscrits = []
 
@@ -147,7 +146,7 @@ export async function init(common){
                             }
                             str2 += child
                         });
-                        bouton[j][h].innerHTML = str2
+                        if(str2!="") bouton[j][h].innerHTML = str2
                         break;
                     case 4:
                         bouton[j][h].innerHTML = "vacances"

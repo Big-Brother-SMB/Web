@@ -450,7 +450,6 @@ header{
 
 .case.default{
   background-color: gray;
-  cursor: auto;
 }
 
 .case.red{
@@ -483,7 +482,7 @@ header{
 
 @media screen and (min-width: 1000px) {
   .case.perm{
-      width: 12%;
+      width: 10.6%;
       height: 150px;
   }
     

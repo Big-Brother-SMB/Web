@@ -1,7 +1,47 @@
 const Day = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"]
-const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h"]
+const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h","16h-17h"]
+
+const listModePerm = ["Annuler","Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
+
 
 export async function init(common){
+    function superSelection(mode2,x2){
+        const mode = mode2
+        const x = x2
+        return async function(){
+            common.popUp_Active('Set mode','attente',async (bnt)=>{
+                let select = document.createElement('select')
+                document.getElementById('popup-body').innerHTML=''
+                document.getElementById('popup-body').appendChild(select)
+                for(const i in listModePerm){
+                    let opt = document.createElement("option")
+                    opt.innerHTML = listModePerm[i]
+                    select.appendChild(opt);
+                }
+        
+                bnt.innerHTML='Confirmer'
+                bnt.addEventListener('click',async ()=>{
+                    if(mode=="j" && select.selectedIndex!=0){
+                        for(let h = 0; h < 8; h++){
+                            if(!((x == 2 && h >3) || (h == 3 && x != 2))){
+                                await common.socketAdminAsync('set perm ouvert',[week,x,h,select.selectedIndex-1])
+                            }
+                        }
+                    }else if(mode=="h" && select.selectedIndex!=0){
+                        for (let j = 0; j < 5; j++) {
+                            if(!((j == 2 && x >3) || (x == 3 && j != 2))){
+                                await common.socketAdminAsync('set perm ouvert',[week,j,x,select.selectedIndex-1])
+                            }
+                        }
+                    }
+                    common.popUp_Stop()
+                    refreshDatabase()
+                }, { once: true })
+            })
+        }
+    }
+
+
     let bouton = [];
     let demande = []
     let ouvert = []
@@ -14,9 +54,10 @@ export async function init(common){
     text.className = "case perm info jour heure";
     divHoraires.appendChild(text);
     
-    for (let h = 0; h < 7; h++) {
+    for (let h = 0; h < 8; h++) {
         let horaire = document.createElement("button")
         horaire.innerHTML = horaires[h]
+        horaire.addEventListener("click",superSelection("h",h))
         horaire.className = "case perm info heure"
         divHoraires.appendChild(horaire);
 
@@ -28,12 +69,13 @@ export async function init(common){
         let text = document.createElement("button")
         text.className = "case perm info jour";
         text.innerHTML = Day[j]
+        text.addEventListener("click",superSelection("j",j))
         div.appendChild(text);
 
         bouton[j] = []
         demande[j] = []
         ouvert[j] = []
-        for (let h = 0; h < 7; h++) {
+        for (let h = 0; h < 8; h++) {
             bouton[j][h] = document.createElement("button")
             if((j == 2 && h >3) || (h == 3 && j != 2)){
                 bouton[j][h].style.visibility = "hidden";
@@ -78,7 +120,7 @@ export async function init(common){
 
 
         for (let j = 0; j < 5; j++) {
-            for (let h = 0; h < 7; h++) {
+            for (let h = 0; h < 8; h++) {
                 let nbDemandesPerm = 0
                 let groupsInscrits = []
 
@@ -138,7 +180,7 @@ export async function init(common){
                             }
                             str2 += child
                         });
-                        bouton[j][h].innerHTML = str2
+                        if(str2!="") bouton[j][h].innerHTML = str2
                         break;
                     case 4:
                         bouton[j][h].innerHTML = "vacances"
