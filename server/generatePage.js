@@ -12,8 +12,6 @@ const sources_url = `${__dirname}/../sources`;
 
 module.exports = async(req_url) => {
   let pathName = url.parse(req_url).path.split('?')[0];
-
-  console.log(pathName)
   
   if(pathName === '/'){
     pathName = '/index.html';

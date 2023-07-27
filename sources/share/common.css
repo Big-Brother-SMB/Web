@@ -85,7 +85,7 @@ header{
 }
 
 #main p{
-  font-size: 40px;
+  font-size: 2.5em;
   font-family: system-ui;
   text-align: center;
 }
@@ -388,7 +388,7 @@ header{
   overflow: hidden;
   color: #eeeeee;
   font-weight: 600;
-  font-size: 1.4em;
+  font-size: 1.2em;
   padding: 15px 10px;
   border-radius:20px;
   background-color: #3d546e;
@@ -419,7 +419,7 @@ header{
   padding: 5px 5px;
   border-radius: 12px;
   margin: 2px;
-  font-size: 1.5em;
+  font-size: 1em;
   font-family: DejaVu Sans Mono, monospace;
   text-align: center;
   vertical-align: text-top;
@@ -430,6 +430,7 @@ header{
 }
 
 .case.info{
+  font-size: 1.2em;
   color: #111;
   cursor: auto;
 }
@@ -517,9 +518,17 @@ header{
 /*------------------MIDI---------------*/
 
 @media screen and (max-width: 1000px) {
+  .case {
+    font-size: 1.4em;
+  }
+  
+  .case.info{
+    font-size: 1.7em;
+  }
+
   .case.midi{
       width: 25%;
-      height: 230px;
+      height: 250px;
   }
     
   .case.midi.heure{
@@ -548,11 +557,10 @@ header{
 
   .case.midi{
       width: 99%;
-      height: 270px;
+      height: 200px;
   }
   .case.midi.heure{
       width: 99%;
-      height: 270px;
   }
   .case.midi.jour{
       width: 99%;
