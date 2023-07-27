@@ -83,7 +83,8 @@ let mimeTypes = {
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.eot': 'appliaction/vnd.ms-fontobject',
-  '.ttf': 'aplication/font-sfnt'
+  '.ttf': 'aplication/font-sfnt',
+  '.db': ''
 };
 
 
@@ -413,32 +414,35 @@ async function main() {
   io.on("connection", async (socket) => {
     try {
       let user = await User.searchToken(socket.handshake.auth.token)
-      if(user!=null)console.log("uuid socket: " + await user.uuid)
-      //if(await user.admin == 0)user.admin=1
+      console.log("uuid socket: " + await user.uuid)
 
       funcSocket.id_data(socket,user)
-      funcSocket.score(socket,user)
-      funcSocket.historiquePoints(socket,user)
-      funcSocket.getMenuThisWeek(socket,user)
-      funcSocket.getDataThisCreneau(socket,user)
-      funcSocket.getTuto(socket,user)
-      funcSocket.setTuto(socket,user)
-      funcSocket.getAmis(socket,user)
-      funcSocket.setAmis(socket,user)
-      funcSocket.listUsersName(socket,user)
-      funcSocket.getBanderole(socket,user)
-      funcSocket.getMyDemande(socket,user)
-      funcSocket.setMyDemande(socket,user)
-      funcSocket.delMyDemande(socket,user)
-      funcSocket.setAmiDemande(socket,user)
-      funcSocket.delAmiDemande(socket,user)
-      funcSocket.listDemandes(socket,user)
-      funcSocket.listDemandesPerm(socket,user)
-      funcSocket.getOuvertPerm(socket,user)
-      funcSocket.getMyDemandePerm(socket,user)
-      funcSocket.setMyDemandePerm(socket,user)
-      funcSocket.delMyDemandePerm(socket,user)
-      funcSocket.suppAllToken(socket,user)
+
+
+      if(user.uuid!=null){
+        funcSocket.score(socket,user)
+        funcSocket.historiquePoints(socket,user)
+        funcSocket.getMenuThisWeek(socket,user)
+        funcSocket.getDataThisCreneau(socket,user)
+        funcSocket.getTuto(socket,user)
+        funcSocket.setTuto(socket,user)
+        funcSocket.getAmis(socket,user)
+        funcSocket.setAmis(socket,user)
+        funcSocket.listUsersName(socket,user)
+        funcSocket.getBanderole(socket,user)
+        funcSocket.getMyDemande(socket,user)
+        funcSocket.setMyDemande(socket,user)
+        funcSocket.delMyDemande(socket,user)
+        funcSocket.setAmiDemande(socket,user)
+        funcSocket.delAmiDemande(socket,user)
+        funcSocket.listDemandes(socket,user)
+        funcSocket.listDemandesPerm(socket,user)
+        funcSocket.getOuvertPerm(socket,user)
+        funcSocket.getMyDemandePerm(socket,user)
+        funcSocket.setMyDemandePerm(socket,user)
+        funcSocket.delMyDemandePerm(socket,user)
+        funcSocket.suppAllToken(socket,user)
+      }
     } catch (e) {console.error(e);console.log('34');}
   });
 

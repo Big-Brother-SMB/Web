@@ -2,6 +2,7 @@ const {readFile} = require('fs')
 const {promisify} = require('util')
 const url = require('url');
 const path = require('path');
+const User = require('./User.js')
 const readFileAsync = promisify(readFile)
 
 
@@ -33,7 +34,10 @@ module.exports = async(req_url) => {
     subFolder = "share"
   }
   try{
-    if(extName == '.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg' || extName == '.gif'){
+    let user = await User.searchToken(url.parse(req_url).path.split('?')[1])
+    if(pathName=="/database.db" && await user.admin > 0){
+      fichier = await readFileAsync(sources_url+"/../../main.db")
+    }else if(extName == '.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg' || extName == '.gif'){
       fichier = await readFileAsync(sources_url+pathName)
     }else if(extName =='.html' || extName == '.css' || extName == '.js'){
       if(modeAuto){
