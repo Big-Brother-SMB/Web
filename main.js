@@ -414,7 +414,7 @@ async function main() {
   io.on("connection", async (socket) => {
     try {
       let user = await User.searchToken(socket.handshake.auth.token)
-      console.log("uuid socket: " + await user.uuid + '  / ' + socket.request.connection._peername.address)
+      console.log("uuid socket: " + await user.uuid)
       funcSocket.id_data(socket,user)
 
 

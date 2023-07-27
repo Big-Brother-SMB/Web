@@ -78,7 +78,7 @@ export async function init(common){
         actualiserPassages()
     })
 
-    let inputCodeBar = document.getElementById("code bar")
+    let inputCodeBar = document.getElementById("code_bar")
     inputCodeBar.addEventListener("input",function(){
         let val = inputCodeBar.value
         if(String(val).length  == 5){

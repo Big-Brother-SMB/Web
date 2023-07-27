@@ -50,6 +50,7 @@ export async function init(common){
                 common.popUp_Active('Commentaire','attente',async (bnt)=>{
                     let text = document.createElement('textarea')
                     text.value = child.commentaire
+                    text.setAttribute("placeholder","Ecrivez ici")
                     document.getElementById('popup-body').innerHTML=''
                     document.getElementById('popup-body').appendChild(text)
             

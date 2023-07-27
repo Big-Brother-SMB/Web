@@ -63,7 +63,7 @@ export class common{
 
   //---------------------charge corps de la page------------------
 
-  static async loadpage(url){
+  static async loadpage(url,notSaveHistory){
     if(url.substring(0,8)=="sidebar:"){
       let typeSideBar = url.substring(8,url.length)
       if(typeSideBar!="admin" && typeSideBar!="asso" && typeSideBar!="user"){
@@ -102,7 +102,10 @@ export class common{
       }
     }else{
       document.getElementById("container").classList.add('loading')
-      window.history.pushState({url:url},"", url);
+      if(!notSaveHistory){
+        console.log('test',notSaveHistory)
+        window.history.pushState({url:url},"", url);
+      }
       url=url.split('?')[0]
       document.getElementById("css_page").href=url+'.css'
       await this.readFileHTML(url,'tete','EN-TETE')
@@ -173,7 +176,7 @@ export class common{
     //----------------------historique-----------------------
 
     window.addEventListener("popstate", (event) => {
-      this.loadpage(event.state.url)
+      this.loadpage(event.state.url,true)
     });
 
 

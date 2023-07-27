@@ -85,6 +85,21 @@ module.exports = (db)=>{
         db.run('CREATE TABLE group_list(group2 text)')
     })
 
+    //cookies et ban
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='ticket_cookie'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE ticket_cookie(date Date,justificatif text,use boolean)')
+    })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='subscription_cookie'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE subscription_cookie(debut Date,fin Date,justificatif text,period int2,cumulatif boolean,nbAdd int2,quantity int2,maj Date)')
+    })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='ban'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE ban(debut Date,date Fin,justificatif text)')
+    })
+
+
     //messages / news / sondage
     db.get("SELECT * FROM sqlite_master where type='table' AND name='messages'", (err, data) => {
       if(data==undefined)
