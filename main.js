@@ -222,11 +222,10 @@ async function main() {
           socket.emit('set_menu',"ok")
         }catch(e){console.error(e);console.log('8');}
       })
-      socket.on('setMidiInfo',async msg => {
+      socket.on('setMidiInfo',async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
-          //semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio
-          funcDB.setMidiInfo(msg[0],msg[1]*2+msg[2],msg[3],msg[4],msg[5],msg[6],msg[7],msg[8],msg[9])
+          funcDB.setMidiInfo(req.w,req.j*2+req.h,req.cout,req.gratuit_prio,req.ouvert,req.perMin,req.places,req.prio_mode,req.nbSandwich,req.mode_sandwich,req.bonus_avance,req.algo_auto,req.list_prio)
           socket.emit('setMidiInfo',"ok")
         }catch(e){console.error(e);console.log('9');}
       })

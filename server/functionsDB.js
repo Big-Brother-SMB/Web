@@ -141,12 +141,12 @@ module.exports = class funcDB{
       setTimeout(reject,5000)
     })
   }
-  static setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio){
+  static setMidiInfo(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,nbSandwich,mode_sandwich,bonus_avance,algo_auto,list_prio){
     db.get("SELECT * FROM midi_info where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
       if(data==undefined){
-        db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode) VALUES (?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode])
+        db.run("INSERT INTO midi_info(semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,nbSandwich,mode_sandwich,bonus_avance,algo_auto) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",[semaine,creneau,cout,gratuit_prio,ouvert,perMin,places,prio_mode,nbSandwich,mode_sandwich,bonus_avance,algo_auto])
       } else{
-        db.run("UPDATE midi_info SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,prio_mode=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,prio_mode,semaine,creneau])
+        db.run("UPDATE midi_info SET cout=?,gratuit_prio=?,ouvert=?,perMin=?,places=?,prio_mode=?,nbSandwich=?,mode_sandwich=?,bonus_avance=?,algo_auto=? where semaine=? and creneau=?",[cout,gratuit_prio,ouvert,perMin,places,prio_mode,nbSandwich,mode_sandwich,bonus_avance,algo_auto,semaine,creneau])
       }
     })
     db.serialize(()=>{

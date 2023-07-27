@@ -77,7 +77,7 @@ export async function init(common){
         common.writeCookie("derniere demande",str)
 
         const radioButtons = document.querySelectorAll('input[name="sandwich"]');
-        let choiceOfSandwich=0
+        let choiceOfSandwich=null
         for (const radioButton of radioButtons) {
             if (radioButton.checked) {
                 choiceOfSandwich = parseInt(radioButton.value);
@@ -194,9 +194,13 @@ export async function init(common){
     let listeAmisNonPris = []
     let listeAmisPris = []
 
+    //active la divSandwich
+    if(info.mode_sandwich>0){
+        document.getElementById("sandwich").classList.remove("cache")   
+    }
+
     //en fonction de l'étét de la demande on fait des truc
     if(info.ouvert==2 && Object.keys(await common.socketAsync('getMyDemande',{w:w,j:j,h:Math.abs(h-1)})).length === 0){
-        document.querySelectorAll('input[name="sandwich"]')[0].checked=true
         if(Object.keys(my_demande).length === 0){
             //pas encore de demande
             document.getElementById("DIVdepot").classList.remove("cache")
@@ -211,22 +215,16 @@ export async function init(common){
                     listeAmisPris=[]
                 }
             }
-            if(true){
-                document.getElementById("sandwich").classList.remove("cache")
-            }
         }else if(my_demande.DorI==1){
             //inscrit
+            document.getElementById("sandwich").classList.add("cache") 
             document.getElementById("DIVinscrit").classList.remove("cache")
             listeAmisPris=my_demande.amis
         }else{
             //modif
             document.getElementById("DIVmodif").classList.remove("cache")
             listeAmisPris=my_demande.amis
-            if(my_demande.sandwich==null){my_demande.sandwich=0}
-            document.querySelectorAll('input[name="sandwich"]')[my_demande.sandwich].checked=true
-            if(true){
-                document.getElementById("sandwich").classList.remove("cache")
-            }
+            if(my_demande.sandwich!=null) document.querySelectorAll('input[name="sandwich"]')[my_demande.sandwich].checked=true
         }
     }else{
         //n'a pas le droit de posser de demande sur le créneau

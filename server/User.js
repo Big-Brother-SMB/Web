@@ -339,7 +339,7 @@ module.exports = class User{
       let uuid = this.uuid
       db.get("SELECT * FROM midi_list where semaine=? and creneau=? and uuid=?",[semaine,creneau,uuid], (err, data) => {
         if(data==undefined){
-          db.run("INSERT INTO midi_list(semaine,creneau,uuid,scan,DorI,sandwich) VALUES (?,?,?,?,?,?)",[semaine,creneau,uuid,scan,DorI,sandwich])
+          db.run("INSERT INTO midi_list(semaine,creneau,uuid,scan,DorI,sandwich,date) VALUES (?,?,?,?,?,?,?)",[semaine,creneau,uuid,scan,DorI,sandwich,new Date()])
         } else{
           if(sandwich==null)sandwich=data.sandwich
           db.run("UPDATE midi_list SET scan=?,DorI=?,sandwich=? where semaine=? and creneau=? and uuid=?",[scan,DorI,sandwich,semaine,creneau,uuid])

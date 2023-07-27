@@ -25,29 +25,45 @@ export async function init(common){
 
 
     let listDemandes = null
-    let inscrits=0
-    let demandes=0
+    let inscrits = 0
+    let demandes = 0
     let cout = 1
     let gratuit_prio = 0
     let ouvert = 0
     let perMin = 75
     let places = 100
     let prio_mode = 0
+    let nbSandwich = 0
+    let mode_sandwich = 0
+    let bonus_avance = 1.1
+    let algo_auto = 0
     let list_prio = []
 
     async function reloadInfoHoraire(){
         listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
         inscrits=0
         demandes=0
+        let sandwich_tab = [0,0,0,0]
         listDemandes.forEach(function (child) {
-        if(child.DorI==1){
-            inscrits++
-        }else{
-            demandes++
-        }
+            if(child.DorI==1){
+                inscrits++
+            }else{
+                demandes++
+            }
+            if(child.sandwich===null){
+                sandwich_tab[0]++
+            }else if(child.sandwich>=0 && child.sandwich<=2){
+                sandwich_tab[child.sandwich+1]++
+            }
         });
         document.getElementById("demandes").innerHTML = "demandes (" + demandes + ")"
         document.getElementById("inscrits").innerHTML = "inscrits (" + inscrits + ")"
+
+
+        document.getElementById("p sandwich").innerHTML = "rien: " + sandwich_tab[0]
+                                                        + "<br>NON: "  + sandwich_tab[1]
+                                                        + "<br>ENVIE: "  + sandwich_tab[2]
+                                                        + "<br>ABSOLUMENT: "  + sandwich_tab[3]
     }
     await reloadInfoHoraire()
 
@@ -55,96 +71,51 @@ export async function init(common){
 
     let info = await common.socketAsync('getDataThisCreneau',{w:w,j:j,h:h})
     if(info==undefined) info={prio:[]}
-    cout = info.cout
-    if(cout==null){
-        cout=1
-    }
-    gratuit_prio = info.gratuit_prio
-    if(gratuit_prio == null){
-        gratuit_prio = 0
-    }
-    ouvert = info.ouvert
-    if(ouvert==null){
-        ouvert=0
-    }
-    perMin = info.perMin
-    if(perMin == null){
-        perMin = 75
-    }
-    places = info.places
-    if(places == null){
-        places = 100
-    }
-    prio_mode = info.prio_mode
-    if(prio_mode == null){
-        prio_mode = 1
-    }
-    list_prio = info.prio
-    if(list_prio == null){
-        list_prio = []
+
+    if(info.cout != null){
+        cout= info.cout
     }
 
-
-
-
-
-    const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","fermé","fini","vacances"]
-    let divMode = document.getElementById("mode")
-    for(let i in listMode){
-        let opt = document.createElement("option")
-        opt.innerHTML = listMode[i]
-        divMode.appendChild(opt);
+    if(info.gratuit_prio != null){
+        gratuit_prio = info.gratuit_prio
     }
-    divMode.selectedIndex = ouvert
-    divMode.addEventListener("change", async function() {
-        ouvert = this.selectedIndex
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
-    });
 
-
-    let inPlaces = document.getElementById("places")
-    inPlaces.value = places
-    inPlaces.addEventListener("change", async function() {
-        places = this.value
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
-    });
-
-
-    let inCout = document.getElementById("cout")
-    inCout.value = cout
-    inCout.addEventListener("change", async function() {
-        cout = inCout.value
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
-    });
-
-
-    let inPer = document.getElementById("per")
-    inPer.value = perMin
-    inPer.addEventListener("change", async function() {
-        perMin = this.value
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
-    });
-
-    const listPrioMode = ["Ne pas prendre en conte les prio","prendre en conte les prio","uniquement prio"]
-    let divPrioMode = document.getElementById("prio mode")
-    for(let i in listPrioMode){
-        let opt = document.createElement("option")
-        opt.innerHTML = listPrioMode[i]
-        divPrioMode.appendChild(opt);
+    if(info.ouvert != null){
+        ouvert = info.ouvert
     }
-    divPrioMode.selectedIndex = prio_mode
-    divPrioMode.addEventListener("change", async function() {
-        prio_mode = this.selectedIndex
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
-    });
 
+    if(info.perMin != null){
+        perMin = info.perMin
+    }
 
-    let sGratuit = document.getElementById("switch gratuit")
-    sGratuit.checked = gratuit_prio
-    sGratuit.addEventListener("change", async function() {
-        gratuit_prio = this.checked
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
-    });
+    if(info.places != null){
+        places = info.places
+    }
+    
+    if(info.prio_mode != null){
+        prio_mode = info.prio_mode
+    }
+
+    if(info.nbSandwich != null){
+        nbSandwich = info.nbSandwich
+    }
+
+    if(info.mode_sandwich != null){
+        mode_sandwich = info.mode_sandwich
+    }
+
+    if(info.bonus_avance != null){
+        bonus_avance = info.bonus_avance
+    }
+
+    if(info.algo_auto != null){
+        algo_auto = info.algo_auto
+    }
+
+    if(info.list_prio != null){
+        list_prio = info.prio
+    }
+
 
 
 
@@ -157,8 +128,123 @@ export async function init(common){
     });
 
 
+    //------------------------general----------------------------------
 
 
+    const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","fermé","fini","vacances"]
+    let divMode = document.getElementById("mode")
+    for(let i in listMode){
+        let opt = document.createElement("option")
+        opt.innerHTML = listMode[i]
+        divMode.appendChild(opt);
+    }
+    divMode.selectedIndex = ouvert
+    divMode.addEventListener("change", async function() {
+        ouvert = this.selectedIndex
+        setMidiInfo()
+    });
+
+
+    let inPlaces = document.getElementById("places")
+    inPlaces.value = places
+    inPlaces.addEventListener("change", async function() {
+        places = this.value
+        setMidiInfo()
+    });
+
+
+    let inCout = document.getElementById("cout")
+    inCout.value = cout
+    inCout.addEventListener("change", async function() {
+        cout = inCout.value
+        setMidiInfo()
+    });
+
+
+
+    //------------------------------Algorithme----------------------------
+
+    const listModeAlgo = ["Désactiver","10H30","00H00 & 10H30"]
+    let divModeAlgo = document.getElementById("algo auto")
+    for(let i in listModeAlgo){
+        let opt = document.createElement("option")
+        opt.innerHTML = listModeAlgo[i]
+        divModeAlgo.appendChild(opt);
+    }
+    divModeAlgo.selectedIndex = algo_auto
+    divModeAlgo.addEventListener("change", async function() {
+        algo_auto = this.selectedIndex
+        setMidiInfo()
+    });
+
+    let inBonus = document.getElementById("bonus avance")
+    inBonus.value = bonus_avance
+    inBonus.addEventListener("change", async function() {
+        bonus_avance = inBonus.value
+        setMidiInfo()
+    });
+
+    document.getElementById("start algo").addEventListener("click", async function() {
+        document.getElementById("start algo").innerHTML = "..."
+        let rep = await common.socketAdminAsync('algo',[w,j,h],60000)
+        document.getElementById("start algo").innerHTML = rep
+
+        reloadInfoHoraire()
+    })
+
+    //-------------------------------Sandwich-------------------------------
+
+
+    const listModeSandwich = ["Désactiver","Sondage","Selection","Selection avec exclution"]
+    let divModeSandwich = document.getElementById("mode sandwich")
+    for(let i in listModeSandwich){
+        let opt = document.createElement("option")
+        opt.innerHTML = listModeSandwich[i]
+        divModeSandwich.appendChild(opt);
+    }
+    divModeSandwich.selectedIndex = mode_sandwich
+    divModeSandwich.addEventListener("change", async function() {
+        mode_sandwich = this.selectedIndex
+        setMidiInfo()
+    });
+
+    let inNbSandwich = document.getElementById("nbSandwich")
+    inNbSandwich.value = nbSandwich
+    inNbSandwich.addEventListener("change", async function() {
+        nbSandwich = inNbSandwich.value
+        setMidiInfo()
+    });
+
+    //------------------------------------Prioritaires-------------------------------------
+
+    const listPrioMode = ["Ne pas prendre en compte les prio","prendre en compte les prio","uniquement prio"]
+    let divPrioMode = document.getElementById("prio mode")
+    for(let i in listPrioMode){
+        let opt = document.createElement("option")
+        opt.innerHTML = listPrioMode[i]
+        divPrioMode.appendChild(opt);
+    }
+    divPrioMode.selectedIndex = prio_mode
+    divPrioMode.addEventListener("change", async function() {
+        prio_mode = this.selectedIndex
+        setMidiInfo()
+    });
+
+
+    let inPer = document.getElementById("per")
+    inPer.value = perMin
+    inPer.addEventListener("change", async function() {
+        perMin = this.value
+        setMidiInfo()
+    });
+
+
+    let sGratuit = document.getElementById("switch gratuit")
+    sGratuit.checked = gratuit_prio
+    sGratuit.addEventListener("change", async function() {
+        gratuit_prio = this.checked
+        setMidiInfo()
+    });
 
 
 
@@ -186,12 +272,12 @@ export async function init(common){
                 if(!list_prio.includes(groupes[index])){
                     list_prio.push(groupes[index])
                 }
-                await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+                setMidiInfo()
             }else{
                 if(list_prio.includes(groupes[index])){
                     list_prio = list_prio.filter(o => o != groupes[index]);
                 }
-                await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+                setMidiInfo()
             }
         })
         //cbClasses[n][i].checked = true
@@ -237,7 +323,7 @@ export async function init(common){
                     list_prio.push(listNiveau[n][i])
                 }
             }
-            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+            setMidiInfo()
         });
         divNiveau.appendChild(nSelectAll);
 
@@ -252,7 +338,7 @@ export async function init(common){
                     list_prio = list_prio.filter(o => o != listNiveau[n][i]);
                 }
             }
-            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+            setMidiInfo()
         });
         divNiveau.appendChild(nSelectNone);
 
@@ -273,7 +359,7 @@ export async function init(common){
                     }
                 }
             }
-            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+            setMidiInfo()
         });
         divNiveau.appendChild(nInversed);
 
@@ -294,7 +380,7 @@ export async function init(common){
                         list_prio = list_prio.filter(o => o != listNiveau[n][i]);
                     }
                 }
-                await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+                setMidiInfo()
             })
             divNiveau.appendChild(opt);
             if(list_prio.includes(listNiveau[n][i])){
@@ -314,7 +400,7 @@ export async function init(common){
                 }
             }
         }
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+        setMidiInfo()
     });
 
     document.getElementById("select none").addEventListener("click", async function() {
@@ -327,7 +413,7 @@ export async function init(common){
                 }
             }
         }
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+        setMidiInfo()
     });
 
     document.getElementById("inversed").addEventListener("click", async function() {
@@ -346,16 +432,12 @@ export async function init(common){
                 }
             }
         }
-        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+        setMidiInfo()
     });
 
-    document.getElementById("start algo").addEventListener("click", async function() {
-        document.getElementById("start algo").innerHTML = "..."
-        let rep = await common.socketAdminAsync('algo',[w,j,h],60000)
-        document.getElementById("start algo").innerHTML = rep
-
-        reloadInfoHoraire()
-    })
+    async function setMidiInfo(){
+        await common.socketAdminAsync('setMidiInfo',{w:w,j:j,h:h,cout:cout,gratuit_prio:gratuit_prio,ouvert:ouvert,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,list_prio:list_prio})
+    }
 }
 
 /*

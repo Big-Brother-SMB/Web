@@ -4,32 +4,47 @@
 
         <button id="inscrits" class="btn select">Inscrits</button>
 
-        
+        <h2>General:</h2>
         <p>
-          Mode : <br>
+          Mode : <select id="mode"></select>
         </p>
-        <select id="mode"></select>
 
         <p>
-        Places :
+          Places :
           <input autocomplete="off" id="places" type="number">
           Cout :
           <input autocomplete="off" id="cout" type="number">
         </p>
 
+        <h2>Algorithme:</h2>
 
-        <p>Inscrire des personnes via Algorithme</p>
-
+        <p>          
+          Mode auto: <select id="algo auto"></select>
+          <br><br>
+          Bonus: <input autocomplete="off" id="bonus avance" type="number">
+        </p>
         
         <button id="start algo" class="btn algo">Lancer l'Algo</button>
 
+        <h2>Sandwich:</h2>
+
+        <p>
+          Mode : <select id="mode sandwich"></select>
+          <br><br>
+          Nombre de sandwich : <input autocomplete="off" id="nbSandwich" type="number">
+        </p>
+
+        <p id="p sandwich"></p>
+
         <h2>Prioritaires:</h2>
-        <select id="prio mode"></select>
+        <p>
+          Mode : <select id="prio mode"></select>
+        </p>
 
         <p>
           % min :
             <input autocomplete="off" id="per" type="number" placeholder="">%
-          </p>
+        </p>
 
         <p>Gratuit pour les prioritaires
           <label class="switch">

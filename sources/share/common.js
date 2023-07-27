@@ -103,7 +103,6 @@ export class common{
     }else{
       document.getElementById("container").classList.add('loading')
       if(!notSaveHistory){
-        console.log('test',notSaveHistory)
         window.history.pushState({url:url},"", url);
       }
       url=url.split('?')[0]
