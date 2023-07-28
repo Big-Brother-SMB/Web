@@ -82,6 +82,7 @@ header{
   min-height: calc(50px * 13);
   text-align: center;
   padding: 1em 0;
+  padding-bottom: 100px;
 }
 
 #main p{
@@ -93,6 +94,9 @@ header{
 footer{
   text-align: center;
   padding-bottom: 20px;
+  bottom: 0;
+  width: 100vw;
+  position: absolute;
 }
 
 input[type="checkbox"]{
@@ -249,8 +253,13 @@ input[type="checkbox"]{
 }
 
 @media screen and (min-width: 1000px) {
-  #main,#chargement,footer{
+  #main,#chargement{
     margin-left: 83px;
+  }
+
+  footer{
+    padding-left: 83px;
+    width: calc(100vw - 100px);
   }
 
   #btn_menu{

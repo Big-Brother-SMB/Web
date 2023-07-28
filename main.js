@@ -174,7 +174,7 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
           res.end();
         }else{
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=60'});//43200
+            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=1'});//43200
             res.end(file);
           }else {
             res.writeHead(404);
