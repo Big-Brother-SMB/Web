@@ -6,8 +6,11 @@ body, #popup-body , #popup-option, #popup{
   color: #FFFFFF;
 }
 
-p,u,a,h1{
+p,u,h1{
   color: white;
+}
+a{
+  color: aqua;
 }
 
 .bnt_display,.frameUserName,.listAmis,.listDemandes{

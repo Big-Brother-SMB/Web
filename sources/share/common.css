@@ -90,6 +90,11 @@ header{
   text-align: center;
 }
 
+footer{
+  text-align: center;
+  padding-bottom: 20px;
+}
+
 input[type="checkbox"]{
   height: 1.8em;
   width: 1.8em;
@@ -244,9 +249,8 @@ input[type="checkbox"]{
 }
 
 @media screen and (min-width: 1000px) {
-  #main{
+  #main,#chargement,footer{
     margin-left: 83px;
-    /*margin-right: 83px;*/
   }
 
   #btn_menu{
