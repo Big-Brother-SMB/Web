@@ -353,7 +353,7 @@ export class common{
       this.writeCookie("theme mode",0)
       this.themeMode = 0
     }
-    if(window.location.pathname!= "/pass"){
+    if(true || window.location.pathname!= "/pass"){
       this.setThemeMode(this.themeMode)
     }
 
