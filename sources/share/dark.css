@@ -160,3 +160,7 @@ input::placeholder{
 .invert{
   filter: invert(1) grayscale(1);
 }
+
+.imgAct{
+  border-color: #aaa;
+}
