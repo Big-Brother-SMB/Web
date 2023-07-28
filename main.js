@@ -109,6 +109,8 @@ const init_DB = require('./server/initDB.js')
 
 const generatePage = require('./server/generatePage.js')
 
+const funcDate = require('./server/functionsDate.js')
+
 /*
 function convertPath(path){
   if(process.platform=="win32"){
@@ -118,16 +120,16 @@ function convertPath(path){
   }
 }
 */
-async function main() {
-  db = new sqlite3.Database(__dirname+'/../main.db', err => {
-    if (err)
-      throw err
-    db.serialize(init_DB(db))
-    User.setDB(db)
-    funcDB.setDB(db)
-    funcSocket.setDB(db)
-    UserSelect.setDB(db)
-  })
+process.env.TZ = 'Europe/Amsterdam' 
+
+db = new sqlite3.Database(__dirname+'/../main.db', err => {
+  if (err)
+    throw err
+  db.serialize(init_DB(db))
+  User.setDB(db)
+  funcDB.setDB(db)
+  funcSocket.setDB(db)
+  UserSelect.setDB(db)
 
   server = http.createServer(async function (req, res) {
     if (req.url == '/connexion/apigoogle') {
@@ -182,12 +184,12 @@ async function main() {
       }catch(e){console.error(e);console.log('2');}
     }
   }).listen(3000);
-
+  
   io = new Server(server)
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
     console.log("uuid admin socket: " + await user.uuid)
-
+  
     if(await user.admin > 0){
       socket.on('my_admin_mode',async msg => {
         if(await user.admin == 0 || await user.admin == null) return
@@ -340,14 +342,14 @@ async function main() {
           socket.emit('copy key',await (new User(msg)).createToken())
         }catch(e){console.error(e);console.log('23');}
       })
-
+  
       socket.on("admin msgs", async msg => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
           socket.emit("admin msgs",await funcDB.getAllMessages())
         }catch(e){console.error(e);console.log('24');}
       });
-
+  
       socket.on("msg lu", async msg => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -355,7 +357,7 @@ async function main() {
           socket.emit("msg lu",'ok')
         }catch(e){console.error(e);console.log('25');}
       });
-
+  
       socket.on("add msg", async msg => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -363,7 +365,7 @@ async function main() {
           socket.emit("add msg",'ok')
         }catch(e){console.error(e);console.log('26');}
       });
-
+  
       socket.on("add news", async msg => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -371,7 +373,7 @@ async function main() {
           socket.emit("add news",'ok')
         }catch(e){console.error(e);console.log('27');}
       });
-
+  
       socket.on("add sondage", async msg => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -379,7 +381,7 @@ async function main() {
           socket.emit("add sondage",'ok')
         }catch(e){console.error(e);console.log('28');}
       });
-
+  
       socket.on("addPret", async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -387,7 +389,7 @@ async function main() {
           socket.emit("addPret",'ok')
         }catch(e){console.error(e);console.log('29');}
       });
-
+  
       socket.on("finPret", async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -395,7 +397,7 @@ async function main() {
           socket.emit("finPret",'ok')
         }catch(e){console.error(e);console.log('30');}
       });
-
+  
       socket.on("commentairePret", async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -403,14 +405,14 @@ async function main() {
           socket.emit("commentairePret",'ok')
         }catch(e){console.error(e);console.log('31');}
       });
-
+  
       socket.on("getPretsActuel", async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
           socket.emit("getPretsActuel",await funcDB.getPretsActuel())
         }catch(e){console.error(e);console.log('32');}
       });
-
+  
       socket.on("getAllPrets", async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
@@ -424,8 +426,8 @@ async function main() {
       let user = await User.searchToken(socket.handshake.auth.token)
       console.log("uuid socket: " + await user.uuid)
       funcSocket.id_data(socket,user)
-
-
+  
+  
       if(user.uuid!=null){
         funcSocket.score(socket,user)
         funcSocket.historiquePoints(socket,user)
@@ -452,7 +454,35 @@ async function main() {
       }
     } catch (e) {console.error(e);console.log('34');}
   });
-
-  //db.run('drop table midi_list')
-}
-main().catch(console.error);
+  
+  async function loop(){
+    let now = new Date()
+    let w = funcDate.actualWeek
+    let j = now.getDay()
+    if(j==1 || j==2)
+      j--
+    else if(j==4 || j==5){
+      j-=2
+    }else{
+      j=null
+    }
+    if(j!=null){
+      let info11 = await funcDB.getMidiInfo(w,j*2)
+      let info12 = await funcDB.getMidiInfo(w,j*2+1)
+      if(now.getHours()==10 && now.getMinutes()==30 && info11.algo_auto>0){
+        await UserSelect.algoDeSelection(w,j*2)
+      }
+      if(now.getHours()==0 && now.getMinutes()==0 && info11.algo_auto==2){
+        await UserSelect.algoDeSelection(w,j*2)
+      }
+      if(now.getHours()==10 && now.getMinutes()==0 && info12.algo_auto>0){
+        await UserSelect.algoDeSelection(w,j*2+1)
+      }
+      if(now.getHours()==0 && now.getMinutes()==0 && info12.algo_auto==2){
+        await UserSelect.algoDeSelection(w,j*2+1)
+      }
+    }
+    setTimeout(loop, 30000);
+  }
+  loop()
+})
