@@ -100,8 +100,8 @@ p{
 }
 
 input[type="checkbox"] {
-  width: 2em;
-  height: 2em;
+  width: 1.8em;
+  height: 1.8em;
 }
 
 @media (max-width: 1000px) {

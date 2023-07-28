@@ -282,7 +282,7 @@ export async function init(common){
             }
         })
         //cbClasses[n][i].checked = true
-        gr.innerHTML = groupes[index]
+        gr.innerHTML = groupes[index]+" "
         gr.appendChild(cbGroupes[index]);
         if (loop2==0){
             loop2=1
@@ -369,7 +369,7 @@ export async function init(common){
             cbClasses[n][i] = document.createElement("input")
             cbClasses[n][i].type = "checkbox"
             //cbClasses[n][i].checked = true
-            opt.innerHTML = listNiveau[n][i]
+            opt.innerHTML = listNiveau[n][i]+" "
             opt.appendChild(cbClasses[n][i]);
             cbClasses[n][i].addEventListener("click", async function() {
                 if(cbClasses[n][i].checked){

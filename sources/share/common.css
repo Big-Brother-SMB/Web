@@ -90,6 +90,12 @@ header{
   text-align: center;
 }
 
+input[type="checkbox"]{
+  height: 1.8em;
+  width: 1.8em;
+}
+
+
 /*----------------------------banderole------------------*/
 .marquee-rtl{
   overflow: hidden;
