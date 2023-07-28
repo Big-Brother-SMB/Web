@@ -156,3 +156,7 @@ input::placeholder{
 #mySidenav.asso{
   background: linear-gradient(#052831 50%,#1a6368);
 }
+
+.invert{
+  filter: invert(1) grayscale(1);
+}
