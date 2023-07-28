@@ -59,7 +59,7 @@ const fs = require('fs');
 const rand = require("generate-key");
 const dateTime = require('date-and-time');
 const { firestore } = require('googleapis/build/src/apis/firestore');
-const path = require('path');
+const path = require('node:path');
 const { setgroups } = require('process');
 const { generateKey } = require('crypto');
 const { table } = require('console');
@@ -109,6 +109,15 @@ const init_DB = require('./server/initDB.js')
 
 const generatePage = require('./server/generatePage.js')
 
+/*
+function convertPath(path){
+  if(process.platform=="win32"){
+    return path.win32.normalize(path)
+  }else{
+    return path.posix.normalize(path)
+  }
+}
+*/
 async function main() {
   db = new sqlite3.Database(__dirname+'/../main.db', err => {
     if (err)
