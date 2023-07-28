@@ -60,9 +60,9 @@ export async function init(common){
         document.getElementById("inscrits").innerHTML = "inscrits (" + inscrits + ")"
 
 
-        document.getElementById("p sandwich").innerHTML = "rien: " + sandwich_tab[0]
+        document.getElementById("p sandwich").innerHTML = "null: " + sandwich_tab[0]
                                                         + "<br>NON: "  + sandwich_tab[1]
-                                                        + "<br>ENVIE: "  + sandwich_tab[2]
+                                                        + "<br>OUI: "  + sandwich_tab[2]
                                                         /*+ "<br>ABSOLUMENT: "  + sandwich_tab[3]*/
     }
     await reloadInfoHoraire()
@@ -164,7 +164,7 @@ export async function init(common){
 
     //------------------------------Algorithme----------------------------
 
-    const listModeAlgo = ["Désactiver","10H30","00H00 & 10H30"]
+    const listModeAlgo = ["Désactivé","10H30","00H00 & 10H30"]
     let divModeAlgo = document.getElementById("algo auto")
     for(let i in listModeAlgo){
         let opt = document.createElement("option")
@@ -196,7 +196,7 @@ export async function init(common){
     //-------------------------------Sandwich-------------------------------
 
 
-    const listModeSandwich = ["Désactiver","Sondage","Selection","Selection avec exclution"]
+    const listModeSandwich = ["Désactivé","Sondage","Sélection","Sélection avec exclusion"]
     let divModeSandwich = document.getElementById("mode sandwich")
     for(let i in listModeSandwich){
         let opt = document.createElement("option")
@@ -218,7 +218,7 @@ export async function init(common){
 
     //------------------------------------Prioritaires-------------------------------------
 
-    const listPrioMode = ["Ne pas prendre en compte les prio","prendre en compte les prio","uniquement prio"]
+    const listPrioMode = ["Ne pas prendre en compte les prio","Prendre en compte les prio","Uniquement prio"]
     let divPrioMode = document.getElementById("prio mode")
     for(let i in listPrioMode){
         let opt = document.createElement("option")

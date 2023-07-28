@@ -1,24 +1,29 @@
 export async function init(common){
     var interval;
     let barcodeLaser = '';
-    document.addEventListener('keydown', function(evt) {
-        console.log(evt.key)
-        if (interval){
-            clearInterval(interval);
-        }
-        if (evt.code == 'Enter') {
-            if (barcodeLaser){
-                search(barcodeLaser)
-                inputCodeBar.value = barcodeLaser;
+    const keydown = function(evt) {
+        if(window.location.pathname=="/admin/pret"){
+            console.log(evt.key)
+            if (interval){
+                clearInterval(interval);
             }
-            barcodeLaser = '';
-            return;
+            if (evt.code == 'Enter') {
+                if (barcodeLaser){
+                    search(barcodeLaser,true)
+                    inputCodeBar.value = barcodeLaser;
+                }
+                barcodeLaser = '';
+                return;
+            }
+            if (evt.key != 'Shift'){
+                barcodeLaser += evt.key;
+            }
+            interval = setInterval(() => barcodeLaser = '', 20);
+        }else{
+            document.removeEventListener('keydown', keydown)
         }
-        if (evt.key != 'Shift'){
-            barcodeLaser += evt.key;
-        }
-        interval = setInterval(() => barcodeLaser = '', 20);
-    })
+    }
+    document.addEventListener('keydown', keydown)
 
     let inputCodeBar = document.getElementById("code_bar")
     inputCodeBar.addEventListener("input",function(){
@@ -104,7 +109,7 @@ export async function init(common){
     })
 */
 
-    var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker","Echec","Jungle Speed","Jeu de cartes"]
+    var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker","Jeu d'échecs","Jungle Speed","Jeu de cartes"]
 
     function debutPret(elem){
         if (inputNameId!=null){

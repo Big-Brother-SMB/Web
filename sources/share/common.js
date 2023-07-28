@@ -3,7 +3,7 @@ import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
 
 //-----------------------------date----------------------------------
-let mois=["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
+let mois=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 
 Date.prototype.getWeek = function() {
   let now = new Date(this.getFullYear(), this.getMonth(), this.getDate());

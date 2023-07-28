@@ -1,7 +1,7 @@
 const Day = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"]
 const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h","16h-17h"]
 
-const listModePerm = ["Annuler","Selection","Fermé","Ouvert à tous","Reservation","Vacances"]
+const listModePerm = ["Annuler","Sélection","Fermé","Ouvert à tous","Réservation","Vacances"]
 
 
 export async function init(common){

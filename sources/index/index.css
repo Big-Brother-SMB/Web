@@ -11,7 +11,7 @@ a{
   border: 10px ridge black;
   padding: 20%,20%;
   max-width: 70%;
-  background-color: #BF5656b5;
+  background: linear-gradient(135deg,#004155 0%,#009DCF);
 }
 
 div *{
@@ -102,6 +102,7 @@ p{
 input[type="checkbox"] {
   width: 1.8em;
   height: 1.8em;
+  accent-color: #fff;
 }
 
 @media (max-width: 1000px) {

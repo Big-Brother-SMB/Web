@@ -138,7 +138,7 @@ input[type="checkbox"]{
 }
 
 #mySidenav.user{
-  background: linear-gradient(#488f56 50%,#A3EBB1);
+  background: linear-gradient(#42804e 50%,#76a17f);
 }
 #mySidenav.admin{
   background: linear-gradient(#750c0c 50%,#cc3737);

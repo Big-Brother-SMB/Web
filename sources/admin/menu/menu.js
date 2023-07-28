@@ -31,13 +31,10 @@ export async function init(common){
         if (nbpts!==null && !isNaN(nbpts)){
             nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
             if (nomgain!==null){
-                conf=prompt("Vous etes sur le point d'ajouter " + nbpts + " point(s) à tous les eleves. Taper OUI pour poursuivre.","NON")
+                await common.socketAdminAsync("add_global_point",[common.getDateHour(),nomgain,nbpts])
+                if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("add point").style.backgroundColor= "unset"
+                alert("Ajout de points effectué")
             }
-        }
-        if (conf==="OUI"){
-            await common.socketAdminAsync("add_global_point",[common.getDateHour(),nomgain,nbpts])
-            if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("add point").style.backgroundColor= "unset"
-            alert("Ajout de points effectués")
         }
     });
 
