@@ -11,12 +11,13 @@ module.exports = class UserSelect{
     static usersList = []
     static enCour = false
   
-    constructor(uuid,score,prio,amis){
+    constructor(uuid,score,prio,amis,date){
         this.uuid = uuid
         this.score = score
         this.prio = prio
         this.amis = amis
         this.amisEloigner = []
+        this.date=new Date(date)
         //-1=refuser ; 0=defaut ; 1=inscrit
         this.pass = 0
     }
@@ -30,8 +31,13 @@ module.exports = class UserSelect{
       //les amis éloignier => mes amis + les amis de mes amis + les amis des amis de mes amis + ...
   
       //récupère les données
-      let info = await getMidiInfo(semaine,creneau)
-      let listDemandes = await listMidiDemandes(semaine,creneau)
+      let info = await funcDB.getMidiInfo(semaine,creneau)
+      let listDemandes = await funcDB.listMidiDemandes(semaine,creneau)
+      if(info==undefined){
+        this.enCour=false
+        return "err"
+      }
+      
       this.usersList = []
   
       //remplie la "usersList" avec des "UserSelect" en utilisant les données précédante
@@ -49,14 +55,28 @@ module.exports = class UserSelect{
             }
           })
           let amis = listDemandes[i].amis
-          this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis))
+          this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date))
         }
       }
   
-  
+      //datetoday
+      let jourForDate = Math.floor(creneau / 2)
+      jourForDate++
+      if(jourForDate>2)jourForDate++
+      let dateToday = generedDate(semaine,jourForDate,0,0,0)
       //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
+      //
       this.usersList.forEach(u=>{
+        if(u.date.getTime() < dateToday.getTime()){
+          u.score+=info.bonus_avance
+        }
         for(let a in u.amis){
+          console.log(u.uuid,u.amis[a])
+          if(u.amis[a]==u.uuid){
+            u.amis.splice(a,1);
+            a--
+            u.pass=-1
+          }
           if(UserSelect.searchAmi(u.amis[a])==null){
             u.amis.splice(a,1);
             a--
@@ -249,3 +269,34 @@ module.exports = class UserSelect{
       return null
     }
 }
+
+function generedDate(week,jour,h,min,s){
+  if (jour==0) week++
+  let nowDate = new Date()
+  let jourActuel = nowDate.getDay();
+  //jour++;if(j > 1)jour++
+  let date_in_ms=(Date.now()+604800000*(week - actualWeek))-(jourActuel-jour)*86400000;
+  date_in_ms+= (h-nowDate.getHours())*3600000 + (min-nowDate.getMinutes())*60000 + (s-nowDate.getSeconds())*1000
+  return new Date(date_in_ms);
+}
+
+Date.prototype.getWeek = function() {
+  let now = new Date(this.getFullYear(), this.getMonth(), this.getDate());
+  let firstSept = new Date(now.getFullYear(), 8, 1);
+
+  if(now.getTime()+7*86400000<firstSept.getTime()){
+    firstSept = new Date(now.getFullYear()-1, 8, 1);
+  }
+
+
+  let diff = now - firstSept
+  //diff en jour
+  diff = diff/86400000
+  //diff en jour, prenant compte du décalage de jour de la semaine
+  diff = diff + firstSept.getDay() - now.getDay()
+  //diff en semaine
+  diff = diff/7
+  return diff+1
+}
+
+const actualWeek = new Date().getWeek();

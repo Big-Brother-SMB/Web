@@ -63,7 +63,7 @@ export async function init(common){
         document.getElementById("p sandwich").innerHTML = "rien: " + sandwich_tab[0]
                                                         + "<br>NON: "  + sandwich_tab[1]
                                                         + "<br>ENVIE: "  + sandwich_tab[2]
-                                                        + "<br>ABSOLUMENT: "  + sandwich_tab[3]
+                                                        /*+ "<br>ABSOLUMENT: "  + sandwich_tab[3]*/
     }
     await reloadInfoHoraire()
 
@@ -186,6 +186,7 @@ export async function init(common){
 
     document.getElementById("start algo").addEventListener("click", async function() {
         document.getElementById("start algo").innerHTML = "..."
+        await setMidiInfo()
         let rep = await common.socketAdminAsync('algo',[w,j,h],60000)
         document.getElementById("start algo").innerHTML = rep
 
