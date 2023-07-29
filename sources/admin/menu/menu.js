@@ -31,7 +31,7 @@ export async function init(common){
         if (nbpts!==null && !isNaN(nbpts)){
             nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
             if (nomgain!==null){
-                await common.socketAdminAsync("add_global_point",[common.getDateHour(),nomgain,nbpts])
+                await common.socketAdminAsync("addGlobalPoint",[common.getDateHour(),nomgain,nbpts])
                 if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("add point").style.backgroundColor= "unset"
                 alert("Ajout de points effectué")
             }
@@ -39,7 +39,7 @@ export async function init(common){
     });
 
 
-    let global_points = await common.socketAdminAsync("get_global_point",null)
+    let global_points = await common.socketAdminAsync("getGlobalPoint",null)
     let test=true
     global_points.forEach(e => {
         if("gain de la semaine " + common.actualWeek==e.name){
@@ -55,7 +55,7 @@ export async function init(common){
         let banderole = await common.socketAsync("getBanderole",null)
         banderole=window.prompt("Message de la banderole:",banderole);
         if (banderole!=null){
-            await common.socketAdminAsync("set_banderole",banderole)
+            await common.socketAdminAsync("setBanderole",banderole)
             document.getElementById("banderole").innerHTML = banderole
 
             if (banderole != null && banderole != '') {
@@ -106,7 +106,7 @@ export async function init(common){
         if (p=="" || p=="null"){
             p = "inconnu pour le moment"
         }
-        await common.socketAdminAsync("set_menu",{semaine:week,menu:p,self:info_menu.self})
+        await common.socketAdminAsync("setMenu",{semaine:week,menu:p,self:info_menu.self})
         document.getElementById("menuSemaine").innerHTML = p
     })
 
@@ -118,7 +118,7 @@ export async function init(common){
         if (p==null){
             p=info_menu.self
         }
-        await common.socketAdminAsync("set_menu",{semaine:week,menu:info_menu.menu,self:p})
+        await common.socketAdminAsync("setMenu",{semaine:week,menu:info_menu.menu,self:p})
         document.getElementById("menu self").setAttribute("src",p)
     })
 }

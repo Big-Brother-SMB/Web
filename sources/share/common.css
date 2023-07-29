@@ -1046,7 +1046,7 @@ tfoot {
 /* historique */
 textarea{
   font-size: 2em;
-  width: 100%;
+  width: 95%;
   height: 30vh;
   resize: none;
 }

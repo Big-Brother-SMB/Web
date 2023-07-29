@@ -44,7 +44,7 @@ export async function init(common){
     let code = 0
     let users_code= new Map();
 
-    let listUsers=await common.socketAdminAsync('list pass',null)
+    let listUsers=await common.socketAdminAsync('getListPass',null)
 
 
 

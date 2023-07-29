@@ -103,6 +103,8 @@ let funcDB = require('./server/functionsDB.js')
 
 const funcSocket = require('./server/functionsSocket.js')
 
+const funcSocketAdmin = require('./server/functionsSocketAdmin.js')
+
 const UserSelect = require('./server/UserSelect.js')
 
 const init_DB = require('./server/initDB.js')
@@ -128,7 +130,6 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
   db.serialize(init_DB(db))
   User.setDB(db)
   funcDB.setDB(db)
-  funcSocket.setDB(db)
   UserSelect.setDB(db)
 
   server = http.createServer(async function (req, res) {
@@ -190,235 +191,47 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
     let user = await User.searchToken(socket.handshake.auth.token)
     console.log("uuid admin socket: " + await user.uuid)
   
+
     if(await user.admin > 0){
-      socket.on('my_admin_mode',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          user.admin = msg
-          socket.emit('my_admin_mode',"ok")
-        }catch(e){console.error(e);console.log('3');}
-      })
-      socket.on('add_global_point',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.addGlobalPoint(msg[0],msg[1],msg[2])
-          socket.emit('add_global_point',"ok")
-        }catch(e){console.error(e);console.log('4');}
-      })
-      socket.on('add_perso_point',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let user = new User(msg[0])
-          user.addPersonalPoint(msg[1],msg[2],msg[3])
-          socket.emit('add_perso_point',"ok")
-        }catch(e){console.error(e);console.log('5');}
-      })
-      socket.on('get_global_point',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          socket.emit('get_global_point',await funcDB.listGlobalPoint())
-        }catch(e){console.error(e);console.log('6');}
-      })
-      socket.on('set_banderole',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.setVar("banderole",msg)
-          socket.emit('set_banderole',"ok")
-        }catch(e){console.error(e);console.log('7');}
-      })
-      socket.on('set_menu',async req => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.setMidiMenu(req.semaine,req.menu,req.self)
-          socket.emit('set_menu',"ok")
-        }catch(e){console.error(e);console.log('8');}
-      })
-      socket.on('setMidiInfo',async req => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.setMidiInfo(req.w,req.j*2+req.h,req.cout,req.gratuit_prio,req.ouvert,req.perMin,req.places,req.prio_mode,req.nbSandwich,req.mode_sandwich,req.bonus_avance,req.algo_auto,req.list_prio)
-          socket.emit('setMidiInfo',"ok")
-        }catch(e){console.error(e);console.log('9');}
-      })
-      socket.on('list group/classe',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          socket.emit('list group/classe',[await funcDB.getGroup(),await funcDB.getClasse()])
-        }catch(e){console.error(e);console.log('10');}
-      })
-      socket.on('list pass',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          socket.emit('list pass',await User.listUsersComplete())
-        }catch(e){console.error(e);console.log('11');}
-      })
-      socket.on('scan',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let user = new User(msg[3])
-          let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
-          await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,info.DorI,msg[4])
-          socket.emit('scan','ok')
-        }catch(e){console.error(e);console.log('12');}
-      })
-      socket.on('set DorI',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let user = new User(msg[3])
-          let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
-          await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,msg[4],info.scan)
-          socket.emit('set DorI','ok')
-        }catch(e){console.error(e);console.log('13');}
-      })
-      socket.on('del DorI',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let user = new User(msg[3])
-          await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
-          socket.emit('del DorI','ok')
-        }catch(e){console.error(e);console.log('14');}
-      })
-      socket.on('set perm ouvert',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          await funcDB.setPermOuvert(msg[0],msg[1],msg[2],msg[3])
-          socket.emit('set perm ouvert','ok')
-        }catch(e){console.error(e);console.log('15');}
-      })
-      socket.on('del perm demande',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          await (new User(msg[3])).delPermDemande(msg[0],msg[1],msg[2])
-          socket.emit('del perm demande','ok')
-        }catch(e){console.error(e);console.log('16');}
-      })
-      socket.on('set perm inscrit',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          await funcDB.setPermInscrit(msg[0],msg[1],msg[2],msg[3])
-          socket.emit('set perm inscrit','ok')
-        }catch(e){console.error(e);console.log('17');}
-      })
-      socket.on('algo',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let rep = await UserSelect.algoDeSelection(msg[0],msg[1]*2+msg[2])
-          socket.emit('algo',rep)
-        }catch(e){console.error(e);console.log('18');}
-      })
-      socket.on('set user',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let user = new User(msg.uuid)
-          user.all = msg
-          socket.emit('set user','ok')
-        }catch(e){console.error(e);console.log('19');}
-      })
-      socket.on('get score list',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let user = new User(msg)
-          socket.emit('get score list',await user.listPoint)
-        }catch(e){console.error(e);console.log('20');}
-      })
-      socket.on('del_perso_point',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          let user = new User(msg[0])
-          user.delPersonalPoint(msg[1])
-          socket.emit('del_perso_point','ok')
-        }catch(e){console.error(e);console.log('21');}
-      })
-      socket.on('del_global_point',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.delGlobalPoint(msg)
-          socket.emit('del_global_point','ok')
-        }catch(e){console.error(e);console.log('22');}
-      })
-      socket.on('copy key',async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          socket.emit('copy key',await (new User(msg)).createToken())
-        }catch(e){console.error(e);console.log('23');}
-      })
-  
-      socket.on("admin msgs", async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          socket.emit("admin msgs",await funcDB.getAllMessages())
-        }catch(e){console.error(e);console.log('24');}
-      });
-  
-      socket.on("msg lu", async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          (new User("admin")).messageLu(msg)
-          socket.emit("msg lu",'ok')
-        }catch(e){console.error(e);console.log('25');}
-      });
-  
-      socket.on("add msg", async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.addMessage("admin",msg.destinataire,false,msg.texte,msg.title,hashHour())
-          socket.emit("add msg",'ok')
-        }catch(e){console.error(e);console.log('26');}
-      });
-  
-      socket.on("add news", async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.addNews("admin",msg.texte,msg.title,hashHour())
-          socket.emit("add news",'ok')
-        }catch(e){console.error(e);console.log('27');}
-      });
-  
-      socket.on("add sondage", async msg => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.addSondage("admin",msg.texte,msg.title,hashHour(),msg.mode,msg.choix)
-          socket.emit("add sondage",'ok')
-        }catch(e){console.error(e);console.log('28');}
-      });
-  
-      socket.on("addPret", async req => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.addPret(req.obj,req.uuid,req.debut)
-          socket.emit("addPret",'ok')
-        }catch(e){console.error(e);console.log('29');}
-      });
-  
-      socket.on("finPret", async req => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.finPret(req.obj,req.uuid,req.debut,req.fin)
-          socket.emit("finPret",'ok')
-        }catch(e){console.error(e);console.log('30');}
-      });
-  
-      socket.on("commentairePret", async req => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          funcDB.commentairePret(req.obj,req.uuid,req.debut,req.com)
-          socket.emit("commentairePret",'ok')
-        }catch(e){console.error(e);console.log('31');}
-      });
-  
-      socket.on("getPretsActuel", async req => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          socket.emit("getPretsActuel",await funcDB.getPretsActuel())
-        }catch(e){console.error(e);console.log('32');}
-      });
-  
-      socket.on("getAllPrets", async req => {
-        if(await user.admin == 0 || await user.admin == null) return
-        try{
-          socket.emit("getAllPrets",await funcDB.getAllPrets())
-        }catch(e){console.error(e);console.log('33');}
-      });
+      funcSocketAdmin.setMyAdminMode(socket,user)
+      funcSocketAdmin.addGlobalPoint(socket,user)
+      funcSocketAdmin.addPersonalPoint(socket,user)
+      funcSocketAdmin.getGlobalPoint(socket,user)
+      funcSocketAdmin.setBanderole(socket,user)
+      funcSocketAdmin.setMenu(socket,user)
+      funcSocketAdmin.setMidiInfo(socket,user)
+      funcSocketAdmin.getGroupAndClasse(socket,user)
+      funcSocketAdmin.getListPass(socket,user)
+      funcSocketAdmin.scan(socket,user)
+      funcSocketAdmin.setDorI(socket,user)
+      funcSocketAdmin.delDorI(socket,user)
+      funcSocketAdmin.setPermOuvert(socket,user)
+      funcSocketAdmin.delPermDemande(socket,user)
+      funcSocketAdmin.setPermInscrit(socket,user)
+      funcSocketAdmin.startAlgo(socket,user)
+      funcSocketAdmin.setUser(socket,user)
+      funcSocketAdmin.getScoreList(socket,user)
+      funcSocketAdmin.delPersonalPoint(socket,user)
+      funcSocketAdmin.delGlobalPoint(socket,user)
+      funcSocketAdmin.copyKey(socket,user)
+      funcSocketAdmin.addPret(socket,user)
+      funcSocketAdmin.finPret(socket,user)
+      funcSocketAdmin.commentairePret(socket,user)
+      funcSocketAdmin.getPretsActuel(socket,user)
+      funcSocketAdmin.getAllPrets(socket,user)
+
+      funcSocketAdmin.newCookieSubscription(socket,user)
+      funcSocketAdmin.modifCookieSubscription(socket,user)
+      funcSocketAdmin.delCookieSubscription(socket,user)
+      funcSocketAdmin.getCookieSubscription(socket,user)
+      funcSocketAdmin.newCookieTicket(socket,user)
+      funcSocketAdmin.modifCookieTicket(socket,user)
+      funcSocketAdmin.delCookieTicket(socket,user)
+      funcSocketAdmin.getCookieTicket(socket,user)
+      funcSocketAdmin.newBan(socket,user)
+      funcSocketAdmin.modifBan(socket,user)
+      funcSocketAdmin.delBan(socket,user)
+      funcSocketAdmin.getBan(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -456,6 +269,18 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
   });
   
   async function loop(){
+    //Subscription Cookie
+    let listCookie = funcDB.getSubscriptionCookie()
+
+
+
+
+
+
+
+
+
+    //auto algo
     let now = new Date()
     let w = funcDate.actualWeek
     let j = now.getDay()

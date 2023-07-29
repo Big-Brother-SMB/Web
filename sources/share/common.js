@@ -13,15 +13,14 @@ Date.prototype.getWeek = function() {
     firstSept = new Date(now.getFullYear()-1, 8, 1);
   }
 
-
   let diff = now - firstSept
+  //diff en ms, prenant compte du décalage de jour de la semaine
+  diff = diff + firstSept.getDay() * 86400000 - now.getDay() *86400000
   //diff en jour
   diff = diff/86400000
-  //diff en jour, prenant compte du décalage de jour de la semaine
-  diff = diff + firstSept.getDay() - now.getDay()
   //diff en semaine
   diff = diff/7
-  return diff+1
+  return parseInt(diff+1)
 }
 
 const actualWeek = new Date().getWeek();
@@ -429,10 +428,10 @@ export class common{
             return new Promise(function(resolve, reject) {
                 socketAdmin.emit(channel,msg);
                 socketAdmin.once(channel,result => {
-                resolve(result)
+                  resolve(result)
                 });
                 if(time==undefined){
-                time=5000
+                  time=5000
                 }
                 setTimeout(reject,time)
             })

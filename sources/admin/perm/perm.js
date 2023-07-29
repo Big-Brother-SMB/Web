@@ -24,13 +24,13 @@ export async function init(common){
                     if(mode=="j" && select.selectedIndex!=0){
                         for(let h = 0; h < 8; h++){
                             if(!((x == 2 && h >3) || (h == 3 && x != 2))){
-                                await common.socketAdminAsync('set perm ouvert',[week,x,h,select.selectedIndex-1])
+                                await common.socketAdminAsync('setPermOuvert',[week,x,h,select.selectedIndex-1])
                             }
                         }
                     }else if(mode=="h" && select.selectedIndex!=0){
                         for (let j = 0; j < 5; j++) {
                             if(!((j == 2 && x >3) || (x == 3 && j != 2))){
-                                await common.socketAdminAsync('set perm ouvert',[week,j,x,select.selectedIndex-1])
+                                await common.socketAdminAsync('setPermOuvert',[week,j,x,select.selectedIndex-1])
                             }
                         }
                     }

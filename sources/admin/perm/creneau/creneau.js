@@ -37,7 +37,7 @@ export async function init(common){
 
   divMode.selectedIndex = await common.socketAsync("getOuvertPerm",{w:w,j:j,h:h})
   divMode.addEventListener("change", async function() {
-    await common.socketAdminAsync('set perm ouvert',[w,j,h,this.selectedIndex])
+    await common.socketAdminAsync('setPermOuvert',[w,j,h,this.selectedIndex])
   });
 
 
@@ -66,7 +66,7 @@ export async function init(common){
 
     but.addEventListener("click", async function(){
         but.remove()
-        await common.socketAdminAsync('del perm demande',[w,j,h,child.uuid])
+        await common.socketAdminAsync('delPermDemande',[w,j,h,child.uuid])
     })
     divDemandes.appendChild(but);
   }else{
@@ -74,7 +74,7 @@ export async function init(common){
   }
   })
 
-  let g_c = await common.socketAdminAsync('list group/classe',null)
+  let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
   let divGroupes = document.getElementById("groupes")
 
   let cbGroupes = []
@@ -97,12 +97,12 @@ export async function init(common){
             if(!listInscrit.includes(groupes[index])){
                 listInscrit.push(groupes[index])
             }
-            await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+            await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
         }else{
             if(listInscrit.includes(groupes[index])){
                 listInscrit = listInscrit.filter(o => o != groupes[index]);
             }
-            await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+            await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
         }
     })
     //cbClasses[n][i].checked = true
@@ -148,7 +148,7 @@ export async function init(common){
                 listInscrit.push(listNiveau[n][i])
             }
         }
-        await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+        await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
     });
     divNiveau.appendChild(nSelectAll);
 
@@ -163,7 +163,7 @@ export async function init(common){
                 listInscrit = listInscrit.filter(o => o != listNiveau[n][i]);
             }
         }
-        await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+        await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
     });
     divNiveau.appendChild(nSelectNone);
 
@@ -184,7 +184,7 @@ export async function init(common){
                 }
             }
         }
-        await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+        await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
     });
     divNiveau.appendChild(nInversed);
 
@@ -205,7 +205,7 @@ export async function init(common){
                     listInscrit = listInscrit.filter(o => o != listNiveau[n][i]);
                 }
             }
-            await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+            await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
         })
         divNiveau.appendChild(opt);
         if(listInscrit.includes(listNiveau[n][i])){
@@ -225,7 +225,7 @@ export async function init(common){
             }
         }
     }
-    await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+    await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
   });
 
   document.getElementById("select none").addEventListener("click", async function() {
@@ -238,7 +238,7 @@ export async function init(common){
             }
         }
     }
-    await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+    await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
   });
 
   document.getElementById("inversed").addEventListener("click", async function() {
@@ -257,7 +257,7 @@ export async function init(common){
             }
         }
     }
-    await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+    await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
   });
 
   let groupeNonSpeciaux = groupes + listNiveau[0] + listNiveau[1] + listNiveau[2] + listNiveau[3]
@@ -278,7 +278,7 @@ export async function init(common){
     event.addEventListener("click", async function() {
         listInscrit = listInscrit.filter(o => o != name);
         divSpecial.removeChild(event);
-        await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+        await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
     })     
   }
 
@@ -288,7 +288,7 @@ export async function init(common){
         listInscrit.push(name)
         addSpecial(name)
         inputSpecial.value = ""
-        await common.socketAdminAsync('set perm inscrit',[w,j,h,listInscrit])
+        await common.socketAdminAsync('setPermInscrit',[w,j,h,listInscrit])
     }
   });
 }

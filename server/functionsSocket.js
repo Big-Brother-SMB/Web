@@ -1,13 +1,8 @@
 const funcDB = require('./functionsDB.js')
 const User = require('./User.js')
 
-let db;
 
 module.exports = class funcSocket{
-    static setDB(newdb){
-      db=newdb;
-    }
-
     static id_data(socket,user){
         socket.on('id_data', async req => {
             try{

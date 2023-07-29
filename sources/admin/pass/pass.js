@@ -97,7 +97,7 @@ export async function init(common){
     let code = 0
     let users_code= new Map();
 
-    let listUsers=await common.socketAdminAsync('list pass',null)
+    let listUsers=await common.socketAdminAsync('getListPass',null)
     let listCreneau=await common.socketAsync('listDemandes',{w:common.actualWeek,j:j,h:h})
 
     listUsers.forEach(function(child) {
@@ -261,7 +261,7 @@ export async function init(common){
         if(user.scan!=1){
             NBscan++
         }
-        await common.socketAdminAsync('set DorI',[common.actualWeek,j,h,inputNameId,true])
+        await common.socketAdminAsync('setDorI',[common.actualWeek,j,h,inputNameId,true])
         await common.socketAdminAsync('scan',[common.actualWeek,j,h,inputNameId,true])
         document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"../../Images/ok.png\" />"
         affichagePassages()

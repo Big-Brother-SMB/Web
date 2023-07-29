@@ -45,11 +45,11 @@ export async function init(common){
 
     adminS.addEventListener("change", function () {
         if(adminS.checked){
-            common.socketAdminAsync('my_admin_mode',2)
+            common.socketAdminAsync('setMyAdminMode',2)
             common.loadpage("sidebar:admin")
             common.admin=2
         } else {
-            common.socketAdminAsync('my_admin_mode',1)
+            common.socketAdminAsync('setMyAdminMode',1)
             common.loadpage("sidebar:admin")
             common.admin=1
         }

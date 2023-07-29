@@ -23,11 +23,11 @@ export async function init(common){
 
     let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
 
-    let usersList = await common.socketAdminAsync('list pass',null)
+    let usersList = await common.socketAdminAsync('getListPass',null)
 
     for(let i in usersList){
         usersList[i].name = common.name(usersList[i].first_name,usersList[i].last_name)
-        //await common.socketAdminAsync('set DorI',[w,j,h,usersList[i].uuid,false])
+        //await common.socketAdminAsync('setDorI',[w,j,h,usersList[i].uuid,false])
     }
 
     usersList.sort((a, b) => (a.name > b.name) ? 1 : -1)
@@ -68,7 +68,7 @@ export async function init(common){
             colD.innerHTML="demande"
             colI.addEventListener("click",async ()=>{
                 console.log('click')
-                await common.socketAdminAsync('set DorI',[w,j,h,user.uuid,true])
+                await common.socketAdminAsync('setDorI',[w,j,h,user.uuid,true])
                 user.demande.DorI=true
                 reloadLigne(user)
             })  
@@ -77,7 +77,7 @@ export async function init(common){
             colD.innerHTML="-------"
             colD.addEventListener("click",async ()=>{
                 console.log('click')
-                await common.socketAdminAsync('set DorI',[w,j,h,user.uuid,false])
+                await common.socketAdminAsync('setDorI',[w,j,h,user.uuid,false])
                 await common.socketAdminAsync('scan',[w,j,h,user.uuid,false])
                 user.demande.scan=false
                 user.demande.DorI=false
@@ -102,7 +102,7 @@ export async function init(common){
         let colS= document.createElement("td")
         colS.innerHTML="suppr"
         colS.addEventListener("click",async ()=>{
-            await common.socketAdminAsync('del DorI',[w,j,h,user.uuid])
+            await common.socketAdminAsync('delDorI',[w,j,h,user.uuid])
             user.demande=null
 
             affList.splice([...table.children].indexOf(user.ligne),1)
@@ -150,7 +150,7 @@ export async function init(common){
                 affList[dejaInscrit].demande.scan=false
                 reloadLigne(user)
             }
-            await common.socketAdminAsync('set DorI',[w,j,h,user.uuid,false])
+            await common.socketAdminAsync('setDorI',[w,j,h,user.uuid,false])
             await common.socketAdminAsync('scan',[w,j,h,user.uuid,false])
         }
     })
@@ -182,7 +182,7 @@ export async function init(common){
                 affList[dejaInscrit].demande.DorI=true
                 reloadLigne(user)
             }
-            await common.socketAdminAsync('set DorI',[w,j,h,user.uuid,true])
+            await common.socketAdminAsync('setDorI',[w,j,h,user.uuid,true])
         }
     })
 }

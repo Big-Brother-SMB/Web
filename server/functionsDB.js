@@ -1,3 +1,4 @@
+const uuidG = require('uuid');
 let db
 
 module.exports = class funcDB{
@@ -189,7 +190,6 @@ module.exports = class funcDB{
     db.run("delete from point_global where date=?",[date])
   }
   static listGlobalPoint(){
-    let uuid=this.uuid
     return new Promise(function(resolve, reject) {
       let list=[]
       db.all("SELECT * FROM point_global", (err, data) => {
@@ -256,8 +256,9 @@ module.exports = class funcDB{
 
 
   //------------------------------emprunt--------------------------------
+
   static addPret(obj,uuid,debut){
-    db.run("INSERT INTO emprunt(objet,uuid,debut) VALUES (?,?,?)",obj,uuid,debut)
+    db.run("INSERT INTO emprunt(objet,uuid,debut) VALUES (?,?,?)",[obj,uuid,debut])
   }
 
   static finPret(obj,uuid,debut,fin){
@@ -299,8 +300,92 @@ module.exports = class funcDB{
   }
 
 
+  /*--------------------------------------cookie / ban------------------------------------------*/
+
+  static addSubscriptionCookie(uuid,debut,fin,justificatif,period,cumulatif,nbAdd,maj){
+    let id=uuidG.v4()
+    db.run("INSERT INTO subscription_cookie(id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj) VALUES (?,?,?,?,?,?,?,?,0,?)",[id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,maj])
+  }
+
+  static modifSubscriptionCookie(id,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj){
+    db.run("UPDATE subscription_cookie SET debut=?,fin=?,justificatif=?,period=?,cumulatif=?,nbAdd=?,quantity=?,maj=? where id=?",[debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj,id])
+  }
+
+  static delSubscriptionCookie(id){
+    db.run("DELETE subscription_cookie WHERE id=?",[id])
+  }
+
+  static getSubscriptionCookie(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM subscription_cookie", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
 
 
+  static addTicketCookie(uuid,date,justificatif){
+    let id=uuidG.v4()
+    db.run("INSERT INTO ticket_cookie(id,uuid,date,justificatif) VALUES (?,?,?,?)",[id,uuid,date,justificatif])
+  }
+
+  static modifTicketCookie(id,uuid,date,justificatif){
+    db.run("UPDATE ticket_cookie SET uuid=?,date=?,justificatif=? where id=?",[uuid,date,justificatif,id])
+  }
+
+  static delTicketCookie(id){
+    db.run("DELETE ticket_cookie WHERE id=?",[id])
+  }
+
+  static getTicketCookie(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM ticket_cookie", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  static addBan(uuid,debut,fin,justificatif){
+    let id=uuidG.v4()
+    db.run("INSERT INTO ban(id,uuid,debut,fin,justificatif) VALUES (?,?,?,?)",[id,uuid,debut,fin,justificatif])
+  }
+
+  static modifBan(id,uuid,debut,fin,justificatif){
+    db.run("UPDATE ban SET uuid=?,debut=?,fin=?,justificatif=? where id=?",[uuid,debut,fin,justificatif,id])
+  }
+
+  static delBan(id){
+    db.run("DELETE ban WHERE id=?",[id])
+  }
+
+  static getBan(){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM ban", (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
 
   //% messages / news / sondages
 

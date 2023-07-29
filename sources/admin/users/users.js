@@ -18,7 +18,7 @@ export async function init(common){
     let addPrio = document.getElementById("addPrio")
 
     let priorites = []
-    let g_c = await common.socketAdminAsync('list group/classe',null)
+    let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
     g_c[0].forEach(function(child) {
         priorites.push(child.group2)
         let opt = document.createElement("option")
@@ -52,7 +52,7 @@ export async function init(common){
     let fu6=function(){return}
 
     let utilisateursNames = []
-    let listUsers = await common.socketAdminAsync('list pass',null)
+    let listUsers = await common.socketAdminAsync('getListPass',null)
 
     listUsers.forEach(function(child) {
         utilisateursNames.push(common.name(child.first_name,child.last_name))
@@ -60,7 +60,7 @@ export async function init(common){
     console.log(utilisateursNames)
     common.autocomplete(document.getElementById("search"), utilisateursNames,async function(){
         stop()
-        listUsers = await common.socketAdminAsync('list pass',null)
+        listUsers = await common.socketAdminAsync('getListPass',null)
         utilisateursNames=[]
         listUsers.forEach(function(child) {
             utilisateursNames.push(common.name(child.first_name,child.last_name))
@@ -84,7 +84,7 @@ export async function init(common){
             }
             divClasse.addEventListener("change", fu1=function() {
                 classe = g_c[1][this.selectedIndex].classe
-                common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
             });
             
             dName.value = utilisateur.first_name + " " + utilisateur.last_name
@@ -95,7 +95,7 @@ export async function init(common){
                     if(name.length>1){
                         last_name=name[1] 
                     }
-                    common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                    common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                 }
             })
 
@@ -103,7 +103,7 @@ export async function init(common){
             divScoreEvent.innerHTML = null
             divPrio.innerHTML = null
             
-            let scoreList = await common.socketAdminAsync('get score list',utilisateur.uuid)
+            let scoreList = await common.socketAdminAsync('getScoreList',utilisateur.uuid)
             let scoreObjs = []
             let score = 0
 
@@ -201,11 +201,11 @@ export async function init(common){
                     const index = [...divScoreEvent.children].indexOf(event)
                     let obj = scoreObjs[index]
                     if(obj.type==0){
-                        await common.socketAdminAsync('del DorI',[obj.semaine,0,obj.creneau,utilisateur.uuid])
+                        await common.socketAdminAsync('delDorI',[obj.semaine,0,obj.creneau,utilisateur.uuid])
                     }else if(obj.type==1){
-                        await common.socketAdminAsync('del_perso_point',[utilisateur.uuid,obj.date])
+                        await common.socketAdminAsync('delPersonalPoint',[utilisateur.uuid,obj.date])
                     }else if(obj.type==2){
-                        await common.socketAdminAsync('del_global_point',[obj.date])
+                        await common.socketAdminAsync('delGlobalPoint',[obj.date])
                     }
 
                     scoreObjs.splice(index,1)
@@ -226,7 +226,7 @@ export async function init(common){
                 let name = nameScore.value
                 if(!isNaN(val) && name != ""){
                     let h = common.getDateHour()
-                    await common.socketAdminAsync('add_perso_point',[utilisateur.uuid,h,name,val])
+                    await common.socketAdminAsync('addPersonalPoint',[utilisateur.uuid,h,name,val])
                     valScore.value = ""
                     nameScore.value = ""
 
@@ -243,7 +243,7 @@ export async function init(common){
                 adminBox.checked=false
             }
             adminBox.addEventListener("change", fu3=function() {
-                common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
             })
 
             codeCarte.value = codeBar
@@ -261,7 +261,7 @@ export async function init(common){
                     })
                     if(test){
                         codeBar=val
-                        common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                        common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                     }
                 }
             });
@@ -281,7 +281,7 @@ export async function init(common){
                 addPrio.selectedIndex = 0
                 if(index != -1 && !listGroups.includes(g_c[0][index])){
                     listGroups.push(g_c[0][index].group2)
-                    common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                    common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = ""
                     }
@@ -294,7 +294,7 @@ export async function init(common){
                 prio.className = "ami"
                 prio.addEventListener("click", function() {
                     listGroups = listGroups.filter(o => o != name);
-                    common.socketAdminAsync('set user',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                    common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
                     prio.parentNode.removeChild(prio);
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = "aucune priorités"
@@ -311,7 +311,7 @@ export async function init(common){
                 if(event.which==16) shiftActive = false
             });
             connect.addEventListener("click",fu6=async function(event){
-                let key = await common.socketAdminAsync('copy key',utilisateur.uuid)
+                let key = await common.socketAdminAsync('copyKey',utilisateur.uuid)
                 common.writeCookie("listKey",common.readCookie("listKey")+ key +"/")
                 if(!shiftActive){
                     common.writeCookie("key",key)

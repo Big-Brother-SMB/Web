@@ -187,7 +187,7 @@ export async function init(common){
     document.getElementById("start algo").addEventListener("click", async function() {
         document.getElementById("start algo").innerHTML = "..."
         await setMidiInfo()
-        let rep = await common.socketAdminAsync('algo',[w,j,h],60000)
+        let rep = await common.socketAdminAsync('startAlgo',[w,j,h],60000)
         document.getElementById("start algo").innerHTML = rep
 
         reloadInfoHoraire()
@@ -250,7 +250,7 @@ export async function init(common){
 
 
 
-    let g_c = await common.socketAdminAsync('list group/classe',null)
+    let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
     let divGroupes = document.getElementById("groupes")
 
     let cbGroupes = []
