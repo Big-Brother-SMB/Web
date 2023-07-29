@@ -84,6 +84,17 @@ export async function init(common){
             i++
         };
         document.getElementById("info").innerHTML=common.name(obj.first_name,obj.last_name)
+
+        let supp = document.getElementById("supp")
+        supp.classList.remove("cache")
+        supp.addEventListener('click',async ()=>{
+            if(modeAbo){
+                await common.socketAdminAsync('delCookieSubscription',id)
+            }else{
+                await common.socketAdminAsync('delCookieTicket',id)
+            }
+            common.loadpage("/admin/cookie")
+        })
     }
 
     let save = document.getElementById("save")
@@ -114,8 +125,8 @@ export async function init(common){
                     let dateDebut = common.generedDate(debut.value,1,0,0,0)
                     let dateFin = common.generedDate(fin.value,6,0,0,0)
                     await common.socketAdminAsync('newCookieSubscription',{uuid:e.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value})
-                    common.loadpage("/admin/cookie")
                 })
+                common.loadpage("/admin/cookie")
             })
         }else{
             let nbCookie = document.getElementById("nbCookie")
@@ -131,7 +142,7 @@ export async function init(common){
             save.addEventListener("click",async ()=>{
                 let dateDebut = common.generedDate(debut.value,1,0,0,0)
                 let dateFin = common.generedDate(fin.value,6,0,0,0)
-                await common.socketAdminAsync('modifCookieSubscription',{id:id,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value,quantity:nbCookie.value})
+                await common.socketAdminAsync('modifCookieSubscription',{id:id,uuid:obj.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value,quantity:nbCookie.value})
                 common.loadpage("/admin/cookie")
             })
         }
@@ -150,8 +161,8 @@ export async function init(common){
                         useDate = new Date()
                     }
                     await common.socketAdminAsync('newCookieTicket',{uuid:e.uuid,date:useDate,justificatif:justificatif.value})
-                    common.loadpage("/admin/cookie")
                 })
+                common.loadpage("/admin/cookie")
             })
         }else{
             use.checked = obj.date!=null

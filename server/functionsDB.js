@@ -307,12 +307,12 @@ module.exports = class funcDB{
     db.run("INSERT INTO subscription_cookie(id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj) VALUES (?,?,?,?,?,?,?,?,0,?)",[id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,maj])
   }
 
-  static modifSubscriptionCookie(id,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj){
-    db.run("UPDATE subscription_cookie SET debut=?,fin=?,justificatif=?,period=?,cumulatif=?,nbAdd=?,quantity=?,maj=? where id=?",[debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj,id])
+  static modifSubscriptionCookie(id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj){
+    db.run("UPDATE subscription_cookie SET uuid=?,debut=?,fin=?,justificatif=?,period=?,cumulatif=?,nbAdd=?,quantity=?,maj=? where id=?",[uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj,id])
   }
 
   static delSubscriptionCookie(id){
-    db.run("DELETE subscription_cookie WHERE id=?",[id])
+    db.run("DELETE FROM subscription_cookie WHERE id=?",[id])
   }
 
   static getSubscriptionCookie(){
@@ -341,7 +341,7 @@ module.exports = class funcDB{
   }
 
   static delTicketCookie(id){
-    db.run("DELETE ticket_cookie WHERE id=?",[id])
+    db.run("DELETE FROM ticket_cookie WHERE id=?",[id])
   }
 
   static getTicketCookie(){
@@ -361,7 +361,7 @@ module.exports = class funcDB{
 
   static addBan(uuid,debut,fin,justificatif){
     let id=uuidG.v4()
-    db.run("INSERT INTO ban(id,uuid,debut,fin,justificatif) VALUES (?,?,?,?)",[id,uuid,debut,fin,justificatif])
+    db.run("INSERT INTO ban(id,uuid,debut,fin,justificatif) VALUES (?,?,?,?,?)",[id,uuid,debut,fin,justificatif])
   }
 
   static modifBan(id,uuid,debut,fin,justificatif){
@@ -369,7 +369,7 @@ module.exports = class funcDB{
   }
 
   static delBan(id){
-    db.run("DELETE ban WHERE id=?",[id])
+    db.run("DELETE FROM ban WHERE id=?",[id])
   }
 
   static getBan(){

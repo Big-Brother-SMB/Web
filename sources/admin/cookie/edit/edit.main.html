@@ -1,5 +1,5 @@
 <section id="sectionNew" class="cache">
-    <p><b>Liste d'amis : </b></p>
+    <p><b>Liste d'élèves : </b></p>
     <div class="listDemandes" id="listUsers"></div>
     <div class="autocomplete">
         <input autocomplete="off" id="addUser" type="text" placeholder="Prénom Nom">
@@ -8,7 +8,7 @@
 <p id="info"></p>
 
 <section id="sectionAbonnement" class="cache">
-    <p>Debut (semaine): <input autocomplete="off" id="debut" type="number"></p>
+    <p>Début (semaine): <input autocomplete="off" id="debut" type="number"></p>
     <p>Fin (semaine): <input autocomplete="off" id="fin" type="number"></p>
     <p>Période : <select id="period"></select></p>
     <p>Nombre de cookies ajouter par période: <input autocomplete="off" id="nbAdd" type="number"></p>
@@ -18,9 +18,9 @@
 </section>
 
 <section id="sectionTicket" class="cache">
-    <p class="cache">Utilisateur: <input autocomplete="off" id="changeUser" type="text" placeholder="Prénom Nom"></p>
+    <p class="cache" id="changeUserP">Utilisateur: <input autocomplete="off" id="changeUser" type="text" placeholder="Prénom Nom"></p>
     <p>Utilisé: <input id="use" type="checkbox"></p>
     <p>Justificatif:</p><textarea id="justificatif2"></textarea>
 </section>
 
-<button id="save" class="btn envoyer">Enregistrer</button>
+<button id="save" class="btn envoyer">Enregistrer</button><button id="supp" class="btn envoyer cache">Supprimer</button>

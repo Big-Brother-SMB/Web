@@ -282,7 +282,7 @@ module.exports = class funcSocket{
         socket.on("modifCookieSubscription", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.modifSubscriptionCookie(req.id,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,req.quantity)
+                await funcDB.modifSubscriptionCookie(req.id,req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,req.quantity)
                 socket.emit("modifCookieSubscription","ok")
             }catch(e){console.error(e);console.log('33');}
         });
