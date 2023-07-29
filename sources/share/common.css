@@ -104,7 +104,7 @@ input[type="checkbox"]{
   width: 1.8em;
 }
 
-input,select{
+input,select,textarea{
   background-color: #e7e7e7;
 }
 

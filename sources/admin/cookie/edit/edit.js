@@ -1,5 +1,3 @@
-const nomNiveau = ["secondes","premières","terminales","adultes"]
-
 export async function init(common){
     document.getElementById("btn_retour").classList.remove("cache")
     document.getElementById("btn_retour").setAttribute("url","/admin/cookie")
@@ -59,7 +57,7 @@ export async function init(common){
             users=[]
             usersNames=[]
             listUsers.forEach(function(child) {
-                if(child.uuid != common.uuid && listSelect.indexOf(child) == -1){
+                if(listSelect.indexOf(child) == -1){
                     users.push(child)
                     usersNames.push(common.name(child.first_name,child.last_name))
                 }
@@ -116,11 +114,12 @@ export async function init(common){
                     let dateDebut = common.generedDate(debut.value,1,0,0,0)
                     let dateFin = common.generedDate(fin.value,6,0,0,0)
                     await common.socketAdminAsync('newCookieSubscription',{uuid:e.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value})
+                    common.loadpage("/admin/cookie")
                 })
             })
         }else{
             let nbCookie = document.getElementById("nbCookie")
-            nbCookie.classList.remove('cache')
+            document.getElementById("nbCookieP").classList.remove('cache')
             nbCookie.value=obj.quantity
 
             debut.value=new Date(obj.debut).getWeek()
@@ -133,9 +132,38 @@ export async function init(common){
                 let dateDebut = common.generedDate(debut.value,1,0,0,0)
                 let dateFin = common.generedDate(fin.value,6,0,0,0)
                 await common.socketAdminAsync('modifCookieSubscription',{id:id,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value,quantity:nbCookie.value})
+                common.loadpage("/admin/cookie")
             })
         }
     }else{
         document.getElementById("sectionTicket").classList.remove("cache")
+        let use=document.getElementById("use")
+        let justificatif = document.getElementById("justificatif2")
+
+        if(obj==null){
+            use.checked=false
+            justificatif.value=''
+            save.addEventListener("click",()=>{
+                listSelect.forEach(async (e)=>{
+                    let useDate = null
+                    if(use.checked){
+                        useDate = new Date()
+                    }
+                    await common.socketAdminAsync('newCookieTicket',{uuid:e.uuid,date:useDate,justificatif:justificatif.value})
+                    common.loadpage("/admin/cookie")
+                })
+            })
+        }else{
+            use.checked = obj.date!=null
+            justificatif.value = obj.justificatif
+            save.addEventListener("click",async ()=>{
+                let useDate = null
+                if(use.checked){
+                    useDate = new Date()
+                }
+                await common.socketAdminAsync('modifCookieTicket',{id:id,uuid:obj.uuid,date:useDate,justificatif:justificatif.value})
+                common.loadpage("/admin/cookie")
+            })
+        }
     }
 }

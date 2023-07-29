@@ -140,7 +140,7 @@ td {
   color: #FFF;
 }
 
-input,select{
+input,select,textarea{
   background-color: #3f3f3f;
   color: rgb(216, 216, 216);
 }

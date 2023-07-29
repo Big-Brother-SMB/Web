@@ -310,7 +310,7 @@ module.exports = class funcSocket{
     static newCookieTicket(socket,user){
         socket.on("newCookieTicket", async req => {
             if(await user.admin == 0 || await user.admin == null) return
-            try{uuid,date,justificatif
+            try{
                 await funcDB.addTicketCookie(req.uuid,req.date,req.justificatif)
                 socket.emit("newCookieTicket","ok")
             }catch(e){console.error(e);console.log('33');}
@@ -349,7 +349,7 @@ module.exports = class funcSocket{
     static newBan(socket,user){
         socket.on("newBan", async req => {
             if(await user.admin == 0 || await user.admin == null) return
-            try{uuid,date,justificatif
+            try{
                 await funcDB.addBan(req.uuid,req.debut,req.fin,req.justificatif)
                 socket.emit("newBan","ok")
             }catch(e){console.error(e);console.log('33');}
