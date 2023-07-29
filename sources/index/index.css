@@ -82,11 +82,21 @@ p{
 
 .account_img{
   height: 70px;
+  width: 70px;
   border-right: 2px solid black;
   margin: 0;
 }
+.account_img_supp{
+  height: 70px;
+  margin: 0;
+  right: 0;
+  position: absolute;
+}
 
 .account_text{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin: auto; /* Important */
   text-align: start;
 }

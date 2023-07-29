@@ -104,6 +104,9 @@ input[type="checkbox"]{
   width: 1.8em;
 }
 
+input,select{
+  background-color: #e7e7e7;
+}
 
 /*----------------------------banderole------------------*/
 .marquee-rtl{
@@ -619,6 +622,7 @@ vert{
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50px;
+  background-color: #e7e7e7;
 }
 
 /*@media screen and (max-width:1000px){
@@ -1066,6 +1070,22 @@ textarea{
 
 .grayscale{
   filter: grayscale(1);
+}
+
+
+/*------------------------------cookie ban----------------------------------*/
+
+.section_cookie_subscription{
+  background-color: #7fffd44d;
+  border-top: black solid 2px;
+}
+.section_cookie_ticket{
+  background-color: #d9ff7f4d;
+  border-top: black solid 2px;
+  border-bottom: black solid 2px;
+}
+.listDemandes.old{
+  background-color: #ffc0c0;
 }
 
 

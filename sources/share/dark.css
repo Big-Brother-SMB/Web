@@ -154,7 +154,7 @@ input::placeholder{
   background: linear-gradient(#192c1d 50%,#35493a);
 }
 #mySidenav.admin{
-  background: linear-gradient(#360505 50%,#4e1414);
+  background: linear-gradient(#490808 50%,#701e1e);
 }
 #mySidenav.asso{
   background: linear-gradient(#052831 50%,#1a6368);
@@ -166,4 +166,18 @@ input::placeholder{
 
 .imgAct{
   border-color: #aaa;
+}
+
+
+.autocomplete-list {
+  color: white;
+  border: 1px solid #d4d4d4;
+}
+.autocomplete-list div{
+  background-color: #1f1f1f;
+  border-bottom: 1px solid #999999;
+}
+.autocomplete-list div:hover, .autocomplete-active {
+  background-color: rgb(22, 58, 94) !important;
+  color: #ffffff;
 }

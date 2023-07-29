@@ -134,10 +134,8 @@ list_id_data.forEach(id_data=>{
     div.appendChild(text)
 
     let supp = document.createElement('img')
-    supp.classList.add('account_img')
-    supp.classList.add('account_supp')
-    supp.setAttribute("src","/Images/croix.png")
-    supp.innerHTML = id_data.first_name+" "+id_data.last_name
+    supp.classList.add('account_img_supp')
+    supp.setAttribute("src","/Images/erreur.png")
     supp.addEventListener('click',()=>{
       const index = list_id_data.indexOf(id_data)
       list_id_data.splice(index,1)
@@ -148,7 +146,7 @@ list_id_data.forEach(id_data=>{
     div.appendChild(supp)
 
     div.addEventListener("click",function(event){
-      if(!event.target.classList.contains("account_supp")){
+      if(!event.target.classList.contains("account_img_supp")){
         if(document.getElementById("checkbox").checked == true){
           connect(id_data)
         } else {
