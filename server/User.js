@@ -520,6 +520,48 @@ module.exports = class User{
       })
     }
 
+    get cookies(){
+      let uuid=this.uuid
+      return new Promise(function(resolve, reject) {
+        let cookies = {ticket:[],abo:[]}
+        db.all("SELECT * FROM ticket_cookie WHERE uuid=? and date IS NULL",[uuid], (err, data) => {
+            try{
+                if(data!=undefined){
+                    data.forEach(e=>{
+                        cookies.ticket.push(e)
+                    })
+                }
+                db.all("SELECT * FROM subscription_cookie WHERE uuid=? ORDER BY cumulatif DESC",[uuid], (err, data) => {
+                  try{
+                      if(data!=undefined){
+                        data.forEach(e=>{
+                          cookies.abo.push(e)
+                        })
+                      }
+                      resolve(cookies)
+                  }catch(e){console.error(e);console.log('d23');;resolve(null)}
+                })
+            }catch(e){console.error(e);console.log('d24');;resolve(null)}
+        })
+        setTimeout(reject,5000)
+      })
+    }
+
+    async useCookie(){
+      let cookies = await this.cookies
+      for(let i in cookies.abo){
+        if(cookies.abo[i].quantity>0){
+          await funcDB.modifSubscriptionCookie(cookies.abo[i].id,cookies.abo[i].uuid,cookies.abo[i].debut,cookies.abo[i].fin,cookies.abo[i].justificatif,cookies.abo[i].period,cookies.abo[i].cumulatif,cookies.abo[i].nbAdd,cookies.abo[i].quantity-1,cookies.abo[i].maj)
+          return true
+        }
+      }
+      if(cookies.ticket.length!=0){
+        await funcDB.modifTicketCookie(cookies.ticket[0].id,cookies.ticket[0].uuid,new Date(),cookies.ticket[0].justificatif)
+        return true
+      }
+      return false
+    }
+
     //messagerie
     getAllMessages(){
       let uuid=this.uuid
