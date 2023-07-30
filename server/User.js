@@ -138,6 +138,7 @@ module.exports = class User{
                   if(data!=undefined){
                       for(let i in data){
                         data[i].groups = await (new User(data[i].uuid)).groups
+                        data[i].ban = await (new User(data[i].uuid)).ban
                       }
                       resolve(data)
                   }else{
@@ -552,8 +553,8 @@ module.exports = class User{
       return new Promise(function(resolve, reject) {
         db.all("SELECT * FROM ban WHERE uuid=?",[uuid], (err, data) => {
             if(data!=undefined){
-              for(const ban in data){
-                if(ban.fin.getTime()>Date.now() && ban.debut.getTime()<Date.now()){
+              for(const ban of data){
+                if(new Date(ban.fin).getTime()>Date.now() && new Date(ban.debut).getTime()<Date.now()){
                   resolve(ban)
                   return
                 }

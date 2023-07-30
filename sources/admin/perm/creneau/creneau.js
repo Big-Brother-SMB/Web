@@ -10,15 +10,15 @@ export async function init(common){
   let j = 0
   let h = 0
   let w = 0
-    if(params.j!=null){
-      j = parseInt(params.j)
-    }
-    if(params.h!=null){
-      h = parseInt(params.h)
-    }
-    if(params.w!=null){
-      w = parseInt(params.w)
-    }
+  if(params.j!=null){
+    j = parseInt(params.j)
+  }
+  if(params.h!=null){
+    h = parseInt(params.h)
+  }
+  if(params.w!=null){
+    w = parseInt(params.w)
+  }
 
   const listModePerm = ["Sélection","Fermé","Ouvert à tous","Réservation","Vacances"]
 
@@ -45,7 +45,7 @@ export async function init(common){
 
 
   let listDemandes = await common.socketAsync("listDemandesPerm",{w:w,j:j,h:h})
-  let listUsers = await common.socketAsync('listUsersName',null)
+  let listUsers = await common.socketAdminAsync('getListPass',null)
 
   let listInscrit = []
 
@@ -75,6 +75,23 @@ export async function init(common){
   })
 
   let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
+  listUsers.forEach(e=>{
+    if(e.ban!=null){
+        for(const i in g_c[0]){
+            for(const j in e.groups){
+                if(g_c[0][i].group2==e.groups[j]){
+                    g_c[0][i].ban=true
+                }
+            }
+        }
+        for(const i in g_c[1]){
+            if(g_c[1][i].classe==e.classe){
+                g_c[1][i].ban=true
+            }
+        }
+    }
+  })
+
   let divGroupes = document.getElementById("groupes")
 
   let cbGroupes = []
@@ -107,6 +124,7 @@ export async function init(common){
     })
     //cbClasses[n][i].checked = true
     gr.innerHTML = groupes[index]
+    if(child.ban!=undefined) gr.style.color="red"
     gr.appendChild(cbGroupes[index]);
     if (loop2==0){
         loop2=1
@@ -127,10 +145,11 @@ export async function init(common){
 
   let divClasses = document.getElementById("classes")
   let listNiveau = [[],[],[],[]]
+  let listNiveauBan = [[],[],[],[]]
   g_c[1].forEach(function(child) {
     listNiveau[child.niveau].push(child.classe)
+    listNiveauBan[child.niveau].push(child.ban)
   })
-  console.log(listNiveau)
   let cbClasses = []
   for(let n in listNiveau){
     cbClasses[n] = []
@@ -194,6 +213,7 @@ export async function init(common){
         cbClasses[n][i].type = "checkbox"
         //cbClasses[n][i].checked = true
         opt.innerHTML = listNiveau[n][i]
+        if(listNiveauBan[n][i]!=undefined) opt.style.color="red"
         opt.appendChild(cbClasses[n][i]);
         cbClasses[n][i].addEventListener("click", async function() {
             if(cbClasses[n][i].checked){
