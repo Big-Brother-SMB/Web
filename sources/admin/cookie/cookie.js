@@ -40,7 +40,7 @@ export async function init(common){
             common.loadpage("/admin/cookie/edit?modeAbo=true&id="+child.id)
         })
         
-        if(new Date(child.fin).getWeek()<common.actualWeek){
+        if(new Date(child.fin).getTime() < Date.now()){
             SO.appendChild(ami);
         }else{
             SA.appendChild(ami);

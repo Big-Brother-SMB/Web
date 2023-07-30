@@ -123,7 +123,7 @@ export async function init(common){
             save.addEventListener("click",()=>{
                 listSelect.forEach(async (e)=>{
                     let dateDebut = common.generedDate(debut.value,1,0,0,0)
-                    let dateFin = common.generedDate(fin.value,6,0,0,0)
+                    let dateFin = common.generedDate(fin.value,0,0,0,0)
                     await common.socketAdminAsync('newCookieSubscription',{uuid:e.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value})
                 })
                 common.loadpage("/admin/cookie")
@@ -141,7 +141,7 @@ export async function init(common){
             justificatif.value=obj.justificatif
             save.addEventListener("click",async ()=>{
                 let dateDebut = common.generedDate(debut.value,1,0,0,0)
-                let dateFin = common.generedDate(fin.value,6,0,0,0)
+                let dateFin = common.generedDate(fin.value,0,0,0,0)
                 await common.socketAdminAsync('modifCookieSubscription',{id:id,uuid:obj.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value,quantity:nbCookie.value,maj:obj.maj})
                 common.loadpage("/admin/cookie")
             })

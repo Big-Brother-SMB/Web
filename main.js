@@ -276,15 +276,30 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
   
   async function loop(){
     //Subscription Cookie
-    let listCookie = funcDB.getSubscriptionCookie()
+    const weekMS = 604800000
+    console.log("clock")
+    let listCookie = await funcDB.getSubscriptionCookie()
+    for(const abo of listCookie){
+      if(new Date(abo.fin).getTime()>Date.now() && new Date(abo.debut).getTime()<Date.now()){
+        let period = abo.period+1
+        if(period == 3) period=4
 
-
-
-
-
-
-
-
+        let nouveauCookie=0
+        let maj
+        if(abo.maj==null){
+          maj = abo.debut
+          nouveauCookie+=abo.nbAdd
+        }else{
+          maj = abo.maj
+        }
+        maj = new Date(maj).getTime() + weekMS*period
+        if(maj < Date.now()){
+          nouveauCookie+=abo.nbAdd
+          if(abo.cumulatif) nouveauCookie+=abo.quantity
+          await funcDB.modifSubscriptionCookie(abo.id,abo.uuid,abo.debut,abo.fin,abo.justificatif,abo.period,abo.cumulatif,abo.nbAdd,nouveauCookie,new Date(maj))
+        }
+      }
+    }
 
     //auto algo
     let now = new Date()

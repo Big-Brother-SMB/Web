@@ -97,7 +97,7 @@ export async function init(common){
         save.addEventListener("click",()=>{
             listSelect.forEach(async (e)=>{
                 let dateDebut = common.generedDate(debut.value,1,0,0,0)
-                let dateFin = common.generedDate(fin.value,6,0,0,0)
+                let dateFin = common.generedDate(fin.value,0,0,0,0)
                 await common.socketAdminAsync('newBan',{uuid:e.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value})
             })
             common.loadpage("/admin/ban")
@@ -108,7 +108,7 @@ export async function init(common){
         justificatif.value=obj.justificatif
         save.addEventListener("click",async ()=>{
             let dateDebut = common.generedDate(debut.value,1,0,0,0)
-            let dateFin = common.generedDate(fin.value,6,0,0,0)
+            let dateFin = common.generedDate(fin.value,0,0,0,0)
             await common.socketAdminAsync('modifBan',{id:id,uuid:obj.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value})
             common.loadpage("/admin/ban")
         })
