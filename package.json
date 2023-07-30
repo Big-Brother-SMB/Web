@@ -1,6 +1,6 @@
 {
   "name": "Foyer Site on NodeJS",
-  "version": "beta 1.0",
+  "version": "1.0",
   "description": "",
   "main": "main.js",
   "scripts": {
