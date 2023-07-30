@@ -274,7 +274,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.addSubscriptionCookie(req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,null)
                 socket.emit("newCookieSubscription","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('34');}
         });
     }
 
@@ -284,7 +284,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.modifSubscriptionCookie(req.id,req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,req.quantity)
                 socket.emit("modifCookieSubscription","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('35');}
         });
     }
 
@@ -294,7 +294,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.delSubscriptionCookie(req)
                 socket.emit("delCookieSubscription","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('36');}
         });
     }
 
@@ -303,7 +303,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getCookieSubscription",await funcDB.getSubscriptionCookie())
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('37');}
         });
     }
 
@@ -313,7 +313,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.addTicketCookie(req.uuid,req.date,req.justificatif)
                 socket.emit("newCookieTicket","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('38');}
         });
     }
 
@@ -323,7 +323,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.modifTicketCookie(req.id,req.uuid,req.date,req.justificatif)
                 socket.emit("modifCookieTicket","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('39');}
         });
     }
 
@@ -333,7 +333,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.delTicketCookie(req)
                 socket.emit("delCookieTicket","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('40');}
         });
     }
 
@@ -342,7 +342,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getCookieTicket",await funcDB.getTicketCookie())
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('41');}
         });
     }
 
@@ -352,7 +352,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.addBan(req.uuid,req.debut,req.fin,req.justificatif)
                 socket.emit("newBan","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('42');}
         });
     }
 
@@ -362,7 +362,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.modifBan(req.id,req.uuid,req.debut,req.fin,req.justificatif)
                 socket.emit("modifBan","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('43');}
         });
     }
 
@@ -372,7 +372,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.delBan(req)
                 socket.emit("delBan","ok")
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('44');}
         });
     }
 
@@ -381,7 +381,34 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getBan",await funcDB.getBan())
-            }catch(e){console.error(e);console.log('33');}
+            }catch(e){console.error(e);console.log('45');}
+        });
+    }
+
+    static getUserIsBan(socket,user){
+        socket.on("getUserIsBan", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("getUserIsBan",await (new User(req)).ban)
+            }catch(e){console.error(e);console.log('46');}
+        });
+    }
+
+    static getUserHasCookie(socket,user){
+        socket.on("getUserHasCookie", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("getUserHasCookie",await (new User(req)).hasCookie())
+            }catch(e){console.error(e);console.log('47');}
+        });
+    }
+
+    static UseCookie(socket,user){
+        socket.on("useCookie", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("useCookie",await (new User(req)).useCookie())
+            }catch(e){console.error(e);console.log('48');}
         });
     }
 

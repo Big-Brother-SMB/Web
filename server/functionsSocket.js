@@ -222,14 +222,20 @@ module.exports = class funcSocket{
         });
     }
 
-
-
     static suppAllToken(socket,user){
         socket.on("suppAllToken", async req => {
             try{
                 user.suppAllToken()
                 socket.emit('suppAllToken',"ok")
             }catch(e){console.error(e);console.log('b22');}
+        });
+    }
+
+    static getCookies(socket,user){
+        socket.on('getCookies', async req => {
+            try{
+                socket.emit('getCookies',await user.cookies)
+            }catch(e){console.error(e);console.log('b23');}
         });
     }
 

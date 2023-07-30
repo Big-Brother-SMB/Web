@@ -547,6 +547,24 @@ module.exports = class User{
       })
     }
 
+    get ban(){
+      let uuid=this.uuid
+      return new Promise(function(resolve, reject) {
+        db.all("SELECT * FROM ban WHERE uuid=?",[uuid], (err, data) => {
+            if(data!=undefined){
+              for(const ban in data){
+                if(ban.fin.getTime()>Date.now() && ban.debut.getTime()<Date.now()){
+                  resolve(ban)
+                  return
+                }
+              }
+            }
+            resolve(null)
+        })
+        setTimeout(reject,5000)
+      })
+    }
+
     async useCookie(){
       let cookies = await this.cookies
       for(let i in cookies.abo){
@@ -557,6 +575,19 @@ module.exports = class User{
       }
       if(cookies.ticket.length!=0){
         await funcDB.modifTicketCookie(cookies.ticket[0].id,cookies.ticket[0].uuid,new Date(),cookies.ticket[0].justificatif)
+        return true
+      }
+      return false
+    }
+
+    async hasCookie(){
+      let cookies = await this.cookies
+      for(let i in cookies.abo){
+        if(cookies.abo[i].quantity>0){
+          return true
+        }
+      }
+      if(cookies.ticket.length!=0){
         return true
       }
       return false

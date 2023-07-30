@@ -232,6 +232,10 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
       funcSocketAdmin.modifBan(socket,user)
       funcSocketAdmin.delBan(socket,user)
       funcSocketAdmin.getBan(socket,user)
+
+      funcSocketAdmin.getUserIsBan(socket,user)
+      funcSocketAdmin.getUserHasCookie(socket,user)
+      funcSocketAdmin.UseCookie(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -264,6 +268,8 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
         funcSocket.setMyDemandePerm(socket,user)
         funcSocket.delMyDemandePerm(socket,user)
         funcSocket.suppAllToken(socket,user)
+
+        funcSocket.getCookies(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });
