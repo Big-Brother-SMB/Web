@@ -1,8 +1,10 @@
 const {readFile} = require('fs')
+const fs = require('fs')
 const {promisify} = require('util')
 const url = require('url');
 const path = require('path');
 const User = require('./User.js')
+const archiver = require('archiver');
 const readFileAsync = promisify(readFile)
 
 
@@ -35,6 +37,9 @@ module.exports = async(req_url) => {
     let user = await User.searchToken(url.parse(req_url).path.split('?')[1])
     if(pathName=="/database.db" && await user.admin > 0){
       fichier = await readFileAsync(sources_url+"/../../main.db")
+    }else if(pathName=="/pyscan.zip" && await user.admin > 0){
+      await zipDirectory(sources_url+"/../PyScan",sources_url+"/../pyscan.zip")
+      fichier = await readFileAsync(sources_url+"/../pyscan.zip")
     }else if(extName == '.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg' || extName == '.gif'){
       fichier = await readFileAsync(sources_url+pathName)
     }else if(extName =='.html' || extName == '.css' || extName == '.js'){
@@ -72,4 +77,23 @@ module.exports = async(req_url) => {
     extName='.html'
   }
   return [fichier,extName,err404]
+}
+
+
+
+
+function zipDirectory(sourceDir, outPath) {
+  const archive = archiver('zip', { zlib: { level: 9 }});
+  const stream = fs.createWriteStream(outPath);
+
+  return new Promise((resolve, reject) => {
+    archive
+      .directory(sourceDir, false)
+      .on('error', err => reject(err))
+      .pipe(stream)
+    ;
+
+    stream.on('close', () => resolve());
+    archive.finalize();
+  });
 }

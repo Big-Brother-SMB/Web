@@ -1,18 +1,3 @@
-/*
-npm i @google-cloud/local-auth
-npm i date-and-time
-npm i express
-npm i generate-key
-npm i googleapis
-npm i npm
-npm i path
-npm i socket.io
-npm i sqlite3
-npm i url
-npm i uuid
-npm i pino
-*/
-
 /*const { WebSocketServer } = require('ws');
 
 const server2 = new WebSocketServer({ port: 3001 });
@@ -35,7 +20,7 @@ const transport = {
     {
       level: 'trace',
       target: 'pino/file',
-      options: { destination: './main.log' } // On enregistre les logs dans un fichier main.log
+      options: { destination: __dirname+'/../main.log' } // On enregistre les logs dans un fichier main.log
     }
   ]
 }
@@ -84,7 +69,8 @@ let mimeTypes = {
   '.svg': 'image/svg+xml',
   '.eot': 'appliaction/vnd.ms-fontobject',
   '.ttf': 'aplication/font-sfnt',
-  '.db': ''
+  '.db': '',
+  '.zip': ''
 };
 
 
