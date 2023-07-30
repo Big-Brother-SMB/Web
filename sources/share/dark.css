@@ -181,3 +181,7 @@ input::placeholder{
   background-color: rgb(22, 58, 94) !important;
   color: #ffffff;
 }
+/*tuto*/
+#main a{
+  color: white;
+}
