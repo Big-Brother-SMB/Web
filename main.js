@@ -280,7 +280,7 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
     console.log("clock")
     let listCookie = await funcDB.getSubscriptionCookie()
     for(const abo of listCookie){
-      if(new Date(abo.fin).getTime()>Date.now() && new Date(abo.debut).getTime()<Date.now()){
+      if(new Date(abo.debut).getTime()<Date.now()){
         let period = abo.period+1
         if(period == 3) period=4
 
@@ -293,7 +293,7 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
           maj = abo.maj
         }
         maj = new Date(maj).getTime() + weekMS*period
-        if(maj < Date.now()){
+        if(maj < Date.now() && maj < new Date(abo.fin).getTime()){
           nouveauCookie+=abo.nbAdd
           if(abo.cumulatif) nouveauCookie+=abo.quantity
           await funcDB.modifSubscriptionCookie(abo.id,abo.uuid,abo.debut,abo.fin,abo.justificatif,abo.period,abo.cumulatif,abo.nbAdd,nouveauCookie,new Date(maj))
