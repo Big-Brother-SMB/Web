@@ -164,6 +164,8 @@ def show(key):
           else:
             canvas.itemconfig(image_container,image=imgCroix)
             buttonInscrire.pack()
+          if socketReq('getUserHasCookie', user['uuid'],True):
+            buttonCookie.pack()
         else:
           canvas.itemconfig(image_container,image=imgUnknown)
           name.set("")
@@ -181,6 +183,15 @@ def add():
   socketReq('setDorI', [week,day,heure-11,user['uuid'],True],True)
   socketReq('scan', [week,day,heure-11,user['uuid'],True],True)
   canvas.itemconfig(image_container,image=imgOk)
+  refreshPassages()
+
+def cookie():
+  canvas.itemconfig(image_container,image=imgLoading)
+  buttonCookie.pack_forget()
+  if socketReq('UseCookie', user['uuid'],True):
+    canvas.itemconfig(image_container,image=imgCookie)
+  else:
+    canvas.itemconfig(image_container,image=imgCroix)
   refreshPassages()
 
 def export():
@@ -284,6 +295,7 @@ imgOk= PhotoImage(file="ok.png")
 imgCroix= PhotoImage(file="croix.png")
 imgUnknown= PhotoImage(file="unknown.png")
 imgLoading= PhotoImage(file="loading.png")
+imgCookie= PhotoImage(file="cookie.png")
 
 def hFunc():
   global heure
@@ -318,6 +330,8 @@ canvas.pack()
 image_container =canvas.create_image(0,0, anchor="nw",image=imgUnknown)
 
 buttonInscrire = Button(fenetre, text='Inscrire', command=add, font=("Arial", 15))
+
+buttonCookie = Button(fenetre, text='Utiliser cookie', command=cookie, font=("Arial", 15))
 
 passage = StringVar()
 labelPassage = Label(fenetre, textvariable=passage, font=("Arial", 20))
