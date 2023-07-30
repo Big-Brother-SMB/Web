@@ -702,6 +702,18 @@ input[type="radio"]{
 
 .ami.small{
   width: calc(100% - 2.5em);
+  display: inline-flex;
+}
+.ami.small p{
+  width: 100%;
+  font-size: 1em !important;
+  margin: auto;
+}
+.ami.small div{
+  left: 10px;
+  position: relative;
+  width: min-content;
+  height: 100%;
 }
 
 .amiDiv{
@@ -721,11 +733,27 @@ input[type="radio"]{
 }
 
 .ami.partiel{
-  filter: opacity(0.5);
+  filter: opacity(0.3);
 }
 
-.ami.procuration{
-  background-color: #4c5f33;
+.ami.small div img{
+  height: calc(2em / 2);
+}
+.ami.small div .imgProcuration{
+  visibility: hidden;
+}.ami.small.procuration div .imgProcuration{
+  visibility: visible;
+}
+
+.ami.small.non_reciproque div .imgReciproque{
+  visibility: hidden;
+}
+
+.ami.amiProc img{
+  visibility: hidden;
+}
+.ami.amiProc.procuration img{
+  visibility: visible;
 }
 
 input[type="text"],input[type="number"]{

@@ -34,7 +34,22 @@ export async function init(common){
             ami.classList.add("ami")
             ami.classList.add("small")
 
-            ami.innerHTML = common.name(child.first_name,child.last_name)
+            {
+                let div= document.createElement("div")
+                let imgProc= document.createElement("img")
+                imgProc.src="/Images/document.png"
+                imgProc.className="imgProcuration"
+                div.append(imgProc)
+                div.innerHTML+='<br>'
+                let imgReci= document.createElement("img")
+                imgReci.src="/Images/le-respect.png"
+                imgReci.className="imgReciproque"
+                div.append(imgReci)
+                ami.append(div)
+                let p = document.createElement('p')
+                p.innerHTML= common.name(child.first_name,child.last_name)
+                ami.append(p)
+            }
             ami.addEventListener("click", async function() {
                 listAmisUUID.splice(listAmisUUID.indexOf(child.uuid),1)
                 listAmis.splice(listAmis.indexOf(child),1)
@@ -48,7 +63,7 @@ export async function init(common){
             if(child.HeGiveMeProc == 1){
                 ami.classList.add('procuration')
             }else if(child.HeGiveMeProc == null){
-                ami.classList.add('partiel')
+                ami.classList.add('non_reciproque')
             }
 
             let amiProc = document.createElement("button")

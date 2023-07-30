@@ -3,6 +3,7 @@
 *.sql
 key.json
 code.json
+*.zip
 
 # Logs
 logs
