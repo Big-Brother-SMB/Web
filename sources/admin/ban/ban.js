@@ -34,7 +34,7 @@ export async function init(common){
             common.loadpage("/admin/ban/edit?id="+child.id)
         })
         
-        if(new Date(child.fin).getWeek()<common.actualWeek){
+        if(new Date(child.fin).getTime() < Date.now()){
             BO.appendChild(ami);
         }else{
             BA.appendChild(ami);
