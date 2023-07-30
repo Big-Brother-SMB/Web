@@ -302,9 +302,9 @@ module.exports = class funcDB{
 
   /*--------------------------------------cookie / ban------------------------------------------*/
 
-  static addSubscriptionCookie(uuid,debut,fin,justificatif,period,cumulatif,nbAdd,maj){
+  static addSubscriptionCookie(uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj){
     let id=uuidG.v4()
-    db.run("INSERT INTO subscription_cookie(id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj) VALUES (?,?,?,?,?,?,?,?,0,?)",[id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,maj])
+    db.run("INSERT INTO subscription_cookie(id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj) VALUES (?,?,?,?,?,?,?,?,?,?)",[id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj])
   }
 
   static modifSubscriptionCookie(id,uuid,debut,fin,justificatif,period,cumulatif,nbAdd,quantity,maj){

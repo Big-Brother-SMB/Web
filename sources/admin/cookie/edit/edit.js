@@ -142,7 +142,7 @@ export async function init(common){
             save.addEventListener("click",async ()=>{
                 let dateDebut = common.generedDate(debut.value,1,0,0,0)
                 let dateFin = common.generedDate(fin.value,6,0,0,0)
-                await common.socketAdminAsync('modifCookieSubscription',{id:id,uuid:obj.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value,quantity:nbCookie.value})
+                await common.socketAdminAsync('modifCookieSubscription',{id:id,uuid:obj.uuid,debut:dateDebut,fin:dateFin,justificatif:justificatif.value,period:period.selectedIndex,cumulatif:cumulatif.checked,nbAdd:nbAdd.value,quantity:nbCookie.value,maj:obj.maj})
                 common.loadpage("/admin/cookie")
             })
         }

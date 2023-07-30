@@ -1072,6 +1072,34 @@ textarea{
   filter: grayscale(1);
 }
 
+/*-------------------------------accueil-----------------------------------*/
+
+.hautpage {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin:0;
+  padding: 10px 5%;
+}
+.frameUserName , .bnt_display{
+    width: 50%;
+    height: 62px;
+    border: 1px solid black;
+    text-align: center;
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 8px;
+    padding: 0.25rem;
+    margin: auto auto;
+    font-size: 40px !important;
+}
+
+.bnt_display{
+    width: 18%;
+    height: 72px;
+}
+
 
 /*------------------------------cookie ban----------------------------------*/
 

@@ -569,6 +569,7 @@ module.exports = class User{
       let cookies = await this.cookies
       for(let i in cookies.abo){
         if(cookies.abo[i].quantity>0){
+          await funcDB.addTicketCookie(cookies.abo[i].uuid,new Date(),"Abonnement("+ cookies.abo[i].id +"):<br>"+cookies.abo[i].justificatif)
           await funcDB.modifSubscriptionCookie(cookies.abo[i].id,cookies.abo[i].uuid,cookies.abo[i].debut,cookies.abo[i].fin,cookies.abo[i].justificatif,cookies.abo[i].period,cookies.abo[i].cumulatif,cookies.abo[i].nbAdd,cookies.abo[i].quantity-1,cookies.abo[i].maj)
           return true
         }

@@ -1,25 +1,34 @@
-.hautpage {
+div.cookie{
+  border: 10px ridge #32a1ce;
+  border-radius: 50px;
   width: 90%;
-  display: flex;
-  justify-content: space-between;
-  margin:0;
-  padding: 10px 5%;
-}
-.frameUserName , .bnt_display{
-    width: 50%;
-    height: 62px;
-    border: 1px solid black;
-    text-align: center;
-    display: inline;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-radius: 8px;
-    padding: 0.25rem;
-    margin: auto auto;
-    font-size: 40px !important;
+  margin: 15px auto;
+
+  white-space: break-spaces;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.bnt_display{
-    width: 18%;
-    height: 72px;
+div.cookie.abo{
+  background-color: orange;
+}
+div.cookie.ticket{
+  background-color: rgb(124, 195, 243);
+}
+
+p.cookie{
+  text-align: left !important;
+  margin-left: 30px;
+}
+p.cookie.titre{
+  color: red;
+  font-weight: bold;
+}
+p.cookie.date, p.cookie.quantity, p.cookie.justificatif{
+  font-size: 1.8em !important;
+}
+p.cookie.period{
+  font-size: 1em !important;
+  font-style: oblique;
 }

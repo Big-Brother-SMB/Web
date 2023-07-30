@@ -272,7 +272,7 @@ module.exports = class funcSocket{
         socket.on("newCookieSubscription", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.addSubscriptionCookie(req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,null)
+                await funcDB.addSubscriptionCookie(req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,0,null)
                 socket.emit("newCookieSubscription","ok")
             }catch(e){console.error(e);console.log('34');}
         });
@@ -282,7 +282,7 @@ module.exports = class funcSocket{
         socket.on("modifCookieSubscription", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.modifSubscriptionCookie(req.id,req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,req.quantity)
+                await funcDB.modifSubscriptionCookie(req.id,req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,req.quantity,req.maj)
                 socket.emit("modifCookieSubscription","ok")
             }catch(e){console.error(e);console.log('35');}
         });
