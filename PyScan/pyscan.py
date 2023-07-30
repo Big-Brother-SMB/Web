@@ -1,10 +1,13 @@
 #pip install "python-socketio[client]"
 #pip install pynput
+#pip install playsound 
 token='Upgqz3Sk0IKzB9iO'
 from concurrent.futures import thread
+from playsound import playsound
 from pynput.keyboard import Key, Listener
 import threading,os
 from tkinter import *
+from tkinter import messagebox
 from datetime import date,datetime
 import socketio
 import time
@@ -79,19 +82,20 @@ def refreshTime():
   now = datetime.now()
   refreshPassages()
 
-
   match parseTime(now.hour,now.minute):
-    case num if parseTime(0,0) <= num <  parseTime(11,52):
+    case num if parseTime(10,55) <= num <  parseTime(11,52):
       heure = 11
-    case num if parseTime(11,52) <= num <  parseTime(24,0):
+      textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
+    case num if parseTime(11,52) <= num <  parseTime(13,7):
       heure = 12
+      textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
     case _:
-        pass
+      heure = "perm"
+      textH.set("semaine n°" + str(week) + " " + days[day] + " (Permanence)")
 
-  threading.Timer(10, refreshTime).start()
+  threading.Timer(60, refreshTime).start()
 
 def refreshPassages():
-  textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
   listCreneau11 = socketReq('listDemandes', {"w":week,"j":day,"h":0},False)
   NBinscrit11=0
   NBscan11=0
@@ -119,6 +123,16 @@ month = ["janvier","fevrier","mars","avril","mai","juin","juillet","août","sept
 
 number = ""
 user="None"
+44444
+def alert(titre,text):
+  global fenetre
+  fenetre.focus_force()
+  if son_bool.get():
+    t1 = threading.Thread(target=playsound, args=('alert.mp3',))
+    t1.start()
+  t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
+  t2.start()
+
 
 def show(key):
   global number
@@ -148,22 +162,35 @@ def show(key):
           if userE["code_barre"]==number:
             user = userE
         buttonInscrire.pack_forget()
-        if(user != "None"):
+        buttonCookie.pack_forget()
+        if user != "None":
+          print(user)
           name.set(user["first_name"] + " " + user["last_name"])
           classe = user["classe"]
           info.set("classe : " + classe)
-          listCreneau = socketReq('listDemandes', {"w":week,"j":day,"h":heure-11},False)
-          test = False
-          for child in listCreneau:
-            if child["DorI"]==1 and child['uuid']==user['uuid']:
-              test = True
-          if(test):
-            canvas.itemconfig(image_container,image=imgOk)
-            socketReq('scan', [week,day,heure-11,user['uuid'],True],True)
-            refreshPassages()
+          if heure!="perm":
+            #midi
+            listCreneau = socketReq('listDemandes', {"w":week,"j":day,"h":heure-11},False)
+            test = False
+            for child in listCreneau:
+              if child["DorI"]==1 and child['uuid']==user['uuid']:
+                test = True
+            if(test):
+              canvas.itemconfig(image_container,image=imgOk)
+              socketReq('scan', [week,day,heure-11,user['uuid'],True],True)
+              refreshPassages()
+            else:
+              canvas.itemconfig(image_container,image=imgCroix)
+              alert("Non inscrit", user["first_name"] + " " + user["last_name"])
+              buttonInscrire.pack()
           else:
-            canvas.itemconfig(image_container,image=imgCroix)
-            buttonInscrire.pack()
+            #perm
+            if user["ban"]!=None:
+              canvas.itemconfig(image_container,image=imgCroix)
+              fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
+              alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
+            else:
+              canvas.itemconfig(image_container,image=imgOk)
           if socketReq('getUserHasCookie', user['uuid'],True):
             buttonCookie.pack()
         else:
@@ -180,15 +207,16 @@ def show(key):
 def add():
   canvas.itemconfig(image_container,image=imgLoading)
   buttonInscrire.pack_forget()
-  socketReq('setDorI', [week,day,heure-11,user['uuid'],True],True)
-  socketReq('scan', [week,day,heure-11,user['uuid'],True],True)
-  canvas.itemconfig(image_container,image=imgOk)
-  refreshPassages()
+  if heure!="perm":
+    socketReq('setDorI', [week,day,heure-11,user['uuid'],True],True)
+    socketReq('scan', [week,day,heure-11,user['uuid'],True],True)
+    canvas.itemconfig(image_container,image=imgOk)
+    refreshPassages()
 
 def cookie():
   canvas.itemconfig(image_container,image=imgLoading)
   buttonCookie.pack_forget()
-  if socketReq('UseCookie', user['uuid'],True):
+  if socketReq('useCookie', user['uuid'],True):
     canvas.itemconfig(image_container,image=imgCookie)
   else:
     canvas.itemconfig(image_container,image=imgCroix)
@@ -345,10 +373,13 @@ passage12 = StringVar()
 labelPassage12 = Label(fenetre, textvariable=passage12, font=("Arial", 20))
 labelPassage12.pack()
 
+son_bool = BooleanVar()
+son_bool.set(True)
 
 menubar = Menu(fenetre)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
+filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool)
 menubar.add_cascade(label="File", menu=filemenu)
 
 fenetre.config(menu=menubar)

@@ -403,7 +403,7 @@ module.exports = class funcSocket{
         });
     }
 
-    static UseCookie(socket,user){
+    static useCookie(socket,user){
         socket.on("useCookie", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{

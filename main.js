@@ -235,7 +235,7 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
 
       funcSocketAdmin.getUserIsBan(socket,user)
       funcSocketAdmin.getUserHasCookie(socket,user)
-      funcSocketAdmin.UseCookie(socket,user)
+      funcSocketAdmin.useCookie(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -284,17 +284,16 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
         let period = abo.period+1
         if(period == 3) period=4
 
-        let nouveauCookie=0
         let maj
         if(abo.maj==null){
           maj = abo.debut
-          nouveauCookie+=abo.nbAdd
+          await funcDB.modifSubscriptionCookie(abo.id,abo.uuid,abo.debut,abo.fin,abo.justificatif,abo.period,abo.cumulatif,abo.nbAdd,abo.quantity+abo.nbAdd,new Date(abo.debut))
         }else{
           maj = abo.maj
         }
         maj = new Date(maj).getTime() + weekMS*period
         if(maj < Date.now() && maj < new Date(abo.fin).getTime()){
-          nouveauCookie+=abo.nbAdd
+          let nouveauCookie = abo.nbAdd
           if(abo.cumulatif) nouveauCookie+=abo.quantity
           await funcDB.modifSubscriptionCookie(abo.id,abo.uuid,abo.debut,abo.fin,abo.justificatif,abo.period,abo.cumulatif,abo.nbAdd,nouveauCookie,new Date(maj))
         }
