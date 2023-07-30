@@ -68,11 +68,11 @@ module.exports = (db)=>{
     //point
     db.get("SELECT * FROM sqlite_master where type='table' AND name='point_global'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE point_global(name text,value float4,date text)')
+        db.run('CREATE TABLE point_global(name text,value float4,date Date)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='point_perso'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE point_perso(uuid uuid,name value,value float4,date text)')
+        db.run('CREATE TABLE point_perso(uuid uuid,name value,value float4,date Date)')
     })
 
     //group / classe

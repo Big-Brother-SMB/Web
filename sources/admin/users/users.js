@@ -120,7 +120,7 @@ export async function init(common){
                 let jourForDate = Math.floor(child.creneau / 2)
                 jourForDate++
                 if(jourForDate>2)jourForDate++
-                obj.date = common.getDateHour(common.generedDate(child.semaine,jourForDate,(11 + (child.creneau % 2))))
+                obj.date = common.generedDate(child.semaine,jourForDate,(11 + (child.creneau % 2)))
                 obj.type = 0
                 scoreObjs.push(obj)
             })
@@ -149,9 +149,9 @@ export async function init(common){
             })
             
             scoreObjs.sort(function compareFn(a, b) {
-                if(a.date>b.date){
+                if(new Date(a.date).getTime()>new Date(b.date).getTime()){
                     return 1
-                }else if(a.date<b.date){
+                }else if(new Date(a.date).getTime()<new Date(b.date).getTime()){
                     return -1
                 }else{
                     return 0
@@ -225,7 +225,7 @@ export async function init(common){
                 let val = parseFloat(valScore.value)
                 let name = nameScore.value
                 if(!isNaN(val) && name != ""){
-                    let h = common.getDateHour()
+                    let h = new Date()
                     await common.socketAdminAsync('addPersonalPoint',[utilisateur.uuid,h,name,val])
                     valScore.value = ""
                     nameScore.value = ""

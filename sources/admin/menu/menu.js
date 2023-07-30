@@ -31,7 +31,7 @@ export async function init(common){
         if (nbpts!==null && !isNaN(nbpts)){
             nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
             if (nomgain!==null){
-                await common.socketAdminAsync("addGlobalPoint",[common.getDateHour(),nomgain,nbpts])
+                await common.socketAdminAsync("addGlobalPoint",[new Date(),nomgain,nbpts])
                 if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("add point").style.backgroundColor= "unset"
                 alert("Ajout de points effectué")
             }
