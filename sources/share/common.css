@@ -301,6 +301,7 @@ input,select,textarea{
   background-color: white;
   width : 85%;
   height: auto;
+  border: solid 2px black;
 }
 
 #popup.active {
@@ -349,6 +350,7 @@ input,select,textarea{
   padding-left: 10% ;
   padding-right: 10% ;
   padding-bottom: 5%;
+  border-radius : 0px 0px 25px 25px ;
 }
 
 #popup-option button{

@@ -4,6 +4,7 @@ body, #popup-body , #popup-option, #popup{
 
 #popup{
   color: #FFFFFF;
+  border: solid 2px gray;
 }
 
 p,u,h1{
