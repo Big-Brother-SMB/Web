@@ -1207,6 +1207,7 @@ p.cookie.period{
 }
 
 #main .content p{
+  text-align: left;
   position: relative;
   padding-left: 70px;
   text-justify: auto;

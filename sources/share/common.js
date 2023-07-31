@@ -320,12 +320,12 @@ export class common{
       }
     }
 
-    if(!this.tuto && window.location.pathname!="/tuto"){
+    if(!this.tuto){
       this.popUp_Active("Bienvenue sur le site du Foyer !"
         ,"Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée et d'y passer leurs heures de permanence.Avant de naviguer dessus vous devez comprendre comment il fonctionne pour cela vous devez :"
         ,(btn)=>{
           btn.addEventListener("click",()=>{
-            this.loadpage("/tuto")
+            common.socketAsync('setTuto',true)
             this.popUp_Stop()
           },{once:true})
         })

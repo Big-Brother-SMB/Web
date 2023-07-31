@@ -1,9 +1,4 @@
 export async function init(common){
-    /*function menuFunction() {
-        common.socketAsync('setTuto',true)
-        window.location.href = "/accueil";
-    }*/
-
     let a = document.getElementById("main").getElementsByTagName("a");
     for (let i = 0; i < a.length; i++) {
         const index = i;

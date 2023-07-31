@@ -65,8 +65,8 @@ module.exports = class UserSelect{
       jourForDate++
       if(jourForDate>2)jourForDate++
       let dateToday = funcDate.generedDate(semaine,jourForDate,0,0,0)
+      //donne un bonus d'avance
       //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
-      //
       this.usersList.forEach(u=>{
         if(u.date.getTime() < dateToday.getTime()){
           u.score+=info.bonus_avance
@@ -76,7 +76,6 @@ module.exports = class UserSelect{
           if(u.amis[a]==u.uuid){
             u.amis.splice(a,1);
             a--
-            u.pass=-1
           }
           if(UserSelect.searchAmi(u.amis[a])==null){
             u.amis.splice(a,1);
@@ -93,9 +92,12 @@ module.exports = class UserSelect{
         }else if(a.score<b.score){
             return 1
         }else{
-            let rand = Math.floor(Math.random() * 2);
-            if(rand == 0) rand=-1
-            return rand
+          //si le score est identique départager sur la date de la demande 
+          if(a.date.getTime() < b.date.getTime()){
+            return -1
+          }else if(a.date.getTime() > b.date.getTime()){
+            return 1
+          }
         }
       })
   

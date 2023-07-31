@@ -2,35 +2,37 @@
         <div class="content">
           <div id="Amis">
             <h3 >
-                Etape 1 : Configurer ses amis
+              Etape 1 : Configurer ses amis
             </h3>
             <p>
-                1) Cliquer dans le menu sur le bouton "Amis".<br>
-                2) Commencer à écrire le nom de votre ami dans la zone de texte ("Rechercher un ami").<br>
-                3) Dès que vous voyez apparaitre son nom dans la liste déroulante, appuyez dessus puis cliquez sur le bouton "Ajouter".<br>
-                4) Répéter les étapes 2 et 3 pour chacun de vos amis.<br>
+              1) Cliquer sur l'onglet <a url="/amis">Amis</a>.<br>
+              2) Commencer à écrire le nom de votre ami dans la zone de texte ("Rechercher un ami").<br>
+              3) Dès que vous voyez apparaître son nom dans la liste déroulante, appuyez dessus puis cliquez sur le bouton "Ajouter".<br>
+              4) Si vous le voulez, vous pouvez donner une procuration à votre ami en cliquant sur le bouton à droit, pour qu'il puisse déposer une demande à votre place.<br>
             </p>
           </div>
           <h3>
             Etape 2 : Faire une demande d'inscription
           </h3>
           <p>
-            1) Sélectionner la semaine qui vous intéresse (Cliquez sur le bouton "Semaine actuelle" pour revenir à la semaine en cours). <br>
-            2) Cliquer sur le créneau qui vous intéresse.<br>
-            3) Sélectionner les
-            <a href="#Amis" cible="Amis" class="miseEnAvant">amis</a>
-            avec lesquels vous souhaitez manger à cet horaire.<br>
-            4) Votre compte sera débité du nombre de point nécessaire (Ce nombre de point est habituellement de 1 mais
+            1) Cliquer sur l'onglet <a url="/midi">Réservation</a>.<br>
+            2) Sélectionner la semaine qui vous intéresse (Cliquez sur le bouton "Semaine actuelle" pour revenir à la semaine en cours). <br>
+            3) Cliquer sur le créneau qui vous intéresse.<br>
+            4) Sélectionner les <a href="#Amis" cible="Amis" class="miseEnAvant">amis</a> avec lesquels vous souhaitez manger à cet horaire.<br>
+            5) Votre compte sera débité du nombre de point nécessaire (Ce nombre de point est habituellement de 1 mais
             il peut y avoir des réductions qui seront indiquées sur la page d'accueil).<br>
-            5) Vous pouvez alors valider en appuyant sur le bouton <b>OUI</b>.<br>
+            6) Vous pouvez alors valider en appuyant sur le bouton <b>OUI</b>.<br>
+            7) Si vous avez la procuration de vos amis, vous pouvez déposer une demande à leurs places en cochant vos amis.<br>
             <br>
-            Il sera toujours possible de modifier votre inscription par la suite.<br>
-            Par exemple, pour modifier le nombre de personne mangeant sur le créneau, cliquez dans le menu sur le créneau où vous avez fait une demande, puis cliquez sur le ou les nom(s) à retirer dans la liste des amis pour le(s) enlever. <br>
+            Il sera toujours possible de modifier votre demande par la suite.<br>
+            Par exemple, pour modifier les personnes qui mangent avec vous sur le créneau, cliquez dans le menu sur le créneau où vous avez fait une demande, puis cliquez sur le ou les nom(s) à retirer dans la liste des amis pour le(s) enlever. <br>
+            Si vous avez une procuration vous pouvez retirer la demande de vos amis.<br>
             <br>
 
             <b>ATTENTION !</b><br>
             a) S'il y a un nombre trop important de demandes, les personnes ayant un nombre de points plus élévé seront prises en priorité.<br>
-            b) Pour manger avec des amis, <u>CHACUN</u> de vos amis doit s'inscire au créneau voulu et à son tour sélectionner ses amis. L'inscription doit se faire de manière réciproque. <br>
+            b) Pour manger avec des amis, <u>CHACUN</u> de vos amis doit déposer une demande au créneau voulu et à son tour sélectionner ses amis. La demande doit se faire de manière réciproque. <br>
+            *(Ceci est fait automatique par les procuration.)<br>
             c) Si l'un de vous n'est pas pris car il n'a pas assez de points, tout le groupe d'ami sera également refusé au Foyer. <br>
             d) Si vous n'êtes pas pris, vous ne perdez pas de point.<br>
           </p>
@@ -42,15 +44,33 @@
             1) Avant de vous rendre au Foyer, vérifiez que vous êtes bien acceptés. Si c'est le cas, le créneau demandé sera devenu vert.<br>
             2) Si vous êtes accepté rendez-vous le jour J au Foyer et présentez votre <a url="/pass">Pass</a>.<br>
             <br>
-            <b>ATTENTION</b>, il est <b>STRICTEMENT INTERDIT </b> de falsifier son <a url="/pass">Pass</a> et il est inutile de se présenter au Foyer sans avoir été accepté.
+            <b>ATTENTION</b>, il est inutile de se présenter au Foyer sans avoir été accepté.
           </p>
 
           <h3>
             Pour retirer la demande :
           </h3>
           <p>
-            1) Cliquer dans le menu sur le créneau où vous êtes inscrit.<br>
-            2) Appuyez sur <b>OUI</b> pour vous désinscrire.
+            1) Cliquer dans le menu sur le créneau où vous avez déposer la demande.<br>
+            2) Appuyez sur <b>OUI</b> pour retirer la demande.
+            <b>ATTENTION</b>, il est imposible de supprimer une demande après qu'elle est été accepté.
+          </p>
+        </div>
+        <h2 class="collapsible" style="color: rgb(255, 70, 70);">
+          ▸ Algorithme de sélection :
+        </h2>
+        <div class="content">
+          <h3>
+            Les objectifs dans l'ordre des priorités:
+          </h3>
+          <p>
+            1) L'algorithme est utilisé uniquement pour les réservations du midi.
+            * (Les inscriptions de la perm sont faites manuellement.)<br>
+            2) L'algorithme est fait pour manger avec ses amis.<br>
+            3) L'algorithme est fait pour sélectionner ou avantager les personnes prioritaires (c'est jean-charle qui active ou non cette fonctionnalité).<br>
+            4) L'algorithme est fait pour remplir le plus possible les places du foyer.<br>
+            5) L'algorithme est fait pour sélectionner les personnes qui sont allé le moins souvent manger au foyer (par le biai des points).<br>
+            6) L'algorithme est fait pour avantager les personnes qui ont déposé une demande à l'avance (la veille ou avant).<br>
           </p>
         </div>
         <h2 class="collapsible">
@@ -61,7 +81,7 @@
             Etape 1 : Signaler sa présence en permanence :
           </h3>
           <p>
-            1) Rendez vous sur la page d'accueil et appuyez sur le bouton <a url="/perm">Planing Foyer (Permanence)</a>.<br>
+            1) Cliquer sur l'onglet <a url="/perm">Perm foyer</a>.<br>
             2) Cliquez sur le bouton "Semaine actuelle".<br>
             3) Cliquez sur le créneau voulu.<br>
             4) Assurez vous que personne dans votre groupe ou dans votre classe n'a déjà fait de demandes.<br>
@@ -72,7 +92,7 @@
             Etape 2 : Aller au foyer
           </h3>
           <p>
-            1) Avant de vous rendre au Foyer, vérifiez que vous êtes bien acceptés. Si c'est le cas, le créneau demandé sera devenu vert.<br>
+            1) Avant de vous rendre au Foyer, vérifiez que vous êtes bien acceptés. Si c'est le cas, le créneau demandé sera devenu vert.(ou le nom de votre groupe sera écrit)<br>
             2) Si vous êtes accepté rendez-vous le jour J au Foyer avec votre groupe ou votre classe.<br>
           </p>
 
@@ -80,8 +100,8 @@
             Pour retirer la demande :
           </h3>
           <p>
-              1) Cliquer dans le menu sur le créneau où votre groupe ou votre classe est inscrit.<br>
-              2) Appuyez sur votre demande pour désinscrire votre groupe ou votre classe.</br>
+            1) Cliquer sur le créneau où votre groupe ou votre classe est inscrit.<br>
+            2) Appuyez sur votre demande pour désinscrire votre groupe ou votre classe.</br>
           </p>
         </div>
         <h2 class="collapsible">
@@ -89,8 +109,8 @@
         </h2>
         <div class="content">
           <p>
-              Si vous avez une suggestion, une question, un problème ou alors vous avez trouvé un bug, vous pouvez nous contacter des manieres suivantes : </br>
-              -Vous rendre sur la page d'accueil puis cliquer sur <a url="/messagerie">la bulle de tchat</a> en haut à droite et cliquer sur l'enveloppe et le stylo en bas à droite.</br>
-              -Vous rendre au foyer et en parler à Jean Charles.</br>
+            Si vous avez une suggestion, une question, un problème ou alors vous avez trouvé un bug, ou même vous voulez rejoidre l'équipe de développement, vous pouvez nous contacter des manieres suivantes : </br>
+            -Vous rendre sur la <a url="/messagerie">messagerie</a>.(ou par gmail à l'adresse : nathan.denut@stemariebeaucamps.fr)</br>
+            -Vous rendre au foyer et en parler à Jean Charles.</br>
           </p>
         </div>
