@@ -1,7 +1,8 @@
+token='Upgqz3Sk0IKzB9iO'
+
 #pip install "python-socketio[client]"
 #pip install pynput
 #pip install playsound 
-token='Upgqz3Sk0IKzB9iO'
 from concurrent.futures import thread
 from playsound import playsound
 from pynput.keyboard import Key, Listener
@@ -45,9 +46,15 @@ def socketReq(event,data,admin):
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
 print("start")
-print(socketReq('id_data', None,False))
-
-
+id_data =socketReq('id_data', None,False)
+print("\n\n\n\n\n\n\n\n\n\n")
+print(id_data)
+if id_data=="err" or id_data["admin"]!=1:
+  print("\n\n\n\n\n\n\n\n\n\n")
+  print("Erreur: token non admin")
+  print("Il faut modifier le token sur la première ligne du fichier pyscan.py")
+  print("\n\n\n")
+  raise Exception("Erreur: token non admin")
 
 
 
