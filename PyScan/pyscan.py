@@ -2,7 +2,9 @@ token='0NLswTuDlztGQX4h'
 
 #pip install "python-socketio[client]"
 #pip install pynput
-#pip install playsound 
+#pip install playsound
+#pip uninstall playsound
+#pip install playsound==1.2.2
 from concurrent.futures import thread
 from playsound import playsound
 from pynput.keyboard import Key, Listener
