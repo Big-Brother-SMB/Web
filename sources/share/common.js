@@ -321,14 +321,46 @@ export class common{
     }
 
     if(!this.tuto){
-      this.popUp_Active("Bienvenue sur le site du Foyer !"
-        ,"Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée et d'y passer leurs heures de permanence.Avant de naviguer dessus vous devez comprendre comment il fonctionne pour cela vous devez :"
+      this.popUp_Active("(1/5) Bienvenue sur le site du Foyer !"
+        ,"Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée avec ses amis en déposant une demande.<br>"
+        +"Cette demande sera étudier par un algorithme qui a pour objectif:<br><br>"
+        +"1) De pouvoir manger avec ses amis.<br>"
+        +"2) De sélectionner ou avantager les personnes prioritaires.<br>(c'est jean-charle qui active ou non cette fonctionnalité)<br>"
+        +"3) De remplir le plus possible les places du foyer.<br>"
+        +"4) De sélectionner les personnes qui sont allé le moins souvent manger au foyer. (par le biai des points)<br>"
+        +"5) D'avantager les personnes qui ont déposé une demande à l'avance (la veille ou avant).<br>"
         ,(btn)=>{
           btn.addEventListener("click",()=>{
-            common.socketAsync('setTuto',true)
-            this.popUp_Stop()
+            this.popUp_Active("(2/5) Bienvenue sur le site du Foyer !"
+              ,"Ce site permet aussi de passer des heures de permanence aux foyer, en déposant une demande pour sa classe."
+              ,(btn)=>{
+                btn.addEventListener("click",()=>{
+                  this.popUp_Active("(3/5) Bienvenue sur le site du Foyer !"
+                    ,'Pour plus d\'information consultez l\'onglet "Aide"'
+                    ,(btn)=>{
+                      btn.addEventListener("click",()=>{
+                        this.popUp_Active("(4/5) Bienvenue sur le site du Foyer !"
+                          ,'Le site permet aux projets lycéen de pouvoir avoir une page de présentation.<br>Ces pages sont consultable dans l\'onglet "Projets&Asso".'
+                          ,(btn)=>{
+                            btn.addEventListener("click",()=>{
+                              this.popUp_Active("(5/5) Bienvenue sur le site du Foyer !"
+                                ,"<b>Si tu as envie de faire partie de l'équipe de développement du site du foyer, contacte nous!</b><br><br>"
+                                +"Si tu rencontres un problème avec le site, contacte :<br>"
+                                +"Jean-Charles au foyer ou nathan.denut@stemariebeaucamps.fr"
+                                ,(btn)=>{
+                                  btn.addEventListener("click",()=>{
+                                    common.socketAsync('setTuto',true)
+                                    this.popUp_Stop()
+                                  },{once:true})
+                                })
+                            },{once:true})
+                          })
+                      },{once:true})
+                    })
+                },{once:true})
+              })
           },{once:true})
-        })
+      })
     }
 
     //---------------------------listes---------------------------

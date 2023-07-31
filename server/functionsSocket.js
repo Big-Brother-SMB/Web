@@ -51,9 +51,9 @@ module.exports = class funcSocket{
     }
 
     static getTuto(socket,user){
-        socket.on('setTuto', req => {
+        socket.on('getTuto', req => {
             try{
-                socket.emit('setTuto',user.tuto)
+                socket.emit('getTuto',user.tuto)
             }catch(e){console.error(e);console.log('b6');}
         });
     }

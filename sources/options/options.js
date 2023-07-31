@@ -31,8 +31,9 @@ export async function init(common){
 
 
 
-    document.getElementById("suppToken").addEventListener("click", function () {
-        common.socketAsync("suppAllToken",null)
+    document.getElementById("suppToken").addEventListener("click", async function () {
+        await common.socketAsync('setTuto',false)
+        await common.socketAsync("suppAllToken",null)
         common.deco()
     });
 
