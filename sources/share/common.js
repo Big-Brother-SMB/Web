@@ -174,7 +174,9 @@ export class common{
     //----------------------historique-----------------------
 
     window.addEventListener("popstate", (event) => {
-      this.loadpage(event.state.url,true)
+      if(event.state!=null){
+        this.loadpage(event.state.url,true)
+      }
     });
 
 
