@@ -329,7 +329,8 @@ export class common{
         +"2) De sélectionner ou avantager les personnes prioritaires. (c'est jean-charle qui active ou non cette fonctionnalité)<br>"
         +"3) De remplir le plus possible les places du foyer.<br>"
         +"4) De sélectionner les personnes qui sont allé le moins souvent manger au foyer. (par le biai des points)<br>"
-        +"5) D'avantager les personnes qui ont déposé une demande à l'avance (la veille ou avant).<br>"
+        +"5) Ajouter préalablement vos amis dans votre liste d'amis.</b>"
+        +"<br><b>5) D'avantager les personnes qui ont déposé une demande à l'avance (la veille ou avant).<br>"
         ,(btn)=>{
           btn.addEventListener("click",()=>{
             this.popUp_Active("(2/5) Bienvenue sur le site du Foyer !"
