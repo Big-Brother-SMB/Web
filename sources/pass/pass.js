@@ -29,28 +29,29 @@ export async function init(common){
     try{
         if(info_horaire.ouvert!=5){
             if(my_demande.DorI==true){
-                document.getElementById("pass").innerHTML = '<img class="pass" src="/Images/ok.gif" />'
+                document.getElementById("circle-pass-img").setAttribute("src","/Images/jaccepte.png")
                 if(info_horaire.prio.indexOf(common.classe)!=-1){
-                    document.getElementById("pass").innerHTML = '<img class="pass" src="/Images/prio.gif" />'
+                    document.getElementById("circle-pass-img").setAttribute("src","/Images/priorite.png")
                 }
                 common.groups.forEach(e=>{
                     if(info_horaire.prio.indexOf(e)!=-1){
-                        document.getElementById("pass").innerHTML = '<img class="pass" src="/Images/prio.gif" />'
+                        document.getElementById("circle-pass-img").setAttribute("src","/Images/priorite.png")
                     }
                 })
             }else{
-                document.getElementById("pass").innerHTML = '<img class="pass" src="/Images/croix.gif" />'
+                document.getElementById("circle-pass-img").setAttribute("src","/Images/erreur.png")
                 if(info_horaire.prio.indexOf(common.classe)!=-1){
-                    document.getElementById("pass").innerHTML = '<img class="pass" src="/Images/prioSelf.png" />'
+                    document.getElementById("circle-pass-img").setAttribute("src","/Images/prioSelf.png")
                 }
                 common.groups.forEach(e=>{
                     if(info_horaire.prio.indexOf(e)!=-1){
-                        document.getElementById("pass").innerHTML = '<img class="pass" src="/Images/prioSelf.png" />'
+                        document.getElementById("circle-pass-img").setAttribute("src","/Images/prioSelf.png")
                     }
                 })
             }
         }else{
-            document.getElementById("pass").innerHTML = '<img class="pass" src="/Images/croix.gif" />'
+            document.getElementById("circle-pass-img").setAttribute("src","/Images/erreur.png")
+            
         }
     }catch(e){console.error(e)}
 

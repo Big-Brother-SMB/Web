@@ -322,29 +322,34 @@ export class common{
 
     if(!this.tuto){
       this.popUp_Active("(1/5) Bienvenue sur le site du Foyer !"
-        ,"Ce site permet aux éléves du lycée SMB de manger au Foyer du lycée avec ses amis en déposant une demande.<br>"
-        +"Cette demande sera étudier par un algorithme qui a pour objectif:<br><br>"
+        ,"<div class='divImgPopup'><img src='/Images/amis.png'><img src='/Images/reservation.png'></div><br>"
+        +"Ce site permet aux éléves du lycée SMB de <b>manger au Foyer du lycée avec ses amis</b> en déposant une demande.<br>"
+        +"Cette demande sera étudier par <b>un algorithme qui a pour objectif</b>:<br><br>"
         +"1) De pouvoir manger avec ses amis.<br>"
-        +"2) De sélectionner ou avantager les personnes prioritaires.<br>(c'est jean-charle qui active ou non cette fonctionnalité)<br>"
+        +"2) De sélectionner ou avantager les personnes prioritaires. (c'est jean-charle qui active ou non cette fonctionnalité)<br>"
         +"3) De remplir le plus possible les places du foyer.<br>"
         +"4) De sélectionner les personnes qui sont allé le moins souvent manger au foyer. (par le biai des points)<br>"
         +"5) D'avantager les personnes qui ont déposé une demande à l'avance (la veille ou avant).<br>"
         ,(btn)=>{
           btn.addEventListener("click",()=>{
             this.popUp_Active("(2/5) Bienvenue sur le site du Foyer !"
-              ,"Ce site permet aussi de passer des heures de permanence aux foyer, en déposant une demande pour sa classe."
+              ,"<div class='divImgPopup'><img src='/Images/discussion.png'><img src='/Images/jeux-de-societe.png'><img src='/Images/arcade.png'></div><br>"
+              +"Ce site permet aussi de passer <b>des heures de permanence aux foyer</b>, en déposant une demande <b>pour sa classe</b>."
               ,(btn)=>{
                 btn.addEventListener("click",()=>{
                   this.popUp_Active("(3/5) Bienvenue sur le site du Foyer !"
-                    ,'Pour plus d\'information consultez l\'onglet "Aide"'
+                    ,"<div class='divImgPopup'><img src='/Images/video.png'></div><br>"
+                    +'Pour plus d\'information consultez l\'onglet <b>"Aide"</b>'
                     ,(btn)=>{
                       btn.addEventListener("click",()=>{
                         this.popUp_Active("(4/5) Bienvenue sur le site du Foyer !"
-                          ,'Le site permet aux projets lycéen de pouvoir avoir une page de présentation.<br>Ces pages sont consultable dans l\'onglet "Projets&Asso".'
+                          ,"<div class='divImgPopup'><img src='/Images/association.png'></div><br>"
+                          +'Le site permet aux <b>projets lycéen</b> de pouvoir avoir une page de présentation.<br>Ces pages sont consultable dans <b>l\'onglet "Projets&Asso"</b>.'
                           ,(btn)=>{
                             btn.addEventListener("click",()=>{
                               this.popUp_Active("(5/5) Bienvenue sur le site du Foyer !"
-                                ,"<b>Si tu as envie de faire partie de l'équipe de développement du site du foyer, contacte nous!</b><br><br>"
+                                ,"<div class='divImgPopup'><img src='/Images/messagerie.png'><img src='/Images/reglages.png'></div><br>"
+                                +"<b>Si tu as envie de faire partie de l'équipe de développement du site du foyer, contacte nous!</b><br><br>"
                                 +"Si tu rencontres un problème avec le site, contacte :<br>"
                                 +"Jean-Charles au foyer ou nathan.denut@stemariebeaucamps.fr"
                                 ,(btn)=>{

@@ -288,11 +288,10 @@ input,select,textarea{
 
 
 /*-------------------------pop-up-----------------*/
-/*//%A refaire popup css/js*/
 #popup{
   display: none;
   position : fixed;
-  top : 40% ;
+  top : 50% ;
   left : 50% ;
   transform: translate(-50%,-50%) scale(0);
   transition: 200ms ease-in-out;
@@ -343,6 +342,17 @@ input,select,textarea{
   padding: 20px 50px;
   font-size : 150%;
   text-align: justify;
+}
+
+#popup-body .divImgPopup{
+  width: 100%;
+  display: inline-flex;
+}
+
+#popup-body .divImgPopup img{
+  display: block;
+  height: 200px;
+  margin: auto;
 }
 
 #popup-option{
@@ -1232,6 +1242,49 @@ p.cookie.period{
 
 /*------------------------------Pass---------------------------*/
 
+#pass{
+  padding-top: 15vw;
+  width: 30vw;
+}
+.circle-pass{
+  width: 30vw;
+  height: 15vw;
+  margin: 10px auto;
+  border-radius: 0 0 4000px 4000px;
+  transform-origin: 50% 0%;
+  border-bottom: 2px solid #ff0000;
+  border-left: 2px solid #ff0000;
+  border-right: 2px solid #ff0000;
+  animation: 10s loader linear infinite;
+}
+
+.circle-pass .circle-pass{
+  width: 90%;
+  height: 90%;
+  border-bottom: 3px solid #007400;
+  border-left: 3px solid #007400;
+  border-right: 3px solid #007400;
+  animation: 10s loader-reverse linear infinite;
+}
+.circle-pass .circle-pass .circle-pass{
+  border-bottom: 4px solid #0000ff;
+  border-left: 4px solid #0000ff;
+  border-right: 4px solid #0000ff;
+  animation: 2.5s loader linear infinite;
+}
+.circle-pass .circle-pass .circle-pass .circle-pass{
+  border-bottom: 7px solid #91568c;
+  border-left: 7px solid #91568c;
+  border-right: 7px solid #91568c;
+  animation: 2.5s loader-reverse linear infinite;
+}
+
+.circle-pass-img {
+  height: 180%;
+  position: relative;
+  top: -90%;
+  animation: 1.8s loader linear infinite;
+}
 
 
 .generer {
@@ -1245,28 +1298,11 @@ p.cookie.period{
   background: #2e3f53;
 }
 
-/*
-button {
-  border: none;
-  text-align: center;
-  text-transform: uppercase;
-  outline: none;
-  overflow: hidden;
-
-  font-weight: 600;
-  font-size: 20px;
-  background-color: grey;
-  padding: 15px 50px;
-}
-#main p {
+#main #divPass p {
   text-align: center;
   font-size: 5em !important;
   margin:5px;
   margin-top: 30px;
-}*/
-
-.pass {
-  width: 40%;
 }
 
 .barcode {

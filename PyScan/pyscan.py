@@ -1,4 +1,4 @@
-token='Upgqz3Sk0IKzB9iO'
+token='0NLswTuDlztGQX4h'
 
 #pip install "python-socketio[client]"
 #pip install pynput
@@ -9,9 +9,10 @@ from pynput.keyboard import Key, Listener
 import threading,os
 from tkinter import *
 from tkinter import messagebox
-from datetime import date,datetime
+from datetime import datetime,timedelta
 import socketio
 import time
+from math import *
 
 msg=[]
 sio = socketio.Client(engineio_logger=False, logger=False, ssl_verify=False)
@@ -65,12 +66,17 @@ try:
   j=int(input("jour:"))
   m=int(input("mois:"))
   a=int(input("année:"))
-  today = date(a, m, j)
+  today = datetime(year=a, month=m, day=j)
 except ValueError:
-  today = date.today()
+  today = datetime.today()
 
+firstSept = datetime(year=today.year,month=9,day=1)
+firstSept = firstSept - timedelta(days=firstSept.weekday())
+if datetime.now() + timedelta(days=7) < firstSept:
+  firstSept = datetime(year=today.year-1,month=9,day=1)
+  firstSept = firstSept - timedelta(days=firstSept.weekday())
 
-week = today.isocalendar().week
+week = round((today - firstSept).days/7)
 day = today.weekday()
 if day>4:
   day=0
@@ -86,6 +92,7 @@ def hash():
 heure = 0
 def refreshTime():
   global heure
+  global day
   now = datetime.now()
   refreshPassages()
 
@@ -99,6 +106,11 @@ def refreshTime():
     case _:
       heure = "perm"
       textH.set("semaine n°" + str(week) + " " + days[day] + " (Permanence)")
+  
+  if day==2:
+    heure = "perm"
+    textH.set("semaine n°" + str(week) + " " + days[day] + " (Permanence)")
+
 
   threading.Timer(60, refreshTime).start()
 
@@ -130,7 +142,6 @@ month = ["janvier","fevrier","mars","avril","mai","juin","juillet","août","sept
 
 number = ""
 user="None"
-44444
 def alert(titre,text):
   global fenetre
   fenetre.focus_force()
@@ -153,6 +164,8 @@ def show(key):
       else:
         number = number[:-1]
       text.set(number)
+    elif str(key) == "Key.enter" :
+      number = ""
     else:
       nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
       if(len(number) >= 5):
@@ -350,7 +363,7 @@ label = Label(fenetre, textvariable=text, font=("Arial", 50))
 label.pack()
 
 name = StringVar()
-name.set("None")
+name.set("")
 labelName = Label(fenetre, textvariable=name, font=("Arial", 15))
 labelName.pack()
 
