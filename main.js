@@ -70,7 +70,8 @@ let mimeTypes = {
   '.eot': 'appliaction/vnd.ms-fontobject',
   '.ttf': 'aplication/font-sfnt',
   '.db': '',
-  '.zip': ''
+  '.zip': '',
+  '.xml': 'text/plain'
 };
 
 
