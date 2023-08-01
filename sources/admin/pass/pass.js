@@ -57,10 +57,10 @@ export async function init(common){
     let actualisation = true
     if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
         h = 0;
-        dayP.innerHTML = allDay[jBrut]+" 11h"
+        dayP.innerHTML = allDay[jBrut]+" 11h" + " (" + common.actualWeek + "w)"
     }else{
         h = 1;
-        dayP.innerHTML = allDay[jBrut]+" 12h"
+        dayP.innerHTML = allDay[jBrut]+" 12h" + " (" + common.actualWeek + "w)"
     }
 
     dayP.addEventListener("click",async function(){
@@ -70,10 +70,10 @@ export async function init(common){
         actualisation = false
         if(0===h){
             h = 1;
-            dayP.innerHTML = allDay[jBrut]+" 12h"
+            dayP.innerHTML = allDay[jBrut]+" 12h" + " (" + common.actualWeek + "w)"
         }else{
             h = 0;
-            dayP.innerHTML = allDay[jBrut]+" 11h"
+            dayP.innerHTML = allDay[jBrut]+" 11h" + " (" + common.actualWeek + "w)"
         }
         actualiserPassages()
     })

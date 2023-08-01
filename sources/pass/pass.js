@@ -13,7 +13,7 @@ export async function init(common){
     if(j>1){
         j--
     }
-    document.getElementById("day").innerHTML = allDay[jBrut]
+    document.getElementById("day").innerHTML = allDay[jBrut] + " (" + common.actualWeek + "w)"
     let h;
     if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
         h = 0;
