@@ -551,10 +551,10 @@ export class common{
   }
 
   //renvoie sous forme (07:00:00)
-  /*static getHour(){
+  static getHour(){
     let d = new Date()
     return d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
-  }*/
+  }
   
   
   /*static hashControl(){

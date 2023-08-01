@@ -628,11 +628,11 @@ vert{
   background-color: #e7e7e7;
 }
 
-/*@media screen and (max-width:1000px){
+@media screen and (max-width:1000px){
   .listAmis::-webkit-scrollbar {
     display: none;
   }
-}*/
+}
 
 #attentionAmis{
   color: red;
@@ -1235,6 +1235,7 @@ p.cookie.period{
 
 #pass{
   padding-top: 15vw;
+  margin: 8vh auto;
   width: 30vw;
 }
 .circle-pass{
@@ -1300,7 +1301,7 @@ p.cookie.period{
   width: 80%;
 }
 
-#qr-reader,#pass{
+#qr-reader{
   margin: 0 auto;
   border-radius: 3px;
 }
