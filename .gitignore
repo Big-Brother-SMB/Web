@@ -1,10 +1,9 @@
+key.json
+code.json
 *.csv
 *.db
 *.sql
-key.json
 *.db
-code.json
-code.json
 *.zip
 
 # Logs
