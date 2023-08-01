@@ -20,20 +20,26 @@ div.presentation,.imgAsso{
 
 .presentation p{
     color: black;
-    margin: 5px 10px;
+    margin: 10px auto;
     text-align: justify !important;
     font-size: 30px !important;  
-    width: 80%;
+    width: 90%;
+
+    text-indent: 45px;
+
+    white-space: break-spaces;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 .imgAsso{
-    height: 330px;
     width: 300px;
     margin-left: 30px;
 }
 .imgAsso img{
-    height: 300px;
-    width: 300px;
+    background-color: white;
+    max-width: 300px;
     border-radius: 30px;
     border: 1px black solid;
 }
