@@ -1118,6 +1118,7 @@ textarea{
 }
 
 div.cookie{
+  color: #000000;
   border: 10px ridge #32a1ce;
   border-radius: 50px;
   width: 90%;
