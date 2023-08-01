@@ -229,6 +229,7 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
       let user = await User.searchToken(socket.handshake.auth.token)
       console.log("uuid socket: " + await user.uuid)
       funcSocket.id_data(socket,user)
+      funcSocket.getBanderole(socket,user)
   
   
       if(user.uuid!=null){
@@ -241,7 +242,6 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
         funcSocket.getAmis(socket,user)
         funcSocket.setAmis(socket,user)
         funcSocket.listUsersName(socket,user)
-        funcSocket.getBanderole(socket,user)
         funcSocket.getMyDemande(socket,user)
         funcSocket.setMyDemande(socket,user)
         funcSocket.delMyDemande(socket,user)

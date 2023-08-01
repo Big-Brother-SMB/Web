@@ -274,7 +274,7 @@ export class common{
     this.first_name
     this.groups
     this.last_name
-    this.tuto
+    this.tuto=true
     this.uuid
     if(id_data!='err'){
       this.admin = id_data.admin
@@ -287,7 +287,13 @@ export class common{
       this.tuto = id_data.tuto
       this.uuid = id_data.uuid
     } else {
-      this.deco()
+      if(window.location.pathname.includes("/asso")){
+        let bnt = document.getElementById("without_account")
+        console.log(bnt)
+        if(bnt!=null) bnt.setAttribute('href',"/")
+      }else{
+        this.deco()
+      }
     }
 
     this.week = this.readIntCookie("week")
@@ -311,11 +317,11 @@ export class common{
     }
 
     if(this.admin == 2){
-      if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("options")){
+      if(!window.location.pathname.includes("/admin") && !window.location.pathname.includes("/options")){
         window.location.href = window.location.origin + "/admin/menu"
       }
     } else if(this.admin==0){
-      if(window.location.pathname.includes("admin")){
+      if(window.location.pathname.includes("/admin")){
         window.location.href = window.location.origin + "/accueil"
       }
     }
