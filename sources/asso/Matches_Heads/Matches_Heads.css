@@ -19,17 +19,19 @@ div.presentation,.imgAsso{
 }
 
 .doubleColonne{
-    display:flex;
-    align-items: center;
-    column-count: 2;
-    width: 100%;
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  
+    grid-gap: 1em;
+  
 }
 
 .presentation p{
     color: black;
     margin: 10px auto;
     text-align: justify !important;
-    font-size: 30px !important;  
+    font-size: 1.5em !important;  
     width: 90%;
 
     text-indent: 45px;
@@ -42,7 +44,7 @@ div.presentation,.imgAsso{
 
 .imgAsso{
     width: 300px;
-    margin-left: 30px;
+    margin: 20px auto;
 }
 .imgAsso img{
     background-color: white;
@@ -54,5 +56,5 @@ div.presentation,.imgAsso{
 .imgAsso p{
     color: black;
     margin: 5px 0 ;
-    font-size: 20px !important;  
+    font-size: 1.5em !important;  
   }

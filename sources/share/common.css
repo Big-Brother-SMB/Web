@@ -944,20 +944,6 @@ h2{
   width: 100%;
 }
 
-/*-----------------------pass--------------------*/
-
-@media screen and (min-width:1000px){
-  #qr-reader{
-    display: none;
-  }
-}
-#qr-reader{
-  font-size: 3em;
-}
-#qr-reader div button,#qr-reader div select{
-  font-size: 1em;
-}
-
 /*-------------------chargement-----------------------*/
 #chargement{
   display: none;
@@ -1233,12 +1219,29 @@ p.cookie.period{
 
 /*------------------------------Pass---------------------------*/
 
+@media screen and (min-width:1000px){
+  #qr-reader{
+    display: none;
+  }
+}
+#qr-reader{
+  font-size: 3em;
+}
+#qr-reader div button,#qr-reader div select{
+  font-size: 1em;
+}
+
 #pass{
+  margin: 30px auto;
+}
+
+.passUser{
   padding-top: 25vw;
   margin: 30px auto;
   width: 53vw;
   overflow:hidden;
 }
+
 .circle-pass{
   width: 50vw;
   height: 25vw;
