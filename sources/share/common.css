@@ -1118,7 +1118,6 @@ textarea{
 }
 
 div.cookie{
-  color: #000000;
   border: 10px ridge #32a1ce;
   border-radius: 50px;
   width: 90%;
@@ -1146,9 +1145,11 @@ p.cookie.titre{
   font-weight: bold;
 }
 p.cookie.date, p.cookie.quantity, p.cookie.justificatif{
+  color: #000000 !important;
   font-size: 1.8em !important;
 }
 p.cookie.period{
+  color: #000000 !important;
   font-size: 1em !important;
   font-style: oblique;
 }
