@@ -496,8 +496,8 @@ input,select,textarea{
   border-radius: 25px;
   font-size: 2.5em;
   color : white;
-  border: #361d07 ridge 4px;
-  background-color: #7e3e07;
+  border: #000000 ridge 4px;
+  background-color: #42804e;
   padding-left: 60px;
   margin: 30px auto;
   width: 50%;

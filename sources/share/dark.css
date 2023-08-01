@@ -116,15 +116,7 @@ vert {
 }
 
 #menuSemaine{
-  border-radius: 25px;
-  font-size: 2.5em;
-  color : white;
-  border: #6b4323 ridge 4px;
-  background-color: #4b301a;
-  padding-left: 60px;
-  margin: 30px auto;
-  width: 50%;
-  padding: 30px;
+  background-color: #42804e;
 }
 
 .ami {
