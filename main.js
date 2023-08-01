@@ -233,6 +233,7 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
   
   
       if(user.uuid!=null){
+        if(user.admin==0 || user.admin==null) user.admin=1
         funcSocket.score(socket,user)
         funcSocket.historiquePoints(socket,user)
         funcSocket.getMenuThisWeek(socket,user)
