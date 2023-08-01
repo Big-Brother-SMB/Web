@@ -8,19 +8,20 @@ footer{
 }
 
 .imgAsso{
-    height: 230px;
-    width: 200px;
-    padding: 5px;
+    height: 330px;
+    width: 300px;
+    padding: 7px;
     border-radius: 30px;
     border: rgb(71, 71, 71) solid 2px;
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(5px);/*sepia(90%)  invert(80%)*/
 }
 .imgAsso img{
-    height: 200px;
-    width: 200px;
+    height: 300px;
+    width: 300px;
     border: red;
     border-radius: 30px;
+    border: 1px black solid;
 }
 .imgAsso p{
   color: black;
