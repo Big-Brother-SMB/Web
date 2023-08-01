@@ -35,10 +35,8 @@ module.exports = async(req_url) => {
   }
   try{
     let user = await User.searchToken(url.parse(req_url).path.split('?')[1])
-    if(pathName=="/google73a6482324b54c62.html"){  
-      fichier = await readFileAsync(sources_url+"/google73a6482324b54c62.html")
-    }else if(pathName=="/sitemap.xml"){  
-      fichier = await readFileAsync(sources_url+"/sitemap.xml")
+    if(pathName=="/google73a6482324b54c62.html" || pathName=="/sitemap.xml" || pathName=="/robots.txt"){  
+      fichier = await readFileAsync(sources_url+"/indexation"+pathName)
     }else if(pathName=="/database.db" && await user.admin > 0){
       fichier = await readFileAsync(sources_url+"/../../main.db")
     }else if(pathName=="/pyscan.zip" && await user.admin > 0){
