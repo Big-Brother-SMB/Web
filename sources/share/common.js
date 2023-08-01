@@ -420,7 +420,11 @@ export class common{
 
   //cookie
   static writeCookie(key, value){
-    document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
+    if(key=="week"){
+      document.cookie = key + "=" + value + "; max-age=28800; path=/";
+    }else{
+      document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
+    }
     this.cookie[key]=String(value)
   }
 
