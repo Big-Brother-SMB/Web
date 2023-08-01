@@ -54,4 +54,7 @@ div.presentation,.imgAsso{
     color: black;
     margin: 5px 0 ;
     font-size: 1.5em !important;  
-  }
+}
+a{
+    color: rebeccapurple;
+}
