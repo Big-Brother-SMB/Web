@@ -1247,7 +1247,7 @@ p.cookie.period{
   border-bottom: 2px solid #ff0000;
   border-left: 2px solid #ff0000;
   border-right: 2px solid #ff0000;
-  animation: 10s loader linear infinite;
+  animation: 12s loader linear infinite;
 }
 
 .circle-pass .circle-pass{
@@ -1256,26 +1256,26 @@ p.cookie.period{
   border-bottom: 3px solid #007400;
   border-left: 3px solid #007400;
   border-right: 3px solid #007400;
-  animation: 10s loader-reverse linear infinite;
+  animation: 12s loader-reverse linear infinite;
 }
 .circle-pass .circle-pass .circle-pass{
   border-bottom: 4px solid #0000ff;
   border-left: 4px solid #0000ff;
   border-right: 4px solid #0000ff;
-  animation: 2.5s loader linear infinite;
+  animation: 2.4s loader linear infinite;
 }
 .circle-pass .circle-pass .circle-pass .circle-pass{
   border-bottom: 7px solid #91568c;
   border-left: 7px solid #91568c;
   border-right: 7px solid #91568c;
-  animation: 2.5s loader-reverse linear infinite;
+  animation: 1.5s loader-reverse linear infinite;
 }
 
 .circle-pass-img {
   height: 180%;
   position: relative;
   top: -90%;
-  animation: 1.8s loader linear infinite;
+  animation: 1s loader linear infinite;
 }
 
 
