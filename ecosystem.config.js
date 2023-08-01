@@ -7,7 +7,7 @@ module.exports = {
     production : {
       user : 'root',
       host : '91.121.41.208',
-      ref  : 'origin/server',
+      ref  : 'origin/main',
       repo : 'git@github.com:Big-Brother-SMB/Web.git',
       path : '/home/site',
       'pre-deploy-local': '',
