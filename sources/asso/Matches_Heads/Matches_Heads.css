@@ -18,6 +18,13 @@ div.presentation,.imgAsso{
     backdrop-filter: blur(5px);
 }
 
+.doubleColonne{
+    display:flex;
+    align-items: center;
+    column-count: 2;
+    width: 100%;
+}
+
 .presentation p{
     color: black;
     margin: 10px auto;

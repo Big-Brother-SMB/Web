@@ -1234,40 +1234,41 @@ p.cookie.period{
 /*------------------------------Pass---------------------------*/
 
 #pass{
-  padding-top: 15vw;
-  margin: 8vh auto;
-  width: 30vw;
+  padding-top: 25vw;
+  margin: 30px auto;
+  width: 53vw;
+  overflow:hidden;
 }
 .circle-pass{
-  width: 30vw;
-  height: 15vw;
+  width: 50vw;
+  height: 25vw;
   margin: 10px auto;
-  border-radius: 0 0 4000px 4000px;
+  border-radius: 0 0 40000px 40000px;
   transform-origin: 50% 0%;
-  border-bottom: 2px solid #ff0000;
-  border-left: 2px solid #ff0000;
-  border-right: 2px solid #ff0000;
+  border-bottom: 5px solid #ff0000;
+  border-left: 5px solid #ff0000;
+  border-right: 5px solid #ff0000;
   animation: 12s loader linear infinite;
 }
 
 .circle-pass .circle-pass{
   width: 90%;
   height: 90%;
-  border-bottom: 3px solid #007400;
-  border-left: 3px solid #007400;
-  border-right: 3px solid #007400;
+  border-bottom: 7px solid #007400;
+  border-left: 7px solid #007400;
+  border-right: 7px solid #007400;
   animation: 12s loader-reverse linear infinite;
 }
 .circle-pass .circle-pass .circle-pass{
-  border-bottom: 4px solid #0000ff;
-  border-left: 4px solid #0000ff;
-  border-right: 4px solid #0000ff;
+  border-bottom: 9px solid #0000ff;
+  border-left: 9px solid #0000ff;
+  border-right: 9px solid #0000ff;
   animation: 2.4s loader linear infinite;
 }
 .circle-pass .circle-pass .circle-pass .circle-pass{
-  border-bottom: 7px solid #91568c;
-  border-left: 7px solid #91568c;
-  border-right: 7px solid #91568c;
+  border-bottom: 15px solid #91568c;
+  border-left: 15px solid #91568c;
+  border-right: 15px solid #91568c;
   animation: 1.5s loader-reverse linear infinite;
 }
 
