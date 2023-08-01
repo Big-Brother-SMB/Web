@@ -417,11 +417,6 @@ input,select,textarea{
   background-color: #3d546e;
 }
 
-#menuSemaine{
-  text-align: center;
-  font-size: 2em;
-}
-
 .btn.menu{
   min-width: 50%;
   min-height: 100px;
@@ -497,9 +492,16 @@ input,select,textarea{
   background: radial-gradient(#347a94 70%,#3a535c);
 }
 
-
 #menuSemaine{
-  margin: 0.5em;
+  border-radius: 25px;
+  font-size: 2.5em;
+  color : white;
+  border: #361d07 ridge 4px;
+  background-color: #7e3e07;
+  padding-left: 60px;
+  margin: 30px auto;
+  width: 50%;
+  padding: 30px;
 }
 
 /*------------------PERM---------------*/
