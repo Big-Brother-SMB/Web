@@ -1,0 +1,29 @@
+body{
+    background-image: url("/asso/Matches_Heads/Images/Matches_Heads.jpg");
+}
+
+footer{
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: invert(80%);
+}
+
+.imgAsso{
+    height: 230px;
+    width: 200px;
+    padding: 5px;
+    border-radius: 30px;
+    border: rgb(71, 71, 71) solid 2px;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);/*sepia(90%)  invert(80%)*/
+}
+.imgAsso img{
+    height: 200px;
+    width: 200px;
+    border: red;
+    border-radius: 30px;
+}
+.imgAsso p{
+  color: black;
+  margin: 5px 0 ;
+  font-size: 20px !important;  
+}
