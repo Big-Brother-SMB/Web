@@ -7,24 +7,39 @@ footer{
     backdrop-filter: invert(80%);
 }
 
-.imgAsso{
-    height: 330px;
-    width: 300px;
+div.presentation,.imgAsso{
+    height: auto;
+    width: 90%;
+    margin: 30px auto;
     padding: 7px;
     border-radius: 30px;
     border: rgb(71, 71, 71) solid 2px;
     background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(5px);/*sepia(90%)  invert(80%)*/
+    backdrop-filter: blur(5px);
+}
+
+.presentation p{
+    color: black;
+    margin: 5px 10px;
+    text-align: justify !important;
+    font-size: 30px !important;  
+    width: 80%;
+  }
+
+.imgAsso{
+    height: 330px;
+    width: 300px;
+    margin-left: 30px;
 }
 .imgAsso img{
     height: 300px;
     width: 300px;
-    border: red;
     border-radius: 30px;
     border: 1px black solid;
 }
+
 .imgAsso p{
-  color: black;
-  margin: 5px 0 ;
-  font-size: 20px !important;  
-}
+    color: black;
+    margin: 5px 0 ;
+    font-size: 20px !important;  
+  }

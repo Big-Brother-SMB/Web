@@ -329,8 +329,8 @@ input,select,textarea{
 
 #popup-body {
   padding: 20px 50px;
-  font-size : 150%;
-  text-align: justify;
+  font-size : 150% !important;
+  text-align: justify !important;
 }
 
 #popup-body .divImgPopup{
@@ -1188,7 +1188,7 @@ p.cookie.period{
 
 .collapsible{
   border-radius: 5px;
-  font-size: 3.5em;
+  font-size: 3.3em;
   color: white;
   background-color: rgb(60,80,112);
   padding-left: 30px;
@@ -1199,7 +1199,7 @@ p.cookie.period{
 
 #main h3{
   border-radius: 5px;
-  font-size: 2.5em;
+  font-size: 2.3em;
   color : white;
   background-color: rgb(119, 129, 145);
   padding-left: 60px;
@@ -1210,10 +1210,10 @@ p.cookie.period{
 }
 
 #main .content p{
-  text-align: left;
+  text-align: justify;
   position: relative;
   padding-left: 70px;
-  text-justify: auto;
+  padding-right: 70px;
   font-size: 1.5em;
   font-family: "Optima", sans-serif ;
 }

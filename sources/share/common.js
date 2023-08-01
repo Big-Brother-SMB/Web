@@ -325,12 +325,12 @@ export class common{
         ,"<div class='divImgPopup'><img src='/Images/amis.png'><img src='/Images/reservation.png'></div><br>"
         +"Ce site permet aux éléves du lycée SMB de <b>manger au Foyer du lycée avec ses amis</b> en déposant une demande.<br>"
         +"Cette demande sera étudier par <b>un algorithme qui a pour objectif</b>:<br><br>"
-        +"1) De pouvoir manger avec ses amis.<br>"
-        +"2) De sélectionner ou avantager les personnes prioritaires. (c'est jean-charle qui active ou non cette fonctionnalité)<br>"
-        +"3) De remplir le plus possible les places du foyer.<br>"
-        +"4) De sélectionner les personnes qui sont allé le moins souvent manger au foyer. (par le biai des points)<br>"
-        +"5) Ajouter préalablement vos amis dans votre liste d'amis.</b>"
-        +"<br><b>5) D'avantager les personnes qui ont déposé une demande à l'avance (la veille ou avant).<br>"
+        +"1)De pouvoir manger avec ses amis.<br>"
+        +"2)De sélectionner ou avantager les personnes prioritaires. (c'est jean-charle qui active ou non cette fonctionnalité)<br>"
+        +"3)De remplir le plus possible les places du foyer.<br>"
+        +"4)De sélectionner les personnes qui sont allé le moins souvent manger au foyer. (par le biai des points)<br>"
+        +"5)D'avantager les personnes qui ont déposé une demande à l'avance (la veille ou avant).<br>"
+        +"<br><b>Il faut ajouter préalablement vos amis dans votre liste d'amis.</b>"
         ,(btn)=>{
           btn.addEventListener("click",()=>{
             this.popUp_Active("(2/5) Bienvenue sur le site du Foyer !"
