@@ -8,6 +8,7 @@
 <body>
 
     <script>
+
 navigator.serviceWorker.register('sw.js');
 Notification.requestPermission(function(result) {
   if (result === 'granted') {

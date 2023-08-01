@@ -1,19 +1,18 @@
+import * as common from "../../../common.js";
+
 const body = document.getElementById("body");
 
+let banderole = await common.socketAsync("banderole",null)
+if (banderole != null && document.getElementById("banderole")!=null) {
+  document.getElementById("banderole").innerHTML = banderole
+  if (banderole.length > 0) {
+    document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
+  }
+}
+
 let bouton = [];
-let placesTotal = [];
-let nbDemandes = [];
-let demandes = []
 let demande = []
-let places = [];
-
 let ouvert = []
-let cout = []
-let nbAmis = []
-let nbAmisDemande = []
-
-let inscrits = [];
-let inscrit = []
 
 let horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h"]
 
@@ -36,23 +35,12 @@ for (let j = 0; j < 5; j++) {
     let div = document.createElement("div")
     let text = document.createElement("button")
     text.className = "jours tableau";
-    text.innerHTML = dayMer[j]
+    text.innerHTML = common.dayMer[j]
     div.appendChild(text);
 
     bouton[j] = []
-    placesTotal[j] = []
-    places[j] = []
-
-    nbAmis[j] = []
-    nbAmisDemande[j] = []
-    nbDemandes[j] = []
-    demandes[j] = []
-    demande[j] = [false, false]
-
-    inscrits[j] = []
-    inscrit[j] = [false, false]
-    ouvert[j] = [0, 0]
-    cout[j] = [1, 1]
+    demande[j] = []
+    ouvert[j] = []
     for (let h = 0; h < 7; h++) {
         bouton[j][h] = document.createElement("button")
         if((j == 2 && h >3) || (h == 3 && j != 2)){
@@ -66,34 +54,35 @@ for (let j = 0; j < 5; j++) {
 
     }
     body.appendChild(div);
-
 }
+
+let week = common.readCookie("week")
 
 document.getElementById("semainePrecedente").addEventListener("click", function () {
     week = week - 1
-    writeCookie("week", week)
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
 document.getElementById("semaineActuelle").addEventListener("click", function () {
-    week = actualWeek
-    writeCookie("week", week)
+    week = common.actualWeek
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
 
 document.getElementById("semaineSuivante").addEventListener("click", function () {
     week = week + 1
-    writeCookie("week", week)
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
 
-function refreshDatabase() {
+async function refreshDatabase() {
 
-    let text = "Semaine n°" + week + " du " + semaine(week)
-    if (week == actualWeek) {
-        text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
+    let text = "Semaine n°" + week + " du " + common.semaine(week)
+    if (week == common.actualWeek) {
+        text = "Cette semaine (n°" + week + " du " + common.semaine(week) + ")"
     }
     document.getElementById("semaine").innerHTML = text
 
@@ -101,13 +90,16 @@ function refreshDatabase() {
 
     for (let j = 0; j < 5; j++) {
         for (let h = 0; h < 7; h++) {
-            let heure = h + 8
-            if(h >= 4){
-                heure += 1
-            }
             let nbDemandesPerm = 0
-            database.ref(pathPerm(j,h)+"/demandes").once("value", function(snapshot){
-                snapshot.forEach(function(child){
+            let groupsInscrits = []
+
+            let listDemandes = await common.socketAsync("list_demandes_perm",[week,j,h])
+
+            bouton[j][h].className = "crenau"
+            listDemandes.forEach(function(child){
+                if(child.DorI){
+                    groupsInscrits.push(child.group2)
+                }else{
                     nbDemandesPerm++
                 })
                 if (nbDemandesPerm==1){
@@ -187,19 +179,15 @@ function refreshDatabase() {
     }
 }
 
-
-
-
-function select(j,h){
-    sessionStorage.setItem("j", j);
-    sessionStorage.setItem("h", h);
-    window.location.href = "../crenau/crenauPerm.html";
-}
-
-
+/*
 function loop() {
     console.log("update database")
     refreshDatabase();
     setTimeout(loop, 20000);
 }
-loop();
+loop();*/
+refreshDatabase();
+
+function select(j, h){
+    window.location.href = "../crenau/crenauPerm.html?j="+j+"&h="+h+"&w="+week;
+}

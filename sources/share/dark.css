@@ -1,0 +1,200 @@
+body, #popup-body , #popup-option, #popup{
+  background-color: rgb(20, 20, 20);
+}
+
+#popup{
+  color: #FFFFFF;
+  border: solid 2px gray;
+}
+
+p,u,h1{
+  color: white;
+}
+a{
+  color: aqua;
+}
+
+.bnt_display,.frameUserName,.listAmis,.listDemandes{
+  background-color: rgb(40, 40, 40);
+  color: white;
+  border-color: gray !important;
+}
+
+
+header{
+  border-bottom: 3px solid rgb(73, 79, 83);
+  background: linear-gradient(90deg,#001f29 20%,#003f52);
+}
+
+.marquee-rtl {
+  background-color: rgb(60, 60, 60);
+  color: white;
+  border-bottom: 2px solid gray;
+}
+
+.btn {
+  background-color: rgb(45, 45, 45);
+  color : white;
+}
+
+
+/*Page d'options*/
+
+
+#disconnect {
+  background-color: rgb(45, 45, 45);
+  border-color: white;
+}
+
+.slider {
+  background-color: #999;
+}
+
+input:checked + .slider {
+  background-color: #0069b9;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: rgb(45, 45, 45);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+/*Page Principale*/
+
+vert {
+  color: rgb(126, 126, 26)
+}
+
+
+.case {
+  color: white;
+}
+
+.case.heure{
+  background-color: #181818;
+  border:1px rgb(78, 78, 78) solid;
+}
+
+.case.jour{
+  background-color: #383838;
+}
+
+.case.default{
+  background-color: #242424;
+  border:1px rgb(78, 78, 78) solid;
+}
+
+.case.red{
+  background: none;
+  background-color:#742f2f;
+}
+
+.case.yellow{
+  background: none;
+  background-color: #818020;
+}
+
+.case.green{
+  background: none;
+  background-color: #104312;
+}
+
+.case.blue{
+  background: none;
+  background-color: #00425a;
+}
+
+.case.demande{
+  background: radial-gradient(#47afd4 70%,#3a535c);
+  color: black;
+}
+
+#menuSemaine{
+  border-radius: 25px;
+  font-size: 2.5em;
+  color : white;
+  border: #6b4323 ridge 4px;
+  background-color: #4b301a;
+  padding-left: 60px;
+  margin: 30px auto;
+  width: 50%;
+  padding: 30px;
+}
+
+.ami {
+  background-color: rgb(60, 60, 60);
+  color: white;
+}
+
+/*Page Version*/
+
+
+#githubCode, #githubGraphs {
+  background-color: rgb(45, 45, 45);
+  color: white;
+}
+
+/*-----------tableaux----------------------*/
+
+thead,
+tfoot {
+    background-color: #333;
+    color: #fff;
+}
+
+td {
+  border: 1px solid #FFF;
+  color: #FFF;
+}
+
+input,select,textarea{
+  background-color: #3f3f3f;
+  color: rgb(216, 216, 216);
+}
+input::placeholder{
+  color: rgb(1, 26, 1);
+}
+
+
+
+#mySidenav.user{
+  background: linear-gradient(#192c1d 50%,#35493a);
+}
+#mySidenav.admin{
+  background: linear-gradient(#490808 50%,#701e1e);
+}
+#mySidenav.asso{
+  background: linear-gradient(#052831 50%,#1a6368);
+}
+
+.invert{
+  filter: invert(1) grayscale(1);
+}
+
+.imgAct{
+  border-color: #aaa;
+}
+
+
+.autocomplete-list {
+  color: white;
+  border: 1px solid #d4d4d4;
+}
+.autocomplete-list div{
+  background-color: #1f1f1f;
+  border-bottom: 1px solid #999999;
+}
+.autocomplete-list div:hover, .autocomplete-active {
+  background-color: rgb(22, 58, 94) !important;
+  color: #ffffff;
+}
+/*tuto*/
+#main .content a{
+  color: white;
+}

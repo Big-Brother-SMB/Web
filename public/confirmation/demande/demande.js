@@ -1,21 +1,19 @@
-let j = parseInt(readIntCookie("j"));
-let h = parseInt(readIntCookie("h"));
-
-let divListeAmis = document.getElementById("liste d'amis")
-let divAmisAjoute = document.getElementById("amis ajoutés")
-let demandesAmis = []
-let amisCookie = []
-try{
-    amisCookie = readCookie("derniere demande").split("/")
-}catch(Exception){}
-
-let boolAmis = []
-let butAmis = []
-let score = 0
-let textScore = ""
-let inscrits = 0
-let places = 0
-let demandes = 0
+import * as common from "../../common.js";
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+let j = 0
+let h = 0
+let w = 0
+  if(params.j!=null){
+    j = parseInt(params.j)
+  }
+  if(params.h!=null){
+    h = parseInt(params.h)
+  }
+  if(params.w!=null){
+    w = parseInt(params.w)
+  }
 
 function updateConfirmation(){
     let pb = 0

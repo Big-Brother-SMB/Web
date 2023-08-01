@@ -1,0 +1,29 @@
+{
+  "name": "Foyer Site on NodeJS",
+  "version": "1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "rien",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.1",
+    "archiver": "^5.3.1",
+    "date-and-time": "^2.4.3",
+    "express": "^4.18.2",
+    "generate-key": "^0.0.6",
+    "googleapis": "^108.0.1",
+    "npm": "^8.19.4",
+    "path": "^0.12.7",
+    "pino": "^8.14.1",
+    "pm2": "^5.2.2",
+    "socket.io": "^4.7.1",
+    "sqlite3": "^5.1.6",
+    "url": "^0.11.1",
+    "uuid": "^9.0.0",
+    "ws": "^8.10.0"
+  }
+}

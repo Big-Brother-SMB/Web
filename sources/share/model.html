@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" id="css">
+    <link rel="stylesheet" id="css_page" href="{{CSS}}">
+    <meta charset="UTF-8">
+    <link rel="icon" href="/Images/logo.png">
+    <mybalise id="EN-TETE">
+{{EN-TETE}}
+    </mybalise>
+  </head>
+
+
+
+  <body>
+    <div id='popup'>
+      <div id='popup-header'>
+        <img src="/Images/logo.png">
+        <div id="popup-title">
+          <b>Bienvenue sur le site du Foyer !</b>
+        </div>
+      </div>
+      <div id="popup-body">
+        texte
+      </div>
+      <div id="popup-option">
+        <button id='popup_btn' style="text-decoration : none; color :black;">OK</button>
+      </div>
+    </div>
+    <div id="overlay"></div>
+
+    <header>
+      <img id="logo" src="/Images/logo.png">
+      <mybalise id="TITRE">
+{{TITRE}}
+      </mybalise>
+      <a class="menu_img_a"><img src="/Images/nav.png" id="btn_menu" class="menu_img"></a>
+      <a class="menu_img_a"><img src="/Images/courbe-de-la-fleche-de-retour-pointant-vers-la-gauche.png" id="btn_retour" class="menu_img cache"></a>
+    </header>
+
+
+    <div class="marquee-rtl cache">
+      <div id="banderole">test</div>
+    </div>
+
+
+    <div id="container" class="container">
+      <div id="mySidenav" class="user">
+{{SIDEBAR}}
+      </div>
+
+
+      <div id="main">
+{{MAIN}}
+      </div>
+
+
+      <div id="chargement">
+        <p class="loading-text">Chargement en cours</p>
+        <div class="loader">
+            <div class="circle-1 circle">
+              <div class="circle-2 circle">
+                <div class="circle-3 circle">
+                  <div class="circle-4 circle"></div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <footer>
+        <hr style="width:95%;"><br>
+        <a href="/credit" style="text-decoration : none;"><b>Version 1.0 (powered by NodeJS)</b></a>
+      </footer>
+    </div>
+
+
+    <script type="module" src="/common.js"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js"></script>
+    <script src="https://github.com/mebjas/html5-qrcode/releases/download/v2.2.8/html5-qrcode.min.js"></script>
+  </body>
+</html>

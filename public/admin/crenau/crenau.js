@@ -1,273 +1,220 @@
-let j = sessionStorage.getItem("j");
-let h = parseInt(sessionStorage.getItem("h"));
-console.log(path(j,h));
+import * as common from "../../common.js";
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  let j = 0
+  let h = 0
+  let w = 0
+    if(params.j!=null){
+      j = parseInt(params.j)
+    }
+    if(params.h!=null){
+      h = parseInt(params.h)
+    }
+    if(params.w!=null){
+      w = parseInt(params.w)
+    }
 
 
+
+
+
+let listDemandes = null
+let inscrits=0
+let demandes=0
+let cout = 1
+let gratuit_prio = 0
+let ouvert = 0
+let perMin = 75
+let places = 100
+let prio_mode = 0
+let list_prio = []
+
+async function reloadInfoHoraire(){
+    listDemandes = await common.socketAsync('list_demandes',[w,j,h])
+    inscrits=0
+    demandes=0
+    listDemandes.forEach(function (child) {
+    if(child.DorI==1){
+        inscrits++
+    }else{
+        demandes++
+    }
+    });
+    document.getElementById("demandes").innerHTML = "demandes (" + demandes + ")"
+    document.getElementById("inscrits").innerHTML = "inscrits (" + inscrits + ")"
+}
+await reloadInfoHoraire()
+
+
+
+let info = await common.socketAsync('info_horaire',[w,j,h])
+cout = info.cout
+if(cout==null){
+    cout=1
+}
+gratuit_prio = info.gratuit_prio
+if(gratuit_prio == null){
+    gratuit_prio = 0
+}
+ouvert = info.ouvert
+if(ouvert==null){
+    ouvert=0
+}
+perMin = info.perMin
+if(perMin == null){
+    perMin = 75
+}
+places = info.places
+if(places == null){
+    places = 100
+}
+prio_mode = info.prio_mode
+if(prio_mode == null){
+    prio_mode = 1
+}
+list_prio = info.prio
+if(list_prio == null){
+    list_prio = []
+}
+
+
+
+
+
+const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","ouvert aux inscrits (demandes fermé)","fermé","fini","vacances"]
 let divMode = document.getElementById("mode")
 for(let i in listMode){
     let opt = document.createElement("option")
     opt.innerHTML = listMode[i]
     divMode.appendChild(opt);
 }
-
-database.ref(path(j,h) + "/ouvert").once('value').then(function(snapshot) {
-    divMode.selectedIndex = snapshot.val();
-    divMode.addEventListener("change", function() {
-        let hashCode = hash()
-        database.ref("users").once('value').then(function(snapshot){
-            database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-                snapshot.forEach(function(u){
-                    snapshot.child(u.key+"/score").forEach(function(hash){
-                        if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                            database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                        }
-                    })
-                })
-                if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                        snapshot2.forEach(function(child){
-                            let classeUser = snapshot.child(child.key+"/classe").val()
-                            let prioUser = []
-                            snapshot.child(child.key+"/priorites").forEach(function(child2){
-                                prioUser.push(child2.key)
-                            })
-                            let prio = []
-                            snapshotP.child("prioritaires").forEach(function(child2){
-                                prio.push(child2.key)
-                            })
-                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                                
-                            } else {
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                            }
-                        })
-                    })
-                }
-                database.ref(path(j,h) + "/ouvert").set(divMode.selectedIndex)
-            })
-        })
-    });
+divMode.selectedIndex = ouvert
+divMode.addEventListener("change", async function() {
+    ouvert = this.selectedIndex
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
+
 let inPlaces = document.getElementById("places")
-let places
-database.ref(path(j,h) + "/places").once('value').then(function(snapshot) {
-    places = snapshot.val();
-    inPlaces.value = places
-    inPlaces.addEventListener("change", function() {
-        places = this.value
-        database.ref(path(j,h) + "/places").set(places)
-    });
+inPlaces.value = places
+inPlaces.addEventListener("change", async function() {
+    places = this.value
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
 let inCout = document.getElementById("cout")
-let cout
-database.ref(path(j,h) + "/cout").once('value').then(function(snapshot) {
-    cout = snapshot.val();
-    inCout.value = cout
-    inCout.addEventListener("change", function() {
-        database.ref("users").once('value').then(function(snapshot){
-            snapshot.forEach(function(u){
-                snapshot.child(u.key+"/score").forEach(function(hash){
-                    if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                        database.ref("users/"+u.key+"/score/"+hash.key+"/value").set(-Math.abs(inCout.value))
-                    }
-                })
-            })
-            cout = Math.abs(inCout.value);
-            database.ref(path(j,h) + "/cout").set(cout)
-        })
-    });
-    if(snapshot.val() == null){
-        database.ref(path(j,h) + "/cout").set(1)
-        inCout.value = 1
-    }
+inCout.value = cout
+inCout.addEventListener("change", async function() {
+    cout = inCout.value
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
 let inPer = document.getElementById("per")
-let perMin
-database.ref(path(j,h) + "/perMin").once('value').then(function(snapshot) {
-    perMin = snapshot.val();
-    inPer.value = perMin
-    inPer.addEventListener("change", function() {
-        perMin = this.value
-        database.ref(path(j,h) + "/perMin").set(perMin)
-    });
-    if(snapshot.val() == null){
-        database.ref(path(j,h) + "/perMin").set(75)
-        inPer.value = 75
-    }
+inPer.value = perMin
+inPer.addEventListener("change", async function() {
+    perMin = this.value
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
-
-let sOnly = document.getElementById("switch prio only")
-let only
-database.ref(path(j,h) + "/uniquement prioritaires").once('value').then(function(snapshot) {
-    only = snapshot.val();
-    sOnly.checked = only
-    sOnly.addEventListener("change", function() {
-        only = this.checked
-        console.log("uniquement prios : " + only)
-        database.ref(path(j,h) + "/uniquement prioritaires").set(only)
-    });
-    if(snapshot.val() == null){
-        database.ref(path(j,h) + "/uniquement prioritaires").set(false)
-        sOnly.checked = false
-    }
+const listPrioMode = ["Ne pas prendre en conte les prio","prendre en conte les prio","uniquement prio"]
+let divPrioMode = document.getElementById("prio mode")
+for(let i in listPrioMode){
+    let opt = document.createElement("option")
+    opt.innerHTML = listPrioMode[i]
+    divPrioMode.appendChild(opt);
+}
+divPrioMode.selectedIndex = prio_mode
+divPrioMode.addEventListener("change", async function() {
+    prio_mode = this.selectedIndex
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
+
 
 let sGratuit = document.getElementById("switch gratuit")
-let gratuit
-database.ref(path(j,h) + "/gratuit prioritaires").once('value').then(function(snapshot) {
-    gratuit = snapshot.val();
-    sGratuit.checked = gratuit
-    sGratuit.addEventListener("change", function() {
-        gratuit = this.checked
-        database.ref(path(j,h) + "/gratuit prioritaires").set(gratuit)
-
-        database.ref("users").once('value').then(function(snapshot){
-            database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-                let hashCode = hash()
-                snapshot.forEach(function(u){
-                    snapshot.child(u.key+"/score").forEach(function(hash){
-                        if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                            database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                        }
-                    })
-                })
-                if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                        snapshot2.forEach(function(child){
-                            let classeUser = snapshot.child(child.key+"/classe").val()
-                            let prioUser = []
-                            snapshot.child(child.key+"/priorites").forEach(function(child2){
-                                prioUser.push(child2.key)
-                            })
-                            let prio = []
-                            snapshotP.child("prioritaires").forEach(function(child2){
-                                prio.push(child2.key)
-                            })
-                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                                
-                            } else {
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                            }
-                        })
-                    })
-                }
-            })
-        })
-    });
-    if(snapshot.val() == null){
-        database.ref(path(j,h) + "/gratuit prioritaires").set(false)
-        sGratuit.checked = false
-    }
+sGratuit.checked = gratuit_prio
+sGratuit.addEventListener("change", async function() {
+    gratuit_prio = this.checked
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
 
-function nbPersDemande(nb){
-    document.getElementById("demandes").innerHTML = "demandes (" + nb + ")"
-}
-nbPers(j,h,"demandes",nbPersDemande)
 
 document.getElementById("demandes").addEventListener("click", function() {
-    window.location.href = "listes/liste.html";
+    window.location.href = "listes/liste.html?j="+j+"&h="+h+"&w="+w;
 });
-
-let inscrits
-function nbPersInscrit(nb){
-    inscrits = nb
-    document.getElementById("inscrits").innerHTML = "inscrits (" + nb + ")"
-}
-nbPers(j,h,"inscrits",nbPersInscrit)
 
 document.getElementById("inscrits").addEventListener("click", function() {
-    window.location.href = "listes/liste.html";
+    window.location.href = "listes/liste.html?j="+j+"&h="+h+"&w="+w;
 });
 
+
+
+
+
+
+
+
+let g_c = await common.socketAdminAsync('list group/classe',null)
 let divGroupes = document.getElementById("groupes")
 
 let cbGroupes = []
 let groupes = []
 let iG = 0
-database.ref("priorites").once("value", function(snapshot) {
-    let divG1 = document.createElement("div")
-    divG1.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
-    let divG2 = document.createElement("div")
-    divG2.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
-    let loop2 = 0
-    snapshot.forEach(function(child) {
-        const index = iG;
-        groupes.push(child.key)
-        let gr = document.createElement("p")
-        cbGroupes[index] = document.createElement("input")
-        cbGroupes[index].type = "checkbox"
-        cbGroupes[index].addEventListener("click", function() {
-            if(cbGroupes[index].checked){
-                database.ref(path(j,h) + "/prioritaires/" + groupes[index]).set(0)
-            }else{
-                database.ref(path(j,h) + "/prioritaires/" + groupes[index]).remove()
+
+let divG1 = document.createElement("div")
+divG1.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+let divG2 = document.createElement("div")
+divG2.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+let loop2 = 0
+g_c[0].forEach(function(child) {
+    const index = iG;
+    groupes.push(child.group2)
+    let gr = document.createElement("p")
+    cbGroupes[index] = document.createElement("input")
+    cbGroupes[index].type = "checkbox"
+    cbGroupes[index].addEventListener("click", async function() {
+        if(cbGroupes[index].checked){
+            if(!list_prio.includes(groupes[index])){
+                list_prio.push(groupes[index])
             }
-
-
-
-            database.ref("users").once('value').then(function(snapshot){
-                database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-                    let hashCode = hash()
-                    snapshot.forEach(function(u){
-                        snapshot.child(u.key+"/score").forEach(function(hash){
-                            if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                                database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                            }
-                        })
-                    })
-                    if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                        database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                            snapshot2.forEach(function(child){
-                                let classeUser = snapshot.child(child.key+"/classe").val()
-                                let prioUser = []
-                                snapshot.child(child.key+"/priorites").forEach(function(child2){
-                                    prioUser.push(child2.key)
-                                })
-                                let prio = []
-                                snapshotP.child("prioritaires").forEach(function(child2){
-                                    prio.push(child2.key)
-                                })
-                                if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                                    
-                                } else {
-                                    database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                    database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                                }
-                            })
-                        })
-                    }
-                })
-            })
-        })
-        //cbClasses[n][i].checked = true
-        gr.innerHTML = groupes[index]
-        gr.appendChild(cbGroupes[index]);
-        if (loop2==0){
-            loop2=1
-            divG1.appendChild(gr);
-        } else {
-            loop2=0
-            divG2.appendChild(gr);
+            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
+        }else{
+            if(list_prio.includes(groupes[index])){
+                list_prio = list_prio.filter(o => o != groupes[index]);
+            }
+            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
         }
-        iG++;
     })
-    divGroupes.appendChild(divG1);
-    divGroupes.appendChild(divG2);
+    //cbClasses[n][i].checked = true
+    gr.innerHTML = groupes[index]
+    gr.appendChild(cbGroupes[index]);
+    if (loop2==0){
+        loop2=1
+        divG1.appendChild(gr);
+    } else {
+        loop2=0
+        divG2.appendChild(gr);
+    }
+    if(list_prio.includes(groupes[index])){
+        cbGroupes[index].checked = true
+    }
+    iG++;
 })
+divGroupes.appendChild(divG1);
+divGroupes.appendChild(divG2);
+
+
 
 let divClasses = document.getElementById("classes")
-let cbClasses = []
+let listNiveau = [[],[],[],[]]
+g_c[1].forEach(function(child) {
+    listNiveau[child.niveau].push(child.classe)
+})
 console.log(listNiveau)
+let cbClasses = []
 for(let n in listNiveau){
     cbClasses[n] = []
     let divNiveau = document.createElement("div")
@@ -275,147 +222,54 @@ for(let n in listNiveau){
 
     let nSelectAll = document.createElement("button")
     nSelectAll.className = "bTriNiveau"
-    nSelectAll.innerHTML ="selectionner tous les " + nomNiveau[n]
-    nSelectAll.addEventListener("click", function() {
+    nSelectAll.innerHTML ="selectionner tous les " + common.nomNiveau[n]
+    nSelectAll.addEventListener("click", async function() {
         console.log("niveau " + n + " select all")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = true
-            database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).set(0)
+            if(!list_prio.includes(listNiveau[n][i])){
+                list_prio.push(listNiveau[n][i])
+            }
         }
-        
-        database.ref("users").once('value').then(function(snapshot){
-            database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-                let hashCode = hash()
-                snapshot.forEach(function(u){
-                    snapshot.child(u.key+"/score").forEach(function(hash){
-                        if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                            database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                        }
-                    })
-                })
-                if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                        snapshot2.forEach(function(child){
-                            let classeUser = snapshot.child(child.key+"/classe").val()
-                            let prioUser = []
-                            snapshot.child(child.key+"/priorites").forEach(function(child2){
-                                prioUser.push(child2.key)
-                            })
-                            let prio = []
-                            snapshotP.child("prioritaires").forEach(function(child2){
-                                prio.push(child2.key)
-                            })
-                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                                
-                            } else {
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                            }
-                        })
-                    })
-                }
-            })
-        })
+        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
     });
     divNiveau.appendChild(nSelectAll);
 
     let nSelectNone = document.createElement("button")
     nSelectNone.className = "bTriNiveau"
-    nSelectNone.innerHTML ="retirer tous les " + nomNiveau[n]
-    nSelectNone.addEventListener("click", function() {
+    nSelectNone.innerHTML ="retirer tous les " + common.nomNiveau[n]
+    nSelectNone.addEventListener("click", async function() {
         console.log("niveau " + n + " select none")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = false
-            database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).remove()
+            if(list_prio.includes(listNiveau[n][i])){
+                list_prio = list_prio.filter(o => o != listNiveau[n][i]);
+            }
         }
-
-        database.ref("users").once('value').then(function(snapshot){
-            database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-                let hashCode = hash()
-                snapshot.forEach(function(u){
-                    snapshot.child(u.key+"/score").forEach(function(hash){
-                        if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                            database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                        }
-                    })
-                })
-                if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                        snapshot2.forEach(function(child){
-                            let classeUser = snapshot.child(child.key+"/classe").val()
-                            let prioUser = []
-                            snapshot.child(child.key+"/priorites").forEach(function(child2){
-                                prioUser.push(child2.key)
-                            })
-                            let prio = []
-                            snapshotP.child("prioritaires").forEach(function(child2){
-                                prio.push(child2.key)
-                            })
-                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                                
-                            } else {
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                            }
-                        })
-                    })
-                }
-            })
-        })
+        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
     });
     divNiveau.appendChild(nSelectNone);
 
     let nInversed = document.createElement("button")
     nInversed.className = "bTriNiveau"
-    nInversed.innerHTML ="Inverser tous les " + nomNiveau[n]
-    nInversed.addEventListener("click", function() {
+    nInversed.innerHTML ="Inverser tous les " + common.nomNiveau[n]
+    nInversed.addEventListener("click", async function() {
         console.log("niveau " + n + " inversed")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = !cbClasses[n][i].checked
             if(cbClasses[n][i].checked){
-                database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).set(0)
+                if(!list_prio.includes(listNiveau[n][i])){
+                    list_prio.push(listNiveau[n][i])
+                }
             }else{
-                database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).remove()
+                if(list_prio.includes(listNiveau[n][i])){
+                    list_prio = list_prio.filter(o => o != listNiveau[n][i]);
+                }
             }
         }
-        
-        database.ref("users").once('value').then(function(snapshot){
-            database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-                let hashCode = hash()
-                snapshot.forEach(function(u){
-                    snapshot.child(u.key+"/score").forEach(function(hash){
-                        if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                            database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                        }
-                    })
-                })
-                if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                    database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                        snapshot2.forEach(function(child){
-                            let classeUser = snapshot.child(child.key+"/classe").val()
-                            let prioUser = []
-                            snapshot.child(child.key+"/priorites").forEach(function(child2){
-                                prioUser.push(child2.key)
-                            })
-                            let prio = []
-                            snapshotP.child("prioritaires").forEach(function(child2){
-                                prio.push(child2.key)
-                            })
-                            if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                                
-                            } else {
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                            }
-                        })
-                    })
-                }
-            })
-        })
+        await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
     });
     divNiveau.appendChild(nInversed);
-
-
 
     for(let i in listNiveau[n]){
         let opt = document.createElement("p")
@@ -424,212 +278,81 @@ for(let n in listNiveau){
         //cbClasses[n][i].checked = true
         opt.innerHTML = listNiveau[n][i]
         opt.appendChild(cbClasses[n][i]);
-        cbClasses[n][i].addEventListener("click", function() {
+        cbClasses[n][i].addEventListener("click", async function() {
             if(cbClasses[n][i].checked){
-                database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).set(0)
+                if(!list_prio.includes(listNiveau[n][i])){
+                    list_prio.push(listNiveau[n][i])
+                }
             }else{
-                database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).remove()
+                if(list_prio.includes(listNiveau[n][i])){
+                    list_prio = list_prio.filter(o => o != listNiveau[n][i]);
+                }
             }
-            
-
-
-            database.ref("users").once('value').then(function(snapshot){
-                database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-                    let hashCode = hash()
-                    snapshot.forEach(function(u){
-                        snapshot.child(u.key+"/score").forEach(function(hash){
-                            if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                                database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                            }
-                        })
-                    })
-                    if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                        database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                            snapshot2.forEach(function(child){
-                                let classeUser = snapshot.child(child.key+"/classe").val()
-                                let prioUser = []
-                                snapshot.child(child.key+"/priorites").forEach(function(child2){
-                                    prioUser.push(child2.key)
-                                })
-                                let prio = []
-                                snapshotP.child("prioritaires").forEach(function(child2){
-                                    prio.push(child2.key)
-                                })
-                                if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                                    
-                                } else {
-                                    database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                                    database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                                }
-                            })
-                        })
-                    }
-                })
-            })
+            await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
         })
         divNiveau.appendChild(opt);
+        if(list_prio.includes(listNiveau[n][i])){
+            cbClasses[n][i].checked = true
+        }
     }
     divClasses.appendChild(divNiveau);
-    
 }
 
-//let prio = []
-database.ref(path(j,h) + "/prioritaires").once("value", function(snapshot) {
-    snapshot.forEach(function(child) {
-        let c = child.key
-        console.log(c)
-        //prio.push(c)
-        let index = indexOf2dArray(listNiveau,c)
-        let index2 = groupes.indexOf(c)
-        console.log("index prio : " + index)
-        if(index != -1){
-            cbClasses[index[0]][index[1]].checked = true
-        }else if(index2 != -1){
-            cbGroupes[index2].checked = true
-        }
-    })
-})
-
-document.getElementById("select all").addEventListener("click", function() {
+document.getElementById("select all").addEventListener("click", async function() {
     console.log("select all")
     for(let n in cbClasses){
         for(let i in cbClasses[n]){
             cbClasses[n][i].checked = true
-            database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).set(0)
+            if(!list_prio.includes(listNiveau[n][i])){
+                list_prio.push(listNiveau[n][i])
+            }
         }
     }
-
-    database.ref("users").once('value').then(function(snapshot){
-        database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-            let hashCode = hash()
-            snapshot.forEach(function(u){
-                snapshot.child(u.key+"/score").forEach(function(hash){
-                    if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                        database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                    }
-                })
-            })
-            if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                    snapshot2.forEach(function(child){
-                        let classeUser = snapshot.child(child.key+"/classe").val()
-                        let prioUser = []
-                        snapshot.child(child.key+"/priorites").forEach(function(child2){
-                            prioUser.push(child2.key)
-                        })
-                        let prio = []
-                        snapshotP.child("prioritaires").forEach(function(child2){
-                            prio.push(child2.key)
-                        })
-                        if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                            
-                        } else {
-                            database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                            database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                        }
-                    })
-                })
-            }
-        })
-    })
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
-document.getElementById("select none").addEventListener("click", function() {
+document.getElementById("select none").addEventListener("click", async function() {
     console.log("select none")
     for(let n in cbClasses){
         for(let i in cbClasses[n]){
             cbClasses[n][i].checked = false
-            database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).remove()
+            if(list_prio.includes(listNiveau[n][i])){
+                list_prio = list_prio.filter(o => o != listNiveau[n][i]);
+            }
         }
     }
-
-    database.ref("users").once('value').then(function(snapshot){
-        database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-            let hashCode = hash()
-            snapshot.forEach(function(u){
-                snapshot.child(u.key+"/score").forEach(function(hash){
-                    if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                        database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                    }
-                })
-            })
-            if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                    snapshot2.forEach(function(child){
-                        let classeUser = snapshot.child(child.key+"/classe").val()
-                        let prioUser = []
-                        snapshot.child(child.key+"/priorites").forEach(function(child2){
-                            prioUser.push(child2.key)
-                        })
-                        let prio = []
-                        snapshotP.child("prioritaires").forEach(function(child2){
-                            prio.push(child2.key)
-                        })
-                        if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                            
-                        } else {
-                            database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                            database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                        }
-                    })
-                })
-            }
-        })
-    })
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
-document.getElementById("inversed").addEventListener("click", function() {
+document.getElementById("inversed").addEventListener("click", async function() {
     console.log("inversed")
     for(let n in cbClasses){
         for(let i in cbClasses[n]){
             cbClasses[n][i].checked = !cbClasses[n][i].checked
             if(cbClasses[n][i].checked){
-                database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).set(0)
+                if(!list_prio.includes(listNiveau[n][i])){
+                    list_prio.push(listNiveau[n][i])
+                }
             }else{
-                database.ref(path(j,h) + "/prioritaires/" + listNiveau[n][i]).remove()
+                if(list_prio.includes(listNiveau[n][i])){
+                    list_prio = list_prio.filter(o => o != listNiveau[n][i]);
+                }
             }
         }
     }
-
-    database.ref("users").once('value').then(function(snapshot){
-        database.ref(path(j,h)+"/inscrits").once('value').then(function(snapshot2){
-            let hashCode = hash()
-            snapshot.forEach(function(u){
-                snapshot.child(u.key+"/score").forEach(function(hash){
-                    if(snapshot.child(u.key+"/score/"+hash.key+"/name").val()==="Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h"){
-                        database.ref("users/"+u.key+"/score/"+hash.key).remove()
-                    }
-                })
-            })
-            if(divMode.selectedIndex==2||divMode.selectedIndex==3||divMode.selectedIndex==5){
-                database.ref(path(j,h)).once('value').then(function(snapshotP) {
-                    snapshot2.forEach(function(child){
-                        let classeUser = snapshot.child(child.key+"/classe").val()
-                        let prioUser = []
-                        snapshot.child(child.key+"/priorites").forEach(function(child2){
-                            prioUser.push(child2.key)
-                        })
-                        let prio = []
-                        snapshotP.child("prioritaires").forEach(function(child2){
-                            prio.push(child2.key)
-                        })
-                        if(snapshotP.child('gratuit prioritaires').val() && (commonElement(prioUser, prio) != 0 || prio.indexOf(classeUser) != -1)){
-                            
-                        } else {
-                            database.ref("users/" + child.key + "/score/" + hashCode + "/name").set("Repas du " + dayLowerCase[j] + " " + getDayText(j) +  " à " + (11 + h) + "h")
-                            database.ref("users/" + child.key + "/score/" + hashCode + "/value").set(-cout)
-                        }
-                    })
-                })
-            }
-        })
-    })
+    await common.socketAdminAsync('setMidiInfo',[w,j,h,cout,gratuit_prio,ouvert,perMin,places,prio_mode,list_prio])
 });
 
+document.getElementById("start algo").addEventListener("click", async function() {
+    document.getElementById("start algo").innerHTML = "..."
+    let rep = await common.socketAdminAsync('algo',[w,j,h],60000)
+    document.getElementById("start algo").innerHTML = rep
 
+    reloadInfoHoraire()
+})
 
-
-/*document.getElementById("start algo").addEventListener("click", function() {
+/*
+document.getElementById("start algo").addEventListener("click", function() {
     let classes = []
     console.log("start algo")
     for(let n in cbClasses){
@@ -666,7 +389,13 @@ function tri(classes,p,inscrits){
                 }while(!ok && i != alea)
     }
 
-}*/
+}
+
+*/
+
+
+
+/*
 document.getElementById("start algo").addEventListener("click", function() {
     algo()
 })
@@ -971,4 +700,4 @@ function algo(){
             })
         });
     });
-}
+}*/

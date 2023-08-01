@@ -1,19 +1,18 @@
+import * as common from "../common.js";
+
 const body = document.getElementById("body");
 
+let banderole = await common.socketAsync("banderole",null)
+if (banderole != null && document.getElementById("banderole")!=null) {
+  document.getElementById("banderole").innerHTML = banderole
+  if (banderole.length > 0) {
+    document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
+  }
+}
+
 let bouton = [];
-let placesTotal = [];
-let nbDemandes = [];
-let demandes = []
 let demande = []
-let places = [];
-
 let ouvert = []
-let cout = []
-let nbAmis = []
-let nbAmisDemande = []
-
-let inscrits = [];
-let inscrit = []
 
 let horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h"]
 
@@ -36,23 +35,12 @@ for (let j = 0; j < 5; j++) {
     let div = document.createElement("div")
     let text = document.createElement("button")
     text.className = "jours tableau";
-    text.innerHTML = dayMer[j]
+    text.innerHTML = common.dayMer[j]
     div.appendChild(text);
 
     bouton[j] = []
-    placesTotal[j] = []
-    places[j] = []
-
-    nbAmis[j] = []
-    nbAmisDemande[j] = []
-    nbDemandes[j] = []
-    demandes[j] = []
-    demande[j] = [false, false]
-
-    inscrits[j] = []
-    inscrit[j] = [false, false]
-    ouvert[j] = [0, 0]
-    cout[j] = [1, 1]
+    demande[j] = []
+    ouvert[j] = []
     for (let h = 0; h < 7; h++) {
         bouton[j][h] = document.createElement("button")
         if((j == 2 && h >3) || (h == 3 && j != 2)){
@@ -60,44 +48,41 @@ for (let j = 0; j < 5; j++) {
         }
 
         //bouton[j][h].id = "" + j + h;
-        let heure = h + 8
-        if(h >= 4){
-            heure += 1
-        }
         bouton[j][h].onclick = function () { select(j, h) };
         bouton[j][h].className = "crenau"
         div.appendChild(bouton[j][h]);
 
     }
     body.appendChild(div);
-
 }
+
+let week = common.readCookie("week")
 
 document.getElementById("semainePrecedente").addEventListener("click", function () {
     week = week - 1
-    writeCookie("week", week)
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
 document.getElementById("semaineActuelle").addEventListener("click", function () {
-    week = actualWeek
-    writeCookie("week", week)
+    week = common.actualWeek
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
 
 document.getElementById("semaineSuivante").addEventListener("click", function () {
     week = week + 1
-    writeCookie("week", week)
+    common.writeCookie("week", week)
     refreshDatabase()
 });
 
 
-function refreshDatabase() {
+async function refreshDatabase() {
 
-    let text = "Semaine n°" + week + " du " + semaine(week)
-    if (week == actualWeek) {
-        text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
+    let text = "Semaine n°" + week + " du " + common.semaine(week)
+    if (week == common.actualWeek) {
+        text = "Cette semaine (n°" + week + " du " + common.semaine(week) + ")"
     }
     document.getElementById("semaine").innerHTML = text
 
@@ -105,18 +90,81 @@ function refreshDatabase() {
 
     for (let j = 0; j < 5; j++) {
         for (let h = 0; h < 7; h++) {
-            let heure = h + 8
-            if(h >= 4){
-                heure += 1
-            }
             let nbDemandesPerm = 0
-            database.ref(pathPerm(j,h)+"/demandes").once("value", function(snapshot){
-                bouton[j][h].className = "crenau"
-                snapshot.forEach(function(child){
+            let groupsInscrits = []
+
+            let listDemandes = await common.socketAsync("list_demandes_perm",[week,j,h])
+
+            bouton[j][h].className = "crenau"
+            listDemandes.forEach(function(child){
+                if(child.DorI){
+                    groupsInscrits.push(child.group2)
+                }else{
                     nbDemandesPerm++
-                    if(user==child.key){
+                    if(common.uuid==child.uuid){
                         bouton[j][h].className = "crenau demande"
                     }
+                }
+            })
+
+            let ouv = await common.socketAsync("ouvert_perm",[week,j,h])
+            if (ouv == null){
+                ouv = 0
+            }
+            ouvert[j][h] = ouv
+
+            if (nbDemandesPerm==1){
+                bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demande en cours"
+            }else if (nbDemandesPerm>1){
+                bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demandes en cours"
+            }else {
+                bouton[j][h].innerHTML="aucune info"
+            }
+            switch(ouv){
+                case 0:
+                    let str = ""
+                    groupsInscrits.forEach(function (child) {
+                        if(child == common.classe || common.groups.indexOf(child)!=-1){
+                            bouton[j][h].className = "crenau inscrit"
+                        }
+                        if(str != ""){
+                            str += ", "
+                        }
+                        str += child
+                    });
+                    if(str != ""){
+                        bouton[j][h].innerHTML = str
+                    }
+                    break;
+                case 1:
+                    bouton[j][h].innerHTML = "fermé"
+                    bouton[j][h].className = "crenau fermeR"
+                    break;
+                case 2:
+                    bouton[j][h].innerHTML = "ouvert à tous"
+                    bouton[j][h].className = "crenau inscrit"
+                    break;
+                case 3:
+                    bouton[j][h].innerHTML = "réservé"
+                    bouton[j][h].className = "crenau reserve"
+                    
+                    let str2 = ""
+                    groupsInscrits.forEach(function (child) {
+                        if(child == common.classe || common.groups.indexOf(child)!=-1){
+                            bouton[j][h].className = "crenau inscrit"
+                        }
+                        if(str2 != ""){
+                            str2 += ", "
+                        }
+                        str2 += child
+                    });
+                    bouton[j][h].innerHTML = str2
+                    break;
+                case 4:
+                    bouton[j][h].innerHTML = "vacances"
+                    bouton[j][h].className = "crenau ferme"
+                    break;
+            }
                 })
                 if (nbDemandesPerm==1){
                     bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demande en cours"
@@ -198,27 +246,17 @@ function refreshDatabase() {
     }
 }
 
-database.ref("version").once("value", function (snapshot) {
-  let msg = snapshot.val()
-  if (msg != null) {
-    document.getElementById("version").innerHTML ="Version "+msg
-    }
-
-
-})
+/*
 function loop() {
     console.log("update database")
     refreshDatabase();
     setTimeout(loop, 100000);
 }
-loop();
-
+loop();*/
+refreshDatabase();
 
 function select(j, h){
-    console.log("click")
-    writeCookie("j", j)
-    writeCookie("h", h)
     if (ouvert[j][h] == 0) {
-        window.location.href = "demandePerm.html";
+        window.location.href = "demandePerm.html?j="+j+"&h="+h+"&w="+week;;
     }
 }

@@ -1,6 +1,5 @@
-function loopT(){
-    registration.showNotification('10 sec');
-    setTimeout(loopT,10000)
-}
-
-loopT()
+const socket = new WebSocket("ws://localhost:3001");
+socket.addEventListener("message", ({ data }) => {
+    const packet = JSON.parse(data);
+    registration.showNotification(packet.info);
+  });

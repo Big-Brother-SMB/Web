@@ -1,0 +1,69 @@
+body{
+    background-image: url("/asso/Matches_Heads/Images/Matches_Heads.jpg");
+}
+
+footer{
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: invert(80%);
+}
+
+div.presentation,.imgAsso{
+    height: auto;
+    width: 90%;
+    margin: 30px auto;
+    padding: 7px;
+    border-radius: 30px;
+    border: rgb(71, 71, 71) solid 2px;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.galerie{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 1em;
+}
+
+.presentation p{
+    color: black;
+    margin: 10px auto;
+    text-align: justify !important;
+    font-size: 1.5em !important;  
+    width: 90%;
+
+    /*text-indent: 45px;*/
+
+    white-space: break-spaces;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+.imgAsso{
+    width: 300px;
+    margin: 20px auto;
+}
+.imgAsso img{
+    background-color: white;
+    max-width: 300px;
+    border-radius: 30px;
+    border: 1px black solid;
+}
+
+.imgAsso p{
+    color: black;
+    margin: 5px 0 ;
+    font-size: 1.5em !important;  
+}
+
+
+a {
+    color: #0060B6;
+    text-decoration: none;
+}
+
+a:hover {
+    color:#00A0C6; 
+    text-decoration:none; 
+    cursor:pointer;  
+}

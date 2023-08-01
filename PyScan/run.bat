@@ -1,1 +1,1 @@
-python3 database.py
+python3 pyscan.py

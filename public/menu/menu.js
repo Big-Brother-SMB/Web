@@ -1,3 +1,5 @@
+// il reste les pop-up à faire + msg
+import * as common from "../common.js";
 console.log(document.cookie)
 console.log(cookie)
 
@@ -42,51 +44,45 @@ document.getElementById("planing").addEventListener("click", function () {
     window.location.href = "../perm/perm.html";
 });
 
-console.log("week : " + week)
-console.log("actual week : " + actualWeek)
+
+document.getElementById("user").innerHTML = common.first_name + " " + common.last_name + " " + common.classe
 
 
-function nextWeek(){
-    week = week + 1
-    writeCookie("week", week)
-    refreshDatabase()
-}
-function previousWeek(){
-    week = week - 1
-    writeCookie("week", week)
-    refreshDatabase()
-}
-function thisWeek(){
-    week = actualWeek
-    writeCookie("week", week)
-    refreshDatabase()
-}
-
+let week = common.week
 document.getElementById("semainePrecedente").addEventListener("click", function () {
-    previousWeek()
+    week--
+    common.writeCookie("week", week)
+    refreshDatabase()
 });
 
 
 document.getElementById("semaineActuelle").addEventListener("click", function () {
-    thisWeek()
+    week = common.actualWeek
+    common.writeCookie("week", week)
+    refreshDatabase()
 });
 
 
 document.getElementById("semaineSuivante").addEventListener("click", function () {
-    nextWeek()
+    week++
+    common.writeCookie("week", week)
+    refreshDatabase()
 });
 
 
 const body = document.getElementById("body");
 Date.prototype.getWeek = function () {
-    console.log(this)
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 0) / 7);
 }
 
-
-
-
+let banderole = await common.socketAsync("banderole",null)
+if (banderole != null && document.getElementById("banderole")!=null) {
+  document.getElementById("banderole").innerHTML = banderole
+  if (banderole.length > 0) {
+    document.getElementById("banderole").style.animation = "defilement-rtl 10s infinite linear"
+  }
+}
 
 let bouton = [];
 let placesTotal = [];
@@ -109,7 +105,7 @@ for (let j = 0; j < 4; j++) {
     let div = document.createElement("div")
     let text = document.createElement("button")
     text.className = "jours tableau";
-    text.innerHTML = day[j]
+    text.innerHTML = common.day[j]
     div.appendChild(text);
 
     bouton[j] = []
@@ -139,119 +135,117 @@ for (let j = 0; j < 4; j++) {
 }
 
 
-function refreshDatabase() {
-    database.ref("foyer_midi/semaine" + week + "/menu").once('value').then(function (snapshotM) {
-        database.ref("users/" + user + "/score").once('value').then(function(snapshotS) {
-            let score = 0
-            snapshotS.forEach(function(child) {
-                score += parseFloat(snapshotS.child(child.key + "/value").val())
-                score = round(score)
-                if (score < 2) {
-                    document.getElementById("score").innerHTML = score + " pt"
-                }else{
-                    document.getElementById("score").innerHTML = score + " pts"
+async function refreshDatabase() {
+    let info_menu = await common.socketAsync("info_menu_semaine",week)
+    let score = await common.socketAsync("my_score","int")
+
+    if (score < 2) {
+        document.getElementById("score").innerHTML = score + " pt"
+    }else{
+        document.getElementById("score").innerHTML = score + " pts"
+    }
+    
+    if (week == common.actualWeek) {
+        document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.semaine(week) + ")"
+    } else {
+        document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.semaine(week)
+    }
+
+    let menu
+    try{
+        menu = info_menu["menu"]
+    }catch(e){}
+    if (menu == null) {
+        menu = "inconnu pour le moment"
+    }
+    document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + menu
+
+
+            for (let j = 0; j < 4; j++) {
+                for (let h = 0; h < 2; h++) {
+                    database.ref(path(j, h)).once('value').then(function (snapshotP) {
+                        placesTotal[j][h] = snapshotP.child("places").val();
+                        if(placesTotal[j][h]==null || placesTotal[j][h]==""){
+                            placesTotal[j][h]=0
+                        }
+
+                        if (snapshotP.child("ouvert").val() == null) {
+                            ouvert[j][h] = 0
+                        } else {
+                            ouvert[j][h] = snapshotP.child("ouvert").val()
+                        }
+
+                        if (snapshotP.child("cout").val() != null) {
+                            cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
+                        }
+
+                        //demande en cours
+
+                        nbDemandes[j][h] = 0
+                        demandes[j][h] = []
+                        demande[j][h] = false;
+
+                        snapshotP.child("demandes").forEach(function (child) {
+                            const name = child.key
+                            nbDemandes[j][h]++
+                            if (name == user) {
+                                demande[j][h] = true;
+                            } else {
+                                demandes[j][h].push(name)
+                            }
+                        });
+
+                        //inscrits
+
+                        nbInscrits[j][h] = 0
+                        inscrits[j][h] = []
+                        inscrit[j][h] = false;
+
+                        snapshotP.child("inscrits").forEach(function (child) {
+                            const name = child.key
+                            nbInscrits[j][h]++
+                            if (name == user) {
+                                inscrit[j][h] = true;
+                            } else {
+                                inscrits[j][h].push(name)
+                            }
+                        });
+
+
+                        nbAmis[j][h] = 0
+                        nbAmisDemande[j][h] = 0
+                        nbAmisInscrit[j][h] = 0
+
+                        snapshotP.child("/demandes/" + user + "/amis").forEach(function (child) {
+                            nbAmis[j][h]++
+                            if (demandes[j][h].indexOf(child.key) != -1) {
+                                nbAmisDemande[j][h]++
+                            }
+                            if (inscrits[j][h].indexOf(child.key) != -1) {
+                                nbAmisInscrit[j][h]++
+                            }
+                        });
+                        snapshotP.child("/inscrits/" + user + "/amis").forEach(function (child) {
+                            nbAmis[j][h]++
+                            if (demandes[j][h].indexOf(child.key) != -1) {
+                                nbAmisDemande[j][h]++
+                            }
+                            if (inscrits[j][h].indexOf(child.key) != -1) {
+                                nbAmisInscrit[j][h]++
+                            }
+                        });
+                        update(j, h);
+                    })
                 }
-            })
-            let text = "Semaine n°" + week + " du " + semaine(week)
-            if (week == actualWeek) {
-                text = "Cette semaine (n°" + week + " du " + semaine(week) + ")"
             }
-            document.getElementById("semaine").innerHTML = text
-
-            let val = snapshotM.val()
-            if (val == null) {
-                val = "inconnu pour le moment"
-            }
-            document.getElementById("menu semaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + val
-
-
-            
         });
     });
-
-    for (let j = 0; j < 4; j++) {
-        for (let h = 0; h < 2; h++) {
-            database.ref(path(j, h)).once('value').then(function (snapshotP) {
-                placesTotal[j][h] = snapshotP.child("places").val();
-                if(placesTotal[j][h]==null || placesTotal[j][h]==""){
-                    placesTotal[j][h]=0
-                }
-
-                if (snapshotP.child("ouvert").val() == null) {
-                    ouvert[j][h] = 0
-                } else {
-                    ouvert[j][h] = snapshotP.child("ouvert").val()
-                }
-
-                if (snapshotP.child("cout").val() != null) {
-                    cout[j][h] = Math.abs(parseFloat(snapshotP.child("cout").val()))
-                }
-
-                //demande en cours
-
-                nbDemandes[j][h] = 0
-                demandes[j][h] = []
-                demande[j][h] = false;
-
-                snapshotP.child("demandes").forEach(function (child) {
-                    const name = child.key
-                    nbDemandes[j][h]++
-                    if (name == user) {
-                        demande[j][h] = true;
-                    } else {
-                        demandes[j][h].push(name)
-                    }
-                });
-
-                //inscrits
-
-                nbInscrits[j][h] = 0
-                inscrits[j][h] = []
-                inscrit[j][h] = false;
-
-                snapshotP.child("inscrits").forEach(function (child) {
-                    const name = child.key
-                    nbInscrits[j][h]++
-                    if (name == user) {
-                        inscrit[j][h] = true;
-                    } else {
-                        inscrits[j][h].push(name)
-                    }
-                });
-
-
-                nbAmis[j][h] = 0
-                nbAmisDemande[j][h] = 0
-                nbAmisInscrit[j][h] = 0
-
-                snapshotP.child("/demandes/" + user + "/amis").forEach(function (child) {
-                    nbAmis[j][h]++
-                    if (demandes[j][h].indexOf(child.key) != -1) {
-                        nbAmisDemande[j][h]++
-                    }
-                    if (inscrits[j][h].indexOf(child.key) != -1) {
-                        nbAmisInscrit[j][h]++
-                    }
-                });
-                snapshotP.child("/inscrits/" + user + "/amis").forEach(function (child) {
-                    nbAmis[j][h]++
-                    if (demandes[j][h].indexOf(child.key) != -1) {
-                        nbAmisDemande[j][h]++
-                    }
-                    if (inscrits[j][h].indexOf(child.key) != -1) {
-                        nbAmisInscrit[j][h]++
-                    }
-                });
-                update(j, h);
-            })
-        }
-    }
 }
 
 
 function update(j, h) {
     places[j][h] = placesTotal[j][h] - nbInscrits[j][h];
-    let coutPourcentage = round((cout[j][h] - 1) * 100)
+    let coutPourcentage = common.round((cout[j][h] - 1) * 100)
     let textcout = ""
     let text = "horaire non planifié";
 
@@ -350,30 +344,27 @@ function update(j, h) {
 }
 
 function select(j, h) {
-    writeCookie("j", j)
-    writeCookie("h", h)
     const hInv = h==0?1:0
     if (ouvert[j][h] == 2 && demande[j][h]) {
-        window.location.href = "../confirmation/modifier/modifier.html";
+        window.location.href = "../confirmation/modifier/modifier.html?j="+j+"&h="+h+"&w="+week;
     }else if(ouvert[j][h] == 2 && !demande[j][hInv] && !inscrit[j][hInv] && !inscrit[j][h]){
-        window.location.href = "../confirmation/demande/demande.html";
+        window.location.href = "../confirmation/demande/demande.html?j="+j+"&h="+h+"&w="+week;
     }else if((ouvert[j][h] == 2 || ouvert[j][h] == 3) && inscrit[j][h]){
-        window.location.href = "../confirmation/inscrit/inscrit.html";
+        window.location.href = "../confirmation/inscrit/inscrit.html?j="+j+"&h="+h+"&w="+week;
     }
 }
 
 
-
-function loop() {
+refreshDatabase();
+/*function loop() {
     console.log("update database")
     refreshDatabase();
     setTimeout(loop, 30000);
 }
-loop();
+loop();*/
 
 
-
-
+/*
 document.getElementById("semaine").addEventListener('touchstart', handleTouchStart, false);
 document.getElementById("semaine").addEventListener('touchmove', handleTouchMove, false);
 
@@ -422,19 +413,7 @@ function handleTouchMove(evt) {
     xDown = null;
     yDown = null;
 };
-
-
-
-
-/*document.getElementById("logo").addEventListener("click",function(){
-    document.querySelectorAll("nav")[0].style.visibility = "visible"
-})
-
-document.getElementById("nav hide").addEventListener("click",function(){
-    document.querySelectorAll("nav")[0].style.visibility = "hidden"
-})*/
-
-
+*/
 
 //-------------------------------Pop-Up------------messagerie---------------------------------
 
@@ -452,37 +431,37 @@ function closeModal(modal) {
   overlay.classList.remove('active')
 }
 
-///database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
-///    tuto = snapshot.val()
-///    if(tuto != true){
-///        openModal(modal)
-///    } else {
-///        database.ref("sondages").once('value').then(function(snapshotS) {
-///            database.ref("news").once('value').then(function(snapshotN) {
-///                database.ref("users/" + user + "/messages").once('value').then(function(snapshotM) {
-///                    snapshotS.forEach(function(child) {
-///                        if(snapshotS.child(child.key + "/users/" + user).val() == null){
-///                            nbMsg++
-///                        }
-///                    })
-///                    snapshotN.forEach(function(child) {
-///                        if(snapshotN.child(child.key + "/users/" + user).val() == null){
-///                            nbMsg++
-///                        }
-///                    })
-///                    snapshotM.forEach(function(child) {
-///                        if(snapshotM.child(child.key + "/lu").val() == null){
-///                            nbMsg++
-///                        }
-///                    })
-///                    if(nbMsg!=0){
-///                        updateMsg()
-///                    }
-///                })
-///            })
-///        })
-///    }
-///})
+database.ref("users/" + user + "/tuto").once("value", function(snapshot) {
+    tuto = snapshot.val()
+    if(tuto != true){
+        openModal(modal)
+    } else {
+        database.ref("sondages").once('value').then(function(snapshotS) {
+            database.ref("news").once('value').then(function(snapshotN) {
+                database.ref("users/" + user + "/messages").once('value').then(function(snapshotM) {
+                    snapshotS.forEach(function(child) {
+                        if(snapshotS.child(child.key + "/users/" + user).val() == null){
+                            nbMsg++
+                        }
+                    })
+                    snapshotN.forEach(function(child) {
+                        if(snapshotN.child(child.key + "/users/" + user).val() == null){
+                            nbMsg++
+                        }
+                    })
+                    snapshotM.forEach(function(child) {
+                        if(snapshotM.child(child.key + "/lu").val() == null){
+                            nbMsg++
+                        }
+                    })
+                    if(nbMsg!=0){
+                        updateMsg()
+                    }
+                })
+            })
+        })
+    }
+})
 
 
 
@@ -503,10 +482,10 @@ function closeModal(modal) {
 ///    }
 ///}
 
-///function bntMsgOnclick(){
-///    window.location.href ="../message/message.html"
-///    writeCookie("msg",hashDay())
-///}
+function bntMsgOnclick(){
+    window.location.href ="../message/message.html"
+    writeCookie("msg",hashDay())
+}
 
 
 document.getElementById("bSelf").addEventListener("click",function(){

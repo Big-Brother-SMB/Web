@@ -1,10 +1,11 @@
-.firebaserc
-firebase.json
 *.csv
+*.db
+*.sql
 key.json
 *.db
 code.json
-
+code.json
+*.zip
 
 # Logs
 logs
@@ -74,4 +75,3 @@ node_modules/
 # dotenv environment variables file
 .env
 package-lock.json
-package.json
