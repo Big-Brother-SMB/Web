@@ -83,7 +83,7 @@ if id_data=="err" or id_data["admin"]!=1:
 #système mise à jour
 
 
-def maj():
+def maj(version_serveur):
     print('>>> Nouvelle version trouvée')
 
     url = 'https://foyerlycee.stemariebeaucamps.fr/pyscan.zip?' + token
