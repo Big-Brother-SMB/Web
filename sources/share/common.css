@@ -83,6 +83,11 @@ p.note{
   font-size: 1.9rem !important;
 }
 
+p.note.left{
+  text-align: left !important;
+  margin-left: 1em !important;
+}
+
 footer{
   text-align: center;
   padding-bottom: 20px;
