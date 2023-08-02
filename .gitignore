@@ -1,5 +1,6 @@
 key.json
 code.json
+save.txt
 *.csv
 *.db
 *.sql

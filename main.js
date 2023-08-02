@@ -225,6 +225,8 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
       funcSocketAdmin.getUserIsBan(socket,user)
       funcSocketAdmin.getUserHasCookie(socket,user)
       funcSocketAdmin.useCookie(socket,user)
+
+      funcSocketAdmin.pyScanVersion(socket,user)
     }
   })
   io.on("connection", async (socket) => {

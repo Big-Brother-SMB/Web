@@ -30,6 +30,13 @@ export async function init(common){
     }
 
 
+    document.getElementById("voirToken").addEventListener("click", async function () {
+        common.popUp_Active("Token",common.key,(btn)=>{
+            btn.addEventListener("click",()=>{
+                common.popUp_Stop()
+            },{once:true})
+        })
+    });
 
     document.getElementById("suppToken").addEventListener("click", async function () {
         await common.socketAsync('setTuto',false)

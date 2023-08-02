@@ -1,4 +1,5 @@
 token='0NLswTuDlztGQX4h'
+version='v1'
 
 #pip install "python-socketio[client]"
 #pip install pynput
@@ -8,14 +9,19 @@ token='0NLswTuDlztGQX4h'
 from concurrent.futures import thread
 from playsound import playsound
 from pynput.keyboard import Key, Listener
-import threading,os
+import threading
+import os
 from tkinter import *
 from tkinter import messagebox
 from datetime import datetime,timedelta
 import socketio
 import time
 from math import *
+from zipfile import ZipFile
+import requests
 
+
+#système socket io
 msg=[]
 sio = socketio.Client(engineio_logger=False, logger=False, ssl_verify=False)
 
@@ -52,17 +58,52 @@ print("start")
 id_data =socketReq('id_data', None,False)
 print("\n\n\n\n\n\n\n\n\n\n")
 print(id_data)
+print("\n\n\n\n\n\n\n\n\n\n")
 if id_data=="err" or id_data["admin"]!=1:
-  print("\n\n\n\n\n\n\n\n\n\n")
   print("Erreur: token non admin")
   print("Il faut modifier le token sur la première ligne du fichier pyscan.py")
   print("\n\n\n")
   raise Exception("Erreur: token non admin")
 
 
+#vérification répertoire
+
+if os.path.basename(os.getcwd()) != "PyScan":
+    print(">>> erreur de répertoitre")
+    time.sleep(3000)
+    os._exit(1)
 
 
+#système mise à jour
 
+
+def maj():
+    print('>>> Nouvelle version trouvée')
+
+    url = 'https://foyerlycee.stemariebeaucamps.fr/pyscan.zip?' + token
+
+    print('>>> téléchargement...')
+    r = requests.get(url, allow_redirects=True,verify=False)
+    open('maj.zip', 'wb').write(r.content)
+    print('>>> téléchargement terminé') 
+
+    with ZipFile("maj.zip", 'r') as zip:
+        print('\n>>> Nouvelle version:') 
+        zip.printdir() 
+        print('\n>>> extraction...') 
+        zip.extractall() 
+        print('>>> extraction terminé')
+        os.remove("maj.zip")
+        time.sleep(3000)
+        print('>>> Relencer le programme')
+        os._exit(1)
+
+
+if socketReq("pyScanVersion", None, True)!=version:
+    maj()
+
+
+#système scan /calcule de la date
 
 try:
   j=int(input("jour:"))
@@ -83,6 +124,8 @@ day = today.weekday()
 if day>4:
   day=0
 
+
+#fonction de scan
 
 def parseTime(h,m):
   return h * 60 + m
@@ -331,6 +374,9 @@ class App(threading.Thread):
         with Listener(on_press=lambda event: show(event)) as listener:
             listener.join()
 
+
+
+#init fenetre
 fenetre = Tk()
 fenetre.geometry("450x700+0+0")
 fenetre.title("Scanner")
