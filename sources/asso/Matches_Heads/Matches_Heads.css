@@ -28,7 +28,7 @@ div.presentation,.imgAsso{
     color: black;
     margin: 10px auto;
     text-align: justify !important;
-    font-size: 1.5em !important;  
+    font-size: 1.7rem !important;  
     width: 90%;
 
     /*text-indent: 45px;*/
@@ -53,7 +53,7 @@ div.presentation,.imgAsso{
 .imgAsso p{
     color: black;
     margin: 5px 0 ;
-    font-size: 1.5em !important;  
+    font-size: 1.7rem !important;  
 }
 
 

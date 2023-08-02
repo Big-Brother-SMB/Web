@@ -45,7 +45,7 @@ body.stop{
 h1 {
   margin: auto 10px;
   padding-left: 15px;
-  font-size: 5em;
+  font-size: 5rem;
   color: white;
   margin-top: 0.2em;
   margin-bottom: auto;
@@ -74,9 +74,13 @@ header{
 }
 
 #main p{
-  font-size: 2.5em;
+  font-size: 3rem;
   font-family: 'Ubuntu';
   text-align: center;
+}
+
+p.note{
+  font-size: 1.9rem !important;
 }
 
 footer{
@@ -105,7 +109,7 @@ input,select,textarea{
   height: 1.2em;
   color: black;
   background-color: #b5c3e4;
-  font-size: 3em;
+  font-size: 3rem;
   border-bottom: 2px solid gray;
 }
 
@@ -393,7 +397,7 @@ input,select,textarea{
 #semaine{
   font-weight: bold;
   text-align: center;
-  font-size: 3em;
+  font-size: 3rem;
   font-family: 'Ubuntu';
 }
 
@@ -411,7 +415,7 @@ input,select,textarea{
   overflow: hidden;
   color: #eeeeee;
   font-weight: 600;
-  font-size: 1.2em;
+  font-size: 1.2rem;
   padding: 15px 10px;
   border-radius:20px;
   background-color: #3d546e;
@@ -437,7 +441,7 @@ input,select,textarea{
   padding: 5px 5px;
   border-radius: 12px;
   margin: 2px;
-  font-size: 1em;
+  font-size: 1rem;
   font-family: DejaVu Sans Mono, monospace;
   text-align: center;
   vertical-align: text-top;
@@ -448,7 +452,7 @@ input,select,textarea{
 }
 
 .case.info{
-  font-size: 1.2em;
+  font-size: 1.2rem;
   color: #111;
   cursor: auto;
 }
@@ -494,7 +498,7 @@ input,select,textarea{
 
 #menuSemaine{
   border-radius: 25px;
-  font-size: 2.5em;
+  font-size: 2rem !important;
   color : white;
   border: #000000 ridge 4px;
   background-color: #42804e;
@@ -544,11 +548,11 @@ input,select,textarea{
 
 @media screen and (max-width: 1000px) {
   .case {
-    font-size: 1.4em;
+    font-size: 1.4rem;
   }
   
   .case.info{
-    font-size: 1.7em;
+    font-size: 1.7rem;
   }
 
   .case.midi{
@@ -662,7 +666,7 @@ vert{
 }
 
 label{
-  font-size: 1.7em;
+  font-size: 1.7rem;
   font-family: 'Ubuntu';
 }
 
@@ -697,8 +701,8 @@ input[type="radio"]{
   background-color: #8b9fc9;
   border-radius:8px;
   width: 97%;
-  font-size: 2em;
-  height: 2.5em;
+  font-size: 2rem;
+  height: 5rem;
   padding: 0;
   margin-top: 0.2em;
 }
@@ -709,7 +713,6 @@ input[type="radio"]{
 }
 .ami.small p{
   width: 100%;
-  font-size: 1em !important;
   margin: auto;
 }
 .ami.small div{
@@ -915,21 +918,19 @@ input:checked + .slider:before {
 /*---------creneau---------*/
 
 select{
-  height: 2.2em;
-  font-size: 1.7em;
+  height: 4rem;
+  font-size: 2.5rem;
   width: 90%;
   border-radius: 10px;
 }
 
 p select{
-  height: 1.5em;
-  font-size: 1em;
   width: 65%;
 }
 
 h2{
   color: rgb(255, 0, 0);
-  font-size: 3em;
+  font-size: 3rem;
 }
 
 .btn.algo{
@@ -963,7 +964,7 @@ h2{
   text-align: center;
   color: rgb(167, 167, 167);
   margin-top: 50px;
-  font-size: 3em !important;
+  font-size: 3rem !important;
   font-weight: bold;
 }
 
@@ -1037,7 +1038,7 @@ h2{
 /*-----------tableaux----------------------*/
 
 table{
-  font-size: 2em;
+  font-size: 2rem;
   width:95%;
   overflow:scroll;
   overflow-x:hidden;
@@ -1051,7 +1052,7 @@ td {
 }
 
 thead tr:first-child{
-  font-size: 2em;
+  font-size: 2rem;
 }
 thead,
 tfoot {
@@ -1062,7 +1063,7 @@ tfoot {
 
 /* historique */
 textarea{
-  font-size: 2em;
+  font-size: 2rem;
   width: 95%;
   height: 30vh;
   resize: none;
@@ -1146,11 +1147,11 @@ p.cookie.titre{
 }
 p.cookie.date, p.cookie.quantity, p.cookie.justificatif{
   color: #000000 !important;
-  font-size: 1.8em !important;
+  font-size: 1.8rem !important;
 }
 p.cookie.period{
   color: #000000 !important;
-  font-size: 1em !important;
+  font-size: 1rem !important;
   font-style: oblique;
 }
 
@@ -1176,7 +1177,7 @@ p.cookie.period{
 
 .collapsible{
   border-radius: 5px;
-  font-size: 3.3em;
+  font-size: 3.3rem;
   color: white;
   background-color: rgb(60,80,112);
   padding-left: 30px;
@@ -1187,7 +1188,7 @@ p.cookie.period{
 
 #main h3{
   border-radius: 5px;
-  font-size: 2.3em;
+  font-size: 2.3rem;
   color : white;
   background-color: rgb(119, 129, 145);
   padding-left: 60px;
@@ -1202,7 +1203,7 @@ p.cookie.period{
   position: relative;
   padding-left: 70px;
   padding-right: 70px;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   font-family: "Optima", sans-serif ;
 }
 
@@ -1227,10 +1228,10 @@ p.cookie.period{
   }
 }
 #qr-reader{
-  font-size: 3em;
+  font-size: 3rem;
 }
 #qr-reader div button,#qr-reader div select{
-  font-size: 1em;
+  font-size: 1rem;
 }
 
 #pass{
@@ -1298,7 +1299,7 @@ p.cookie.period{
 
 #main #divPass p {
   text-align: center;
-  font-size: 5em !important;
+  font-size: 5rem !important;
   margin:5px;
   margin-top: 30px;
 }
