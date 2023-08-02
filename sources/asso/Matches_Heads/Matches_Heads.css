@@ -28,7 +28,7 @@ div.presentation,.imgAsso{
 
 .presentation p{
     color: black;
-    margin: 10px auto;
+    margin: 1.3rem auto;
     text-align: justify !important;
     font-size: 1.7rem !important;  
     width: 90%;
@@ -39,7 +39,7 @@ div.presentation,.imgAsso{
     word-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+}
 
 .imgAsso{
     width: 300px;
