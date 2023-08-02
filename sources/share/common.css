@@ -92,7 +92,7 @@ footer{
   text-align: center;
   padding-bottom: 20px;
   bottom: 0;
-  left: calc(25% + 41.5px);
+  left: 25%;
   width: 50%;
   position: absolute;
   border-radius: 25px;
@@ -260,7 +260,7 @@ input,select,textarea{
   }
 
   footer{
-    left: 25%;
+    left: calc(25% + 41.5px);
   }
 
   #btn_menu{
