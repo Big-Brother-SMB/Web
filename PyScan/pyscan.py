@@ -69,15 +69,15 @@ def socketReq(event,data,admin):
       return []
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
+print("\n\n\n\n\n\n\n\n\n\n")
 print(">>> start")
 id_data =socketReq('id_data', None,False)
-print("\n\n\n\n\n\n\n\n\n\n")
+print(">>> id_data")
 print(id_data)
-print("\n\n\n\n\n\n\n\n\n\n")
+print("\n\n\n")
 if id_data=="err" or id_data["admin"]!=1:
   print(">>>Erreur: token non admin")
   print(">>> Il faut modifier le token sur la première ligne du fichier save.txt")
-  print("\n\n\n")
   os._exit(1)
 
 #système mise à jour
