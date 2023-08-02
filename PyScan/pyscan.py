@@ -72,11 +72,11 @@ sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},nam
 print("\n\n\n\n\n\n\n\n\n\n")
 print(">>> start")
 id_data =socketReq('id_data', None,False)
-print(">>> id_data")
+print(">>> id_data:")
 print(id_data)
 print("\n\n\n")
 if id_data=="err" or id_data["admin"]!=1:
-  print(">>>Erreur: token non admin")
+  print(">>> Erreur: token non admin")
   print(">>> Il faut modifier le token sur la première ligne du fichier save.txt")
   os._exit(1)
 
@@ -94,7 +94,7 @@ def maj():
     print('>>> téléchargement terminé') 
 
     with ZipFile("maj.zip", 'r') as zip:
-        print('\n>>> Nouvelle version:') 
+        print('\n>>> Nouvelle version(' + version_serveur + '):') 
         zip.printdir() 
         print('\n>>> extraction...') 
         zip.extractall() 
@@ -104,7 +104,7 @@ def maj():
 version_serveur = socketReq("pyScanVersion", None, True)
 if version_serveur!=version and version!="dev":
     version=version_serveur
-    maj()
+    maj(version_serveur)
 
     # enregistre les données de connection et de version
     print('>>> save data')
