@@ -21,7 +21,7 @@ import requests
 
 if os.path.basename(os.getcwd()) != "PyScan":
     print(">>> erreur de répertoitre")
-    time.sleep(3000)
+    time.sleep(3)
     os._exit(1)
 
 #système de récupération de save.txt
@@ -78,6 +78,7 @@ print("\n\n\n")
 if id_data=="err" or id_data["admin"]!=1:
   print(">>> Erreur: token non admin")
   print(">>> Il faut modifier le token sur la première ligne du fichier save.txt")
+  time.sleep(3)
   os._exit(1)
 
 #système mise à jour
@@ -113,8 +114,8 @@ if version_serveur!=version and version!="dev":
     file.write("\n")
     file.write(version)
     file.close()
-    time.sleep(3000)
     print('>>> Relencer le programme')
+    time.sleep(3)
     os._exit(1)
 
 
@@ -401,7 +402,7 @@ fenetre.geometry("450x700+0+0")
 fenetre.title("Scanner")
 fenetre.iconphoto(True, PhotoImage(file='logo.png'))
 def on_closing():
-  print("exit")
+  print(">>> exit")
   os._exit(1)
 
 fenetre.protocol("WM_DELETE_WINDOW", on_closing)
