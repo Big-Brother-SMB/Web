@@ -40,8 +40,6 @@ module.exports = async(req_url) => {
     }else if(pathName=="/pyscan.zip" && await user.admin > 0){
       await zipDirectory(sources_url+"/../PyScan",sources_url+"/../pyscan.zip")
       fichier = await readFileAsync(sources_url+"/../pyscan.zip")
-    }else if(extName == '.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg' || extName == '.gif'){
-      fichier = await readFileAsync(sources_url+pathName)
     }else if(extName =='.html' || extName == '.css' || extName == '.js'){
       if(modeAuto){
         fichier = await readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+extName,READ_OPTIONS)
@@ -66,6 +64,8 @@ module.exports = async(req_url) => {
         .replace('{{TITRE}}',titre.toString())
         .replace('{{MAIN}}',main.toString())
         .replace('{{SIDEBAR}}',sidebar.toString())
+    }else{//autre extName
+      fichier = await readFileAsync(sources_url+pathName)
     }
   }catch(e){
     console.error(e);console.log('c1');

@@ -61,7 +61,7 @@ const oauth2Client = new google.auth.OAuth2(
 let mimeTypes = {
   '.html': 'text/html',
   '.css': 'text/css',
-  '.js': 'text/javascript',
+  '.js' : 'text/javascript',
   '.jpg': 'image/jpeg',
   '.png': 'image/png',
   '.ico': 'image/x-icon',
@@ -69,10 +69,11 @@ let mimeTypes = {
   '.svg': 'image/svg+xml',
   '.eot': 'appliaction/vnd.ms-fontobject',
   '.ttf': 'aplication/font-sfnt',
-  '.db': '',
+  '.db' : 'application/octet-stream',
   '.zip': 'application/zip',
   '.xml': 'application/xml',
-  '.txt': 'text/plain'
+  '.txt': 'text/plain',
+  '.pdf': 'application/pdf'
 };
 
 
