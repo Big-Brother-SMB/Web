@@ -69,17 +69,16 @@ def socketReq(event,data,admin):
       return []
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
-print("start")
+print(">>> start")
 id_data =socketReq('id_data', None,False)
 print("\n\n\n\n\n\n\n\n\n\n")
 print(id_data)
 print("\n\n\n\n\n\n\n\n\n\n")
 if id_data=="err" or id_data["admin"]!=1:
-  print("a"+token+"a")
-  print("Erreur: token non admin")
-  print("Il faut modifier le token sur la première ligne du fichier pyscan.py")
+  print(">>>Erreur: token non admin")
+  print(">>> Il faut modifier le token sur la première ligne du fichier save.txt")
   print("\n\n\n")
-  raise Exception("Erreur: token non admin")
+  os._exit(1)
 
 #système mise à jour
 
@@ -103,7 +102,7 @@ def maj():
         os.remove("maj.zip")
 
 version_serveur = socketReq("pyScanVersion", None, True)
-if version_serveur!=version:
+if version_serveur!=version and version!="dev":
     version=version_serveur
     maj()
 
