@@ -100,6 +100,7 @@ def maj(version_serveur):
         print('\n>>> extraction...') 
         zip.extractall() 
         print('>>> extraction terminé')
+        zip.close()
         os.remove("maj.zip")
 
 version_serveur = socketReq("pyScanVersion", None, True)
