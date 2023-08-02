@@ -97,7 +97,7 @@ def maj(version_serveur):
     with ZipFile("maj.zip", 'r') as zip:
         print('\n>>> Nouvelle version(' + version_serveur + '):') 
         zip.printdir() 
-        print('\n>>> extraction...') 
+        print('\n>>> extraction...')
         zip.extractall() 
         print('>>> extraction terminé')
         zip.close()
