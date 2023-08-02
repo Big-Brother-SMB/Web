@@ -1,6 +1,3 @@
-token='0NLswTuDlztGQX4h'
-version='v1'
-
 #pip install "python-socketio[client]"
 #pip install pynput
 #pip install playsound
@@ -20,6 +17,24 @@ from math import *
 from zipfile import ZipFile
 import requests
 
+#vérification répertoire
+
+if os.path.basename(os.getcwd()) != "PyScan":
+    print(">>> erreur de répertoitre")
+    time.sleep(3000)
+    os._exit(1)
+
+#système de récupération de save.txt
+token=''
+version=''
+if os.path.exists("save.txt"):
+  file = open("save.txt")
+  token = file.readline().replace("\n","")
+  version = file.readline().replace("\n","")
+  file.close()
+else:
+  file = open("save.txt", 'w')
+  file.close()
 
 #système socket io
 msg=[]
@@ -60,19 +75,11 @@ print("\n\n\n\n\n\n\n\n\n\n")
 print(id_data)
 print("\n\n\n\n\n\n\n\n\n\n")
 if id_data=="err" or id_data["admin"]!=1:
+  print("a"+token+"a")
   print("Erreur: token non admin")
   print("Il faut modifier le token sur la première ligne du fichier pyscan.py")
   print("\n\n\n")
   raise Exception("Erreur: token non admin")
-
-
-#vérification répertoire
-
-if os.path.basename(os.getcwd()) != "PyScan":
-    print(">>> erreur de répertoitre")
-    time.sleep(3000)
-    os._exit(1)
-
 
 #système mise à jour
 
@@ -94,13 +101,26 @@ def maj():
         zip.extractall() 
         print('>>> extraction terminé')
         os.remove("maj.zip")
-        time.sleep(3000)
-        print('>>> Relencer le programme')
-        os._exit(1)
 
-
-if socketReq("pyScanVersion", None, True)!=version:
+version_serveur = socketReq("pyScanVersion", None, True)
+if version_serveur!=version:
+    version=version_serveur
     maj()
+
+    # enregistre les données de connection et de version
+    print('>>> save data')
+    file = open("save.txt", 'w')
+    file.write(token)
+    file.write("\n")
+    file.write(version)
+    file.close()
+    time.sleep(3000)
+    print('>>> Relencer le programme')
+    os._exit(1)
+
+
+
+
 
 
 #système scan /calcule de la date
