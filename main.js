@@ -1,18 +1,3 @@
-/*const { WebSocketServer } = require('ws');
-
-const server2 = new WebSocketServer({ port: 3001 });
-
-server2.on("connection", (socket) => {
-  function loopT(){
-    socket.send(JSON.stringify({
-      type: "bonjour du client",
-      content: [ 3, "4" ],
-      info: 'cc'
-    }));
-    setTimeout(loopT,5000)
-  }
-  loopT()
-});*/
 const http = require('http');
 const https = require('https');
 const url = require('url');
@@ -41,7 +26,7 @@ const generatePage = require('./server/generatePage.js')
 const funcDate = require('./server/functionsDate.js')
 
 
-const pino = require('pino');
+/*const pino = require('pino');
 const transport = {
   targets: [
     {
@@ -55,11 +40,28 @@ const transport = {
 const logger = pino({
   level: 'trace',
   transport
-})
+})*/
+
+/*const { WebSocketServer } = require('ws');
+
+const server2 = new WebSocketServer({ port: 3001 });
+
+server2.on("connection", (socket) => {
+  function loopT(){
+    socket.send(JSON.stringify({
+      type: "bonjour du client",
+      content: [ 3, "4" ],
+      info: 'cc'
+    }));
+    setTimeout(loopT,5000)
+  }
+  loopT()
+});*/
+
 
 console.log("start")
 
-const jsonObj = JSON.parse(fs.readFileSync(__dirname+"/../code.json"));
+const jsonObj = JSON.parse(fs.readFileSync(path.join(__dirname,"..","code.json")));
 let address = jsonObj.address
 const oauth2Client = new google.auth.OAuth2(
   jsonObj.client_id,
@@ -91,19 +93,10 @@ const authorizationUrl = oauth2Client.generateAuthUrl({
   include_granted_scopes: true
 });
 
-/*
-function convertPath(path){
-  if(process.platform=="win32"){
-    return path.win32.normalize(path)
-  }else{
-    return path.posix.normalize(path)
-  }
-}
-*/
 process.env.TZ = 'Europe/Amsterdam' 
 
 let server
-let db = new sqlite3.Database(__dirname+'/../main.db', err => {
+let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   if (err)
     throw err
   db.serialize(init_DB(db))
@@ -127,8 +120,9 @@ let db = new sqlite3.Database(__dirname+'/../main.db', err => {
           let id = uuidG.v4()
 
           let oldpath = files.file[0].filepath;
-          let newpath = __dirname+'/sources/asso/article/pdf/'+id+'.pdf';
-          if(!fs.existsSync(path.join(__dirname,"sources","asso","article","pdf"))) fs.mkdirSync(path.join(__dirname,"sources","asso","article","pdf"));
+          let dirPath = path.join(__dirname,"sources","asso","article","pdf")
+          let newpath = path.join(dirPath,id+'.pdf');
+          if(!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
           fs.copyFile(oldpath, newpath, function (err) {
             if (err){
               res.write("err");

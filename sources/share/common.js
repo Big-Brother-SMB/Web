@@ -101,7 +101,6 @@ export class common{
       }
     }else{
       document.getElementById("container").classList.add('loading')
-      console.log(notSaveHistory,!notSaveHistory)
       if(!notSaveHistory){
         window.history.pushState({url:url},"", url);
       }

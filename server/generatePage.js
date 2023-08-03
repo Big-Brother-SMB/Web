@@ -9,7 +9,7 @@ const readFileAsync = promisify(readFile)
 
 
 const READ_OPTIONS = {encoding:'UTF-8'}
-const sources_url = `${__dirname}/../sources`;
+const sources_url = path.join(__dirname,"..","sources");
 
 
 module.exports = async(req_url) => {
@@ -36,15 +36,15 @@ module.exports = async(req_url) => {
   try{
     let user = await User.searchToken(url.parse(req_url).path.split('?')[1])
     if(pathName=="/database.db" && await user.admin > 0){
-      fichier = await readFileAsync(sources_url+"/../../main.db")
+      fichier = await readFileAsync(path.join(sources_url,"..","..","main.db"))
     }else if(pathName=="/pyscan.zip" && await user.admin > 0){
-      await zipDirectory(sources_url+"/../PyScan",sources_url+"/../pyscan.zip")
-      fichier = await readFileAsync(sources_url+"/../pyscan.zip")
+      await zipDirectory(path.join(sources_url,"..","PyScan"),path.join(sources_url,"..","PyScan.zip"))
+      fichier = await readFileAsync(path.join(sources_url,"..","PyScan.zip"))
     }else if(extName =='.html' || extName == '.css' || extName == '.js'){
       if(modeAuto){
-        fichier = await readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+extName,READ_OPTIONS)
+        fichier = await readFileAsync(path.join(sources_url,dirName,subFolder,baseName+extName),READ_OPTIONS)
       }else{
-        fichier = await readFileAsync(sources_url+pathName,READ_OPTIONS)
+        fichier = await readFileAsync(path.join(sources_url,pathName),READ_OPTIONS)
       }
     }else if(extName == ''){
       let typeSideBar=dirName.split("/")[1]
@@ -65,11 +65,11 @@ module.exports = async(req_url) => {
         .replace('{{MAIN}}',main.toString())
         .replace('{{SIDEBAR}}',sidebar.toString())
     }else{//autre extName
-      fichier = await readFileAsync(sources_url+pathName)
+      fichier = await readFileAsync(path.join(sources_url,pathName))
     }
   }catch(e){
     console.error(e);console.log('c1');
-    fichier = await readFileAsync(sources_url+'/share/404.html',READ_OPTIONS)
+    fichier = await readFileAsync(path.join(sources_url,"share","404.html"),READ_OPTIONS)
     err404=true
   }
 
