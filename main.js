@@ -128,7 +128,7 @@ let db = new sqlite3.Database(__dirname+'/../main.db', err => {
 
           let oldpath = files.file[0].filepath;
           let newpath = __dirname+'/sources/asso/article/pdf/'+id+'.pdf';
-          fs.mkdirSync(path.join(__dirname,"sources","asso","article","pdf"));
+          if(!fs.existsSync(path.join(__dirname,"sources","asso","article","pdf"))) fs.mkdirSync(path.join(__dirname,"sources","asso","article","pdf"));
           fs.copyFile(oldpath, newpath, function (err) {
             if (err){
               res.write("err");

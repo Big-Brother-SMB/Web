@@ -3,6 +3,6 @@ export async function init(common){
         get: (searchParams, prop) => searchParams.get(prop),
     });
     if(params.pdf!=null){
-        common.display(document.getElementById('cnv'),'/asso/article/pdf/' + params.pdf + '.pdf')
+        common.displayPDF(document.getElementById('cnv'),'/asso/article/pdf/' + params.pdf + '.pdf')
     }
 }

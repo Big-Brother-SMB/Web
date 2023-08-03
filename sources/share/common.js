@@ -287,9 +287,9 @@ export class common{
       this.uuid = id_data.uuid
     } else {
       if(window.location.pathname.includes("/asso")){
-        let bnt = document.getElementById("without_account")
-        console.log(bnt)
-        if(bnt!=null) bnt.setAttribute('href',"/")
+        let btn = document.getElementById("without_account")
+        console.log(btn)
+        if(btn!=null) btn.setAttribute('href',"/")
       }else{
         this.deco()
       }
@@ -758,7 +758,7 @@ export class common{
   }
 
   //-----------------------------------PDF-----------------------------------------
-  static display(divForCanvas,pdf){
+  static displayPDF(divForCanvas,pdf){
     let loadingTask = pdfjsLib.getDocument(pdf);
     loadingTask.promise.then(function(pdf) {
       for(let i = 1;i<=pdf.numPages;i++){
@@ -791,6 +791,22 @@ export class common{
         });
       }
     });
+  }
+
+  static uploadPDF(group){
+    this.popUp_Active("Upload PDF",
+      "<form action='/fileupload' method='post' enctype='multipart/form-data'>\n"
+      +"  <input type='text' name='title' placeholder='Titre'><br>\n"
+      +"  <input type='file' name='file'><br>\n"
+      +"  <input style='display: none;' type='text' name='token' value='" + this.key + "'>\n"
+      +"  <input style='display: none;' type='text' name='group' value='" + group + "'>\n"
+      +"  <input type='submit'>\n"
+      +"</form>",(btn)=>{
+        btn.innerHTML='Annuler'
+        btn.addEventListener("click",()=>{
+          this.popUp_Stop()
+        },{once:true})
+      })
   }
 }
 

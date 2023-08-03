@@ -398,6 +398,11 @@ input,select,textarea{
 }
 
 
+#popup-body form input{
+  height: 50px;
+  width: 100%;
+  margin: 20px;
+}
 /*------------------tableau de réservation-------------*/
 #semaine{
   font-weight: bold;
