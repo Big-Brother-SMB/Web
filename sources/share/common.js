@@ -105,11 +105,11 @@ export class common{
         window.history.pushState({url:url},"", url);
       }
       url=url.split('?')[0]
-      document.getElementById("css_page").href=url+'.css'
+      document.getElementById("css_page").href = url+'/'+url.split('/').pop()+'.css'
       await this.readFileHTML(url,'tete','EN-TETE')
       await this.readFileHTML(url,'titre','TITRE')
       await this.readFileHTML(url,'main','main')
-      import(url+".js").then(async (module) => {
+      import(url+'/'+url.split('/').pop()+".js").then(async (module) => {
         await common.reloadCommon()
         await module.init(common)
         document.getElementById("container").classList.remove('loading')
@@ -127,7 +127,7 @@ export class common{
 
   static async readFileHTMLPath(idHTML,path){
     await new Promise(async (resolve, reject) => {
-      const response = await fetch(window.origin+'/auto0'+path);
+      const response = await fetch(window.origin+path);
       const data = await response.blob();
       let file = new File([data], "truc.html", {type: data.type || "text/html",})
       var reader  = new FileReader();
@@ -625,7 +625,7 @@ export class common{
           name = ""
           break;
         case 1:
-          name = "/dark.css"
+          name = "/share/dark.css"
           break;
         default:
           break;
@@ -815,7 +815,8 @@ if(typeSideBar!="admin" && typeSideBar!="asso"){
   typeSideBar="user"
 }
 document.getElementById("mySidenav").className=typeSideBar
-import(document.location.pathname+".js").then(async (module) => {
+
+import(document.location.pathname+'/'+document.location.pathname.split('/').pop()+".js").then(async (module) => {
   await common.startUp()
   await common.reloadCommon()
   await module.init(common)
