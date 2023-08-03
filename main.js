@@ -140,7 +140,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           }
         } catch (error) {}
       });
-    } else if (req.url == '/fileupload/img') {
+    /*} else if (req.url == '/fileupload/img') {
       let form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
         if(files.image[0].mimetype.startsWith("image/")){
@@ -161,7 +161,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
             }
           });
         }
-      });
+      });*/
     } else if (req.url.startsWith('/connexion/oauth2callback')) {
       let q = url.parse(req.url, true).query;
       if (q.error || q.code===undefined) {
