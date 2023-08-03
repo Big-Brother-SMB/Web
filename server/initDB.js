@@ -99,9 +99,19 @@ module.exports = (db)=>{
         db.run('CREATE TABLE ban(id uuid,uuid uuid,debut Date,fin Date,justificatif text)')
     })
 
+    //pdf / post
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='pdf'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE pdf(id uuid,from2 uuid,group2 text,title text,date Date)')
+    })
+    /*db.get("SELECT * FROM sqlite_master where type='table' AND name='post'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE post(id uuid,from2 uuid,group2 text,texte text,title text,date Date)')
+    })*/
+
 
     //messages / news / sondage
-    db.get("SELECT * FROM sqlite_master where type='table' AND name='messages'", (err, data) => {
+    /*db.get("SELECT * FROM sqlite_master where type='table' AND name='messages'", (err, data) => {
       if(data==undefined)
         db.run('CREATE TABLE messages(id uuid,from2 text,to2 text,lu boolean,texte text,title text,date text)')
     })
@@ -120,5 +130,5 @@ module.exports = (db)=>{
     db.get("SELECT * FROM sqlite_master where type='table' AND name='sondages_reponse'", (err, data) => {
       if(data==undefined)
         db.run('CREATE TABLE sondages_reponse(id uuid,user uuid,reponse text)')
-    })
+    })*/
   }

@@ -75,4 +75,5 @@ h2{
     font-family: 'NewRocker', sans-serif !important;
     font-size: 4rem;
     color: rgb(189, 0, 0);
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }

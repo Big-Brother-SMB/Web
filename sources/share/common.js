@@ -101,6 +101,7 @@ export class common{
       }
     }else{
       document.getElementById("container").classList.add('loading')
+      console.log(notSaveHistory,!notSaveHistory)
       if(!notSaveHistory){
         window.history.pushState({url:url},"", url);
       }
@@ -174,9 +175,7 @@ export class common{
     //----------------------historique-----------------------
 
     window.addEventListener("popstate", (event) => {
-      if(event.state!=null){
-        this.loadpage(event.state.url,true)
-      }
+      this.loadpage(document.location.pathname,true)
     });
 
 
@@ -758,9 +757,41 @@ export class common{
     }
   }
 
+  //-----------------------------------PDF-----------------------------------------
+  static display(divForCanvas,pdf){
+    let loadingTask = pdfjsLib.getDocument(pdf);
+    loadingTask.promise.then(function(pdf) {
+      for(let i = 1;i<=pdf.numPages;i++){
+        pdf.getPage(i).then(function(page) {
+            let scale = 2;
+            let viewport = page.getViewport({ scale: scale, });
+            // Support HiDPI-screens.
+            let outputScale = window.devicePixelRatio || 1;
+            
+            let canvas = document.createElement("canvas");
+            let context = canvas.getContext('2d');
+            
+            canvas.width = Math.floor(viewport.width * outputScale);
+            canvas.height = Math.floor(viewport.height * outputScale);
+            canvas.style.width = "100%";
+            canvas.style.height =  "auto";
+            
+            let transform = outputScale !== 1
+              ? [outputScale, 0, 0, outputScale, 0, 0]
+              : null;
+              
+            let renderContext = {
+              canvasContext: context,
+              transform: transform,
+              viewport: viewport
+            };
+            page.render(renderContext);
 
-
-
+            divForCanvas.appendChild(canvas)
+        });
+      }
+    });
+  }
 }
 
 //démarre le script qui correspond à la page
@@ -775,3 +806,4 @@ import(document.location.pathname+".js").then(async (module) => {
   await module.init(common)
   return
 })
+

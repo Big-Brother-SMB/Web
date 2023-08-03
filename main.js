@@ -13,6 +13,33 @@ server2.on("connection", (socket) => {
   }
   loopT()
 });*/
+const http = require('http');
+const https = require('https');
+const url = require('url');
+const uuidG = require('uuid');
+const sqlite3 = require('sqlite3')
+const { google, chat_v1 } = require('googleapis');
+const { Server } = require("socket.io");
+const fs = require('fs');
+const rand = require("generate-key");
+const dateTime = require('date-and-time');
+const { firestore } = require('googleapis/build/src/apis/firestore');
+const path = require('node:path');
+const { setgroups } = require('process');
+const { generateKey } = require('crypto');
+const { table } = require('console');
+const { promisify } = require('util');
+const formidable = require('formidable');
+
+const User = require('./server/User.js')
+const funcDB = require('./server/functionsDB.js')
+const funcSocket = require('./server/functionsSocket.js')
+const funcSocketAdmin = require('./server/functionsSocketAdmin.js')
+const UserSelect = require('./server/UserSelect.js')
+const init_DB = require('./server/initDB.js')
+const generatePage = require('./server/generatePage.js')
+const funcDate = require('./server/functionsDate.js')
+
 
 const pino = require('pino');
 const transport = {
@@ -31,24 +58,6 @@ const logger = pino({
 })
 
 console.log("start")
-
-
-const http = require('http');
-const https = require('https');
-const url = require('url');
-const uuidG = require('uuid');
-const sqlite3 = require('sqlite3')
-const { google, chat_v1 } = require('googleapis');
-const { Server } = require("socket.io");
-const fs = require('fs');
-const rand = require("generate-key");
-const dateTime = require('date-and-time');
-const { firestore } = require('googleapis/build/src/apis/firestore');
-const path = require('node:path');
-const { setgroups } = require('process');
-const { generateKey } = require('crypto');
-const { table } = require('console');
-const { promisify } = require('util');
 
 const jsonObj = JSON.parse(fs.readFileSync(__dirname+"/../code.json"));
 let address = jsonObj.address
@@ -82,26 +91,6 @@ const authorizationUrl = oauth2Client.generateAuthUrl({
   include_granted_scopes: true
 });
 
-let server
-
-let db
-
-let User = require('./server/User.js')
-
-let funcDB = require('./server/functionsDB.js')
-
-const funcSocket = require('./server/functionsSocket.js')
-
-const funcSocketAdmin = require('./server/functionsSocketAdmin.js')
-
-const UserSelect = require('./server/UserSelect.js')
-
-const init_DB = require('./server/initDB.js')
-
-const generatePage = require('./server/generatePage.js')
-
-const funcDate = require('./server/functionsDate.js')
-
 /*
 function convertPath(path){
   if(process.platform=="win32"){
@@ -113,7 +102,8 @@ function convertPath(path){
 */
 process.env.TZ = 'Europe/Amsterdam' 
 
-db = new sqlite3.Database(__dirname+'/../main.db', err => {
+let server
+let db = new sqlite3.Database(__dirname+'/../main.db', err => {
   if (err)
     throw err
   db.serialize(init_DB(db))
@@ -125,6 +115,36 @@ db = new sqlite3.Database(__dirname+'/../main.db', err => {
     if (req.url == '/connexion/apigoogle') {
       res.writeHead(301, { "Location": authorizationUrl });
       res.end();
+    } else if (req.url == '/fileupload') {
+      let form = new formidable.IncomingForm();
+      form.parse(req, async function (err, fields, files) {
+        //files.file[0].originalFilename
+        let title = fields.title[0];
+        let group = fields.group[0];
+        let user = await User.searchToken(fields.token[0])
+        let userGroups = await user.groups
+        if("application/pdf"==files.file[0].mimetype && user.uuid!=null && userGroups.includes(group)){
+          let id = uuidG.v4()
+
+          let oldpath = files.file[0].filepath;
+          let newpath = __dirname+'/sources/asso/article/pdf/'+id+'.pdf';
+          fs.mkdirSync(path.join(__dirname,"sources","asso","article","pdf"));
+          fs.copyFile(oldpath, newpath, function (err) {
+            if (err){
+              res.write("err");
+              res.end();
+              throw err;
+            }else{
+              user.addPDF(id,title,group)
+              res.write('<script>history.back()</script>');
+              res.end();
+            }
+          });
+        }else{
+          res.write("C'est pas un pdf ou vous n'avez pas la permision");
+          res.end();
+        }
+      });
     } else if (req.url.startsWith('/connexion/oauth2callback')) {
       let q = url.parse(req.url, true).query;
       if (q.error || q.code===undefined) {

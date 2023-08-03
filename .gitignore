@@ -6,6 +6,7 @@ save.txt
 *.sql
 *.db
 *.zip
+*.pdf
 
 # Logs
 logs

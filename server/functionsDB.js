@@ -387,6 +387,26 @@ module.exports = class funcDB{
     })
   }
 
+
+  //PDF
+
+  static getPDF(){
+    let uuid=this.uuid
+    return new Promise(function(resolve, reject) {
+      let msg = {mp:[],news:[],sondage:[]}
+      db.all("SELECT * FROM messages WHERE from2=? or to2=?",[uuid,uuid], (err, data) => {
+        try{
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve([])
+          }
+        }catch(e){console.error(e);console.log('d27');;resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
   //% messages / news / sondages
 
   static addSondage(from,texte,title,date,mode,choix){
