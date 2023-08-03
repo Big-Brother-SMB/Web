@@ -15,7 +15,6 @@ const sources_url = path.join(__dirname,"..","sources");
 module.exports = async(req_url) => {
   let pathName = url.parse(req_url).path.split('?')[0];
   
-  console.log(pathName)
   if(pathName === '/' || pathName === '/index'){
     pathName = '/index.html';
   }
@@ -46,7 +45,7 @@ module.exports = async(req_url) => {
         readFileAsync(path.join(sources_url,'share',typeSideBar+'_sidebar.html'),READ_OPTIONS)
       ])
       fichier = modele.toString()
-        .replace('{{CSS}}',dirName+baseName+"/"+baseName+'.css')
+        .replace('{{CSS}}',dirName+"/"+baseName+"/"+baseName+'.css')
         .replace('{{EN-TETE}}',tete.toString())
         .replace('{{TITRE}}',titre.toString())
         .replace('{{MAIN}}',main.toString())
