@@ -52,11 +52,11 @@ module.exports = async(req_url) => {
         typeSideBar="user"
       }
       const [modele,tete,titre,main,sidebar] = await Promise.all([
-        readFileAsync(sources_url+'/share/model.html',READ_OPTIONS),
-        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.tete.html',READ_OPTIONS),
-        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.titre.html',READ_OPTIONS),
-        readFileAsync(sources_url+dirName+'/'+subFolder+'/'+baseName+'.main.html',READ_OPTIONS),
-        readFileAsync(sources_url+'/share/'+ typeSideBar +'_sidebar.html',READ_OPTIONS)
+        readFileAsync(path.join(sources_url,'share','model.html'),READ_OPTIONS),
+        readFileAsync(path.join(sources_url,dirName,subFolder,baseName+'.tete.html'),READ_OPTIONS),
+        readFileAsync(path.join(sources_url,dirName,subFolder,baseName+'.titre.html'),READ_OPTIONS),
+        readFileAsync(path.join(sources_url,dirName,subFolder,baseName+'.main.html'),READ_OPTIONS),
+        readFileAsync(path.join(sources_url,'share',typeSideBar+'_sidebar.html'),READ_OPTIONS)
       ])
       fichier = modele.toString()
         .replace('{{CSS}}',pathName+'.css')
