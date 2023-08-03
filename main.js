@@ -108,35 +108,58 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
     if (req.url == '/connexion/apigoogle') {
       res.writeHead(301, { "Location": authorizationUrl });
       res.end();
-    } else if (req.url == '/fileupload') {
+    } else if (req.url == '/fileupload/pdf') {
       let form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
-        //files.file[0].originalFilename
-        let title = fields.title[0];
-        let group = fields.group[0];
-        let user = await User.searchToken(fields.token[0])
-        let userGroups = await user.groups
-        if("application/pdf"==files.file[0].mimetype && user.uuid!=null && userGroups.includes(group)){
-          let id = uuidG.v4()
-
-          let oldpath = files.file[0].filepath;
-          let dirPath = path.join(__dirname,"sources","asso","article","pdf")
-          let newpath = path.join(dirPath,id+'.pdf');
+        try {
+          let title = fields.title[0];
+          let group = fields.group[0];
+          let user = await User.searchToken(fields.token[0])
+          let userGroups = await user.groups
+          if("application/pdf"==files.file[0].mimetype && user.uuid!=null && userGroups.includes(group)){
+            let id = uuidG.v4()
+  
+            let oldpath = files.file[0].filepath;
+            let dirPath = path.join(__dirname,"sources","asso","article","pdf")
+            let newpath = path.join(dirPath,id+'.pdf');
+            if(!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
+            fs.copyFile(oldpath, newpath, function (err) {
+              if (err){
+                res.write("err");
+                res.end();
+                throw err;
+              }else{
+                user.addPDF(id,title,group)
+                res.write('<script>history.back()</script>');
+                res.end();
+              }
+            });
+          }else{
+            res.write("C'est pas un pdf ou vous n'avez pas la permision");
+            res.end();
+          }
+        } catch (error) {}
+      });
+    } else if (req.url == '/fileupload/img') {
+      let form = new formidable.IncomingForm();
+      form.parse(req, async function (err, fields, files) {
+        if(files.image[0].mimetype.startsWith("image/")){
+          let oldpath = files.image[0].filepath;
+          let dirPath = path.join(__dirname,"sources","fileupload")
           if(!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
+          dirPath = path.join(dirPath,"img")
+          if(!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
+          let newpath = path.join(dirPath,files.image[0].originalFilename);
           fs.copyFile(oldpath, newpath, function (err) {
             if (err){
               res.write("err");
               res.end();
               throw err;
             }else{
-              user.addPDF(id,title,group)
-              res.write('<script>history.back()</script>');
+              res.writeHead(200, {});
               res.end();
             }
           });
-        }else{
-          res.write("C'est pas un pdf ou vous n'avez pas la permision");
-          res.end();
         }
       });
     } else if (req.url.startsWith('/connexion/oauth2callback')) {

@@ -794,7 +794,7 @@ export class common{
 
   static uploadPDF(group){
     this.popUp_Active("Upload PDF",
-      "<form action='/fileupload' method='post' enctype='multipart/form-data'>\n"
+      "<form action='/fileupload/pdf' method='post' enctype='multipart/form-data'>\n"
       +"  <input type='text' name='title' placeholder='Titre'><br>\n"
       +"  <input type='file' name='file'><br>\n"
       +"  <input style='display: none;' type='text' name='token' value='" + this.key + "'>\n"
