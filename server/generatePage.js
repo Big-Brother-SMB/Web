@@ -44,8 +44,9 @@ module.exports = async(req_url) => {
         readFileAsync(path.join(sources_url,dirName,baseName,baseName+'.main.html'),READ_OPTIONS),
         readFileAsync(path.join(sources_url,'share',typeSideBar+'_sidebar.html'),READ_OPTIONS)
       ])
+      if(dirName!="/") dirName+="/"
       fichier = modele.toString()
-        .replace('{{CSS}}',dirName+"/"+baseName+"/"+baseName+'.css')
+        .replace('{{CSS}}',dirName+baseName+"/"+baseName+'.css')
         .replace('{{EN-TETE}}',tete.toString())
         .replace('{{TITRE}}',titre.toString())
         .replace('{{MAIN}}',main.toString())
