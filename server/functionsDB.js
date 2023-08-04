@@ -22,7 +22,7 @@ module.exports = class funcDB{
       tab.push([e,3])
     })
     this.setClasse(tab)
-    this.setGroup(['a','b','c'])*/
+    this.setGroup(['CI smb','Matches Heads'])*/
   }
 
   //var
