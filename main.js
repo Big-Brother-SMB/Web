@@ -196,17 +196,20 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       
       try{
         if(extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg' || extName == '.gif'){
-          res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=86400'});//1296000
+          res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=1296000'});//1296000sec = 15jours
           res.write(file, 'binary');
           res.end();
-        }else{
+        }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=1'});//43200
+            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=60'});//43200sec = 12h
             res.end(file);
           }else {
             res.writeHead(404);
             res.end(file);
           }
+        }else{
+          res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=1'});
+          res.end(file);
         }
       }catch(e){console.error(e);console.log('2');}
     }
