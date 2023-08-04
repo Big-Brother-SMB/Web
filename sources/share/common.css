@@ -642,7 +642,7 @@ vert{
   background-color: #e7e7e7;
 }
 
-@media screen and (max-width:1000px){
+@media screen and (max-width: 1000px) {
   .listAmis::-webkit-scrollbar {
     display: none;
   }
@@ -1232,7 +1232,7 @@ p.cookie.period{
 
 /*------------------------------Pass---------------------------*/
 
-@media screen and (min-width:1000px){
+@media screen and (min-width: 1000px) {
   #qr-reader{
     display: none;
   }

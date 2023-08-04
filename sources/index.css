@@ -26,7 +26,7 @@ div *{
 
 h1{
   width: min-content;
-  font-size: 5em;
+  font-size: 70px;
 }
 
 p *{
@@ -115,19 +115,19 @@ input[type="checkbox"] {
   accent-color: #fff;
 }
 
-@media (max-width: 1000px) {
+@media screen and (max-width: 1000px) {
   body {
     background-image: url("Images/Portrait.jpg");
     background-size: 150%;
   }
 }
-@media (min-width: 1000px) and (max-width: 1400px){
+@media screen and (min-width: 1000px) and (max-width: 1400px){
   body {
     background-image: url("Images/Paysage.jpg");
     background-size: 170%;
   }
 }
-@media (min-width: 1400px) {
+@media screen and (min-width: 1400px) {
   html,body {
     position: relative;
     top:0px; /*pour être en dessous de a*/
