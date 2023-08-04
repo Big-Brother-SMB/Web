@@ -196,7 +196,7 @@ input,select,textarea{
   width: 75%;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1001px) {
   .nav_split{
     margin-top: 25px;
     margin-bottom: 25px;
@@ -531,7 +531,7 @@ input,select,textarea{
   }
 }  
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1001px) {
   #creneaudiv.perm{
     display: flex;
   }
@@ -556,7 +556,7 @@ input,select,textarea{
 
 /*------------------MIDI---------------*/
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1001px) {
   .case {
     font-size: 1.4rem;
   }
@@ -642,7 +642,7 @@ vert{
   background-color: #e7e7e7;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1001px) {
   .listAmis::-webkit-scrollbar {
     display: none;
   }
