@@ -196,7 +196,7 @@ export async function init(common){
     //-------------------------------Sandwich-------------------------------
 
 
-    const listModeSandwich = ["Désactivé","Sondage","Sélection","Sélection avec exclusion"]
+    const listModeSandwich = ["Désactivé","Sondage"/*,"Sélection","Sélection avec exclusion"*/]
     let divModeSandwich = document.getElementById("mode sandwich")
     for(let i in listModeSandwich){
         let opt = document.createElement("option")

@@ -7,7 +7,7 @@ body, #popup-body , #popup-option, #popup{
   border: solid 2px gray;
 }
 
-p,u,h1{
+p,u,h1,label{
   color: white;
 }
 a{
