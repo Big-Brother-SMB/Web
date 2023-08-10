@@ -289,7 +289,10 @@ export class common{
         let btn = document.getElementById("without_account")
         console.log(btn)
         if(btn!=null) btn.setAttribute('href',"/")
-      }else if(window.location.pathname!="/credit"){
+      }else if(window.location.pathname=="/credit"){
+        document.getElementById("mySidenav").classList.add("cache")
+        document.getElementById("btn_menu").classList.add("cache")
+      }else{
         this.deco()
       }
     }
