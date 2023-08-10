@@ -289,7 +289,7 @@ export class common{
         let btn = document.getElementById("without_account")
         console.log(btn)
         if(btn!=null) btn.setAttribute('href',"/")
-      }else{
+      }else if(window.location.pathname!="/credit"){
         this.deco()
       }
     }
