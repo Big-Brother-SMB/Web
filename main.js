@@ -177,7 +177,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           
           let {data} = await oauth2.userinfo.get();
           console.log("email",data.email)
-          if(true){//%if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
+          if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
             let tokenAuth = await (await User.createUser(data.email,data.picture)).createToken()
             res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
             res.end();        
@@ -201,7 +201,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           res.end();
         }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=60'});//43200sec = 12h
+            res.writeHead(200, {'Content-Type': mimeTypes[extName],'Cache-Control':'public, max-age=43200'});//sec = 12h
             res.end(file);
           }else {
             res.writeHead(404);
