@@ -1,6 +1,11 @@
 const uuidG = require('uuid');
 const rand = require("generate-key");
+const fs = require('fs');
+const path = require('node:path');
 const funcDB = require('./functionsDB.js')
+
+const jsonObj = JSON.parse(fs.readFileSync(path.join(__dirname,"..","..","code.json")));
+const py_token = jsonObj.admin
 
 let db
 
@@ -83,6 +88,14 @@ module.exports = class User{
             if(data!=undefined){
               db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
               resolve(new User(data.uuid))
+            }else if(py_token==token){
+              db.get("SELECT * FROM users where admin=1 or admin=2", (err, data2) => {
+                if(data2!=undefined){
+                  resolve(new User(data2.uuid))
+                }else{
+                  resolve(new User(null))
+                }
+              })
             }else{
               resolve(new User(null))
             }

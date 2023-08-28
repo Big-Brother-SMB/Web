@@ -1,16 +1,18 @@
-const {readFile} = require('fs')
 const fs = require('fs')
 const {promisify} = require('util')
 const url = require('url');
 const path = require('path');
 const User = require('./User.js')
 const archiver = require('archiver');
-const readFileAsync = promisify(readFile)
+const readFileAsync = promisify(fs.readFile)
+const writeFileAsync = promisify(fs.writeFile)
 
 
 const READ_OPTIONS = {encoding:'UTF-8'}
 const sources_url = path.join(__dirname,"..","sources");
 
+const jsonObj = JSON.parse(fs.readFileSync(path.join(__dirname,"..","..","code.json")));
+const py_token = jsonObj.admin
 
 module.exports = async(req_url) => {
   let pathName = url.parse(req_url).path.split('?')[0];
@@ -27,6 +29,7 @@ module.exports = async(req_url) => {
     if(pathName=="/database.db" && await user.admin > 0){
       fichier = await readFileAsync(path.join(sources_url,"..","..","main.db"))
     }else if(pathName=="/pyscan.zip" && await user.admin > 0){
+      await writeFileAsync(path.join(sources_url,"..","PyScan","save.txt"),py_token+"\n");
       await zipDirectory(path.join(sources_url,"..","PyScan"),path.join(sources_url,"..","PyScan.zip"))
       fichier = await readFileAsync(path.join(sources_url,"..","PyScan.zip"))
     }else if(extName == ''){
