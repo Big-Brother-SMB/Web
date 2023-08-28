@@ -134,10 +134,10 @@ try:
 except ValueError:
   today = datetime.today()
 
-firstSept = datetime(year=today.year,month=9,day=1)
+firstSept = datetime(year=today.year,month=9,day=4)
 firstSept = firstSept - timedelta(days=firstSept.weekday())
 if datetime.now() + timedelta(days=7) < firstSept:
-  firstSept = datetime(year=today.year-1,month=9,day=1)
+  firstSept = datetime(year=today.year-1,month=9,day=4)
   firstSept = firstSept - timedelta(days=firstSept.weekday())
 
 week = round((today - firstSept).days/7)

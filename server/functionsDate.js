@@ -1,9 +1,9 @@
 Date.prototype.getWeek = function() {
   let now = new Date(this.getFullYear(), this.getMonth(), this.getDate());
-  let firstSept = new Date(now.getFullYear(), 8, 1);
+  let firstSept = new Date(now.getFullYear(), 8, 4);
 
   if(now.getTime()+7*86400000<firstSept.getTime()){
-    firstSept = new Date(now.getFullYear()-1, 8, 1);
+    firstSept = new Date(now.getFullYear()-1, 8, 4);
   }
 
   let diff = now - firstSept
