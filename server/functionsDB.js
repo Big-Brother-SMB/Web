@@ -22,7 +22,7 @@ module.exports = class funcDB{
       tab.push([e,3])
     })
     this.setClasse(tab)
-    this.setGroup(['CI smb','Matches Heads'])*/
+    this.setGroup(['Club info','Matches Heads'])*/
   }
 
   //var
@@ -322,7 +322,7 @@ module.exports = class funcDB{
           if(data!=undefined){
             resolve(data)
           }else{
-            resolve(null)
+            resolve([])
           }
         }catch(e){console.error(e);console.log('a-3');resolve(null)}
       })
