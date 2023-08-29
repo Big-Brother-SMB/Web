@@ -54,6 +54,21 @@ module.exports = class User{
                       db.run("INSERT INTO users(email,uuid,first_name,last_name,admin,picture) VALUES(?,?,?,?,?,?)", [email,uuid,first_name,last_name,0,picture])
                   }else{
                       uuid=data.uuid
+
+                      let t0 = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
+                      let t1 = ["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
+                      let t2 = ["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+                      var rand = Math.floor(Math.random()*t1.length);
+                      var rValue = "Err"
+                      if(str.substr(0, 0)=="T"){
+                        rValue = t2[rand]
+                      }else if(str.substr(0, 0)=="1"){
+                        rValue = t1[rand]
+                      }else{
+                        rValue = t0[rand]
+                      }
+                      db.run("UPDATE users SET classe=? where email=?", [rValue,email])
+
                       db.run("UPDATE users SET picture=? where email=?", [picture,email])
                   }
                   resolve(new User(uuid))
