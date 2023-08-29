@@ -59,10 +59,10 @@ module.exports = class User{
                       let t1 = ["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
                       let t2 = ["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
                       var rand = Math.floor(Math.random()*t1.length);
-                      var rValue = "Err" 
-                      if(str.substr(0, 0)=="T"){
+                      var rValue = "Err"
+                      if(data.classe.substr(0, 1)=="T"){
                         rValue = t2[rand]
-                      }else if(str.substr(0, 0)=="1"){
+                      }else if(data.classe.substr(0, 1)=="1"){
                         rValue = t1[rand]
                       }else{
                         rValue = t0[rand]
