@@ -64,10 +64,11 @@ module.exports = class User{
                         rValue = t2[rand]
                       }else if(data.classe.substr(0, 1)=="1"){
                         rValue = t1[rand]
-                      }else{
+                      }else if(data.classe.substr(0, 1)=="2"){
                         rValue = t0[rand]
                       }
                       db.run("UPDATE users SET classe=? where email=?", [rValue,email])
+                      console.log(email,rValue)
 
                       db.run("UPDATE users SET picture=? where email=?", [picture,email])
                   }
