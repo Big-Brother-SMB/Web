@@ -218,8 +218,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   io = new Server(server)
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
-    console.log("uuid admin socket: " + await user.uuid)
-  
 
     if(await user.admin > 0){
       funcSocketAdmin.setMyAdminMode(socket,user)
@@ -272,7 +270,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   io.on("connection", async (socket) => {
     try {
       let user = await User.searchToken(socket.handshake.auth.token)
-      console.log("uuid socket: " + await user.uuid)
       funcSocket.id_data(socket,user)
       funcSocket.getBanderole(socket,user)
   
@@ -309,7 +306,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   async function loop(){
     //Subscription Cookie
     const weekMS = 604800000
-    console.log("clock")
     let listCookie = await funcDB.getSubscriptionCookie()
     for(const abo of listCookie){
       if(new Date(abo.debut).getTime()<Date.now()){

@@ -71,6 +71,7 @@ module.exports = class User{
 
                       db.run("UPDATE users SET picture=? where email=?", [picture,email])
                   }
+                  console.log("uuid socket: " + uuid)
                   resolve(new User(uuid))
               }catch(e){console.error(e);console.log('d3');;resolve(null)}
           })
