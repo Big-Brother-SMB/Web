@@ -159,7 +159,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           });
           
           let {data} = await oauth2.userinfo.get();
-          console.log("email",data.email)
           if(data.email.split("@")[1]=="stemariebeaucamps.fr"){
             let tokenAuth = await (await User.createUser(data.email,data.picture)).createToken()
             res.writeHead(301, { "Location" : address+"index.html?token=" + tokenAuth});
