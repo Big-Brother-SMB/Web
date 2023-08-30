@@ -275,7 +275,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   
   
       if(user.uuid!=null){
-        //if(user.admin==0 || user.admin==null) user.admin=1
         funcSocket.score(socket,user)
         funcSocket.historiquePoints(socket,user)
         funcSocket.getMenuThisWeek(socket,user)
@@ -297,7 +296,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.setMyDemandePerm(socket,user)
         funcSocket.delMyDemandePerm(socket,user)
         funcSocket.suppAllToken(socket,user)
-
+        funcSocket.log(socket,user)
         funcSocket.getCookies(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}

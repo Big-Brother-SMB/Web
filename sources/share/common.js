@@ -255,6 +255,10 @@ export class common{
 
     
   static async reloadCommon(){
+    //-----------------------------------log------------------------------
+
+    await this.socketAsync("log",document.location.pathname)
+
     //-------------------------------------retour--------------------------------------
 
     document.getElementById("btn_retour").classList.add("cache")

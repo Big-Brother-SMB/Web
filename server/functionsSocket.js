@@ -3,6 +3,15 @@ const User = require('./User.js')
 
 
 module.exports = class funcSocket{
+    static log(socket,user){
+        socket.on('log', async req => {
+            try{
+                console.log(user.uuid,req)
+                socket.emit('log',null)
+            }catch(e){}
+        });
+    }
+
     static id_data(socket,user){
         socket.on('id_data', async req => {
             try{
