@@ -38,7 +38,33 @@ export async function init(common){
         document.getElementById("menuSemaine").innerHTML = "<u>Menu du foyer :</u><br>" + menu
 
         document.getElementById("menu self").setAttribute("src",info_menu.self)
+        document.getElementById("menu self").addEventListener("error", remplace_img);
     }
 
     refreshDatabase();
+}
+
+
+
+function remplace_img(){			// on ajoute un écouteur sur l'evenement d'erreur des images
+    this.removeEventListener("error",remplace_img);				// /!\ important: on annule l'écouteur sur l'erreur dans le cas ou l'image de remplacement n'existe pas non plus, sinon on aura un boucle infinie, ce qui plantera compltement la page.
+    switch (Math.floor(Math.random() * 5)) {
+        case 0:
+            this.setAttribute("src", "https://media.tenor.com/2roX3uxz_68AAAAM/cat-space.gif");
+            break;
+        case 1:
+            this.setAttribute("src", "https://media.tenor.com/_4YgA77ExHEAAAAd/rick-roll.gif");
+            break;
+        case 2:
+            this.setAttribute("src", "https://media.tenor.com/lb5IqGp_7EMAAAAM/trollfacelmaaaao.gif");
+            break;
+        case 3:
+            this.setAttribute("src", "https://media.tenor.com/a3XdWRycefwAAAAC/obelix-faim.gif");
+            break;
+        case 4:
+            this.setAttribute("src", "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png");
+            break;
+        default:
+            this.setAttribute("src", "https://media.tenor.com/_4YgA77ExHEAAAAd/rick-roll.gif"); 
+    }      
 }

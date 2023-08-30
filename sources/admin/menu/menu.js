@@ -87,6 +87,7 @@ export async function init(common){
         document.getElementById("menuSemaine").innerHTML = val
 
         document.getElementById("menu self").setAttribute("src",info_menu.self)
+        document.getElementById("menu self").addEventListener("error", remplace_img);
     }
 
 
@@ -120,5 +121,12 @@ export async function init(common){
         }
         await common.socketAdminAsync("setMenu",{semaine:week,menu:info_menu.menu,self:p})
         document.getElementById("menu self").setAttribute("src",p)
+        document.getElementById("menu self").addEventListener("error", remplace_img);
     })
+}
+
+
+function remplace_img(){
+    this.removeEventListener("error",remplace_img);	
+    this.setAttribute("src", "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png");
 }
