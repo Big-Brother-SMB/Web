@@ -203,7 +203,7 @@ export async function init(common){
                 bouton[j][h].className="case midi red"
                 break;
             case 4:
-                text = "Fini<br>"+msg[j][h]
+                text = "Fini"
                 bouton[j][h].className="case midi red"
                 break;
             case 5:
