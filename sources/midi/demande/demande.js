@@ -373,7 +373,9 @@ export async function init(common){
     
         update()
     } catch (error) {
+        console.error(error)
         common.delCookie("derniere demande")
+        await new Promise(r => setTimeout(r, 1000));
         window.location.reload()
     }
 }
