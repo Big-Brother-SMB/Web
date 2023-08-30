@@ -54,7 +54,9 @@ export async function init(common){
     document.getElementById("editbanner").addEventListener("click",async function(){
         let banderole = await common.socketAsync("getBanderole",null)
         banderole=window.prompt("Message de la banderole:",banderole);
+        console.log("msg:",banderole)
         if (banderole!=null){
+            await new Promise(r => setTimeout(r, 1000));
             await common.socketAdminAsync("setBanderole",banderole)
             document.getElementById("banderole").innerHTML = banderole
 

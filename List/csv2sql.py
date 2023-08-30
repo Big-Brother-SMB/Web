@@ -18,7 +18,7 @@ with open('list.csv') as file:
         x = res.fetchone()
         if x is None:
             uuid_ = str(uuid.uuid4())
-            cur.execute('INSERT INTO users(email,uuid,first_name,last_name,classe,code_barre,admin) VALUES("' + rowB[11] + '","' + uuid_ + '","' + rowB[2] + '","' + rowB[1] + '","' + rowB[0] + '","' + rowB[10] + '",0)')
+            cur.execute('INSERT INTO users(email,uuid,first_name,last_name,classe,code_barre,admin,tuto,picture) VALUES("' + rowB[11] + '","' + uuid_ + '","' + rowB[2] + '","' + rowB[1] + '","' + rowB[0] + '","' + rowB[10] + '",0,0,"")')
             for i in range(3,10):
                 if rowB[i]!='':
                     if not rowB[i] in list_prio:

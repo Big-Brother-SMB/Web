@@ -118,7 +118,7 @@ input,select,textarea{
   border-bottom: 2px solid gray;
 }
 
-.marquee-rtl :first-child {
+#banderole {
   display: inline-block;
   padding-right: 2em;
   padding-left: 100%;

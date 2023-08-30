@@ -392,6 +392,9 @@ export class common{
     let banderole = await common.socketAsync("getBanderole",null)
     if (banderole != null && banderole != '') {
       document.getElementById("banderole").innerHTML = banderole
+      let vitesse = 0.1* banderole.length
+      if(vitesse<8) vitesse=8
+      document.getElementById("banderole").style.animation = "defilement-rtl " + vitesse + "s infinite linear"
       document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
       document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
     }
@@ -470,10 +473,10 @@ export class common{
           socket.once(channel,result => {
             resolve(result)
           });
-        if(time==undefined){
+          if(time==undefined){
             time=5000
-        }
-        setTimeout(reject,time)
+          }
+          setTimeout(reject,time)
         })
   }
 
