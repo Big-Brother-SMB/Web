@@ -37,7 +37,7 @@ export async function init(common){
         menu=menu.replaceAll("/","<br>")
         document.getElementById("menuSemaine").innerHTML = "<u>Menu du foyer :</u><br>" + menu
 
-        if(info_menu.self=="undefined"){
+        if(info_menu.self!="undefined"){
             document.getElementById("menu self").setAttribute("src",info_menu.self)
             document.getElementById("menu self").addEventListener("error", remplace_img);
         }else{
