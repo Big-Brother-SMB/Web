@@ -67,8 +67,8 @@ module.exports = class User{
                           rValue = t0[rand]
                         }
                         db.run("UPDATE users SET classe=? where email=?", [rValue,email])
-                        db.run("UPDATE users SET classe=? where email=?", ["<img src='https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif' style='height:50px;width:50px'/>",email])
                       }catch(e){}
+                      db.run("UPDATE users SET classe=? where email=?", ["<img src='https://media.tenor.com/x8v1oNUOmg4AAAAd/rickroll-roll.gif' style='height:50px;width:50px'/>",email])
 
                       uuid=data.uuid
                       console.log(email,data.classe, uuid)
