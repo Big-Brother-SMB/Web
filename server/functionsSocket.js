@@ -1,5 +1,4 @@
 const funcDB = require('./functionsDB.js')
-const funcDate = require('./functionsDate.js')
 const User = require('./User.js')
 
 
@@ -8,7 +7,7 @@ module.exports = class funcSocket{
         socket.on('log', async req => {
             try{
                 socket.emit('log',null)
-                console.log(funcDate.today().toISOString(),user.uuid,await user.first_name + " " + await user.last_name,req)
+                console.log(new Date().toISOString(),"\t",user.uuid,"  ",req,"\t",await user.first_name + " " + await user.last_name)
             }catch(e){console.error(e);}
         });
     }
