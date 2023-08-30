@@ -255,7 +255,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       let user = await User.searchToken(socket.handshake.auth.token)
       funcSocket.id_data(socket,user)
       funcSocket.getBanderole(socket,user)
-  
+      funcSocket.log(socket,user)
   
       if(user.uuid!=null){
         funcSocket.score(socket,user)
@@ -279,7 +279,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.setMyDemandePerm(socket,user)
         funcSocket.delMyDemandePerm(socket,user)
         funcSocket.suppAllToken(socket,user)
-        funcSocket.log(socket,user)
         funcSocket.getCookies(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}

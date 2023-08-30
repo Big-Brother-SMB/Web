@@ -255,10 +255,6 @@ export class common{
 
     
   static async reloadCommon(){
-    //-----------------------------------log------------------------------
-
-    await this.socketAsync("log",document.location.pathname)
-
     //-------------------------------------retour--------------------------------------
 
     document.getElementById("btn_retour").classList.add("cache")
@@ -303,6 +299,10 @@ export class common{
 
     this.week = this.readIntCookie("week")
     if(this.week==undefined || this.week==null)this.week=actualWeek
+
+    //-----------------------------------log------------------------------
+
+    await this.socketAsync("log",document.location.pathname)
 
     //---------------------------securité page admin + deco + tuto---------------------------
 
