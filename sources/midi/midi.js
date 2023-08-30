@@ -199,7 +199,7 @@ export async function init(common){
                 }
                 break;
             case 3:
-                text = "Foyer fermé"
+                text = "Foyer fermé<br>" + msg[j][h];
                 bouton[j][h].className="case midi red"
                 break;
             case 4:
