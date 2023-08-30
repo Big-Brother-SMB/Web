@@ -68,7 +68,7 @@ module.exports = class funcSocket{
         socket.on('setMidiInfo',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                funcDB.setMidiInfo(req.w,req.j*2+req.h,req.cout,req.gratuit_prio,req.ouvert,req.perMin,req.places,req.prio_mode,req.nbSandwich,req.mode_sandwich,req.bonus_avance,req.algo_auto,req.list_prio)
+                funcDB.setMidiInfo(req.w,req.j*2+req.h,req.cout,req.gratuit_prio,req.ouvert,req.perMin,req.places,req.prio_mode,req.nbSandwich,req.nbSandwich_vege,req.mode_sandwich,req.bonus_avance,req.algo_auto,req.msg,req.list_prio)
                 socket.emit('setMidiInfo',"ok")
             }catch(e){console.error(e);console.log('9');}
         })

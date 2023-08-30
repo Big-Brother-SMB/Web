@@ -46,7 +46,7 @@ module.exports = (db)=>{
     //midi
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_info'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE midi_info(semaine int2,creneau int2,cout float4,gratuit_prio boolean,ouvert int2,perMin int2,places int2,prio_mode int2,nbSandwich int2,mode_sandwich int2,bonus_avance float4,algo_auto int2)')
+        db.run('CREATE TABLE midi_info(semaine int2,creneau int2,cout float4,gratuit_prio boolean,ouvert int2,perMin int2,places int2,prio_mode int2,nbSandwich int2,nbSandwich_vege int2,mode_sandwich int2,bonus_avance float4,algo_auto int2,msg text)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_menu'", (err, data) => {
       if(data==undefined)

@@ -34,9 +34,11 @@ export async function init(common){
     let places = 100
     let prio_mode = 0
     let nbSandwich = 0
+    let nbSandwich_vege = 0
     let mode_sandwich = 0
     let bonus_avance = 1.1
     let algo_auto = 0
+    let message = ""
     let list_prio = []
 
     async function reloadInfoHoraire(){
@@ -100,6 +102,10 @@ export async function init(common){
         nbSandwich = info.nbSandwich
     }
 
+    if(info.nbSandwich_vege != null){
+        nbSandwich_vege = info.nbSandwich_vege
+    }
+
     if(info.mode_sandwich != null){
         mode_sandwich = info.mode_sandwich
     }
@@ -110,6 +116,10 @@ export async function init(common){
 
     if(info.algo_auto != null){
         algo_auto = info.algo_auto
+    }
+
+    if(info.msg != null){
+        message = info.msg
     }
 
     if(info.list_prio != null){
@@ -157,6 +167,14 @@ export async function init(common){
     inCout.value = cout
     inCout.addEventListener("input", async function() {
         cout = inCout.value
+        setMidiInfo()
+    });
+
+
+    let message_obj = document.getElementById("message")
+    message_obj.value = message
+    message_obj.addEventListener("change", async function() {
+        message = message_obj.value
         setMidiInfo()
     });
 
@@ -213,6 +231,13 @@ export async function init(common){
     inNbSandwich.value = nbSandwich
     inNbSandwich.addEventListener("input", async function() {
         nbSandwich = inNbSandwich.value
+        setMidiInfo()
+    });
+
+    let inNbSandwich_vege = document.getElementById("nbSandwich_vege")
+    inNbSandwich_vege.value = nbSandwich_vege
+    inNbSandwich_vege.addEventListener("input", async function() {
+        nbSandwich_vege = inNbSandwich_vege.value
         setMidiInfo()
     });
 
@@ -437,7 +462,7 @@ export async function init(common){
     });
 
     async function setMidiInfo(){
-        console.log({w:w,j:j,h:h,cout:cout,gratuit_prio:gratuit_prio,ouvert:ouvert,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,list_prio:list_prio})
-        await common.socketAdminAsync('setMidiInfo',{w:w,j:j,h:h,cout:cout,gratuit_prio:gratuit_prio,ouvert:ouvert,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,list_prio:list_prio})
+        console.log({w:w,j:j,h:h,cout:cout,gratuit_prio:gratuit_prio,ouvert:ouvert,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,nbSandwich_vege:nbSandwich_vege,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,msg:message,list_prio:list_prio})
+        await common.socketAdminAsync('setMidiInfo',{w:w,j:j,h:h,cout:cout,gratuit_prio:gratuit_prio,ouvert:ouvert,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,nbSandwich_vege:nbSandwich_vege,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,msg:message,list_prio:list_prio})
     }
 }
