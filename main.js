@@ -25,23 +25,6 @@ const init_DB = require('./server/initDB.js')
 const generatePage = require('./server/generatePage.js')
 const funcDate = require('./server/functionsDate.js')
 
-
-/*const pino = require('pino');
-const transport = {
-  targets: [
-    {
-      level: 'trace',
-      target: 'pino/file',
-      options: { destination: __dirname+'/../main.log' } // On enregistre les logs dans un fichier main.log
-    }
-  ]
-}
- 
-const logger = pino({
-  level: 'trace',
-  transport
-})*/
-
 /*const { WebSocketServer } = require('ws');
 
 const server2 = new WebSocketServer({ port: 3001 });
