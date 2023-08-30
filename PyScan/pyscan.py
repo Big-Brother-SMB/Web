@@ -87,7 +87,7 @@ if id_data=="err" or id_data["admin"]!=1:
 def maj(version_serveur):
     print('>>> Nouvelle version trouvée')
 
-    url = 'https://foyerlycee.stemariebeaucamps.fr/pyscan.zip?' + token
+    url = 'https://foyerlycee.stemariebeaucamps.fr/PyScan.zip?' + token
 
     print('>>> téléchargement...')
     r = requests.get(url, allow_redirects=True,verify=False)

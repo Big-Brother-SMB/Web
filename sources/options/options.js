@@ -1,6 +1,6 @@
 export async function init(common){
     document.getElementById("download").href = "/database.db?"+common.key
-    document.getElementById("download2").href = "/pyscan.zip?"+common.key
+    document.getElementById("download2").href = "/PyScan.zip?"+common.key
 
     let name_mode = document.getElementById("name_mode")
     name_mode.checked = common.readBoolCookie("name_mode")

@@ -55,20 +55,22 @@ module.exports = class User{
                   }else{
                       uuid=data.uuid
 
-                      let t0 = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
-                      let t1 = ["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
-                      let t2 = ["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
-                      var rand = Math.floor(Math.random()*t1.length);
-                      var rValue = "Err"
-                      if(data.classe.substr(0, 1)=="T"){
-                        rValue = t2[rand]
-                      }else if(data.classe.substr(0, 1)=="1"){
-                        rValue = t1[rand]
-                      }else if(data.classe.substr(0, 1)=="2"){
-                        rValue = t0[rand]
-                      }
-                      db.run("UPDATE users SET classe=? where email=?", [rValue,email])
-                      console.log(email,rValue)
+                      try{
+                        let t0 = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
+                        let t1 = ["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
+                        let t2 = ["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
+                        var rand = Math.floor(Math.random()*t1.length);
+                        var rValue = "Err"
+                        if(data.classe.substr(0, 1)=="T"){
+                          rValue = t2[rand]
+                        }else if(data.classe.substr(0, 1)=="1"){
+                          rValue = t1[rand]
+                        }else if(data.classe.substr(0, 1)=="2"){
+                          rValue = t0[rand]
+                        }
+                        db.run("UPDATE users SET classe=? where email=?", [rValue,email])
+                        console.log(email,rValue)
+                      }catch(e){}
 
                       db.run("UPDATE users SET picture=? where email=?", [picture,email])
                   }
@@ -102,6 +104,7 @@ module.exports = class User{
         try{
         db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
           try {
+            console.log(py_token,token)
             if(data!=undefined){
               db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
               resolve(new User(data.uuid))
