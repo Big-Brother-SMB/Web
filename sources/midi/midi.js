@@ -30,6 +30,8 @@ export async function init(common){
 
     let ouvert = []
     let cout = []
+    let msg = []
+
     let nbAmis = []
     let nbAmisDemande = []
     let nbAmisInscrit = []
@@ -55,6 +57,7 @@ export async function init(common){
         inscrit[j] = [false, false]
         ouvert[j] = [0, 0]
         cout[j] = [1, 1]
+        msg[j] = ["",""]
         for (let h = 0; h < 2; h++) {
             bouton[j][h] = document.getElementById("" + j + h)
             bouton[j][h].onclick = function () { select(j, h) };
@@ -100,6 +103,10 @@ export async function init(common){
 
                 if (info_horaire.cout != null) {
                     cout[j][h] = parseFloat(info_horaire.cout)
+                }
+
+                if (info_horaire.msg != null) {
+                    msg[j][h] = info_horaire.msg
                 }
 
                 //demande en cours
@@ -196,7 +203,7 @@ export async function init(common){
                 bouton[j][h].className="case midi red"
                 break;
             case 4:
-                text = "Fini"
+                text = "Fini<br>"+msg[j][h]
                 bouton[j][h].className="case midi red"
                 break;
             case 5:
