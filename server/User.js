@@ -104,7 +104,6 @@ module.exports = class User{
         try{
         db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
           try {
-            console.log(py_token,token)
             if(data!=undefined){
               db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
               resolve(new User(data.uuid))
