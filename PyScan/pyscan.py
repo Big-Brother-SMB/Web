@@ -140,10 +140,11 @@ if datetime.now() + timedelta(days=7) < firstSept:
   firstSept = datetime(year=today.year-1,month=9,day=4)
   firstSept = firstSept - timedelta(days=firstSept.weekday())
 
-week = round((today - firstSept).days/7)
+week = floor(((today - firstSept).days)/7)+1
+
 day = today.weekday()
 if day>4:
-  day=0
+  day=4
 
 
 #fonction de scan
