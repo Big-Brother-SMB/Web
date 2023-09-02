@@ -46,9 +46,13 @@ export async function init(common){
         inscrits=0
         demandes=0
         let sandwich_tab = [0,0,0,0]
+        let sandwich_tab_inscrit = [0,0,0,0]
         listDemandes.forEach(function (child) {
             if(child.DorI==1){
                 inscrits++
+                if(child.sandwich>=0 && child.sandwich<=2){
+                    sandwich_tab_inscrit[child.sandwich+1]++
+                }
             }else{
                 demandes++
             }
@@ -65,6 +69,8 @@ export async function init(common){
         document.getElementById("p sandwich").innerHTML = "null: " + sandwich_tab[0]
                                                         + "<br>NON: "  + sandwich_tab[1]
                                                         + "<br>OUI: "  + sandwich_tab[2]
+                                                        + "<br>Inscrit: "
+                                                        + "<br>Sandwich: "  + sandwich_tab_inscrit[2]
                                                         /*+ "<br>ABSOLUMENT: "  + sandwich_tab[3]*/
     }
     await reloadInfoHoraire()
