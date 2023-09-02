@@ -14,7 +14,7 @@ list_prio = []
 with open('list.csv') as file:
     data_reader = csv.reader(file)
     for rowB in data_reader:
-        res = cur.execute("SELECT uuid FROM users WHERE email="+rowB[11])
+        res = cur.execute('SELECT uuid FROM users WHERE email="'+rowB[11]+'"')
         x = res.fetchone()
         if x is None:
             uuid_ = str(uuid.uuid4())
@@ -26,8 +26,8 @@ with open('list.csv') as file:
                     cur.execute('INSERT INTO user_groups(uuid,group2) VALUES("' + uuid_ + '","' + rowB[i] + '")')
         else:
             uuid_ = x[0]
-            cur.execute('UPDATE users SET first_name="' + rowB[2] + '",last_name="' + rowB[1] + '",classe="' + rowB[0] + '",code_barre="' + rowB[10] + '",0)')
-            cur.execute('DELETE FROM user_groups WHERE ')
+            cur.execute('UPDATE users SET first_name="' + rowB[2] + '",last_name="' + rowB[1] + '",classe="' + rowB[0] + '",code_barre="' + rowB[10] + '" WHERE uuid="' + uuid_ + '"')
+            cur.execute('DELETE FROM user_groups WHERE uuid="' + uuid_ + '"')
             for i in range(3,10):
                 if rowB[i]!='':
                     if not rowB[i] in list_prio:
