@@ -36,7 +36,7 @@ module.exports = class funcDate{
     let jourActuel = nowDate.getDay();
     if (jourActuel==0) jourActuel=7
     if (jour==0) jour=7
-    let date_in_ms=(Date.now()+604800000*(week - actualWeek))-(jourActuel-jour)*86400000;
+    let date_in_ms=(Date.now()+604800000*(week - this.actualWeek))-(jourActuel-jour)*86400000;
     date_in_ms+= (h-nowDate.getHours())*3600000 + (min-nowDate.getMinutes())*60000 + (s-nowDate.getSeconds())*1000
     return new Date(date_in_ms);
   }
