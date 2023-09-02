@@ -7,7 +7,7 @@ module.exports = class funcSocket{
         socket.on('log', async req => {
             try{
                 socket.emit('log',null)
-                console.log(new Date().toISOString(),"\t",user.uuid,"  ",req,"\t",await user.first_name + " " + await user.last_name)
+                console.log(new Date().toISOString(),"  ",req,"\t",await user.first_name + " " + await user.last_name)
             }catch(e){console.error(e);}
         });
     }
