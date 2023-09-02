@@ -51,7 +51,10 @@ export async function init(common){
             }
         }else{
             document.getElementById("circle-pass-img").setAttribute("src","/Images/erreur.png")
-            
+        }
+
+        if(my_demande.sandwich!=0 && my_demande.sandwich!=null && my_demande.sandwich!=undefined){
+            document.getElementById('sandwich').classList.remove("cache");
         }
     }catch(e){console.error(e)}
 
