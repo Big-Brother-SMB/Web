@@ -70,6 +70,15 @@ let mimeTypes = {
   '.pdf': 'application/pdf'
 };
 
+function mimeTypes(extName){
+  let value = mimeTypes[extName]
+  if(value==undefined){
+    return "text/plain"
+  }else{
+    return value
+  }
+}
+
 
 const authorizationUrl = oauth2Client.generateAuthUrl({
   scope: ["https://www.googleapis.com/auth/userinfo.email","openid"],
