@@ -75,7 +75,7 @@ id_data =socketReq('id_data', None,False)
 print(">>> id_data:")
 print(id_data)
 print("\n\n\n")
-if id_data=="err" or id_data["admin"]!=1:
+if id_data=="err" or id_data["admin"]<1:
   print(">>> Erreur: token non admin")
   print(">>> Il faut modifier le token sur la première ligne du fichier save.txt")
   time.sleep(3)
