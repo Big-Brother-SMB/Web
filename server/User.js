@@ -51,7 +51,7 @@ module.exports = class User{
                       }
                       first_name=first_name[0].toUpperCase()+first_name.slice(1)
                       last_name=last_name.toUpperCase();
-                      db.run("INSERT INTO users(email,uuid,first_name,last_name,admin,picture) VALUES(?,?,?,?,?,?)", [email,uuid,first_name,last_name,0,picture])
+                      db.run("INSERT INTO users(email,uuid,first_name,last_name,admin,picture,verify) VALUES(?,?,?,?,0,?,0)", [email,uuid,first_name,last_name,picture])
                   }else{
                       uuid=data.uuid
                       console.log(email,data.classe, uuid)
