@@ -271,7 +271,11 @@ module.exports = class User{
                           list.push(new Promise(function(resolve, reject) {
                             db.get("SELECT * FROM amis WHERE uuid=? and ami=?",[e.ami,uuid], (err, data2) => {
                               if(data2!=undefined){
-                                resolve({uuid:e.ami,IgiveProc:e.procuration,HeGiveMeProc:data2.procuration})
+                                if(data2.procuration==1){
+                                  resolve({uuid:e.ami,IgiveProc:e.procuration,HeGiveMeProc:1})
+                                }else{
+                                  resolve({uuid:e.ami,IgiveProc:e.procuration,HeGiveMeProc:0})
+                                }
                               }else{
                                 resolve({uuid:e.ami,IgiveProc:e.procuration,HeGiveMeProc:null})
                               }
