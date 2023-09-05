@@ -39,6 +39,9 @@ module.exports = class User{
       return new Promise(function(resolve, reject) {
         try{
           let uuid = uuidG.v4()
+          if(email == "super.admin@admin.super"){
+            uuid = "admin-uuid-777"
+          }
           db.get("SELECT * FROM 'users' where email=?",[email], (err, data) => {
               try{
                   if(data==undefined){
@@ -90,8 +93,7 @@ module.exports = class User{
               db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
               resolve(new User(data.uuid))
             }else if(py_token==token){
-              let email = "super.admin@admin.super"
-              let user = await User.createUser(email,"https://foyerlycee.stemariebeaucamps.fr/Images/reglages.png")
+              let user = await User.createUser("super.admin@admin.super","https://foyerlycee.stemariebeaucamps.fr/Images/reglages.png")
               if(user.admin < 1){
                 user.admin=1
               }
