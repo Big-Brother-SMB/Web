@@ -768,32 +768,42 @@ export class common{
 
   static nameOrder(list) {
     if(this.readBoolCookie("name_mode")==true){
-      list.sort(function compareFn(a, b) {
-        if(a.first_name<b.first_name){
-            return -1
-        }else if(a.first_name>b.first_name){
-            return 1
-        }else{
-          if(a.last_name<b.last_name){
-              return -1
-          }else if(a.last_name>b.last_name){
-              return 1
-          }
-        }
-      })
-    }else{
-      list.sort(function compareFn(a, b) {
-        if(a.last_name<b.last_name){
+      list.sort(function(a, b) {
+        var first_nameA = a.first_name.toUpperCase();
+        var first_nameB = b.first_name.toUpperCase();
+        var last_nameA = a.last_name.toUpperCase();
+        var last_nameB = b.last_name.toUpperCase();
+        if(last_nameA<last_nameB){
           return -1
-        }else if(a.last_name>b.last_name){
+        }else if(last_nameA>last_nameB){
           return 1
         }else{
-          if(a.first_name<b.first_name){
+          if(first_nameA<first_nameB){
             return -1
-          }else if(a.first_name>b.first_name){
+          }else if(first_nameA>first_nameB){
             return 1
           }
         }
+        return 0
+      })
+    }else{
+      list.sort(function(a, b) {
+        var first_nameA = a.first_name.toUpperCase();
+        var first_nameB = b.first_name.toUpperCase();
+        var last_nameA = a.last_name.toUpperCase();
+        var last_nameB = b.last_name.toUpperCase();
+        if(first_nameA<first_nameB){
+          return -1
+        }else if(first_nameA>first_nameB){
+          return 1
+        }else{
+          if(last_nameA<last_nameB){
+            return -1
+          }else if(last_nameA>last_nameB){
+            return 1
+          }
+        }
+        return 0
       })
     }
     return list

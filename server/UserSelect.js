@@ -102,6 +102,7 @@ module.exports = class UserSelect{
             return 1
           }
         }
+        return 0
       })
   
       //récupère les amis éloignier des utilisateur
