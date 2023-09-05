@@ -11,7 +11,7 @@ export async function init(common){
     let listAbo = await common.socketAdminAsync('getCookieSubscription',null)
     let listBon = await common.socketAdminAsync('getCookieTicket',null)
     
-    let listUsers = await common.socketAsync('listUsersName',null)
+    let listUsers = common.nameOrder(await common.socketAsync('listUsersName',null))
 
     let obj = null
 

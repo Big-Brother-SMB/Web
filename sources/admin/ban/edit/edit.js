@@ -9,7 +9,7 @@ export async function init(common){
 
     let listBan = await common.socketAdminAsync('getBan',null)
     
-    let listUsers = await common.socketAsync('listUsersName',null)
+    let listUsers = common.nameOrder(await common.socketAsync('listUsersName',null))
 
     let obj = null
 
