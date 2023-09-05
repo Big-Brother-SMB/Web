@@ -12,15 +12,16 @@ module.exports = class UserSelect{
     static usersList = []
     static enCour = false
   
-    constructor(uuid,score,prio,amis,date){
+    constructor(uuid,score,prio,amis,date,pass){
         this.uuid = uuid
         this.score = score
         this.prio = prio
         this.amis = amis
         this.amisEloigner = []
         this.date=new Date(date)
+
         //-1=refuser ; 0=defaut ; 1=inscrit
-        this.pass = 0
+        this.pass = pass
     }
   
     static async algoDeSelection(semaine,creneau){
@@ -43,28 +44,31 @@ module.exports = class UserSelect{
   
       //remplie la "usersList" avec des "UserSelect" en utilisant les données précédante
       for(let i in listDemandes){
-        if(listDemandes[i].DorI==0){
-          let user = new User(listDemandes[i].uuid)
-          let score = await user.score
-          let prio = false
-          if(info.prio.indexOf(await user.classe)!=-1){
-            prio = true
-          }
-          (await user.groups).forEach(function(child) {
-            if(info.prio.indexOf(child)!=-1){
-              prio=true
-            }
-          })
-          let amis = listDemandes[i].amis
-          this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date))
+        let user = new User(listDemandes[i].uuid)
+        let score = await user.score
+        let prio = false
+        if(info.prio.indexOf(await user.classe)!=-1){
+          prio = true
         }
+        (await user.groups).forEach(function(child) {
+          if(info.prio.indexOf(child)!=-1){
+            prio=true
+          }
+        })
+        let amis = listDemandes[i].amis
+        let pass=0;
+        if(listDemandes[i].DorI==1){
+          pass=1
+        }
+        this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date,pass))
       }
   
-      //datetoday
+      //détermine datetoday
       let jourForDate = Math.floor(creneau / 2)
       jourForDate++
       if(jourForDate>2)jourForDate++
       let dateToday = funcDate.generedDate(semaine,jourForDate,0,0,0)
+
       //donne un bonus d'avance
       //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
       this.usersList.forEach(u=>{
@@ -76,8 +80,7 @@ module.exports = class UserSelect{
           if(u.amis[a]==u.uuid){
             u.amis.splice(a,1);
             a--
-          }
-          if(UserSelect.searchAmi(u.amis[a])==null){
+          }else if(UserSelect.searchAmi(u.amis[a])==null){
             u.amis.splice(a,1);
             a--
             u.pass=-1
@@ -157,7 +160,7 @@ module.exports = class UserSelect{
       })
       const dejaInscrits = inscrits
   
-      
+      //pour les prio
       if(info.prio_mode==1){
         let usersList2 = []
         for(let u in this.usersList){
@@ -217,7 +220,7 @@ module.exports = class UserSelect{
           //teste les utilisateurs avec en commensant par ceux avec le plus gros scores
           bloc2 : {
             for(let i in this.usersList){
-              //si l'utilisateur n'est pas déja refusé
+              //si l'utilisateur n'est pas déjà refusé ou accepté
               if(this.usersList[i].pass==0){
                 let testScore=true
                 //test si les amis ont tous plus de points que l'utilisateur ou qu'il sont déja inscrit
@@ -246,6 +249,7 @@ module.exports = class UserSelect{
                 }
               }
             }
+            //si la boucle for se termine sans avoir sélétionné personne alors stopper l'algo car on est au maximum possible
             break bloc1;
           }
         }
