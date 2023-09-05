@@ -91,7 +91,7 @@ module.exports = class User{
               resolve(new User(data.uuid))
             }else if(py_token==token){
               let email = "super.admin@admin.super"
-              let user = await createUser(email,"https://foyerlycee.stemariebeaucamps.fr/Images/reglages.png")
+              let user = await this.createUser(email,"https://foyerlycee.stemariebeaucamps.fr/Images/reglages.png")
               if(user.admin < 1){
                 user.admin=1
               }
