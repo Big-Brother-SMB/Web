@@ -766,6 +766,39 @@ export class common{
     }
   }
 
+  static nameOrder(list) {
+    if(this.readBoolCookie("name_mode")==true){
+      list.sort(function compareFn(a, b) {
+        if(a.first_name<b.first_name){
+            return -1
+        }else if(a.first_name>b.first_name){
+            return 1
+        }else{
+          if(a.last_name<b.last_name){
+              return -1
+          }else if(a.last_name>b.last_name){
+              return 1
+          }
+        }
+      })
+    }else{
+      list.sort(function compareFn(a, b) {
+        if(a.last_name<b.last_name){
+          return -1
+        }else if(a.last_name>b.last_name){
+          return 1
+        }else{
+          if(a.first_name<b.first_name){
+            return -1
+          }else if(a.first_name>b.first_name){
+            return 1
+          }
+        }
+      })
+    }
+    return list
+  }
+
   //-----------------------------------PDF-----------------------------------------
   static displayPDF(divForCanvas,pdf){
     let loadingTask = pdfjsLib.getDocument(pdf);
