@@ -90,10 +90,10 @@ module.exports = class UserSelect{
   
       //trie les utilisateurs par ordre décroissant par rapport au score 
       this.usersList.sort(function compareFn(a, b) {
-        if(a.score>b.score){
-            return -1
-        }else if(a.score<b.score){
+        if(a.score < b.score){
             return 1
+        }else if(a.score > b.score){
+            return -1
         }else{
           //si le score est identique départager sur la date de la demande 
           if(a.date.getTime() < b.date.getTime()){
@@ -103,6 +103,10 @@ module.exports = class UserSelect{
           }
         }
         return 0
+      })
+      console.log("test:")
+      this.usersList.forEach((e)=>{
+        console.log(e.score,e.date.getTime())
       })
   
       //récupère les amis éloignier des utilisateur

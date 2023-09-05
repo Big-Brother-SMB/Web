@@ -272,7 +272,7 @@ export async function init(common){
             let pb = 0
             listeAmisPris.forEach(child=>{
                 const index = listAmisUUID.indexOf(child)
-                if(listAmis[index].DorI==0 || listAmis[index].DorI==null){
+                if(listAmis[index].DorI==null){
                     pb++
                 }
             })
