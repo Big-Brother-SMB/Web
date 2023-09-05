@@ -269,6 +269,7 @@ export async function init(common){
         let demandes = 0
     
         function update(){
+            console.log(listeAmisPris,listeAmisNonPris)
             let pb = 0
             listeAmisPris.forEach(child=>{
                 const index = listAmisUUID.indexOf(child)
