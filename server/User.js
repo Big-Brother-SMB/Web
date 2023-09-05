@@ -84,19 +84,18 @@ module.exports = class User{
   static searchToken(token){
       return new Promise(function(resolve, reject) {
         try{
-        db.get("SELECT uuid FROM token where token=?",[token], (err, data) => {
+        db.get("SELECT uuid FROM token where token=?",[token], async(err, data) => {
           try {
             if(data!=undefined){
               db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
               resolve(new User(data.uuid))
             }else if(py_token==token){
-              db.get("SELECT * FROM users where admin=1 or admin=2", (err, data2) => {
-                if(data2!=undefined){
-                  resolve(new User(data2.uuid))
-                }else{
-                  resolve(new User(null))
-                }
-              })
+              let email = "super.admin@admin.super"
+              let user = await createUser(email,"https://foyerlycee.stemariebeaucamps.fr/Images/reglages.png")
+              if(user.admin < 1){
+                user.admin=1
+              }
+              resolve(user)
             }else{
               resolve(new User(null))
             }
