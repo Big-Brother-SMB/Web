@@ -78,10 +78,10 @@ function remplace_img(){			// on ajoute un écouteur sur l'evenement d'erreur de
             document.getElementById("menu self").setAttribute("src", "https://media.tenor.com/d3BEY2_2-NQAAAAC/patrick-star-spongebob.gif");
             break;
         case 8:
-            document.getElementById("menu self").setAttribute("src", "https://images-ext-2.discordapp.net/external/ZFV9G-IKPiXFu7swvs7VHCm2iey-DQrK3xyfoNCu750/https/c.tenor.com/Z1h1nGCP8p4AAAAM/fantastic-fanta.gif");
+            document.getElementById("menu self").setAttribute("src", "https://www.gifservice.fr/img/gif-vignette-large/e681285368c9753932e7a85a2424b733/364519-les-poules-ete-france-3-chaines-tv-france-multi-media.gif");
             break;
         case 9:
-            document.getElementById("menu self").setAttribute("src", "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png");
+            document.getElementById("menu self").setAttribute("src", "https://i.pinimg.com/originals/b7/1a/05/b71a05b0eda23af5d181baaa4671016a.gif");
             break;
         default:
             document.getElementById("menu self").setAttribute("src", "https://media.tenor.com/_4YgA77ExHEAAAAd/rick-roll.gif"); 

@@ -1,6 +1,14 @@
 const dayLowerCase = ["lundi", "mardi","jeudi","vendredi"];
 
 export async function init(common){
+    let shiftActive = false;
+    document.addEventListener('keydown', (event) => {
+        if(event.which==16) shiftActive = true
+    });
+    document.addEventListener('keyup', (event) => {
+        if(event.which==16) shiftActive = false
+    });
+    
     let divClasse = document.getElementById("classe")
     let dName = document.getElementById("name")
     let connect = document.getElementById('key button')
@@ -302,14 +310,6 @@ export async function init(common){
                 });
                 divPrio.appendChild(prio);
             }
-
-            let shiftActive = false;
-            document.addEventListener('keydown', (event) => {
-                if(event.which==16) shiftActive = true
-            });
-            document.addEventListener('keyup', (event) => {
-                if(event.which==16) shiftActive = false
-            });
             connect.addEventListener("click",fu6=async function(event){
                 let key = await common.socketAdminAsync('copyKey',utilisateur.uuid)
                 common.writeCookie("listKey",common.readCookie("listKey")+ key +"/")
