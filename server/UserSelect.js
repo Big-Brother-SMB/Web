@@ -217,7 +217,7 @@ module.exports = class UserSelect{
         
         //reponse client admin
         this.enCour = false
-        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload")
+        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions, il reste " + (places - inscrits) + " places","w:"+semaine,"c:"+(11+creneau))
         return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload"
       } catch (error) {
         console.error(error)

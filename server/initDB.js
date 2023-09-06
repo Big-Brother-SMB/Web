@@ -99,6 +99,12 @@ module.exports = (db)=>{
         db.run('CREATE TABLE ban(id uuid,uuid uuid,debut Date,fin Date,justificatif text)')
     })
 
+    //localisation
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='localisation'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE localisation(uuid uuid,lieu text,semaine int2,creneau int2)')
+    })
+
     //pdf / post
     db.get("SELECT * FROM sqlite_master where type='table' AND name='pdf'", (err, data) => {
       if(data==undefined)

@@ -1,7 +1,96 @@
 const day = ["Lundi", "Mardi","Jeudi","Vendredi"]
 
+class Ami{
+    static common;
+
+    constructor(uuid,first_name,last_name,procuration,pris,inMyFriendList,DorI){
+        this.uuid = uuid
+        this.first_name = first_name
+        this.last_name = last_name
+        this.procuration = procuration
+        this.pris = pris
+        this.inMyFriendList = inMyFriendList
+        this.DorI = DorI
+    }
+
+    static searchAmiUUID(list,uuid){
+        for(let i in list){
+            if(list[i].uuid==uuid){
+                return list[i]
+            }
+        }
+        return null;
+    }
+
+    static allPris(list){
+        list.forEach(e=>{
+            e.pris=1
+        })
+    }
+
+    static allNonPris(list){
+        list.forEach(e=>{
+            e.pris=0
+        })
+    }
+
+    static listPrisNonAmi(list,list_pris){
+        list.forEach(ami=>{
+            list_pris.forEach(uuid=>{
+                if(ami.uuid==uuid){
+                    ami.pris = 1
+                }
+            })
+        })
+
+        list_pris.forEach(uuid=>{
+            if(Ami.searchAmiUUID(list,uuid) == null){
+                list.push(new Ami(uuid,"","",null,1,0,null))
+            }
+        })
+    }
+
+    bouton(update){
+        let moi = this
+
+        let button = document.createElement("button")
+        button.classList.add("ami")
+        button.innerHTML = Ami.common.name(this.first_name,this.last_name)
+
+        if(this.DorI == 0){
+            button.innerHTML += " (a fait une demande)"
+        }else if(this.DorI == 1){
+            button.innerHTML += " (est inscrit)"
+        }
+        if(this.inMyFriendList == 0){
+            button.classList.add('partiel')
+        }
+
+
+        button.addEventListener("click", function() {
+            if(moi.pris){
+                moi.pris = 0
+            }else{
+                moi.pris = 1
+            }
+
+            update()
+        })
+
+        let divListeAmis = document.getElementById("listeAmis")
+        let divAmisAjoute = document.getElementById("listeMange")
+
+        if(this.pris){
+            divAmisAjoute.appendChild(button);
+        }else{
+            divListeAmis.appendChild(button);
+        }
+    }
+}
+
 export async function init(common){
     try {
+        Ami.common = common
         document.getElementById("btn_retour").classList.remove("cache")
         document.getElementById("btn_retour").setAttribute("url","/midi")
     
@@ -33,14 +122,13 @@ export async function init(common){
     
                 document.getElementById('popup-body').appendChild(from)
                 let passProcuration=true
-                listeAmisPris.forEach(child=>{
-                    let ami = listAmis[listAmisUUID.indexOf(child)]
-                    if(ami.procuration==1 && ami.DorI!=1){
+                listAmis.forEach(ami=>{
+                    if(ami.procuration==1 && ami.DorI!=1 && ami.pris==1){
                         passProcuration=false
                         let box = document.createElement('input')
                         box.setAttribute("type","checkbox")
                         box.setAttribute("name","procuration")
-                        box.setAttribute("value",child)
+                        box.setAttribute("value",ami.uuid)
                         from.appendChild(box)
     
                         let label = document.createElement('label')
@@ -72,8 +160,8 @@ export async function init(common){
     
         const setMyDemande = async function() {
             let str = ""
-            listAmisUUID.forEach(child=>{
-                str += child + "/"
+            listAmis.forEach(child=>{
+                if(child.pris==1) str += child.uuid + "/"
             })
             common.writeCookie("derniere demande",str)
     
@@ -97,14 +185,13 @@ export async function init(common){
                 
                 document.getElementById('popup-body').appendChild(from)
                 let passProcuration=true
-                listeAmisPris.forEach(child=>{
-                    let ami = listAmis[listAmisUUID.indexOf(child)]
-                    if(ami.procuration==1 && ami.DorI!=1){
+                listAmis.forEach(ami=>{
+                    if(ami.procuration==1 && ami.DorI!=1 && ami.pris==1){
                         passProcuration=false
                         let box = document.createElement('input')
                         box.setAttribute("type","checkbox")
                         box.setAttribute("name","procuration")
-                        box.setAttribute("value",child)
+                        box.setAttribute("value",ami.uuid)
                         if(ami.DorI==null){
                             box.setAttribute("checked",true)
                         }
@@ -117,8 +204,12 @@ export async function init(common){
                         from.innerHTML+='<br>'
                     }
                 })
+                let listAmisPris=[]
+                listAmis.forEach(ami=>{
+                    if(ami.pris==1) listAmisPris.push(ami.uuid)
+                })
                 if(passProcuration){
-                    await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listeAmisPris,sandwich:choiceOfSandwich})
+                    await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listAmisPris,sandwich:choiceOfSandwich})
                     common.popUp_Stop()
                     common.loadpage("/midi")
                 }else{
@@ -126,13 +217,13 @@ export async function init(common){
                         const checkBoxs = document.querySelectorAll('input[name="procuration"]');
                         for (const checkBox of checkBoxs) {
                             if (checkBox.checked) {
-                                let listAmisDeLAmi = listeAmisPris.concat([])
+                                let listAmisDeLAmi = listAmisPris.concat([])
                                 listAmisDeLAmi.splice(listAmisDeLAmi.indexOf(checkBox.value),1);
                                 listAmisDeLAmi.push(common.uuid)
                                 await common.socketAsync('setAmiDemande',{uuidAmi:checkBox.value,w:w,j:j,h:h,amis:listAmisDeLAmi})
                             }
                         }
-                        await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listeAmisPris,sandwich:choiceOfSandwich})
+                        await common.socketAsync('setMyDemande',{w:w,j:j,h:h,amis:listAmisPris,sandwich:choiceOfSandwich})
                         common.popUp_Stop()
                         common.loadpage("/midi")
                     }, { once: true })
@@ -146,18 +237,23 @@ export async function init(common){
     
     
         document.getElementById("toutAjouter").addEventListener("click", function() {
-            listeAmisPris = listeAmisPris.concat(listeAmisNonPris);
-            listeAmisNonPris = []
+            Ami.allPris(listAmis)
             update()
         })
     
     
         document.getElementById("toutRetirer").addEventListener("click", function() {
-            listeAmisNonPris = listeAmisNonPris.concat(listeAmisPris);
-            listeAmisPris = []
+            Ami.allNonPris(listAmis)
             update()
         })
     
+        let info = await common.socketAsync('getDataThisCreneau',{w:w,j:j,h:h})
+        let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
+        let my_demande = await common.socketAsync("getMyDemande",{w:w,j:j,h:h})
+        
+        let divListeAmis = document.getElementById("listeAmis")
+        let divAmisAjoute = document.getElementById("listeMange")
+
         /*
         listUsers => liste Nom/Prénom/uuid de tout les utilisateur
         listAmisUUID => UUID de tout amis
@@ -166,34 +262,13 @@ export async function init(common){
         let listUsers = await common.socketAsync('listUsersName',null)
         let listAmisBrut = await common.socketAsync('getAmis',null)
         console.log("brut",listAmisBrut)
-        let listAmisUUID=[]
-        listAmisBrut.forEach(child=>{
-            listAmisUUID.push(child.uuid)
-        })
     
         //créer la liste d'amis global
         let listAmis=[]
-        listUsers.forEach(child=>{
-            let index = listAmisUUID.indexOf(child.uuid)
-            if(index != -1){
-                child.inMyFriendList = 1
-                child.procuration=listAmisBrut[index].HeGiveMeProc
-                child.DorI=null
-                listAmis.push(child)
-            }
+
+        listAmisBrut.forEach(child=>{
+            listAmis.push(new Ami(child.uuid,"","",child.HeGiveMeProc,0,1,null))
         })
-    
-    
-        let info = await common.socketAsync('getDataThisCreneau',{w:w,j:j,h:h})
-        let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
-        let my_demande = await common.socketAsync("getMyDemande",{w:w,j:j,h:h})
-        
-        let divListeAmis = document.getElementById("listeAmis")
-        let divAmisAjoute = document.getElementById("listeMange")
-    
-        //les listes des amis qui sont ou pas dans la demande(en UUID)
-        let listeAmisNonPris = []
-        let listeAmisPris = []
     
         //active la divSandwich
         if(info.mode_sandwich>0){
@@ -207,53 +282,45 @@ export async function init(common){
                 document.getElementById("DIVdepot").classList.remove("cache")
                 const AllAmis = common.readBoolCookie("allAmis")
                 if(AllAmis){
-                    listeAmisPris=listAmisUUID
+                    Ami.allPris(listAmis)
                 }else{
                     try{
-                        listeAmisPris = common.readCookie("derniere demande").split("/")
-                        listeAmisPris.pop()
-                    }catch(Exception){
-                        listeAmisPris=[]
-                    }
+                        let listAmisPris = common.readCookie("derniere demande").split("/")
+                        listAmisPris.pop()
+
+                        Ami.listPrisNonAmi(listAmis,listAmisPris)
+                    }catch(Exception){}
                 }
             }else if(my_demande.DorI==1){
                 //inscrit
                 document.getElementById("sandwich").classList.add("cache") 
                 document.getElementById("DIVinscrit").classList.remove("cache")
-                listeAmisPris=my_demande.amis
+
+                Ami.listPrisNonAmi(listAmis,my_demande.amis)
             }else{
                 //modif
                 document.getElementById("DIVmodif").classList.remove("cache")
-                listeAmisPris=my_demande.amis
+                
+                console.log(my_demande)
+                Ami.listPrisNonAmi(listAmis,my_demande.amis)
                 if(my_demande.sandwich!=null) document.querySelectorAll('input[name="sandwich"]')[my_demande.sandwich].checked=true
             }
         }else{
             //n'a pas le droit de posser de demande sur le créneau
             quitDemande()
         }
-    
-        //complete la listeAmisnonPris avec les amis qui ne sont pas dans la liste pris
-        listAmisUUID.forEach(child=>{
-            let index = listeAmisPris.indexOf(child)
-            if(index == -1){
-                listeAmisNonPris.push(child)
-            }
+
+        //on récupère les nom
+        listUsers.forEach(user=>{
+            listAmis.forEach(ami=>{
+                if(ami.uuid == user.uuid){
+                    ami.first_name = user.first_name
+                    ami.last_name = user.last_name
+                }
+            })
         })
-    
-        //ajoute les personnes qui sont dans la liste Pris met pas dans la liste d'ami global(s'elle de "/amis") dans listAmisUUID et listAmis
-        listeAmisPris.forEach(child=>{
-            let index = listAmisUUID.indexOf(child)
-            if(index == -1){
-                listAmisUUID.push(child)
-                listUsers.forEach(user=>{
-                    if(child == user.uuid){
-                        user.procuration=null
-                        user.inMyFriendList = 0
-                        listAmis.push(user)
-                    }
-                })
-            }
-        })
+        console.log(listAmis)
+        common.nameOrder(listAmis)
     
         //info
         let textScore = ""
@@ -268,86 +335,18 @@ export async function init(common){
         let inscrits = 0
         let demandes = 0
     
-        function update(){
-            console.log(listeAmisPris,listeAmisNonPris)
-            let pb = 0
-            listeAmisPris.forEach(child=>{
-                const index = listAmisUUID.indexOf(child)
-                if(listAmis[index].DorI==null){
-                    pb++
-                }
-            })
-            let p = document.getElementById("attentionAmis")
-            if(pb == 0){
-                p.innerHTML = ""
-            }else if(pb == 1){
-                p.innerHTML = "Attention, un ami n'a pas encore fait de demande"
-            }else{
-                p.innerHTML = "Attention, " + pb + " amis n'ont pas encore fait de demande"
-            }
-    
-    
-    
-            divListeAmis.innerHTML=""
-            divAmisAjoute.innerHTML=""
-    
-            const func = function(ami2,pris2){
-                const ami = ami2
-                const pris = pris2
-                let button = document.createElement("button")
-                button.classList.add("ami")
-                button.innerHTML = common.name(ami.first_name,ami.last_name)
-    
-                if(ami.DorI == 0){
-                    button.innerHTML += " (a fait une demande)"
-                }else if(ami.DorI == 1){
-                    button.innerHTML += " (est inscrit)"
-                }
-                if(ami.inMyFriendList == 0){
-                    button.classList.add('partiel')
-                }
-    
-    
-                button.addEventListener("click", function() {
-                    if(pris){
-                        listeAmisPris.splice(listeAmisPris.indexOf(ami.uuid),1)
-                        listeAmisNonPris.push(ami.uuid)
-                        console.log(ami)
-                    }else{
-                        listeAmisNonPris.splice(listeAmisNonPris.indexOf(ami.uuid),1)
-                        listeAmisPris.push(ami.uuid)
-                        console.log(ami)
-                    }
-    
-                    update()
-                })
-    
-                if(pris){
-                    divAmisAjoute.appendChild(button);
-                }else{
-                    divListeAmis.appendChild(button);
-                }
-            }
-    
-            listeAmisNonPris.forEach(function(child) {
-                func(listAmis[listAmisUUID.indexOf(child)],false)
-            })
-            listeAmisPris.forEach(function(child) {
-                func(listAmis[listAmisUUID.indexOf(child)],true)
-            })
-        }
-    
         listDemandes.forEach(function(child) {
-            const index = listAmisUUID.indexOf(child.uuid)
+            let ami = Ami.searchAmiUUID(listAmis,child.uuid)
+
             if(child.DorI==true){
                 inscrits++
-                if(index != -1){
-                    listAmis[index].DorI = 1
+                if(ami != null){
+                    ami.DorI = 1
                 }
             }else{
                 demandes++
-                if(index != -1){
-                    listAmis[index].DorI = 0
+                if(ami != null){
+                    ami.DorI = 0
                 }
             }
         });
@@ -371,6 +370,34 @@ export async function init(common){
         document.getElementById("pass").addEventListener("click", async () => {
             common.loadpage("/pass")
         });
+
+        function update(){
+            console.log(listAmis)
+            let pb = 0
+            listAmis.forEach(child=>{
+                if(child.DorI==null && child.pris==1){
+                    pb++
+                }
+            })
+            let p = document.getElementById("attentionAmis")
+            if(pb == 0){
+                p.innerHTML = ""
+            }else if(pb == 1){
+                p.innerHTML = "Attention, un ami n'a pas encore fait de demande"
+            }else{
+                p.innerHTML = "Attention, " + pb + " amis n'ont pas encore fait de demande"
+            }
+    
+    
+    
+            divListeAmis.innerHTML=""
+            divAmisAjoute.innerHTML=""
+    
+    
+            listAmis.forEach(function(child) {
+                child.bouton(update)
+            })
+        }
     
         update()
     } catch (error) {
