@@ -1,3 +1,4 @@
+const { containeranalysis_v1beta1 } = require('googleapis')
 const User = require('./User.js')
 const funcDB = require('./functionsDB.js')
 const funcDate = require('./functionsDate.js')
@@ -71,22 +72,26 @@ module.exports = class UserSelect{
 
       //donne un bonus d'avance
       //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
-      this.usersList.forEach(u=>{
-        if(u.date.getTime() < dateToday.getTime()){
-          u.score+=info.bonus_avance
+      for(let u in this.usersList){
+        if(this.usersList[u].date.getTime() < dateToday.getTime()){
+          this.usersList[u].score+=info.bonus_avance
         }
-        for(let a in u.amis){
-          console.log(u.uuid,u.amis[a])
-          if(u.amis[a]==u.uuid){
-            u.amis.splice(a,1);
-            a--
-          }else if(UserSelect.searchAmi(u.amis[a])==null){
-            u.amis.splice(a,1);
-            a--
-            u.pass=-1
+
+        for(let a=this.usersList[u].amis.length-1;a>=0;a--){
+          if(this.usersList[u].amis[a]==this.usersList[u].uuid){
+            let list_amis = this.usersList[u].amis;
+            list_amis.splice(a,1);
+            this.usersList[u].amis = list_amis
+          }else if(UserSelect.searchAmi(this.usersList[u].amis[a])==null){
+            console.log(this.usersList[u].amis,a,this.usersList[u].amis[a])
+            let list_amis = this.usersList[u].amis;
+            list_amis.splice(a,1);
+            this.usersList[u].amis = list_amis
+            this.usersList[u].pass=-1
           }
+          this.usersList[u].amis = this.usersList[u].amis.filter((x, i) => this.usersList[u].amis.indexOf(x) === i);
         }
-      })
+      }
   
       //trie les utilisateurs par ordre décroissant par rapport au score 
       this.usersList.sort(function compareFn(a, b) {
@@ -104,10 +109,6 @@ module.exports = class UserSelect{
         }
         return 0
       })
-      console.log("test:")
-      this.usersList.forEach((e)=>{
-        console.log(e.score,e.date.getTime())
-      })
   
       //récupère les amis éloignier des utilisateur
       for(let u in this.usersList){
@@ -122,12 +123,14 @@ module.exports = class UserSelect{
       for(let u in this.usersList){
         let nbAmisPrio=0
         let nbAmis=0
-        this.usersList[u].amis.forEach(a=>{
-          if(UserSelect.searchAmi(a).prio){
+        for(let a in this.usersList[u].amis){
+          //let ami = UserSelect.searchAmi(a)
+          //if(ami!=null && ami.prio){
+          if(UserSelect.searchAmi(this.usersList[u].amis[a]).prio){
             nbAmisPrio++
           }
           nbAmis++
-        })
+        }
         let pourcentageAmisPrio = Math.ceil((nbAmisPrio/nbAmis)*100)
         if(pourcentageAmisPrio>=info.perMin){
           usersList2[u].prio = true
@@ -267,7 +270,8 @@ module.exports = class UserSelect{
       obj.amis.forEach(a=>{
         if(a!=moi.uuid && !moi.amisEloigner.includes(a)){
           moi.amisEloigner.push(a)
-          UserSelect.searchAmi(a).amisComplete(moi)
+          let ami = UserSelect.searchAmi(a)
+          if(ami!=null) ami.amisComplete(moi)
         }
       })
     }
