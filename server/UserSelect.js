@@ -213,15 +213,17 @@ module.exports = class UserSelect{
             let infoD = await user.getMidiDemande(semaine,creneau)
             await user.setMidiDemande(semaine,creneau,infoD.amis,true,infoD.scan)
           }
-        } 
+        }
+        
+        //reponse client admin
+        this.enCour = false
+        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload")
+        return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload"
       } catch (error) {
-        console.log(error)
+        console.error(error)
+        console.log("error algo")
+        this.enCour = false
       }
-  
-      //reponse client
-      this.enCour = false
-      console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload")
-      return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload"
     }
   
   
