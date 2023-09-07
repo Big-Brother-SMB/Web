@@ -73,41 +73,13 @@ export async function init(common){
         inputNameId = name
     }
 
-    function search(c){
-        code = c
-        inputCodeBar.value = code
-        
-        let name = users_code.get(code)
-        inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
-        inputNameId = name
-    }
 
     inputCodeBar.addEventListener("input",function(){
         if (String(inputCodeBar.value).length==5){
             search(inputCodeBar.value)
         }
     })
-/*
-    database.ref("users").once("value", function(snapshot){
-        database.ref("names").once("value", function(snapshotNames){
-            snapshot.forEach(function(child) {
-                utilisateurs.push(child.key)
-                users_code.set(snapshot.child(child.key+"/code barre").val(),child.key)
-                if(typeof snapshotNames.child(child.key).val() === "string"){
-                    utilisateursNames.push(snapshotNames.child(child.key).val())
-                } else {
-                    database.ref("names/"+child.key).set(child.key)
-                    utilisateursNames.push(child.key)
-                }
-            })
-            autocomplete(inputName, utilisateursNames,function(val){
-                val = utilisateurs[utilisateursNames.indexOf(val)]
-                inputNameId=val
-                inputCodeBar.value = snapshot.child(val+"/code barre/").val()
-            });  
-        })
-    })
-*/
+
 
     var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker","Jeu d'échecs","Jungle Speed","Jeu de cartes"]
 

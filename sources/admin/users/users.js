@@ -1,14 +1,14 @@
 const dayLowerCase = ["lundi", "mardi","jeudi","vendredi"];
 
+let shiftActive = false;
+document.addEventListener('keydown', (event) => {
+    if(event.which==16) shiftActive = true
+});
+document.addEventListener('keyup', (event) => {
+    if(event.which==16) shiftActive = false
+});
+
 export async function init(common){
-    let shiftActive = false;
-    document.addEventListener('keydown', (event) => {
-        if(event.which==16) shiftActive = true
-    });
-    document.addEventListener('keyup', (event) => {
-        if(event.which==16) shiftActive = false
-    });
-    
     let divClasse = document.getElementById("classe")
     let dName = document.getElementById("name")
     let connect = document.getElementById('key button')

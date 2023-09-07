@@ -2,7 +2,7 @@ export async function init(common){
     var interval;
     let barcodeLaser = '';
     const keydown = function(evt) {
-        if(window.location.pathname=="/admin/pret"){
+        if(window.location.pathname=="/admin/localisation"){
             console.log(evt.key)
             if (interval){
                 clearInterval(interval);
@@ -27,11 +27,30 @@ export async function init(common){
 
     let inputCodeBar = document.getElementById("code_bar")
     inputCodeBar.addEventListener("input",function(){
-        let val = inputCodeBar.value
-        if(String(val).length  == 5){
-            search(val)
+        if (String(inputCodeBar.value).length==5){
+            search(inputCodeBar.value)
         }
     })
+
+    function search(c){
+        code = c
+        inputCodeBar.value = code
+        
+        let name = users_code.get(code)
+        inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
+        inputNameId = name
+    }
+
+
+
+
+    function onScanSuccess(decodedText, decodedResult) {
+        console.log(`Code scanned = ${decodedText}`, decodedResult);
+        search(decodedText)
+    }
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "qr-reader", { fps: 30, qrbox: 400 });
+    html5QrcodeScanner.render(onScanSuccess);
 
 
 
@@ -42,9 +61,9 @@ export async function init(common){
     let utilisateursNames = []
 
     let code = 0
-    let users_code= new Map();
+    let users_code = new Map();
 
-    let listUsers=common.nameOrder(await common.socketAdminAsync('getListPass',null))
+    let listUsers = common.nameOrder(await common.socketAdminAsync('getListPass',null))
 
 
 
@@ -64,102 +83,32 @@ export async function init(common){
     },true); 
 
 
-    function search(c){
-        code = c
-        inputCodeBar.value = code
-        
-        let name = users_code.get(code)
-        inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
-        inputNameId = name
-    }
-
-    function search(c){
-        code = c
-        inputCodeBar.value = code
-        
-        let name = users_code.get(code)
-        inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
-        inputNameId = name
-    }
-
-    inputCodeBar.addEventListener("input",function(){
-        if (String(inputCodeBar.value).length==5){
-            search(inputCodeBar.value)
-        }
-    })
-/*
-    database.ref("users").once("value", function(snapshot){
-        database.ref("names").once("value", function(snapshotNames){
-            snapshot.forEach(function(child) {
-                utilisateurs.push(child.key)
-                users_code.set(snapshot.child(child.key+"/code barre").val(),child.key)
-                if(typeof snapshotNames.child(child.key).val() === "string"){
-                    utilisateursNames.push(snapshotNames.child(child.key).val())
-                } else {
-                    database.ref("names/"+child.key).set(child.key)
-                    utilisateursNames.push(child.key)
-                }
-            })
-            autocomplete(inputName, utilisateursNames,function(val){
-                val = utilisateurs[utilisateursNames.indexOf(val)]
-                inputNameId=val
-                inputCodeBar.value = snapshot.child(val+"/code barre/").val()
-            });  
-        })
-    })
-*/
-
-    var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker","Jeu d'échecs","Jungle Speed","Jeu de cartes"]
-
-    function debutPret(elem){
-        if (inputNameId!=null){
-            common.socketAdminAsync("addPret",{obj:elem,debut:new Date(),uuid:inputNameId})
-            document.getElementById(elem+"-Name").innerHTML=inputName.value
-            document.getElementById(elem).classList.add("grayscale")
-        }
-        inputName.value=""
-        inputCodeBar.value=""
-        inputNameId=null
-    }
-
-    async function finPret(elem){
-        listPret.forEach((child)=>{
-            if(child.objet==elem){
-                common.socketAdminAsync("finPret",{obj:elem,debut:child.debut,uuid:child.uuid,fin:new Date()})
-                document.getElementById(elem).classList.remove("grayscale")
-                document.getElementById(elem+"-Name").innerHTML="Libre"
-            }
-        })
-    }
 
 
-    let listPret;
-    async function actualiserPret(){
-        listPret = await common.socketAdminAsync("getPretsActuel",null)
-        for (const elem of listAct){
-            document.getElementById(elem).classList.remove("grayscale");
-        }
-        listPret.forEach((e)=>{
-            let element = document.getElementById(e.objet)
-            if(element!=null){
-                document.getElementById(e.objet+"-Name").innerHTML= utilisateursNames[utilisateurs.indexOf(e.uuid)]
-                element.classList.add("grayscale");
-            }
-        })
-    }
-    actualiserPret()
-    for (const elem of listAct){
+    let lieu = null;
+    let listLieu = ["Champagnat","Foyer","CDI","DOC","Aumonerie","Tutorat","City_stade","Bien_etre"]
+
+    let listScan = [];
+    
+
+    for (const elem of listLieu){
         document.getElementById(elem).addEventListener("click",async function(){
-            await actualiserPret()
-            if (document.getElementById(elem).classList.contains("grayscale")){
-                finPret(elem)
+            if (lieu == null || lieu != elem){
+                for (const elem of listLieu){
+                    document.getElementById(elem).classList.add("grayscale");
+                }
+                document.getElementById(elem).classList.remove("grayscale");
+                lieu = elem;
             }else{
-                debutPret(elem)
+                for (const elem of listLieu){
+                    document.getElementById(elem).classList.remove("grayscale");
+                }
+                lieu = null;
             }
         })
     }
 
     document.getElementById("historique").addEventListener("click",()=>{
-        common.loadpage("/admin/pret/historique")
+        common.loadpage("/admin/localisation/historique")
     })
 }
