@@ -146,6 +146,10 @@ day = today.weekday()
 if day>4:
   day=4
 
+dayMidi = day
+if dayMidi>1:
+  dayMidi-=1
+
 
 #fonction de scan
 
@@ -182,7 +186,7 @@ def refreshTime():
   threading.Timer(60, refreshTime).start()
 
 def refreshPassages():
-  listCreneau11 = socketReq('listDemandes', {"w":week,"j":day,"h":0},False)
+  listCreneau11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
   NBinscrit11=0
   NBscan11=0
   for child in listCreneau11:
@@ -190,7 +194,7 @@ def refreshPassages():
       NBinscrit11+=1
       if child["scan"]==1:
         NBscan11+=1
-  listCreneau12 = socketReq('listDemandes', {"w":week,"j":day,"h":1},False)
+  listCreneau12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
   NBinscrit12=0
   NBscan12=0
   for child in listCreneau12:
@@ -257,14 +261,14 @@ def show(key):
           info.set("classe : " + classe)
           if heure!="perm":
             #midi
-            listCreneau = socketReq('listDemandes', {"w":week,"j":day,"h":heure-11},False)
+            listCreneau = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":heure-11},False)
             test = False
             for child in listCreneau:
               if child["DorI"]==1 and child['uuid']==user['uuid']:
                 test = True
             if(test):
               canvas.itemconfig(image_container,image=imgOk)
-              socketReq('scan', [week,day,heure-11,user['uuid'],True],True)
+              socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
               refreshPassages()
             else:
               canvas.itemconfig(image_container,image=imgCroix)
@@ -295,8 +299,8 @@ def add():
   canvas.itemconfig(image_container,image=imgLoading)
   buttonInscrire.pack_forget()
   if heure!="perm":
-    socketReq('setDorI', [week,day,heure-11,user['uuid'],True],True)
-    socketReq('scan', [week,day,heure-11,user['uuid'],True],True)
+    socketReq('setDorI', [week,dayMidi,heure-11,user['uuid'],True],True)
+    socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
     canvas.itemconfig(image_container,image=imgOk)
     refreshPassages()
 
@@ -315,7 +319,7 @@ def export():
   dico={}
   for e in users:
     dico[e["uuid"]] = e["first_name"] + " " + e["last_name"]
-  list11 = socketReq('listDemandes', {"w":week,"j":day,"h":0},False)
+  list11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
   inscrits11 = []
   passages11 = []
   for child in list11:
@@ -323,7 +327,7 @@ def export():
       inscrits11.append(dico[child["uuid"]])
       if child["scan"]==1:
         passages11.append(dico[child["uuid"]])
-  list12 = socketReq('listDemandes', {"w":week,"j":day,"h":1},False)
+  list12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
   inscrits12 = []
   passages12 = []
   for child in list12:
