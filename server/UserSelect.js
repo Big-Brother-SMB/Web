@@ -217,7 +217,7 @@ module.exports = class UserSelect{
         
         //reponse client admin
         this.enCour = false
-        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions, il reste " + (places - inscrits) + " places","w:"+semaine,"c:"+(11+creneau))
+        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions, il reste " + (places - inscrits) + " places","w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
         return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload"
       } catch (error) {
         console.error(error)
@@ -239,7 +239,7 @@ module.exports = class UserSelect{
                 let testScore=true
                 //test si les amis ont tous plus de points que l'utilisateur ou qu'il sont déja inscrit
                 this.usersList[i].amisEloigner.forEach(a=>{
-                  if(UserSelect.usersList[i].score>=UserSelect.searchAmi(a).score && UserSelect.searchAmi(a).pass!=1){
+                  if(UserSelect.usersList[i].score>UserSelect.searchAmi(a).score && UserSelect.searchAmi(a).pass!=1){
                     testScore=false
                   }
                 })
