@@ -388,6 +388,126 @@ module.exports = class funcDB{
   }
 
 
+  
+  static getLocalisation(semaine,creneau){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM localisation where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  static setLocalisation(uuid,lieu,semaine,creneau){
+    db.get("SELECT * FROM localisation where uuid=? and semaine=? and creneau=?",[uuid,semaine,creneau], (err, data) => {
+      if(data==undefined){
+        db.run("INSERT INTO localisation(uuid,lieu,semaine,creneau) VALUES (?,?,?,?)",[uuid,lieu,semaine,creneau])
+      } else{
+        db.run("UPDATE localisation SET lieu=? where uuid=? and semaine=? and creneau=?",[lieu,uuid,semaine,creneau])
+      }
+    })
+  }
+
+  static delLocalisation(uuid,semaine,creneau){
+    db.run("DELETE FROM localisation WHERE uuid=? and lieu=? and semaine=? and creneau=?",[uuid,lieu,semaine,creneau])
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //PDF
 
   static getPDF(){

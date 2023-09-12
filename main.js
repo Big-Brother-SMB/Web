@@ -256,6 +256,10 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.useCookie(socket,user)
 
       funcSocketAdmin.pyScanVersion(socket,user)
+
+      funcSocketAdmin.getLocalisation(socket,user)
+      funcSocketAdmin.setLocalisation(socket,user)
+      funcSocketAdmin.delLocalisation(socket,user)
     }
   })
   io.on("connection", async (socket) => {

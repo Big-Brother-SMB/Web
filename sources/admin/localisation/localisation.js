@@ -88,7 +88,25 @@ export async function init(common){
     let lieu = null;
     let listLieu = ["Champagnat","Foyer","CDI","DOC","Aumonerie","Tutorat","City_stade","Bien_etre"]
 
-    let listScan = [];
+    let d = new Date();
+    let h;
+    let jBrut = d.getDay();
+    if(jBrut==3){
+        jBrut=2
+    }else if(jBrut==6 || jBrut==0){
+        jBrut=5
+    }
+    let j = jBrut-1
+    if(j>1){
+        j--
+    }
+    if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
+        h = 0;
+    }else{
+        h = 1;
+    }
+
+    let listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
     
 
     for (const elem of listLieu){

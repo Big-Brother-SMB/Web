@@ -412,6 +412,33 @@ module.exports = class funcSocket{
         });
     }
 
+    static getLocalisation(socket,user){
+        socket.on("getLocalisation", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("getLocalisation",await funcDB.getLocalisation(req.w,req.j*2+req.h))
+            }catch(e){console.error(e);console.log('48');}
+        });
+    }
+
+    static setLocalisation(socket,user){
+        socket.on("setLocalisation", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("setLocalisation",await funcDB.setLocalisation(req.uuid,req.lieu,req.w,req.j*2+req.h))
+            }catch(e){console.error(e);console.log('48');}
+        });
+    }
+
+    static delLocalisation(socket,user){
+        socket.on("delLocalisation", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("delLocalisation",await funcDB.delLocalisation(req.uuid,req.w,req.j*2+req.h))
+            }catch(e){console.error(e);console.log('48');}
+        });
+    }
+
     static pyScanVersion(socket,user){
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
