@@ -151,7 +151,7 @@ export async function init(common){
                 text+="</br>("+nbDemandes[j][h]+" demandes pour " + places[j][h] + " places restantes)"+textcout
                 break;
             case 3:
-                text = "Foyer fermé<br>" + msg[j][h];
+                text = "Foyer fermé";
                 bouton[j][h].className="case midi red"
                 break;
             case 4:
@@ -163,6 +163,7 @@ export async function init(common){
                 bouton[j][h].className="case midi default"
                 break;
         }
+        text+= "<br>" + msg[j][h];
         bouton[j][h].innerHTML = text;
     }
 

@@ -27,7 +27,6 @@ export async function init(common){
 
     for(let i in usersList){
         usersList[i].name = common.name(usersList[i].first_name,usersList[i].last_name)
-        //await common.socketAdminAsync('setDorI',[w,j,h,usersList[i].uuid,false])
     }
 
     usersList.sort((a, b) => (a.name > b.name) ? 1 : -1)

@@ -83,7 +83,7 @@ export async function init(common){
         if(utilisateursNames.indexOf(common.name(utilisateur.first_name,utilisateur.last_name)) == -1){
             document.getElementById("info").innerHTML = "cet utilisateur n'existe pas"
         }else{
-            document.getElementById("info").innerHTML = "Page de " + common.name(utilisateur.first_name,utilisateur.last_name)
+            document.getElementById("info").innerHTML = "Email: " + utilisateur.email + "<br>UUID: " + utilisateur.uuid
             divClasse.selectedIndex=-1
             for(let c in g_c[1]){
                 if(g_c[1][c].classe==utilisateur.classe){

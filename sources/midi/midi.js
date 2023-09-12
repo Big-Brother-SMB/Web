@@ -199,7 +199,7 @@ export async function init(common){
                 }
                 break;
             case 3:
-                text = "Foyer fermé<br>" + msg[j][h];
+                text = "Foyer fermé<br>";
                 bouton[j][h].className="case midi red"
                 break;
             case 4:
@@ -211,6 +211,7 @@ export async function init(common){
                 bouton[j][h].className="case midi default"
                 break;
         }
+        text+= "<br>" + msg[j][h];
         if(ouvert[j][h]===2){
             if (inscrit[j][h]) {
                 bouton[j][h].className = "case midi green"
@@ -227,7 +228,7 @@ export async function init(common){
                 } else if (nbAmisInscrit[j][h] == 1) {
                     text += " qui a été inscrit"
                 }else{
-                    text += " qui n'a pas fait de demande"
+                    text += " <rouge>qui n'a pas fait de demande</rouge>"
                 }
             } else if (nbAmis[j][h] > 1) {
                 text += " avec " + nbAmis[j][h] + " amis"
@@ -236,12 +237,12 @@ export async function init(common){
                 }else if(nbAmis[j][h] == nbAmisInscrit[j][h]){
                     text += " qui ont tous été inscrit"
                 }else if(0 == nbAmisDemande[j][h] && 0 == nbAmisInscrit[j][h]){
-                    text += " qui n'ont pas fait de demandes"
+                    text += " <rouge>qui n'ont pas fait de demandes</rouge>"
                 }else {
                     if (nbAmisDemande[j][h] == 1) {
-                        text += " dont un seul a fait une demande"
+                        text += " <rouge>dont un seul a fait une demande</rouge>"
                     } else if(nbAmisDemande[j][h]>1){
-                        text += " dont " + nbAmisDemande[j][h] + " ont fait une demande"
+                        text += " <rouge>dont " + nbAmisDemande[j][h] + " ont fait une demande</rouge>"
                     }
                     if(nbAmisDemande[j][h] != 0 && nbAmisInscrit[j][h] != 0){
                         text += " et"

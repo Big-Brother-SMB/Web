@@ -96,6 +96,8 @@ export async function init(common){
         try{
             if(true && lieu!=null){//scan
                 await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
+                listScan.push({semaine:common.actualWeek,jour:j,creneau:h,uuid:uuid,lieu:lieu})
+                actualisationList()
                 audio.play();
             }
         }catch(e){console.error(e)}
@@ -120,6 +122,7 @@ export async function init(common){
                 }
                 lieu = null;
             }
+            actualisationList()
         })
     }
 
@@ -156,9 +159,41 @@ export async function init(common){
             h = 8
         }
     }
-    getHour()
 
-    let listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
+    let listScan=[];
+
+    const table = document.getElementById("tbody")
+
+    function actualisationList(){
+        table.innerHTML=''
+        listUsers.forEach(user=>{
+            for(let i=0;i<listScan.length;i++){
+                const scan=listScan[i]
+                if(user.uuid==scan.uuid && scan.lieu==lieu && scan.semaine==common.actualWeek && scan.jour==j && scan.creneau==h){
+                    let ligne = document.createElement("tr")
+                    
+                    let nom = document.createElement("td")
+                    nom.innerHTML = common.name(user.first_name,user.last_name)
+                    ligne.appendChild(nom)
+                    
+                    let classe = document.createElement("td")
+                    classe.innerHTML = user.classe
+                    ligne.appendChild(classe)
+
+                    let supp = document.createElement("td")
+                    supp.innerHTML = "supp"
+                    supp.addEventListener("click",async ()=>{
+                        await common.socketAdminAsync('delLocalisation',{w:common.actualWeek,j:j,h:h,uuid:scan.uuid});
+                        listScan.splice(i,1)
+                        actualisationList()
+                    })
+                    ligne.appendChild(supp)
+
+                    table.appendChild(ligne)
+                }
+            }
+        })
+    }
     
 
 
@@ -169,12 +204,13 @@ export async function init(common){
         if(window.location.pathname=="/admin/localisation"){
             getHour()
             listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
+            actualisationList()
             setTimeout(loop,60000);
         }
     }
     loop();
 
     document.getElementById("historique").addEventListener("click",()=>{
-        common.loadpage("/admin/localisation/historique")
+        //common.loadpage("/admin/localisation/historique")
     })
 }

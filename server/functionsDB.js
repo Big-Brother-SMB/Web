@@ -416,7 +416,7 @@ module.exports = class funcDB{
   }
 
   static delLocalisation(uuid,semaine,jour,creneau){
-    db.run("DELETE FROM localisation WHERE uuid=? and lieu=? and semaine=? and jour=? and creneau=?",[uuid,lieu,semaine,jour,creneau])
+    db.run("DELETE FROM localisation WHERE uuid=? and semaine=? and jour=? and creneau=?",[uuid,semaine,jour,creneau])
   }
 
 
