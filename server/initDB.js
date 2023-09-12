@@ -102,7 +102,7 @@ module.exports = (db)=>{
     //localisation
     db.get("SELECT * FROM sqlite_master where type='table' AND name='localisation'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE localisation(uuid uuid,lieu text,semaine int2,creneau int2)')
+        db.run('CREATE TABLE localisation(uuid uuid,lieu text,semaine int2,jour int2,creneau int2)')
     })
 
     //pdf / post

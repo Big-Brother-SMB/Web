@@ -416,8 +416,8 @@ module.exports = class funcSocket{
         socket.on("getLocalisation", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("getLocalisation",await funcDB.getLocalisation(req.w,req.j*2+req.h))
-            }catch(e){console.error(e);console.log('48');}
+                socket.emit("getLocalisation",await funcDB.getLocalisation(req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('49');}
         });
     }
 
@@ -425,8 +425,8 @@ module.exports = class funcSocket{
         socket.on("setLocalisation", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("setLocalisation",await funcDB.setLocalisation(req.uuid,req.lieu,req.w,req.j*2+req.h))
-            }catch(e){console.error(e);console.log('48');}
+                socket.emit("setLocalisation",await funcDB.setLocalisation(req.uuid,req.lieu,req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('50');}
         });
     }
 
@@ -434,8 +434,8 @@ module.exports = class funcSocket{
         socket.on("delLocalisation", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("delLocalisation",await funcDB.delLocalisation(req.uuid,req.w,req.j*2+req.h))
-            }catch(e){console.error(e);console.log('48');}
+                socket.emit("delLocalisation",await funcDB.delLocalisation(req.uuid,req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('51');}
         });
     }
 

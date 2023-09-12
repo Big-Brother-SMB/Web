@@ -1,3 +1,4 @@
+const { jobs } = require('googleapis/build/src/apis/jobs');
 const uuidG = require('uuid');
 let db
 
@@ -389,9 +390,9 @@ module.exports = class funcDB{
 
 
   
-  static getLocalisation(semaine,creneau){
+  static getLocalisation(semaine,jour,creneau){
     return new Promise(function(resolve, reject) {
-      db.all("SELECT * FROM localisation where semaine=? and creneau=?",[semaine,creneau], (err, data) => {
+      db.all("SELECT * FROM localisation where semaine=? and jour=? and creneau=?",[semaine,jour,creneau], (err, data) => {
         try {
           if(data!=undefined){
             resolve(data)
@@ -404,18 +405,18 @@ module.exports = class funcDB{
     })
   }
 
-  static setLocalisation(uuid,lieu,semaine,creneau){
-    db.get("SELECT * FROM localisation where uuid=? and semaine=? and creneau=?",[uuid,semaine,creneau], (err, data) => {
+  static setLocalisation(uuid,lieu,semaine,jour,creneau){
+    db.get("SELECT * FROM localisation where uuid=? and semaine=? and jour=? and creneau=?",[uuid,semaine,jour,creneau], (err, data) => {
       if(data==undefined){
-        db.run("INSERT INTO localisation(uuid,lieu,semaine,creneau) VALUES (?,?,?,?)",[uuid,lieu,semaine,creneau])
+        db.run("INSERT INTO localisation(uuid,lieu,semaine,jour,creneau) VALUES (?,?,?,?,?)",[uuid,lieu,semaine,jour,creneau])
       } else{
-        db.run("UPDATE localisation SET lieu=? where uuid=? and semaine=? and creneau=?",[lieu,uuid,semaine,creneau])
+        db.run("UPDATE localisation SET lieu=? where uuid=? and semaine=? and jour=? and creneau=?",[lieu,uuid,semaine,jour,creneau])
       }
     })
   }
 
-  static delLocalisation(uuid,semaine,creneau){
-    db.run("DELETE FROM localisation WHERE uuid=? and lieu=? and semaine=? and creneau=?",[uuid,lieu,semaine,creneau])
+  static delLocalisation(uuid,semaine,jour,creneau){
+    db.run("DELETE FROM localisation WHERE uuid=? and lieu=? and semaine=? and jour=? and creneau=?",[uuid,lieu,semaine,jour,creneau])
   }
 
 

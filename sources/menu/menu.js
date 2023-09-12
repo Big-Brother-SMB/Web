@@ -34,7 +34,7 @@ export async function init(common){
         if (menu == null) {
             menu = "inconnu pour le moment"
         }
-        menu=menu.replaceAll("/","<br>")
+        
         document.getElementById("menuSemaine").innerHTML = "<u>Menu du foyer :</u><br>" + menu
 
         if(info_menu.self!="undefined" && info_menu.self!=undefined){

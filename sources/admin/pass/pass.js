@@ -1,5 +1,7 @@
 const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"]
 
+const audio = new Audio("/bip.mp3");
+
 export async function init(common){
     let scanB = document.getElementById("scanB")
     let inscB = document.getElementById("inscB")
@@ -33,7 +35,6 @@ export async function init(common){
     document.addEventListener('keydown', keydown)
 
 
-
     function onScanSuccess(decodedText, decodedResult) {
         console.log(`Code scanned = ${decodedText}`, decodedResult);
         search(decodedText,true)
@@ -41,6 +42,32 @@ export async function init(common){
     var html5QrcodeScanner = new Html5QrcodeScanner(
         "qr-reader", { fps: 30, qrbox: 400 });
     html5QrcodeScanner.render(onScanSuccess);
+
+
+    let inputCodeBar = document.getElementById("code_bar")
+    inputCodeBar.addEventListener("input",function(){
+        let val = inputCodeBar.value
+        if(String(val).length  == 5){
+            search(val,false)
+        }
+    })
+
+
+    function search(c,scan){
+        code = c
+        inputCodeBar.value = code
+        
+        let name = users_code.get(code)
+        inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
+        inputNameId = name
+        
+        if(name!=null){
+            searchName(name,scan)
+            return;
+        }else{
+            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"/Images/innexistant.jpg\" />"  
+        }
+    }
 
     let d = new Date();
     let h;
@@ -78,13 +105,7 @@ export async function init(common){
         actualiserPassages()
     })
 
-    let inputCodeBar = document.getElementById("code_bar")
-    inputCodeBar.addEventListener("input",function(){
-        let val = inputCodeBar.value
-        if(String(val).length  == 5){
-            search(val,false)
-        }
-    })
+
 
 
 
@@ -117,21 +138,7 @@ export async function init(common){
     },true); 
 
 
-    function search(c,scan){
-        code = c
-        inputCodeBar.value = code
-        
-        let name = users_code.get(code)
-        inputName.value = utilisateursNames[utilisateurs.indexOf(name)]
-        inputNameId = name
-        
-        if(name!=null){
-            searchName(name,scan)
-            return;
-        }else{
-            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"/Images/innexistant.jpg\" />"  
-        }
-    }
+
 
 
     let h2=h
@@ -166,6 +173,7 @@ export async function init(common){
                 if(scan==true){
                     scanB.classList.add("cache");
                     inscB.classList.add("cache");
+                    audio.play();
                     if(userDemande.scan!=true){
                         NBscan++
                     }
@@ -231,6 +239,7 @@ export async function init(common){
     scanB.addEventListener("click",async function(){
         scanB.classList.add("cache");
         inscB.classList.add("cache");
+        audio.play();
 
         listCreneau.forEach(e=>{
             if(e.uuid == inputNameId && e.scan!=1){
@@ -248,6 +257,7 @@ export async function init(common){
     inscB.addEventListener("click",async function(){
         scanB.classList.add("cache");
         inscB.classList.add("cache");
+        audio.play();
 
         let user = {}
         listCreneau.forEach(e=>{
