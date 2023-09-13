@@ -196,7 +196,7 @@ input,select,textarea{
   width: 75%;
 }
 
-@media screen and (max-width: 1001px) {
+@media screen and (max-width: 1000px) {
   .nav_split{
     margin-top: 25px;
     margin-bottom: 25px;
@@ -254,7 +254,7 @@ input,select,textarea{
   }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1001px) {
   #main,#chargement{
     margin-left: 83px;
   }
@@ -520,7 +520,7 @@ input,select,textarea{
 
 /*------------------PERM---------------*/
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1001px) {
   .case.perm{
       width: 10.6%;
       height: 150px;
@@ -531,7 +531,7 @@ input,select,textarea{
   }
 }  
 
-@media screen and (max-width: 1001px) {
+@media screen and (max-width: 1000px) {
   #creneaudiv.perm{
     display: flex;
   }
@@ -556,7 +556,7 @@ input,select,textarea{
 
 /*------------------MIDI---------------*/
 
-@media screen and (max-width: 1001px) {
+@media screen and (max-width: 1000px) {
   .case {
     font-size: 1.4rem;
   }
@@ -579,7 +579,7 @@ input,select,textarea{
   }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1001px) {
   #creneaudiv.midi{
     display: flex;
   }
@@ -642,7 +642,7 @@ vert{
   background-color: #e7e7e7;
 }
 
-@media screen and (max-width: 1001px) {
+@media screen and (max-width: 1000px) {
   .listAmis::-webkit-scrollbar {
     display: none;
   }
@@ -1232,7 +1232,7 @@ p.cookie.period{
 
 /*------------------------------Pass---------------------------*/
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1001px) {
   #qr-reader{
     display: none;
   }

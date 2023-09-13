@@ -29,7 +29,6 @@ export async function init(common){
         usersList[i].name = common.name(usersList[i].first_name,usersList[i].last_name)
     }
 
-    usersList.sort((a, b) => (a.name > b.name) ? 1 : -1)
     let affList=[]
 
     for(let i in usersList){

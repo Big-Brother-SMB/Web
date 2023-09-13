@@ -137,26 +137,26 @@ export async function init(common){
     j = j-1
     function getHour(){
         let d = new Date();
-        if((d.getHours() == 7 && d.getMinutes() >= 50) || (d.getHours() == 8 && d.getMinutes() < 44)){
-            h = 0;
-        }else if((d.getHours() == 8 && d.getMinutes() >= 44) || (d.getHours() == 9 && d.getMinutes() < 43)){
-            h = 1;
-        }else if((d.getHours() == 9 && d.getMinutes() >= 43) || (d.getHours() == 10 && d.getMinutes() < 55)){
-            h = 2;
-        }else if((d.getHours() == 10 && d.getMinutes() >= 55) || (d.getHours() == 11 && d.getMinutes() < 54)){
-            h = 3;
-        //}else if((d.getHours() == 11 && d.getMinutes() >= 54) || (d.getHours() == 13 && d.getMinutes() < 7) || (d.getHours() == 12)){
-        //    h = 8;
-        }else if((d.getHours() == 13 && d.getMinutes() >= 7) || (d.getHours() == 14 && d.getMinutes() < 8)){
-            h = 4;
-        }else if((d.getHours() == 14 && d.getMinutes() >= 8) || (d.getHours() == 15 && d.getMinutes() < 7)){
-            h = 5;
-        }else if((d.getHours() == 15 && d.getMinutes() >= 7) || (d.getHours() == 16 && d.getMinutes() < 19)){
-            h = 6;
-        }else if((d.getHours() == 16 && d.getMinutes() >= 19) || (d.getHours() == 17 && d.getMinutes() < 18)){
-            h = 7;
+        const horaires = [[7,50],[8,44],[9,43],[10,55],[11,54],[13,7],[14,8],[15,7],[16,19],[17,18]]
+        let i=0
+        h = -1
+        while(i<horaires.length-1 && h==-1){
+            if((d.getHours() == horaires[i][0] && d.getMinutes() >= horaires[i][1])
+            || (d.getHours() == horaires[i+1][0] && d.getMinutes() < horaires[i+1][1])){
+                h = i;
+            }else if(d.getHours() == 12){
+                h = 4
+            }
+            i++
+        }
+        if(h!=-1){
+            console.log((String(horaires[h][0]).length == 1?"0":""))
+            document.getElementById("heure").innerHTML = (String(horaires[h][0]).length == 1?"0":"") + horaires[h][0] + ":" + 
+                (String(horaires[h][1]).length == 1?"0":"") + horaires[h][1] + " à " + 
+                (String(horaires[h+1][0]).length == 1?"0":"") + horaires[h+1][0] + ":" + 
+                (String(horaires[h+1][1]).length == 1?"0":"") + horaires[h+1][1]
         }else{
-            h = 8
+            document.getElementById("heure").innerHTML = "???"
         }
     }
 
@@ -211,6 +211,6 @@ export async function init(common){
     loop();
 
     document.getElementById("historique").addEventListener("click",()=>{
-        //common.loadpage("/admin/localisation/historique")
+        common.loadpage("/admin/localisation/historique")
     })
 }

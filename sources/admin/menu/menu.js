@@ -27,7 +27,6 @@ export async function init(common){
         var nbpts=prompt("Nombre de point(s) à ajouter :","1")
         nbpts = parseFloat(nbpts.replaceAll(",","."))
         let nomgain
-        let conf
         if (nbpts!==null && !isNaN(nbpts)){
             nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
             if (nomgain!==null){
