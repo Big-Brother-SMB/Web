@@ -10,15 +10,15 @@ export async function init(common){
     let j = 0
     let h = 0
     let w = 0
-        if(params.j!=null){
+    if(params.j!=null){
         j = parseInt(params.j)
-        }
-        if(params.h!=null){
+    }
+    if(params.h!=null){
         h = parseInt(params.h)
-        }
-        if(params.w!=null){
+    }
+    if(params.w!=null){
         w = parseInt(params.w)
-        }
+    }
 
 
 
@@ -31,7 +31,10 @@ export async function init(common){
     let gratuit_prio = 0
     let ouvert = 0
     let perMin = 75
-    let places = 100
+    let places = 120
+    if(h==0){
+        places = 30
+    }
     let prio_mode = 0
     let nbSandwich = 0
     let nbSandwich_vege = 0
@@ -40,6 +43,20 @@ export async function init(common){
     let algo_auto = 0
     let message = ""
     let list_prio = []
+    switch(j){
+        case 0:
+            list_prio = []
+            break;
+        case 1:
+            list_prio = []
+            break;
+        case 2:
+            list_prio = []
+            break;
+        case 3:
+            list_prio = []
+            break;
+    }
 
     async function reloadInfoHoraire(){
         listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
