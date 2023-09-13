@@ -107,6 +107,8 @@ export async function init(common){
 
                 if (info_horaire.msg != null) {
                     msg[j][h] = info_horaire.msg
+                }else{
+                    msg[j][h] = ""
                 }
 
                 //demande en cours
