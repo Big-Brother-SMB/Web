@@ -33,7 +33,12 @@ export async function init(common){
         search(decodedText,true)
     }
     var html5QrcodeScanner = new Html5QrcodeScanner(
-        "qr-reader", { fps: 30, qrbox: 400 });
+        "qr-reader", { 
+            fps: 20,
+            qrbox: { width: 400, height: 150 },
+            rememberLastUsedCamera: true,
+            supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+        });
     html5QrcodeScanner.render(onScanSuccess);
 
     
@@ -96,7 +101,7 @@ export async function init(common){
         try{
             if(true && lieu!=null){//scan
                 let test = true
-                for(let i=0;i<listScan;i++){
+                for(let i=0;i<listScan.length;i++){
                     if(listScan[i].uuid==uuid){
                         test=false
                         if(listScan[i].lieu!=lieu){
@@ -111,6 +116,7 @@ export async function init(common){
                 }
                 actualisationList()
                 audio.play();
+                html5QrcodeScanner.clear();
             }
         }catch(e){console.error(e)}
     }
