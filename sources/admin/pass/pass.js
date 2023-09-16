@@ -280,7 +280,9 @@ export async function init(common){
 
 
     function loop(){
-        try{
+        if(window.location.pathname=="/admin/pass"){
+            document.getElementById("heure").innerHTML = common.getHour()
+            
             let d2 = new Date();
             if(((((d2.getMinutes() >= 54 && d2.getHours() == 11) ||
             (d2.getHours() >= 12)) 
@@ -293,9 +295,10 @@ export async function init(common){
                 window.location.href = window.location.href;
             }
 
-            document.getElementById("heure").innerHTML = common.getHour()
             setTimeout(loop,500);
-        } catch (Exception) {}
+        }else{
+            html5QrcodeScanner.clear();
+        }
     }
     loop();
 

@@ -32,7 +32,7 @@ export async function init(common){
         console.log(`Code scanned = ${decodedText}`, decodedResult);
         search(decodedText,true)
     }
-    var html5QrcodeScanner = new Html5QrcodeScanner(
+    let html5QrcodeScanner = new Html5QrcodeScanner(
         "qr-reader", { 
             fps: 20,
             qrbox: { width: 400, height: 400 },
@@ -116,7 +116,6 @@ export async function init(common){
                 }
                 actualisationList()
                 audio.play();
-                html5QrcodeScanner.clear();
             }
         }catch(e){console.error(e)}
     }
@@ -227,6 +226,15 @@ export async function init(common){
         }
     }
     loop();
+
+    function loop2(){
+        if(window.location.pathname=="/admin/localisation"){
+            setTimeout(loop2,500);
+        }else{
+            html5QrcodeScanner.clear();
+        }
+    }
+    loop2();
 
     document.getElementById("historique").addEventListener("click",()=>{
         common.loadpage("/admin/localisation/historique")
