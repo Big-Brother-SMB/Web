@@ -107,15 +107,17 @@ export async function init(common){
                         if(listScan[i].lieu!=lieu){
                             await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
                             listScan[i].lieu=lieu
+                            audio.play();
+                            actualisationList()
                         }
                     }
                 }
                 if(test){
                     await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
                     listScan.push({semaine:common.actualWeek,jour:j,creneau:h,uuid:uuid,lieu:lieu})
+                    audio.play();
+                    actualisationList()
                 }
-                actualisationList()
-                audio.play();
             }
         }catch(e){console.error(e)}
     }
