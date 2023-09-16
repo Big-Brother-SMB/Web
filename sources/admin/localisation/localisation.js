@@ -40,6 +40,7 @@ export async function init(common){
             supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
         });
     html5QrcodeScanner.render(onScanSuccess);
+    html5QrcodeScanner.pause(false,true)
 
     
     let inputCodeBar = document.getElementById("code_bar")
@@ -167,7 +168,6 @@ export async function init(common){
             i++
         }
         if(h!=-1){
-            console.log((String(horaires[h][0]).length == 1?"0":""))
             document.getElementById("heure").innerHTML = (String(horaires[h][0]).length == 1?"0":"") + horaires[h][0] + ":" + 
                 (String(horaires[h][1]).length == 1?"0":"") + horaires[h][1] + " à " + 
                 (String(horaires[h+1][0]).length == 1?"0":"") + horaires[h+1][0] + ":" + 
