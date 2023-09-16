@@ -95,8 +95,20 @@ export async function init(common){
     async function searchName(uuid,scan){
         try{
             if(true && lieu!=null){//scan
-                await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
-                listScan.push({semaine:common.actualWeek,jour:j,creneau:h,uuid:uuid,lieu:lieu})
+                let test = true
+                for(let i=0;i<listScan;i++){
+                    if(listScan[i].uuid==uuid){
+                        test=false
+                        if(listScan[i].lieu!=lieu){
+                            await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
+                            listScan[i].lieu=lieu
+                        }
+                    }
+                }
+                if(test){
+                    await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
+                    listScan.push({semaine:common.actualWeek,jour:j,creneau:h,uuid:uuid,lieu:lieu})
+                }
                 actualisationList()
                 audio.play();
             }
