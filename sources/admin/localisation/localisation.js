@@ -31,6 +31,7 @@ export async function init(common){
     function onScanSuccess(decodedText, decodedResult) {
         console.log(`Code scanned = ${decodedText}`, decodedResult);
         search(decodedText,true)
+        html5QrcodeScanner.pause(true)
     }
     let html5QrcodeScanner = new Html5QrcodeScanner(
         "qr-reader", { 
@@ -40,7 +41,6 @@ export async function init(common){
             supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
         });
     html5QrcodeScanner.render(onScanSuccess);
-    html5QrcodeScanner.pause()
 
     
     let inputCodeBar = document.getElementById("code_bar")
