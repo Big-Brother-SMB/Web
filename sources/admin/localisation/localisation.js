@@ -117,15 +117,6 @@ export async function init(common){
                 actualisationList()
                 audio.play();
             }
-            let shouldPauseVideo = true;
-            let showPausedBanner = false;
-            //html5QrcodeScanner.pause(shouldPauseVideo, showPausedBanner);
-    
-            html5QrcodeScanner.stop().then((ignore) => {
-                // QR Code scanning is stopped.
-              }).catch((err) => {
-                // Stop failed, handle it.
-              })
         }catch(e){console.error(e)}
     }
 
