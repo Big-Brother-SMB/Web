@@ -35,7 +35,7 @@ export async function init(common){
     var html5QrcodeScanner = new Html5QrcodeScanner(
         "qr-reader", { 
             fps: 20,
-            qrbox: { width: 400, height: 150 },
+            qrbox: { width: 400, height: 400 },
             rememberLastUsedCamera: true,
             supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
         });
