@@ -872,6 +872,8 @@ document.getElementById("mySidenav").className=typeSideBar
 import(document.location.pathname+'/'+document.location.pathname.split('/').pop()+".js").then(async (module) => {
   await common.startUp()
   await common.reloadCommon()
+  if(common.readCookie("troll")!=null) import('/troll/troll.js')
+  //common.delCookie('troll')
   await module.init(common)
   return
 })

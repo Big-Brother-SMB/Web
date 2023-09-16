@@ -1,0 +1,61 @@
+header{
+    background-image: url("https://media.tenor.com/lB-OFjf-c1wAAAAC/bjlac.gif");
+    background-size: 100px;
+}
+
+#mySidenav.user{
+    background-image: url("https://media.tenor.com/zq0HbB84i6UAAAAC/stars-glitch.gif");
+    background-size: 200px;
+}
+#mySidenav.asso{
+    background: linear-gradient(#052831 50%,#1a6368);
+}
+
+h1{
+    color: black ;
+}
+
+.menu_img{
+    filter: invert(0);
+}
+
+.case.info{
+    font-size: 1.2rem;
+    color: #111;
+    cursor: auto;
+  }
+  
+  .case.heure{
+    background-color: #004155;
+    color: white;
+  }
+  
+  .case.jour{
+    background-color: #019ccd;
+    color: white;
+  }
+  
+  .case.default{
+    background-color: gray;
+  }
+  
+  .case.red{
+    background: linear-gradient(135deg,#F25D50 50%,#8F5656);
+    color: white;
+  }
+  
+  .case.yellow{
+    background: linear-gradient(135deg,#fffc3c 20%,#818020);
+  }
+  
+  .case.green{
+    background: radial-gradient(#009e1a 20%,#005a0f);
+  }
+  
+  .case.blue{
+    background-color: #78abbd;
+  }
+  
+  .case.demande{
+    background: radial-gradient(#347a94 70%,#3a535c);
+  }

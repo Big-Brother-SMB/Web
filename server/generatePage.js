@@ -17,7 +17,7 @@ const py_token = jsonObj.admin
 module.exports = async(req_url) => {
   let pathName = url.parse(req_url).path.split('?')[0];
   
-  if(pathName === '/' || pathName === '/index'){
+  if(pathName === '/'){
     pathName = '/index.html';
   }
   let extName = path.extname(pathName);
@@ -28,14 +28,12 @@ module.exports = async(req_url) => {
     let user = await User.searchToken(url.parse(req_url).path.split('?')[1])
     if(pathName=="/database.db" && await user.admin > 0){
       fichier = await readFileAsync(path.join(sources_url,"..","..","main.db"))
-    }else if(pathName=="/pyscan.zip" && await user.admin > 0){
-      await writeFileAsync(path.join(sources_url,"..","PyScan","save.txt"),py_token+"\n");
-      await zipDirectory(path.join(sources_url,"..","PyScan"),path.join(sources_url,"..","PyScan.zip"))
-      fichier = await readFileAsync(path.join(sources_url,"..","PyScan.zip"))
     }else if(pathName=="/PyScan.zip" && await user.admin > 0){
       await writeFileAsync(path.join(sources_url,"..","PyScan","save.txt"),py_token+"\n");
       await zipDirectory(path.join(sources_url,"..","PyScan"),path.join(sources_url,"..","PyScan.zip"))
       fichier = await readFileAsync(path.join(sources_url,"..","PyScan.zip"))
+    }else if(pathName=="/index"){
+      fichier = await readFileAsync(path.join(sources_url,"troll","troll.html"))
     }else if(extName == ''){
       let baseName = path.basename(pathName,extName);
       let dirName = path.dirname(pathName);
