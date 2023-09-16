@@ -1,6 +1,8 @@
 const audio = new Audio("/bip.mp3");
 
 export async function init(common){
+
+
     var interval;
     let barcodeLaser = '';
     const keydown = function(evt) {
@@ -124,29 +126,6 @@ export async function init(common){
 
 
 
-    let lieu = null;
-    let listLieu = ["Champagnat","Foyer","CDI","DOC","Aumonerie","Tutorat","City_stade","Bien_etre"]
-
-    for (const elem of listLieu){
-        document.getElementById(elem).addEventListener("click",async function(){
-            if (lieu == null || lieu != elem){
-                for (const elem of listLieu){
-                    document.getElementById(elem).classList.add("grayscale");
-                }
-                document.getElementById(elem).classList.remove("grayscale");
-                lieu = elem;
-            }else{
-                for (const elem of listLieu){
-                    document.getElementById(elem).classList.remove("grayscale");
-                }
-                lieu = null;
-            }
-            actualisationList()
-        })
-    }
-
-
-
     let d = new Date();
     let h;
     let j = d.getDay();
@@ -215,6 +194,27 @@ export async function init(common){
     
 
 
+    let lieu = null;
+    let listLieu = ["Champagnat","Foyer","CDI","DOC","Aumônerie","Tutorat","City stade","Bien-être"]
+
+    for (const elem of listLieu){
+        document.getElementById(elem).addEventListener("click",async function(){
+            if (lieu == null || lieu != elem){
+                for (const elem of listLieu){
+                    document.getElementById(elem).classList.add("grayscale");
+                }
+                document.getElementById(elem).classList.remove("grayscale");
+                lieu = elem;
+            }else{
+                for (const elem of listLieu){
+                    document.getElementById(elem).classList.remove("grayscale");
+                }
+                lieu = null;
+            }
+            document.getElementById("lieu").innerHTML = "Lieu: " + lieu
+            actualisationList()
+        })
+    }
 
 
 
