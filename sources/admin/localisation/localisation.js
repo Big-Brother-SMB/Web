@@ -33,7 +33,13 @@ export async function init(common){
         search(decodedText,true)
         let shouldPauseVideo = true;
         let showPausedBanner = false;
-        html5QrcodeScanner.pause(shouldPauseVideo, showPausedBanner);
+        //html5QrcodeScanner.pause(shouldPauseVideo, showPausedBanner);
+
+        html5QrCode.stop().then((ignore) => {
+            // QR Code scanning is stopped.
+          }).catch((err) => {
+            // Stop failed, handle it.
+          })
     }
     let html5QrcodeScanner = new Html5QrcodeScanner(
         "qr-reader", { 
