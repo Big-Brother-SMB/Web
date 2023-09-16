@@ -40,7 +40,7 @@ export async function init(common){
             supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
         });
     html5QrcodeScanner.render(onScanSuccess);
-    html5QrcodeScanner.pause(false,true)
+    html5QrcodeScanner.stop()
 
     
     let inputCodeBar = document.getElementById("code_bar")
