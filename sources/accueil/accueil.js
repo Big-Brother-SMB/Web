@@ -16,6 +16,40 @@ export async function init(common){
     console.log(cookies)
 
     const section = document.getElementById('cookies')
+
+    //troll
+    if(common.readCookie("troll")!=null){
+            let div = document.createElement("div")
+            div.className="cookie abo"
+            div.style.backgroundColor = "green"
+
+            let titre = document.createElement("p")
+            titre.className="cookie abo titre"
+            titre.innerHTML='Troll'
+            div.appendChild(titre)
+
+            let time = document.createElement("p")
+            time.className="cookie abo quantity"
+            div.appendChild(time)
+
+            const loop = ()=>{
+                if(window.location.pathname=="/accueil"){
+                    let sec = Math.floor((common.readIntCookie("troll")-Date.now())/1000)
+                    let min = Math.floor(sec/60)
+                    sec-=min*60
+                    let hour = Math.floor(min/60)
+                    min-=hour*60
+                    time.innerHTML = hour +
+                    ":" + (String(min).length == 1?"0":"") + min +
+                    ":" + (String(sec).length == 1?"0":"") + sec
+                    setTimeout(loop,500)
+                }
+            }
+            loop()
+
+            section.appendChild(div)
+    }
+
     for(const abo of cookies.abo){
         if(abo.quantity!=0 || new Date(abo.fin).getTime()>Date.now()){
             let div = document.createElement("div")

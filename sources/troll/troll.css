@@ -1,15 +1,37 @@
+#background-video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -9;
+}
+
 header{
-    background-image: url("https://media.tenor.com/lB-OFjf-c1wAAAAC/bjlac.gif");
-    background-size: 100px;
+  background-image: url("https://media.tenor.com/lB-OFjf-c1wAAAAC/bjlac.gif");
+  background-size: 100px;
 }
 
 #mySidenav.user{
-    background-image: url("https://media.tenor.com/zq0HbB84i6UAAAAC/stars-glitch.gif");
-    background-size: 200px;
+  background-image: url("https://media.tenor.com/zq0HbB84i6UAAAAC/stars-glitch.gif");
+  background-size: 200px;
 }
+#mySidenav.user a{
+  color: #000000;
+}
+
 #mySidenav.asso{
-    background: linear-gradient(#052831 50%,#1a6368);
+  background-image: url("https://media.tenor.com/RZzDLj-CwcUAAAAC/fraksl-psychedelic.gif");
+  background-size: 600px;
 }
+#mySidenav.asso a{
+  color: rgb(119, 23, 23);
+  font-weight: 900;
+}
+
 
 h1{
     color: black ;
@@ -19,29 +41,30 @@ h1{
     filter: invert(0);
 }
 
-.case.info{
-    font-size: 1.2rem;
-    color: #111;
-    cursor: auto;
+.case{
+  color: #bebec4 !important;
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  font-weight: bold;
   }
   
   .case.heure{
     background-color: #004155;
-    color: white;
+    color: white !important;
   }
   
   .case.jour{
     background-color: #019ccd;
-    color: white;
+    color: white !important;
   }
   
   .case.default{
-    background-color: gray;
+    background-image: url("https://media.tenor.com/s3XRC53jcCsAAAAC/chicken-funny.gif");
+    background-size: 270px;
   }
   
   .case.red{
-    background: linear-gradient(135deg,#F25D50 50%,#8F5656);
-    color: white;
+    background-image: url("https://media.tenor.com/AxrRSmCOI3oAAAAC/dead-chicken.gif");
+    background-size: 270px;
   }
   
   .case.yellow{
@@ -49,13 +72,16 @@ h1{
   }
   
   .case.green{
-    background: radial-gradient(#009e1a 20%,#005a0f);
+    background-image: url("https://media.tenor.com/1Fpz8iI8h8EAAAAC/ok.gif");
+    background-size: 270px;
   }
   
   .case.blue{
-    background-color: #78abbd;
+    background-image: url("https://media.tenor.com/EXzxIwrld0YAAAAC/chicken-bro-chicken.gif");
+    background-size: 270px;
   }
   
   .case.demande{
-    background: radial-gradient(#347a94 70%,#3a535c);
+    background-image: url("https://media.tenor.com/4kVtSIKi46YAAAAC/chicken-starbucks.gif");
+    background-size: 270px;
   }

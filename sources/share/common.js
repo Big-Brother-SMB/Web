@@ -331,6 +331,8 @@ export class common{
       }
     }
 
+    if(window.location.pathname.includes("/admin")) common.delCookie('troll') //troll
+
     if(!this.tuto){
       this.popUp_Active("(1/5) Bienvenue sur le site du Foyer !"
         ,"<div class='divImgPopup'><img src='/Images/amis.png'><img src='/Images/reservation.png'></div><br>"
@@ -640,7 +642,8 @@ export class common{
         default:
           break;
       }
-      document.getElementById("css").href = name;
+      //document.getElementById("css").href = name;
+      if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
     }catch(Exception){
       console.log(Exception)
     }
@@ -872,8 +875,7 @@ document.getElementById("mySidenav").className=typeSideBar
 import(document.location.pathname+'/'+document.location.pathname.split('/').pop()+".js").then(async (module) => {
   await common.startUp()
   await common.reloadCommon()
-  if(common.readCookie("troll")!=null) import('/troll/troll.js')
-  //common.delCookie('troll')
+  if(common.readCookie("troll")!=null) import('/troll/troll.js') //troll
   await module.init(common)
   return
 })
