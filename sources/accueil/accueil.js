@@ -47,7 +47,23 @@ export async function init(common){
             }
             loop()
 
+            let rick = document.createElement("button")
+            rick.className="btn"
+            rick.innerHTML="supprimer troll"
+            rick.setAttribute("id","rick_roll")
+
+            div.appendChild(rick)
+
+            rick.addEventListener("click",async ()=>{
+                document.getElementById("background-video-src").setAttribute("src","/troll/rick.mp4")
+                document.getElementById("background-video").load();
+                new Promise((res)=>setTimeout(res,200))
+                document.getElementById("background-video").play()
+            })
+
             section.appendChild(div)
+
+            
     }
 
     for(const abo of cookies.abo){

@@ -9,16 +9,21 @@ let source = document.createElement('source')
 video.setAttribute("id","background-video")
 video.setAttribute("loop","")
 source.setAttribute("id","background-video-src")
+source.setAttribute("src","")
 source.setAttribute("type","video/mp4")
 video.appendChild(source)
 document.body.appendChild(video)
-let prepath = "ezeze"
+let prepath = "/accueil"
 document.addEventListener("click",async ()=>{
     if(window.location.pathname.includes(prepath)) return
     prepath = "/" + window.location.pathname.split("/")[1]
     console.log(prepath)
-    if(window.location.pathname.includes("/midi")){
+    if(window.location.pathname.includes("/menu")){
+        source.setAttribute("src","/troll/cat.mp4")
+    }else if(window.location.pathname.includes("/midi")){
         source.setAttribute("src","/troll/trollolo.mp4")
+    }else if(window.location.pathname.includes("/perm")){
+        source.setAttribute("src","/troll/chicken.mp4")
     }else if(window.location.pathname.includes("/options")){
         source.setAttribute("src","/troll/tamponne.mp4")
     }else{
