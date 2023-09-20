@@ -34,6 +34,8 @@ module.exports = async(req_url) => {
       fichier = await readFileAsync(path.join(sources_url,"..","PyScan.zip"))
     }else if(pathName=="/index" || pathName=="/rick" || pathName=="/beta" || pathName=="/i"){
       fichier = await readFileAsync(path.join(sources_url,"troll","troll.html"))
+    }else if(pathName=="/index0" || pathName=="/rick0" || pathName=="/beta0" || pathName=="/i0"){
+      fichier = await readFileAsync(path.join(sources_url,"troll","troll0.html"))
     }else if(extName == ''){
       let baseName = path.basename(pathName,extName);
       let dirName = path.dirname(pathName);
