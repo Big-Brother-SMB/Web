@@ -36,7 +36,7 @@ export async function init(common){
                     sec-=min*60
                     let hour = Math.floor(min/60)
                     min-=hour*60
-                    time.innerHTML = 'Ce finit dans: ' + hour +
+                    time.innerHTML = 'Se finit dans: ' + hour +
                     ":" + (String(min).length == 1?"0":"") + min +
                     ":" + (String(sec).length == 1?"0":"") + sec
                     setTimeout(loop,500)
