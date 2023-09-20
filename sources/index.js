@@ -61,14 +61,14 @@ try{
         token: element
       }
     });
-    list_id_data.push(await new Promise(async function(resolve, reject) {
+    list_id_data.push(await (new Promise(async function(resolve, reject) {
       socket.emit("id_data","");
       socket.once("id_data",result => {
         socket.disconnected
         resolve(result)
       });
       setTimeout(reject,5000)
-    }))
+    })))
   };
 
 
@@ -111,7 +111,7 @@ list_id_data.forEach(id_data=>{
 
     let img = document.createElement('img')
     img.classList.add("account_img")
-    if(id_data.picture==null){
+    if(id_data.picture==null || id_data.picture==""){
       img.setAttribute("src","https://lh3.googleusercontent.com/a/default-user=s96-c")//"/Images/account.png")
     }else{
       img.setAttribute("src",id_data.picture)

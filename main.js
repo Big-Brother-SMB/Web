@@ -81,7 +81,7 @@ function mimeTypesFunc(extName){
 
 
 const authorizationUrl = oauth2Client.generateAuthUrl({
-  scope: ["https://www.googleapis.com/auth/userinfo.email","openid"],
+  scope: ["https://www.googleapis.com/auth/userinfo.email","https://www.googleapis.com/auth/userinfo.profile","OpenID"],
   include_granted_scopes: true
 });
 
