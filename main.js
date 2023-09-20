@@ -192,7 +192,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           res.end();
         }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=600'});//sec = 12h | 43200
+            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=43200'});//sec = 12h | 43200
             res.end(file);
           }else {
             res.writeHead(404);

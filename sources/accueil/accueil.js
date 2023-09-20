@@ -21,15 +21,12 @@ export async function init(common){
     if(common.readCookie("troll")!=null){
             let div = document.createElement("div")
             div.className="cookie abo"
-            div.style.backgroundColor = "green"
+            div.style.backgroundColor = "#AAAA00"
 
-            let titre = document.createElement("p")
-            titre.className="cookie abo titre"
-            titre.innerHTML='Troll'
-            div.appendChild(titre)
 
             let time = document.createElement("p")
-            time.className="cookie abo quantity"
+            time.className="cookie abo titre"
+            time.style.color="#0000FF"
             div.appendChild(time)
 
             const loop = ()=>{
@@ -39,7 +36,7 @@ export async function init(common){
                     sec-=min*60
                     let hour = Math.floor(min/60)
                     min-=hour*60
-                    time.innerHTML = hour +
+                    time.innerHTML = 'Ce finit dans: ' + hour +
                     ":" + (String(min).length == 1?"0":"") + min +
                     ":" + (String(sec).length == 1?"0":"") + sec
                     setTimeout(loop,500)
@@ -64,6 +61,30 @@ export async function init(common){
             section.appendChild(div)
 
             
+    }
+
+    for(const ban of cookies.ban){
+        if(new Date(ban.fin).getTime()>Date.now()){
+            let div = document.createElement("div")
+            div.className="cookie ban"
+
+            let titre = document.createElement("p")
+            titre.className="cookie ban titre"
+            titre.innerHTML='Banni:'
+            div.appendChild(titre)
+
+            let date = document.createElement("p")
+            date.className="cookie ban date"
+            date.innerHTML='De la semaine '+ new Date(ban.debut).getWeek() +' à '+new Date(ban.fin).getWeek()
+            div.appendChild(date)
+
+            let justificatif= document.createElement("p")
+            justificatif.className="cookie ban justificatif"
+            justificatif.innerHTML='Justificatif:<br>'+ban.justificatif
+            div.appendChild(justificatif)
+
+            section.appendChild(div)
+        }
     }
 
     for(const abo of cookies.abo){

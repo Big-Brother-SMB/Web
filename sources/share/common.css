@@ -1140,6 +1140,9 @@ div.cookie{
   text-overflow: ellipsis;
 }
 
+div.cookie.ban{
+  background-color: rgb(146, 106, 113);
+}
 div.cookie.abo{
   background-color: orange;
 }
@@ -1152,7 +1155,8 @@ p.cookie{
   margin-left: 30px;
 }
 p.cookie.titre{
-  color: red;
+  color: rgb(206, 0, 0);
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   font-weight: bold;
 }
 p.cookie.date, p.cookie.quantity, p.cookie.justificatif{

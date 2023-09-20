@@ -104,15 +104,6 @@ try{
   //window.location.reload()
 }
 
-//---------------------------RGPD---------------------------
-if (readCookie("RGPD") == 'true') {
-  document.getElementById("checkbox").checked = true
-}
-
-document.getElementById("checkbox").addEventListener("change",function(){
-  writeCookie("RGPD",document.getElementById("checkbox").checked)
-})
-
 //---------------------------bouton connection---------------------------
 list_id_data.forEach(id_data=>{
   if (id_data!='err') {
@@ -147,11 +138,7 @@ list_id_data.forEach(id_data=>{
 
     div.addEventListener("click",function(event){
       if(!event.target.classList.contains("account_img_supp")){
-        if(document.getElementById("checkbox").checked == true){
-          connect(id_data)
-        } else {
-          document.getElementById("infos").innerHTML = "Vous devez accepter la politique de confidentialité des données et les Cookies<br>"
-        }
+        connect(id_data)
       }
     })
     document.getElementById("list_accounts").appendChild(div)

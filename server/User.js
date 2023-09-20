@@ -543,7 +543,7 @@ module.exports = class User{
   get cookies(){
     let uuid=this.uuid
     return new Promise(function(resolve, reject) {
-      let cookies = {ticket:[],abo:[]}
+      let cookies = {ticket:[],abo:[],ban:[]}
       db.all("SELECT * FROM ticket_cookie WHERE uuid=? and date IS NULL",[uuid], (err, data) => {
           try{
               if(data!=undefined){
@@ -558,7 +558,16 @@ module.exports = class User{
                         cookies.abo.push(e)
                       })
                     }
-                    resolve(cookies)
+                    db.all("SELECT * FROM ban WHERE uuid=?",[uuid], (err, data) => {
+                      try{
+                          if(data!=undefined){
+                            data.forEach(e=>{
+                              cookies.ban.push(e)
+                            })
+                          }
+                          resolve(cookies)
+                      }catch(e){console.error(e);console.log('d23-1');;resolve(null)}
+                    })
                 }catch(e){console.error(e);console.log('d23');;resolve(null)}
               })
           }catch(e){console.error(e);console.log('d24');;resolve(null)}
