@@ -61,7 +61,7 @@ try{
         token: element
       }
     });
-    list_id_data.push(new Promise(async function(resolve, reject) {
+    list_id_data.push(await new Promise(async function(resolve, reject) {
       socket.emit("id_data","");
       socket.once("id_data",result => {
         socket.disconnected
@@ -70,7 +70,6 @@ try{
       setTimeout(reject,5000)
     }))
   };
-  list_id_data = await Promise.all(list_id_data)
 
 
   for(let i=0;i<list_id_data.length;i++){
