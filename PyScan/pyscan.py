@@ -58,12 +58,16 @@ def socketReq(event,data,admin):
         sio.emit(event,data)
       global msg
       x=None
+      timeOut = 50
       while x==None:
         time.sleep(0.1)
         for i in range(len(msg)):
           if event==msg[i][0]:
             x=msg[i][1]
             del msg[i]
+        timeOut-=1
+        if timeOut<=0:
+          x=[]
       return x
     except ValueError:
       return []
