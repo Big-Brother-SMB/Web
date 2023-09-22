@@ -125,7 +125,7 @@ if version_serveur!=version and version!="dev":
 
 
 #système scan /calcule de la date
-
+"""
 try:
   j=int(input("jour:"))
   m=int(input("mois:"))
@@ -133,6 +133,8 @@ try:
   today = datetime(year=a, month=m, day=j)
 except ValueError:
   today = datetime.today()
+"""
+today = datetime.today()
 
 firstSept = datetime(year=today.year,month=9,day=4)
 firstSept = firstSept - timedelta(days=firstSept.weekday())

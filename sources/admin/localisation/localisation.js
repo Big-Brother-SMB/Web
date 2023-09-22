@@ -195,8 +195,12 @@ export async function init(common){
 
 
     let lieu = null;
-    let listLieu = ["Champagnat","Foyer","CDI","DOC","Aumônerie","Tutorat","City stade","Bien-être"]
-
+    let listLieu = []
+    for(const elem of document.getElementById("activity").children){
+        if(elem.getAttribute('id')!=null){
+            listLieu.push(elem.getAttribute('id'))
+        }
+    }
     for (const elem of listLieu){
         document.getElementById(elem).addEventListener("click",async function(){
             if (lieu == null || lieu != elem){
