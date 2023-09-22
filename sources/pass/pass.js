@@ -39,13 +39,14 @@ export async function init(common){
                     }
                 })
             }else{
+                document.getElementById('prio').classList.add("cache");
                 document.getElementById("circle-pass-img").setAttribute("src","/Images/erreur.png")
                 if(info_horaire.prio.indexOf(common.classe)!=-1){
-                    document.getElementById("circle-pass-img").setAttribute("src","/Images/prioSelf.png")
+                    document.getElementById('prio').classList.remove("cache");
                 }
                 common.groups.forEach(e=>{
                     if(info_horaire.prio.indexOf(e)!=-1){
-                        document.getElementById("circle-pass-img").setAttribute("src","/Images/prioSelf.png")
+                        document.getElementById('prio').classList.remove("cache");
                     }
                 })
             }
