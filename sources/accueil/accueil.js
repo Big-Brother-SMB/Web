@@ -62,6 +62,27 @@ export async function init(common){
 
             
     }
+    {   
+        let div = document.createElement("div")
+        div.className="cookie ban"
+
+        let titre = document.createElement("p")
+        titre.className="cookie ban titre"
+        titre.innerHTML='Mes groupes:'
+        div.appendChild(titre)
+
+
+        let justificatif= document.createElement("p")
+        justificatif.className="cookie ban justificatif"
+        for(const group of common.groups){
+            justificatif.innerHTML+= group + '   /   '
+        }
+        div.appendChild(justificatif)
+
+
+        section.appendChild(div)
+    }
+
 
     for(const ban of cookies.ban){
         if(new Date(ban.fin).getTime()>Date.now()){
