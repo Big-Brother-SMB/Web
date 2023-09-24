@@ -19,7 +19,7 @@ import requests
 
 #vérification répertoire
 
-if os.path.basename(os.getcwd()) != "PyScan":
+if os.path.basename(os.getcwd()) != "PyScan" and os.path.basename(os.getcwd()) != "pyscan":
   print(">>> erreur de répertoitre")
   print(">>> \"" + os.path.basename(os.getcwd()) +"\" n'est pas \"PyScan\"")
   time.sleep(3)
@@ -140,20 +140,10 @@ if version_serveur!=version and version!="dev":
 week = None
 day = None
 dayMidi = None
-def setDate():
+def setDate(today):
   global week
   global day
   global dayMidi
-  """
-  try:
-    j=int(input("jour:"))
-    m=int(input("mois:"))
-    a=int(input("année:"))
-    today = datetime(year=a, month=m, day=j)
-  except ValueError:
-    today = datetime.today()
-  """
-  today = datetime.today()
 
   firstSept = datetime(year=today.year,month=9,day=4)
   firstSept = firstSept - timedelta(days=firstSept.weekday())
@@ -168,10 +158,11 @@ def setDate():
     day=4
 
   dayMidi = day
-  if dayMidi>1:
+  if dayMidi>2:
     dayMidi-=1
-setDate()
-
+  elif dayMidi == 2:
+    dayMidi=5
+setDate(datetime.today())
 
 #fonction actualiser
 listDemande11 = []
@@ -599,10 +590,27 @@ def refresh_options():
 refresh_options()
 
 
-
+def windowDate():
+  newWindow = Toplevel(fenetre)
+  newWindow.title("Date")
+  newWindow.geometry("200x200")
+  textArea = Text(newWindow, height=4, width=50)
+  textArea.pack()
+  
+  def confirme():
+    dateTab = textArea.get(1.0, "end-1c").split('/')
+    setDate(datetime(year=int(dateTab[2]), month=int(dateTab[1]), day=int(dateTab[0])))
+    canvas.itemconfig(image_container,image=imgLoading)
+    newWindow.destroy()
+    refresh()
+    canvas.itemconfig(image_container,image=imgUnknown)
+  btn = Button(newWindow, text='Confirmer', command=confirme, font=("Arial", 15))
+  btn.pack()
+  
 menubar = Menu(fenetre)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
+filemenu.add_command(label="Date", command=windowDate)
 filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool, command=refresh_options)
 menubar.add_cascade(label="File", menu=filemenu)
 modemenu = Menu(menubar, tearoff=0)
