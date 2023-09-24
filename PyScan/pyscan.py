@@ -75,7 +75,7 @@ def socketReq(event,data,admin):
     return []
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
-print("\n\n\n\n\n\n\n\n\n\n")
+print("\n\n\n\n\n")
 print(">>> start")
 id_data =socketReq('id_data', None,False)
 print(">>> id_data:")
@@ -260,11 +260,41 @@ def alert(titre,text):
   t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
   t2.start()
 
+
+#laserScan
+
+class setInterval :
+    def __init__(self,interval,action) :
+        self.interval=interval
+        self.action=action
+        self.stopEvent=threading.Event()
+        thread=threading.Thread(target=self.__setInterval)
+        thread.start()
+
+    def __setInterval(self) :
+        nextTime=time.time()+self.interval
+        while not self.stopEvent.wait(nextTime-time.time()) :
+            nextTime+=self.interval
+            self.action()
+
+    def cancel(self) :
+        self.stopEvent.set()
+
 laserScanNumber = ""
-laserScanDelay = None
+interval = None
 def scanKey(key):
   global number
   global user
+  global laserScanNumber
+  global interval
+
+  if interval!=None:
+    interval.cancel()
+  def action():
+    global laserScanNumber
+    laserScanNumber = ""
+  
+
   user="None"
   print(key)
   try:
@@ -274,73 +304,85 @@ def scanKey(key):
       else:
         number = number[:-1]
       text.set(number)
+      canvas.itemconfig(image_container,image=imgUnknown)
+      name.set("")
+      info.set("")
     elif str(key) == "Key.enter" :
       number = ""
+      laserScanNumber = ""
     else:
       nb = int(str(key).replace("'","").replace("'","").replace("<","").replace(">",""))
       if(len(number) >= 5):
         number = ""
       if(nb >= 96):
         nb = nb - 96
+      laserScanNumber = laserScanNumber + str(nb)
       number = number + str(nb)
+
+      if len(laserScanNumber)==5:
+        number = laserScanNumber
       text.set(number)
-      control()
+
+      print(">>>laserNumber: " + laserScanNumber)
+      if len(number)==5:
+        control()
+      else:
+        canvas.itemconfig(image_container,image=imgUnknown)
+        name.set("")
+        info.set("")
   except ValueError:
     pass
+
+  interval=setInterval(0.5,action)
 
 def control():
   global number
   global user
-  if len(number)==5:
-    canvas.itemconfig(image_container,image=imgLoading)
-    global listUsers
-    for userE in listUsers:
-      if userE["code_barre"]==number:
-        user = userE
-    buttonInscrire.pack_forget()
-    buttonCookie.pack_forget()
-    if user != "None":
-      print(user)
-      name.set(user["first_name"] + " " + user["last_name"])
-      classe = user["classe"]
-      info.set("classe : " + classe)
-      if heure!="perm":
-        #midi
-        listCreneau = []
-        if heure == 11:
-          global listDemande11
-          listCreneau = listDemande11
-        else:
-          global listDemande12
-          listCreneau = listDemande12
-        
-        testInscrit = False
-        for child in listCreneau:
-          if child["DorI"]==1 and child['uuid']==user['uuid']:
-            testInscrit = True
 
-            canvas.itemconfig(image_container,image=imgOk)
-            socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
-            child["scan"]=1
-            refreshPassages()
-        if not testInscrit:
-          canvas.itemconfig(image_container,image=imgCroix)
-          alert("Non inscrit", user["first_name"] + " " + user["last_name"])
-          buttonInscrire.pack()
+  canvas.itemconfig(image_container,image=imgLoading)
+  global listUsers
+  for userE in listUsers:
+    if userE["code_barre"]==number:
+      user = userE
+  buttonInscrire.pack_forget()
+  buttonCookie.pack_forget()
+  if user != "None":
+    name.set(user["first_name"] + " " + user["last_name"])
+    classe = user["classe"]
+    info.set("classe : " + classe)
+    if heure!="perm":
+      #midi
+      listCreneau = []
+      if heure == 11:
+        global listDemande11
+        listCreneau = listDemande11
       else:
-        #perm
-        if user["ban"]!=None:
-          canvas.itemconfig(image_container,image=imgCroix)
-          fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
-          alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
-        else:
+        global listDemande12
+        listCreneau = listDemande12
+      
+      testInscrit = False
+      for child in listCreneau:
+        if child["DorI"]==1 and child['uuid']==user['uuid']:
+          testInscrit = True
+
           canvas.itemconfig(image_container,image=imgOk)
-      if socketReq('getUserHasCookie', user['uuid'],True):
-        buttonCookie.pack()
+          socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
+          child["scan"]=1
+          refreshPassages()
+      if not testInscrit:
+        canvas.itemconfig(image_container,image=imgCroix)
+        alert("Non inscrit", user["first_name"] + " " + user["last_name"])
+        buttonInscrire.pack()
     else:
-      canvas.itemconfig(image_container,image=imgUnknown)
-      name.set("")
-      info.set("")
+      #perm
+      if user["ban"]!=None:
+        canvas.itemconfig(image_container,image=imgCroix)
+        fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
+        alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
+      else:
+        canvas.itemconfig(image_container,image=imgOk)
+    if socketReq('getUserHasCookie', user['uuid'],True):
+      buttonCookie.pack()
   else:
     canvas.itemconfig(image_container,image=imgUnknown)
     name.set("")
@@ -368,10 +410,6 @@ def export():
       inscrits12.append(dico[child["uuid"]])
       if child["scan"]==1:
         passages12.append(dico[child["uuid"]])
-  print(passages11)
-  print(inscrits11)
-  print(passages12)
-  print(inscrits12)
 
 
   f.write("Liste de passage du " + days[day] +" de la semaine n°" + str(week) +"\n\n")
@@ -415,7 +453,7 @@ def export():
     f.write(user + "\n")
   
   f.close()
-  print("OK")
+  print(">>>create 'Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt'")
 
 
 class App(threading.Thread):
