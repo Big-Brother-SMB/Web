@@ -20,9 +20,10 @@ import requests
 #vérification répertoire
 
 if os.path.basename(os.getcwd()) != "PyScan":
-    print(">>> erreur de répertoitre")
-    time.sleep(3)
-    os._exit(1)
+  print(">>> erreur de répertoitre")
+  print(">>> \"" + os.path.basename(os.getcwd()) +"\" n'est pas \"PyScan\"")
+  time.sleep(3)
+  os._exit(1)
 
 #système de récupération de save.txt
 token=''
@@ -42,35 +43,36 @@ sio = socketio.Client(engineio_logger=False, logger=False, ssl_verify=False)
 
 @sio.on('*')
 def catch_all(event, data):
-    global msg
-    msg.append((event,data))
+  global msg
+  msg.append((event,data))
 
 @sio.on('*',namespace="/admin")
 def catch_all_admin(event, data):
-    global msg
-    msg.append((event,data))
+  global msg
+  msg.append((event,data))
 
 def socketReq(event,data,admin):
-    try:
-      if admin:
-        sio.emit(event,data,namespace='/admin')
-      else:
-        sio.emit(event,data)
-      global msg
-      x=None
-      timeOut = 50
-      while x==None:
-        time.sleep(0.1)
-        for i in range(len(msg)):
-          if event==msg[i][0]:
-            x=msg[i][1]
-            del msg[i]
-        timeOut-=1
-        if timeOut<=0:
-          x=[]
-      return x
-    except ValueError:
-      return []
+  print(">>> req: (" + str(event) + ") " + str(data))
+  try:
+    if admin:
+      sio.emit(event,data,namespace='/admin')
+    else:
+      sio.emit(event,data)
+    global msg
+    x=None
+    timeOut = 50
+    while x==None:
+      time.sleep(0.1)
+      for i in range(len(msg)):
+        if event==msg[i][0]:
+          x=msg[i][1]
+          del msg[i]
+      timeOut-=1
+      if timeOut<=0:
+        x=socketReq(event,data,admin)
+    return x
+  except ValueError:
+    return []
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
 print("\n\n\n\n\n\n\n\n\n\n")
@@ -85,89 +87,108 @@ if id_data=="err" or id_data["admin"]<1:
   time.sleep(3)
   os._exit(1)
 
-#système mise à jour
+#système mise à jour et de save setting
+def maj(version):
+  print('>>> Nouvelle version trouvée')
 
+  url = 'https://foyerlycee.stemariebeaucamps.fr/PyScan.zip?' + token
 
-def maj(version_serveur):
-    print('>>> Nouvelle version trouvée')
+  print('>>> téléchargement...')
+  r = requests.get(url, allow_redirects=True,verify=False)
+  open('maj.zip', 'wb').write(r.content)
+  print('>>> téléchargement terminé') 
 
-    url = 'https://foyerlycee.stemariebeaucamps.fr/PyScan.zip?' + token
+  with ZipFile("maj.zip", 'r') as zip:
+    print('\n>>> Nouvelle version(' + version + '):') 
+    zip.printdir() 
+    print('\n>>> extraction...')
+    zip.extractall() 
+    print('>>> extraction terminé')
+    zip.close()
+    os.remove("maj.zip")
 
-    print('>>> téléchargement...')
-    r = requests.get(url, allow_redirects=True,verify=False)
-    open('maj.zip', 'wb').write(r.content)
-    print('>>> téléchargement terminé') 
-
-    with ZipFile("maj.zip", 'r') as zip:
-        print('\n>>> Nouvelle version(' + version_serveur + '):') 
-        zip.printdir() 
-        print('\n>>> extraction...')
-        zip.extractall() 
-        print('>>> extraction terminé')
-        zip.close()
-        os.remove("maj.zip")
+def save_data():
+  global token
+  global version
+  print('>>> save data')
+  file = open("save.txt", 'w')
+  file.write(token)
+  file.write("\n")
+  file.write(version)
+  file.close()
 
 version_serveur = socketReq("pyScanVersion", None, True)
 if version_serveur!=version and version!="dev":
-    version=version_serveur
-    maj(version_serveur)
-
-    # enregistre les données de connection et de version
-    print('>>> save data')
-    file = open("save.txt", 'w')
-    file.write(token)
-    file.write("\n")
-    file.write(version)
-    file.close()
-    print('>>> Relencer le programme')
-    time.sleep(3)
-    os._exit(1)
+  version=version_serveur
+  maj(version)
+  # enregistre les données de connection et de version
+  save_data()
+  print('>>> Relencer le programme')
+  time.sleep(3)
+  os._exit(1)
 
 
 
 
 
 
-#système scan /calcule de la date
-"""
-try:
-  j=int(input("jour:"))
-  m=int(input("mois:"))
-  a=int(input("année:"))
-  today = datetime(year=a, month=m, day=j)
-except ValueError:
+#calcule de la date
+week = None
+day = None
+dayMidi = None
+def setDate():
+  global week
+  global day
+  global dayMidi
+  """
+  try:
+    j=int(input("jour:"))
+    m=int(input("mois:"))
+    a=int(input("année:"))
+    today = datetime(year=a, month=m, day=j)
+  except ValueError:
+    today = datetime.today()
+  """
   today = datetime.today()
-"""
-today = datetime.today()
 
-firstSept = datetime(year=today.year,month=9,day=4)
-firstSept = firstSept - timedelta(days=firstSept.weekday())
-if datetime.now() + timedelta(days=7) < firstSept:
-  firstSept = datetime(year=today.year-1,month=9,day=4)
+  firstSept = datetime(year=today.year,month=9,day=4)
   firstSept = firstSept - timedelta(days=firstSept.weekday())
+  if datetime.now() + timedelta(days=7) < firstSept:
+    firstSept = datetime(year=today.year-1,month=9,day=4)
+    firstSept = firstSept - timedelta(days=firstSept.weekday())
 
-week = floor(((today - firstSept).days)/7)+1
+  week = floor(((today - firstSept).days)/7)+1
 
-day = today.weekday()
-if day>4:
-  day=4
+  day = today.weekday()
+  if day>4:
+    day=4
 
-dayMidi = day
-if dayMidi>1:
-  dayMidi-=1
+  dayMidi = day
+  if dayMidi>1:
+    dayMidi-=1
+setDate()
 
 
-#fonction de scan
+#fonction actualiser
+listDemande11 = []
+listDemande12 = []
+listUsers = []
+def update():
+  global listDemande11
+  global listDemande12
+  global listUsers
+  global week
+  global dayMidi
+  listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
+  listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
+  listUsers = socketReq('getListPass', None,True)
 
-def parseTime(h,m):
-  return h * 60 + m
 
-def hash():
-  now = datetime.now()
-  return str(now.year) + "-" + ("0" if now.month < 10 else "") + str(now.month) + "-" + ("0" if now.day < 10 else "") + str(now.day) + " " + ("0" if now.hour < 10 else "") + str(now.hour) + ":" + ("0" if now.minute < 10 else "") + str(now.minute) + ":" + ("0" if now.second < 10 else "") + str(now.second)
 
-heure = 0
-def refreshTime():
+
+
+def refresh():
+  update()
   global heure
   global day
   now = datetime.now()
@@ -188,22 +209,21 @@ def refreshTime():
     heure = "perm"
     textH.set("semaine n°" + str(week) + " " + days[day] + " (Permanence)")
 
-
-  threading.Timer(60, refreshTime).start()
+  threading.Timer(30, refresh).start()
 
 def refreshPassages():
-  listCreneau11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
+  global listDemande11
   NBinscrit11=0
   NBscan11=0
-  for child in listCreneau11:
+  for child in listDemande11:
     if child["DorI"]==1:
       NBinscrit11+=1
       if child["scan"]==1:
         NBscan11+=1
-  listCreneau12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
+  global listDemande12
   NBinscrit12=0
   NBscan12=0
-  for child in listCreneau12:
+  for child in listDemande12:
     if child["DorI"]==1:
       NBinscrit12+=1
       if child["scan"]==1:
@@ -212,6 +232,18 @@ def refreshPassages():
   passage12.set("Élèves inscrit à 12h : " + str(NBscan12) + " / " + str(NBinscrit12))
 
   passage.set("Élèves inscrits aujourd'hui : " + str(NBscan11+NBscan12) + " / " + str(NBinscrit11+NBinscrit12))
+
+
+
+#fonction de scan
+
+def hash():
+  now = datetime.now()
+  return str(now.year) + "-" + ("0" if now.month < 10 else "") + str(now.month) + "-" + ("0" if now.day < 10 else "") + str(now.day) + " " + ("0" if now.hour < 10 else "") + str(now.hour) + ":" + ("0" if now.minute < 10 else "") + str(now.minute) + ":" + ("0" if now.second < 10 else "") + str(now.second)
+
+heure = 0
+def parseTime(h,m):
+  return h * 60 + m
 
 
 days = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"]
@@ -228,8 +260,9 @@ def alert(titre,text):
   t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
   t2.start()
 
-
-def show(key):
+laserScanNumber = ""
+laserScanDelay = None
+def scanKey(key):
   global number
   global user
   user="None"
@@ -251,73 +284,67 @@ def show(key):
         nb = nb - 96
       number = number + str(nb)
       text.set(number)
-
-      if len(number)==5:
-        canvas.itemconfig(image_container,image=imgLoading)
-        data = socketReq('getListPass', None,True)
-        for userE in data:
-          if userE["code_barre"]==number:
-            user = userE
-        buttonInscrire.pack_forget()
-        buttonCookie.pack_forget()
-        if user != "None":
-          print(user)
-          name.set(user["first_name"] + " " + user["last_name"])
-          classe = user["classe"]
-          info.set("classe : " + classe)
-          if heure!="perm":
-            #midi
-            listCreneau = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":heure-11},False)
-            test = False
-            for child in listCreneau:
-              if child["DorI"]==1 and child['uuid']==user['uuid']:
-                test = True
-            if(test):
-              canvas.itemconfig(image_container,image=imgOk)
-              socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
-              refreshPassages()
-            else:
-              canvas.itemconfig(image_container,image=imgCroix)
-              alert("Non inscrit", user["first_name"] + " " + user["last_name"])
-              buttonInscrire.pack()
-          else:
-            #perm
-            if user["ban"]!=None:
-              canvas.itemconfig(image_container,image=imgCroix)
-              fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
-              alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
-            else:
-              canvas.itemconfig(image_container,image=imgOk)
-          if socketReq('getUserHasCookie', user['uuid'],True):
-            buttonCookie.pack()
-        else:
-          canvas.itemconfig(image_container,image=imgUnknown)
-          name.set("")
-          info.set("")
-      else:
-        canvas.itemconfig(image_container,image=imgUnknown)
-        name.set("")
-        info.set("")
+      control()
   except ValueError:
     pass
 
-def add():
-  canvas.itemconfig(image_container,image=imgLoading)
-  buttonInscrire.pack_forget()
-  if heure!="perm":
-    socketReq('setDorI', [week,dayMidi,heure-11,user['uuid'],True],True)
-    socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
-    canvas.itemconfig(image_container,image=imgOk)
-    refreshPassages()
+def control():
+  global number
+  global user
+  if len(number)==5:
+    canvas.itemconfig(image_container,image=imgLoading)
+    global listUsers
+    for userE in listUsers:
+      if userE["code_barre"]==number:
+        user = userE
+    buttonInscrire.pack_forget()
+    buttonCookie.pack_forget()
+    if user != "None":
+      print(user)
+      name.set(user["first_name"] + " " + user["last_name"])
+      classe = user["classe"]
+      info.set("classe : " + classe)
+      if heure!="perm":
+        #midi
+        listCreneau = []
+        if heure == 11:
+          global listDemande11
+          listCreneau = listDemande11
+        else:
+          global listDemande12
+          listCreneau = listDemande12
+        
+        testInscrit = False
+        for child in listCreneau:
+          if child["DorI"]==1 and child['uuid']==user['uuid']:
+            testInscrit = True
 
-def cookie():
-  canvas.itemconfig(image_container,image=imgLoading)
-  buttonCookie.pack_forget()
-  if socketReq('useCookie', user['uuid'],True):
-    canvas.itemconfig(image_container,image=imgCookie)
+            canvas.itemconfig(image_container,image=imgOk)
+            socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
+            child["scan"]=1
+            refreshPassages()
+        if not testInscrit:
+          canvas.itemconfig(image_container,image=imgCroix)
+          alert("Non inscrit", user["first_name"] + " " + user["last_name"])
+          buttonInscrire.pack()
+      else:
+        #perm
+        if user["ban"]!=None:
+          canvas.itemconfig(image_container,image=imgCroix)
+          fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
+          alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
+        else:
+          canvas.itemconfig(image_container,image=imgOk)
+      if socketReq('getUserHasCookie', user['uuid'],True):
+        buttonCookie.pack()
+    else:
+      canvas.itemconfig(image_container,image=imgUnknown)
+      name.set("")
+      info.set("")
   else:
-    canvas.itemconfig(image_container,image=imgCroix)
-  refreshPassages()
+    canvas.itemconfig(image_container,image=imgUnknown)
+    name.set("")
+    info.set("")
 
 def export():
   f = open("Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt", "w")
@@ -391,7 +418,6 @@ def export():
   print("OK")
 
 
-
 class App(threading.Thread):
 
     def __init__(self, tk_root, label,name):
@@ -403,29 +429,44 @@ class App(threading.Thread):
         self.start()
 
     def run(self):
-        with Listener(on_press=lambda event: show(event)) as listener:
+        with Listener(on_press=lambda event: scanKey(event)) as listener:
             listener.join()
-
 
 
 #init fenetre
 fenetre = Tk()
 fenetre.geometry("450x700+0+0")
 fenetre.title("Scanner")
-fenetre.iconphoto(True, PhotoImage(file='logo.png'))
+fenetre.iconphoto(True, PhotoImage(file='image/logo.png'))
 def on_closing():
   print(">>> exit")
   os._exit(1)
 
 fenetre.protocol("WM_DELETE_WINDOW", on_closing)
 
-imgOk= PhotoImage(file="ok.png")
-imgCroix= PhotoImage(file="croix.png")
-imgUnknown= PhotoImage(file="unknown.png")
-imgLoading= PhotoImage(file="loading.png")
-imgCookie= PhotoImage(file="cookie.png")
 
-def hFunc():
+
+
+
+imgOk = PhotoImage(file="image/ok.png")
+imgCroix = PhotoImage(file="image/croix.png")
+imgUnknown = PhotoImage(file="image/unknown.png")
+imgLoading = PhotoImage(file="image/loading.png")
+imgCookie = PhotoImage(file="image/cookie.png")
+
+imgAudio = PhotoImage(file="image/lieu/audio.png")
+imgAumonerie = PhotoImage(file="image/lieu/aumonerie.png")
+imgBienEtre = PhotoImage(file="image/lieu/bien_etre.png")
+
+imgCDI = PhotoImage(file="image/lieu/CDI.png")
+imgChampagnat = PhotoImage(file="image/lieu/champagnat.png")
+imgCityStade = PhotoImage(file="image/lieu/city_stade.png")
+
+imgDOC = PhotoImage(file="image/lieu/doc.png")
+imgTutora = PhotoImage(file="image/lieu/tutora.png")
+imgLogo = PhotoImage(file="image/logo.png")
+
+def hChange():
   global heure
   if heure==11:
     heure=12
@@ -433,12 +474,12 @@ def hFunc():
     heure=11
   textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
 textH = StringVar()
-labelH = Button(fenetre, textvariable=textH, command=hFunc, font=("Arial", 15))
+labelH = Button(fenetre, textvariable=textH, command=hChange, font=("Arial", 15))
 labelH.pack()
 
 
 text = StringVar()
-text.set("0")
+text.set("")
 label = Label(fenetre, textvariable=text, font=("Arial", 50))
 label.pack()
 
@@ -455,11 +496,34 @@ labelInfo.pack()
 
 canvas= Canvas(fenetre, width=256, height=256)
 canvas.pack()
-image_container =canvas.create_image(0,0, anchor="nw",image=imgUnknown)
+image_container = canvas.create_image(0,0, anchor="nw",image=imgUnknown)
+
+
+def add():
+  global listUsers
+  global user
+  canvas.itemconfig(image_container,image=imgLoading)
+  buttonInscrire.pack_forget()
+  if heure!="perm":
+    socketReq('setDorI', [week,dayMidi,heure-11,user['uuid'],True],True)
+    socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
+    refresh()
+    canvas.itemconfig(image_container,image=imgOk)
+
 
 buttonInscrire = Button(fenetre, text='Inscrire', command=add, font=("Arial", 15))
 
+
+def cookie():
+  canvas.itemconfig(image_container,image=imgLoading)
+  buttonCookie.pack_forget()
+  if socketReq('useCookie', user['uuid'],True):
+    canvas.itemconfig(image_container,image=imgCookie)
+  else:
+    canvas.itemconfig(image_container,image=imgCroix)
+
 buttonCookie = Button(fenetre, text='Utiliser cookie', command=cookie, font=("Arial", 15))
+
 
 passage = StringVar()
 labelPassage = Label(fenetre, textvariable=passage, font=("Arial", 20))
@@ -486,6 +550,5 @@ fenetre.config(menu=menubar)
 
 APP = App(fenetre,text,name)
 
-refreshTime()
-refreshPassages()
+refresh()
 fenetre.mainloop()
