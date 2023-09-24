@@ -78,8 +78,7 @@ sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},nam
 print("\n\n\n\n\n")
 print(">>> start")
 id_data =socketReq('id_data', None,False)
-print(">>> id_data:")
-print(id_data)
+print(">>> id_data:" + id_data['email'])
 print("\n\n\n")
 if id_data=="err" or id_data["admin"]<1:
   print(">>> Erreur: token non admin")
@@ -333,7 +332,7 @@ def scanKey(key):
   except ValueError:
     pass
 
-  interval=setInterval(0.5,action)
+  interval=setInterval(0.2,action)
 
 def control():
   global number
