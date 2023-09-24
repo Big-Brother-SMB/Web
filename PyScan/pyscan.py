@@ -26,12 +26,16 @@ if os.path.basename(os.getcwd()) != "PyScan":
   os._exit(1)
 
 #système de récupération de save.txt
-token=''
-version=''
+token = ''
+version = ''
+son_bool_save = ''
+mode_var_save = ''
 if os.path.exists("save.txt"):
   file = open("save.txt")
   token = file.readline().replace("\n","")
   version = file.readline().replace("\n","")
+  son_bool_save = file.readline().replace("\n","")
+  mode_var_save = file.readline().replace("\n","")
   file.close()
 else:
   file = open("save.txt", 'w')
@@ -75,11 +79,10 @@ def socketReq(event,data,admin):
     return []
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
-print("\n\n\n\n\n")
+print("\n\n\n")
 print(">>> start")
 id_data =socketReq('id_data', None,False)
 print(">>> id_data:" + id_data['email'])
-print("\n\n\n")
 if id_data=="err" or id_data["admin"]<1:
   print(">>> Erreur: token non admin")
   print(">>> Il faut modifier le token sur la première ligne du fichier save.txt")
@@ -107,13 +110,15 @@ def maj(version):
     os.remove("maj.zip")
 
 def save_data():
-  global token
-  global version
   print('>>> save data')
   file = open("save.txt", 'w')
   file.write(token)
   file.write("\n")
   file.write(version)
+  file.write("\n")
+  file.write(son_bool_save)
+  file.write("\n")
+  file.write(mode_var_save)
   file.close()
 
 version_serveur = socketReq("pyScanVersion", None, True)
@@ -575,13 +580,35 @@ labelPassage12 = Label(fenetre, textvariable=passage12, font=("Arial", 20))
 labelPassage12.pack()
 
 son_bool = BooleanVar()
-son_bool.set(True)
+if son_bool_save=="False":
+  son_bool.set(False)
+else:
+  son_bool.set(True)
+
+mode_var = StringVar()
+mode_var.set(mode_var_save)
+
+def refresh_options():
+  global son_bool_save
+  global mode_var_save
+  if mode_var.get()=="0":
+    mode_var.set("Foyer")
+  son_bool_save = str(son_bool.get())
+  mode_var_save = str(mode_var.get())
+  save_data()
+refresh_options()
+
+
 
 menubar = Menu(fenetre)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
-filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool)
+filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool, command=refresh_options)
 menubar.add_cascade(label="File", menu=filemenu)
+modemenu = Menu(menubar, tearoff=0)
+modemenu.add_checkbutton(label="Foyer", onvalue="Foyer", variable=mode_var, command=refresh_options)
+modemenu.add_checkbutton(label="Perm", onvalue="Perm", variable=mode_var, command=refresh_options)
+menubar.add_cascade(label="Mode", menu=modemenu)
 
 fenetre.config(menu=menubar)
 
