@@ -53,6 +53,7 @@ def catch_all(event, data):
 @sio.on('*',namespace="/admin")
 def catch_all_admin(event, data):
   global msg
+  print(event,data)
   msg.append((event,data))
 
 def socketReq(event,data,admin):
@@ -183,12 +184,10 @@ def update():
 
 
 def refresh():
-  update()
   global heure
   global day
   now = datetime.now()
-  refreshPassages()
-
+  
   match parseTime(now.hour,now.minute):
     case num if parseTime(10,55) <= num <  parseTime(11,52):
       heure = 11
@@ -203,6 +202,9 @@ def refresh():
   if day==2:
     heure = "perm"
     textH.set("semaine n°" + str(week) + " " + days[day] + " (Permanence)")
+
+  update()
+  refreshPassages()
 
   threading.Timer(30, refresh).start()
 
@@ -333,7 +335,7 @@ def scanKey(key):
 def control():
   global number
   global user
-
+  
   canvas.itemconfig(image_container,image=imgLoading)
   global listUsers
   for userE in listUsers:
@@ -360,10 +362,11 @@ def control():
         if child["DorI"]==1 and child['uuid']==user['uuid']:
           testInscrit = True
 
-          canvas.itemconfig(image_container,image=imgOk)
+          canvas.itemconfig(image_container,image=imgLoading)
           socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
           child["scan"]=1
           refreshPassages()
+          canvas.itemconfig(image_container,image=imgOk)
       if not testInscrit:
         canvas.itemconfig(image_container,image=imgCroix)
         alert("Non inscrit", user["first_name"] + " " + user["last_name"])
@@ -375,6 +378,33 @@ def control():
         fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
         alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
       else:
+        canvas.itemconfig(image_container,image=imgLoading)
+
+        now = datetime.now()
+        h=-1
+
+        match parseTime(now.hour,now.minute):
+          case num if parseTime(7,50) <= num <  parseTime(8,44):
+            h = 0
+          case num if parseTime(8,44) <= num <  parseTime(9,43):
+            h = 1
+          case num if parseTime(9,43) <= num <  parseTime(10,55):
+            h = 2
+          case num if parseTime(10,55) <= num <  parseTime(11,54):
+            h = 3
+          case num if parseTime(11,54) <= num <  parseTime(13,7):
+            h = 4
+          case num if parseTime(13,7) <= num <  parseTime(14,8):
+            h = 5
+          case num if parseTime(14,8) <= num <  parseTime(15,7):
+            h = 6
+          case num if parseTime(15,7) <= num <  parseTime(16,19):
+            h = 7
+          case num if parseTime(16,19) <= num <  parseTime(17,18):
+            h = 8
+        socketReq('setLocalisation',{"w":week,"j":day,"h":h,"lieu":"Foyer","uuid":user['uuid']},True)
+
+        refreshPassages()
         canvas.itemconfig(image_container,image=imgOk)
     if socketReq('getUserHasCookie', user['uuid'],True):
       buttonCookie.pack()
