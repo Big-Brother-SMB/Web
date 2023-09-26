@@ -53,7 +53,6 @@ def catch_all(event, data):
 @sio.on('*',namespace="/admin")
 def catch_all_admin(event, data):
   global msg
-  print(event,data)
   msg.append((event,data))
 
 def socketReq(event,data,admin):
