@@ -292,6 +292,7 @@ def scanKey(key):
   
 
   user="None"
+  buttonInscrire.pack_forget()
   print(key)
   try:
     if str(key) == "Key.backspace" :
