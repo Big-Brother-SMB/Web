@@ -416,8 +416,7 @@ module.exports = class funcSocket{
         socket.on("getLocalisation", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.getLocalisation(req.w,req.j,req.h)
-                socket.emit("getLocalisation",'ok')
+                socket.emit("getLocalisation",await funcDB.getLocalisation(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('49');}
         });
     }
