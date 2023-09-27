@@ -410,10 +410,10 @@ def controle():
         canvas.itemconfig(image_container,image=imgLoading)
         lieu="Foyer"
         if mode_var_save=="Perm":
-          lieu = listeCombo.get()
+          lieu = lieu_var_save
         socketReq('setLocalisation',{"w":week,"j":day,"h":time[1],"lieu":lieu,"uuid":user['uuid']},True)
         refreshPassages()
-        canvas.itemconfig(image_container,image=imgOk)
+        canvas.itemconfig(image_container,image=imgDico.get(lieu))
     if socketReq('getUserHasCookie', user['uuid'],True):
       buttonCookie.pack()
   else:
@@ -524,18 +524,17 @@ imgCroix = PhotoImage(file="image/croix.png")
 imgUnknown = PhotoImage(file="image/unknown.png")
 imgLoading = PhotoImage(file="image/loading.png")
 imgCookie = PhotoImage(file="image/cookie.png")
-
-imgAudio = PhotoImage(file="image/lieu/audio.png")
-imgAumonerie = PhotoImage(file="image/lieu/aumonerie.png")
-imgBienEtre = PhotoImage(file="image/lieu/bien_etre.png")
-
-imgCDI = PhotoImage(file="image/lieu/CDI.png")
-imgChampagnat = PhotoImage(file="image/lieu/champagnat.png")
-imgCityStade = PhotoImage(file="image/lieu/city_stade.png")
-
-imgDOC = PhotoImage(file="image/lieu/doc.png")
-imgTutora = PhotoImage(file="image/lieu/tutora.png")
-imgLogo = PhotoImage(file="image/logo.png")
+imgDico = {
+  "Audio":PhotoImage(file="image/lieu/audio.png"),
+  "Aumônerie":PhotoImage(file="image/lieu/aumonerie.png"),
+  "Bien-être":PhotoImage(file="image/lieu/bien_etre.png"),
+  "CDI":PhotoImage(file="image/lieu/CDI.png"),
+  "Champagnat":PhotoImage(file="image/lieu/champagnat.png"),
+  "City stade":PhotoImage(file="image/lieu/city_stade.png"),
+  "DOC":PhotoImage(file="image/lieu/doc.png"),
+  "Tutorat":PhotoImage(file="image/lieu/tutora.png"),
+  "Foyer":PhotoImage(file="image/logo.png")
+}
 
 def hChange():
   global autoTime
@@ -676,7 +675,6 @@ def refresh_options():
     mode_var.set("Foyer")
   son_bool_save = str(son_bool.get())
   mode_var_save = str(mode_var.get())
-  lieu_var_save = listeCombo.get()
   if mode_var.get()=="Foyer":
     labelPassage.pack()
     labelPassage11.pack()
@@ -730,6 +728,8 @@ menubar.add_cascade(label="Mode", menu=modemenu)
 
 
 def actionComboboxSelected(event):
+  global lieu_var_save
+  lieu_var_save = listeCombo.get()
   refresh_options()
 listeCombo.bind("<<ComboboxSelected>>", actionComboboxSelected)
 
