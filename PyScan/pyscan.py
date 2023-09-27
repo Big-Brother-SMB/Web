@@ -650,14 +650,14 @@ def appel():
         if user["uuid"]==enregistrement["uuid"]:
           time.sleep(0.2)
           print(user["code_barre"])
-          for l in user["code_barre"]:
-            keyboard.press(l)
-            keyboard.release(l)
-            keyboard.press(Key.shift)
-            keyboard.release(Key.shift)
-          keyboard.press(Key.enter)
-          time.sleep(0.2)
-          keyboard.release(Key.enter)
+          if user["code_barre"] != None:
+            for l in user["code_barre"]:
+              keyboard.press(l)
+              keyboard.release(l)
+              keyboard.press(Key.shift)
+              keyboard.release(Key.shift)
+            keyboard.press(Key.enter)
+            keyboard.release(Key.enter)
     refresh()
     canvas.itemconfig(image_container,image=imgOk)
   else:
