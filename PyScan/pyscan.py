@@ -1,11 +1,13 @@
 #pip install "python-socketio[client]"
 #pip install pynput
+#pip install keyboard
+
 #pip install playsound
 #pip uninstall playsound
 #pip install playsound==1.2.2
 from concurrent.futures import thread
 from playsound import playsound
-from pynput.keyboard import Key, Listener
+from pynput.keyboard import Key, Listener, Controller
 import threading
 import os
 from tkinter import *
@@ -637,17 +639,30 @@ def appel():
   canvas.itemconfig(image_container,image=imgLoading)
   buttonAppel.pack_forget()
 
-  time = getTime()
-  if time[0]=="Perm":
-    liste_d_appel = socketReq('getLocalisation',{"w":week,"j":day,"h":time[1]},True)
+  timeTab = getTime()
+  if timeTab[0]=="Perm":
+    text.set("...")
+    time.sleep(3)
+    liste_d_appel = socketReq('getLocalisation',{"w":week,"j":day,"h":timeTab[1]},True)
+    keyboard = Controller()
     for user in listUsers:
       for enregistrement in liste_d_appel:
         if user["uuid"]==enregistrement["uuid"]:
+          time.sleep(0.2)
           print(user["code_barre"])
+          for l in user["code_barre"]:
+            keyboard.press(l)
+            keyboard.release(l)
+            keyboard.press(Key.shift)
+            keyboard.release(Key.shift)
+          keyboard.press(Key.enter)
+          time.sleep(0.2)
+          keyboard.release(Key.enter)
     refresh()
     canvas.itemconfig(image_container,image=imgOk)
   else:
     canvas.itemconfig(image_container,image=imgCroix)
+  text.set("Terminée")
   buttonAppel.pack()
 
 
