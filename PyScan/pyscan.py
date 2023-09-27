@@ -672,7 +672,7 @@ def refresh_options():
   global son_bool_save
   global mode_var_save
   global lieu_var_save
-  if mode_var.get()=="0":
+  if mode_var.get()=="0" or mode_var.get()=="":
     mode_var.set("Foyer")
   son_bool_save = str(son_bool.get())
   mode_var_save = str(mode_var.get())
