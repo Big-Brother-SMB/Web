@@ -136,8 +136,8 @@ export async function init(common){
     function getHour(){
         let d = new Date();
         const horaires = [[7,50],[8,44],[9,43],[10,55],[11,54],[13,7],[14,8],[15,7],[16,19],[17,18]]
-        let i=0
-        h = -1
+        let i = 0
+        h = 0
         while(i<horaires.length-1 && h==-1){
             if((d.getHours() == horaires[i][0] && d.getMinutes() >= horaires[i][1])
             || (d.getHours() == horaires[i+1][0] && d.getMinutes() < horaires[i+1][1])){
@@ -147,14 +147,10 @@ export async function init(common){
             }
             i++
         }
-        if(h!=-1){
-            document.getElementById("heure").innerHTML = (String(horaires[h][0]).length == 1?"0":"") + horaires[h][0] + ":" + 
-                (String(horaires[h][1]).length == 1?"0":"") + horaires[h][1] + " à " + 
-                (String(horaires[h+1][0]).length == 1?"0":"") + horaires[h+1][0] + ":" + 
-                (String(horaires[h+1][1]).length == 1?"0":"") + horaires[h+1][1]
-        }else{
-            document.getElementById("heure").innerHTML = "???"
-        }
+        document.getElementById("heure").innerHTML = (String(horaires[h][0]).length == 1?"0":"") + horaires[h][0] + ":" + 
+            (String(horaires[h][1]).length == 1?"0":"") + horaires[h][1] + " à " + 
+            (String(horaires[h+1][0]).length == 1?"0":"") + horaires[h+1][0] + ":" + 
+            (String(horaires[h+1][1]).length == 1?"0":"") + horaires[h+1][1]
     }
 
     let listScan=[];

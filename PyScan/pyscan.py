@@ -10,6 +10,7 @@ import threading
 import os
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 from datetime import datetime,timedelta
 import socketio
 import time
@@ -30,12 +31,14 @@ token = ''
 version = ''
 son_bool_save = ''
 mode_var_save = ''
+lieu_var_save = ''
 if os.path.exists("save.txt"):
   file = open("save.txt")
   token = file.readline().replace("\n","")
   version = file.readline().replace("\n","")
   son_bool_save = file.readline().replace("\n","")
   mode_var_save = file.readline().replace("\n","")
+  lieu_var_save = file.readline().replace("\n","")
   file.close()
 else:
   file = open("save.txt", 'w')
@@ -119,6 +122,8 @@ def save_data():
   file.write(son_bool_save)
   file.write("\n")
   file.write(mode_var_save)
+  file.write("\n")
+  file.write(lieu_var_save)
   file.close()
 
 version_serveur = socketReq("pyScanVersion", None, True)
@@ -168,41 +173,18 @@ setDate(datetime.today())
 listDemande11 = []
 listDemande12 = []
 listUsers = []
-def update():
+def refresh():
   global listDemande11
   global listDemande12
   global listUsers
   global week
   global dayMidi
+
   listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
   listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
   listUsers = socketReq('getListPass', None,True)
 
-
-
-
-
-def refresh():
-  global heure
-  global day
-  now = datetime.now()
-  
-  match parseTime(now.hour,now.minute):
-    case num if parseTime(10,55) <= num <  parseTime(11,52):
-      heure = 11
-      textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
-    case num if parseTime(11,52) <= num <  parseTime(13,7):
-      heure = 12
-      textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
-    case _:
-      heure = "perm"
-      textH.set("semaine n°" + str(week) + " " + days[day] + " (Permanence)")
-  
-  if day==2:
-    heure = "perm"
-    textH.set("semaine n°" + str(week) + " " + days[day] + " (Permanence)")
-
-  update()
+  getTime()
   refreshPassages()
 
   threading.Timer(30, refresh).start()
@@ -233,14 +215,9 @@ def refreshPassages():
 
 #fonction de scan
 
-def hash():
-  now = datetime.now()
-  return str(now.year) + "-" + ("0" if now.month < 10 else "") + str(now.month) + "-" + ("0" if now.day < 10 else "") + str(now.day) + " " + ("0" if now.hour < 10 else "") + str(now.hour) + ":" + ("0" if now.minute < 10 else "") + str(now.minute) + ":" + ("0" if now.second < 10 else "") + str(now.second)
-
-heure = 0
-def parseTime(h,m):
-  return h * 60 + m
-
+#def hash():
+#  now = datetime.now()
+#  return str(now.year) + "-" + ("0" if now.month < 10 else "") + str(now.month) + "-" + ("0" if now.day < 10 else "") + str(now.day) + " " + ("0" if now.hour < 10 else "") + str(now.hour) + ":" + ("0" if now.minute < 10 else "") + str(now.minute) + ":" + ("0" if now.second < 10 else "") + str(now.second)
 
 days = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"]
 month = ["janvier","fevrier","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"]
@@ -279,6 +256,8 @@ class setInterval :
 laserScanNumber = ""
 interval = None
 def scanKey(key):
+  if mode_var_save=="Appel":
+    return
   global number
   global user
   global laserScanNumber
@@ -322,7 +301,7 @@ def scanKey(key):
 
       print(">>>laserNumber: " + laserScanNumber)
       if len(number)==5:
-        control()
+        controle()
       else:
         canvas.itemconfig(image_container,image=imgUnknown)
         name.set("")
@@ -332,9 +311,57 @@ def scanKey(key):
 
   interval=setInterval(0.2,action)
 
-def control():
+
+def parseTime(h,m):
+  return h * 60 + m
+
+autoTime=True
+manualTime=("Midi",0)
+def getTime():
+  h=("Perm",0)
+  now = datetime.now()
+
+  if autoTime:
+    match parseTime(now.hour,now.minute):
+      case num if parseTime(7,50) <= num <  parseTime(8,44):
+        h = ("Perm",0)
+      case num if parseTime(8,44) <= num <  parseTime(9,43):
+        h = ("Perm",1)
+      case num if parseTime(9,43) <= num <  parseTime(10,55):
+        h = ("Perm",2)
+      case num if parseTime(10,55) <= num <  parseTime(11,54):
+        if day==2:
+          h = ("Perm",3)
+        else:
+          h = ("Midi",0)
+      case num if parseTime(11,54) <= num <  parseTime(13,7):
+        if day==2:
+          h = ("Perm",4)
+        else:
+          h = ("Midi",1)
+      case num if parseTime(13,7) <= num <  parseTime(14,8):
+        h = ("Perm",5)
+      case num if parseTime(14,8) <= num <  parseTime(15,7):
+        h = ("Perm",6)
+      case num if parseTime(15,7) <= num <  parseTime(16,19):
+        h = ("Perm",7)
+      case num if parseTime(16,19) <= num <  parseTime(17,18):
+        h = ("Perm",8)
+  else:
+    h=manualTime
+  if h[0]=="Midi":
+    textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(h[1]+11) + "h")
+  else:
+    textH.set("semaine n°" + str(week) + " " + days[day] + " " + str(h[1]+8) + "h")
+  if not autoTime:
+    textH.set(textH.get()+" (Manuel)")
+  return h
+
+
+def controle():
   global number
   global user
+  time = getTime()
   
   canvas.itemconfig(image_container,image=imgLoading)
   global listUsers
@@ -347,10 +374,10 @@ def control():
     name.set(user["first_name"] + " " + user["last_name"])
     classe = user["classe"]
     info.set("classe : " + classe)
-    if heure!="perm":
+    if time[0]=="Midi" and mode_var_save=="Foyer":
       #midi
       listCreneau = []
-      if heure == 11:
+      if time[1] == 0:
         global listDemande11
         listCreneau = listDemande11
       else:
@@ -363,7 +390,7 @@ def control():
           testInscrit = True
 
           canvas.itemconfig(image_container,image=imgLoading)
-          socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
+          socketReq('scan', [week,dayMidi,time[1],user['uuid'],True],True)
           child["scan"]=1
           refreshPassages()
           canvas.itemconfig(image_container,image=imgOk)
@@ -379,31 +406,10 @@ def control():
         alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
       else:
         canvas.itemconfig(image_container,image=imgLoading)
-
-        now = datetime.now()
-        h=-1
-
-        match parseTime(now.hour,now.minute):
-          case num if parseTime(7,50) <= num <  parseTime(8,44):
-            h = 0
-          case num if parseTime(8,44) <= num <  parseTime(9,43):
-            h = 1
-          case num if parseTime(9,43) <= num <  parseTime(10,55):
-            h = 2
-          case num if parseTime(10,55) <= num <  parseTime(11,54):
-            h = 3
-          case num if parseTime(11,54) <= num <  parseTime(13,7):
-            h = 4
-          case num if parseTime(13,7) <= num <  parseTime(14,8):
-            h = 5
-          case num if parseTime(14,8) <= num <  parseTime(15,7):
-            h = 6
-          case num if parseTime(15,7) <= num <  parseTime(16,19):
-            h = 7
-          case num if parseTime(16,19) <= num <  parseTime(17,18):
-            h = 8
-        socketReq('setLocalisation',{"w":week,"j":day,"h":h,"lieu":"Foyer","uuid":user['uuid']},True)
-
+        lieu="Foyer"
+        if mode_var_save=="Perm":
+          lieu = listeCombo.get()
+        socketReq('setLocalisation',{"w":week,"j":day,"h":time[1],"lieu":lieu,"uuid":user['uuid']},True)
         refreshPassages()
         canvas.itemconfig(image_container,image=imgOk)
     if socketReq('getUserHasCookie', user['uuid'],True):
@@ -530,12 +536,18 @@ imgTutora = PhotoImage(file="image/lieu/tutora.png")
 imgLogo = PhotoImage(file="image/logo.png")
 
 def hChange():
-  global heure
-  if heure==11:
-    heure=12
-  else:
-    heure=11
-  textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(heure) + "h")
+  global autoTime
+  global manualTime
+  time = getTime()
+  if autoTime:
+    manualTime=("Midi",0)
+    autoTime=False
+  elif time[1]==0 and time[0]=="Midi":
+    manualTime=("Midi",1)
+    autoTime=False
+  elif time[1]==1 and time[0]=="Midi":
+    autoTime=True
+  getTime()
 textH = StringVar()
 labelH = Button(fenetre, textvariable=textH, command=hChange, font=("Arial", 15))
 labelH.pack()
@@ -567,11 +579,15 @@ def add():
   global user
   canvas.itemconfig(image_container,image=imgLoading)
   buttonInscrire.pack_forget()
-  if heure!="perm":
-    socketReq('setDorI', [week,dayMidi,heure-11,user['uuid'],True],True)
-    socketReq('scan', [week,dayMidi,heure-11,user['uuid'],True],True)
+
+  time = getTime()
+  if time[0]=="Midi":
+    socketReq('setDorI', [week,dayMidi,time[1],user['uuid'],True],True)
+    socketReq('scan', [week,dayMidi,time[1],user['uuid'],True],True)
     refresh()
     canvas.itemconfig(image_container,image=imgOk)
+  else:
+    canvas.itemconfig(image_container,image=imgCroix)
 
 
 buttonInscrire = Button(fenetre, text='Inscrire', command=add, font=("Arial", 15))
@@ -609,13 +625,61 @@ else:
 mode_var = StringVar()
 mode_var.set(mode_var_save)
 
+listLieux=["Champagnat","CDI","DOC","Aumônerie","Tutorat","City stade","Bien-être","Audio"]
+listeCombo = ttk.Combobox(fenetre, values=listLieux)
+if lieu_var_save in listLieux:
+  listeCombo.current(listLieux.index(lieu_var_save))
+else:
+  listeCombo.current(0)
+
+
+def appel():
+  canvas.itemconfig(image_container,image=imgLoading)
+  buttonAppel.pack_forget()
+
+  time = getTime()
+  if time[0]=="Perm":
+    liste_d_appel = socketReq('getLocalisation',{"w":week,"j":day,"h":time[1]},True)
+    for user in listUsers:
+      for enregistrement in liste_d_appel:
+        if user["uuid"]==enregistrement["uuid"]:
+          print(user["code_barre"])
+    refresh()
+    canvas.itemconfig(image_container,image=imgOk)
+  else:
+    canvas.itemconfig(image_container,image=imgCroix)
+  buttonAppel.pack()
+
+
+buttonAppel = Button(fenetre, text="Faire l'appel", command=appel, font=("Arial", 15))
+
 def refresh_options():
   global son_bool_save
   global mode_var_save
+  global lieu_var_save
   if mode_var.get()=="0":
     mode_var.set("Foyer")
   son_bool_save = str(son_bool.get())
   mode_var_save = str(mode_var.get())
+  lieu_var_save = listeCombo.get()
+  if mode_var.get()=="Foyer":
+    labelPassage.pack()
+    labelPassage11.pack()
+    labelPassage12.pack()
+  else:
+    labelPassage.pack_forget()
+    labelPassage11.pack_forget()
+    labelPassage12.pack_forget()
+
+  if mode_var.get()=="Perm":
+    listeCombo.pack()
+  else:
+    listeCombo.pack_forget()
+  
+  if mode_var.get()=="Appel":
+    buttonAppel.pack()
+  else:
+    buttonAppel.pack_forget()
   save_data()
 refresh_options()
 
@@ -646,7 +710,15 @@ menubar.add_cascade(label="File", menu=filemenu)
 modemenu = Menu(menubar, tearoff=0)
 modemenu.add_checkbutton(label="Foyer", onvalue="Foyer", variable=mode_var, command=refresh_options)
 modemenu.add_checkbutton(label="Perm", onvalue="Perm", variable=mode_var, command=refresh_options)
+modemenu.add_checkbutton(label="Appel", onvalue="Appel", variable=mode_var, command=refresh_options)
 menubar.add_cascade(label="Mode", menu=modemenu)
+
+
+def actionComboboxSelected(event):
+  refresh_options()
+listeCombo.bind("<<ComboboxSelected>>", actionComboboxSelected)
+
+
 
 fenetre.config(menu=menubar)
 
