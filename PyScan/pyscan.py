@@ -402,7 +402,9 @@ def controle():
         buttonInscrire.pack()
     else:
       #perm
-      if user["ban"]!=None:
+      if time[0]=="Midi":
+        time = ("Perm",time[1]+3)
+      if user["ban"]!=None and mode_var_save=="Foyer":
         canvas.itemconfig(image_container,image=imgCroix)
         fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
         alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
@@ -632,6 +634,7 @@ if lieu_var_save in listLieux:
   listeCombo.current(listLieux.index(lieu_var_save))
 else:
   listeCombo.current(0)
+  lieu_var_save = listeCombo.get()
 
 
 def appel():
