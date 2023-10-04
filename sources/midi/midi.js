@@ -230,7 +230,8 @@ export async function init(common){
                 } else if (nbAmisInscrit[j][h] == 1) {
                     text += " qui a été inscrit"
                 }else{
-                    text += " <rouge>qui n'a pas fait de demande</rouge>"
+                    text += " <u>qui n'a pas fait de demande</u>"
+                    text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                 }
             } else if (nbAmis[j][h] > 1) {
                 text += " avec " + nbAmis[j][h] + " amis"
@@ -239,12 +240,15 @@ export async function init(common){
                 }else if(nbAmis[j][h] == nbAmisInscrit[j][h]){
                     text += " qui ont tous été inscrit"
                 }else if(0 == nbAmisDemande[j][h] && 0 == nbAmisInscrit[j][h]){
-                    text += " <rouge>qui n'ont pas fait de demandes</rouge>"
+                    text += " <u>qui n'ont pas fait de demandes</u>"
+                    text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                 }else {
                     if (nbAmisDemande[j][h] == 1) {
-                        text += " <rouge>dont un seul a fait une demande</rouge>"
+                        text += " <u>dont un seul a fait une demande</u>"
+                        text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                     } else if(nbAmisDemande[j][h]>1){
-                        text += " <rouge>dont " + nbAmisDemande[j][h] + " ont fait une demande</rouge>"
+                        text += " <u>dont " + nbAmisDemande[j][h] + " ont fait une demande</u>"
+                        text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                     }
                     if(nbAmisDemande[j][h] != 0 && nbAmisInscrit[j][h] != 0){
                         text += " et"

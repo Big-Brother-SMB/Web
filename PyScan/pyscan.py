@@ -1,10 +1,9 @@
 #pip install "python-socketio[client]"
 #pip install pynput
-#pip install keyboard
-
 #pip install playsound
 #pip uninstall playsound
 #pip install playsound==1.2.2
+
 from concurrent.futures import thread
 from playsound import playsound
 from pynput.keyboard import Key, Listener, Controller
@@ -273,7 +272,6 @@ def scanKey(key):
   
 
   user="None"
-  buttonInscrire.pack_forget()
   print(key)
   try:
     if str(key) == "Key.backspace" :
@@ -282,6 +280,8 @@ def scanKey(key):
       else:
         number = number[:-1]
       text.set(number)
+      buttonInscrire.pack_forget()
+      buttonCookie.pack_forget()
       canvas.itemconfig(image_container,image=imgUnknown)
       name.set("")
       info.set("")
@@ -305,6 +305,8 @@ def scanKey(key):
       if len(number)==5:
         controle()
       else:
+        buttonInscrire.pack_forget()
+        buttonCookie.pack_forget()
         canvas.itemconfig(image_container,image=imgUnknown)
         name.set("")
         info.set("")

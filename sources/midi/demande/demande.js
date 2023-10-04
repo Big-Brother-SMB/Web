@@ -58,9 +58,11 @@ class Ami{
         button.innerHTML = Ami.common.name(this.first_name,this.last_name)
 
         if(this.DorI == 0){
-            button.innerHTML += " (a fait une demande)"
+            button.innerHTML += "<br>(a fait une demande)"
         }else if(this.DorI == 1){
-            button.innerHTML += " (est inscrit)"
+            button.innerHTML += "<vert> (est inscrit)</vert>"
+        }else{
+            button.innerHTML += "<br><rouge>(doit faire une demande)</rouge>"
         }
         if(this.inMyFriendList == 0){
             button.classList.add('partiel')
