@@ -32,9 +32,9 @@ module.exports = async(req_url) => {
       await writeFileAsync(path.join(sources_url,"..","PyScan","save.txt"),py_token+"\n");
       await zipDirectory(path.join(sources_url,"..","PyScan"),path.join(sources_url,"..","PyScan.zip"))
       fichier = await readFileAsync(path.join(sources_url,"..","PyScan.zip"))
-    }else if(pathName=="/index" || pathName=="/rick" || pathName=="/beta" || pathName=="/i"){
+    }else if(pathName=="/index" || pathName=="/rick" || pathName=="/test"){
       fichier = await readFileAsync(path.join(sources_url,"troll","troll.html"))
-    }else if(pathName=="/index0" || pathName=="/rick0" || pathName=="/beta0" || pathName=="/i0"){
+    }else if(pathName=="/rick0"){
       fichier = await readFileAsync(path.join(sources_url,"troll","troll0.html"))
     }else if(extName == ''){
       let baseName = path.basename(pathName,extName);

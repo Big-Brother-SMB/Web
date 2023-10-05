@@ -24,8 +24,18 @@ document.addEventListener("click",async ()=>{
         source.setAttribute("src","/troll/trollolo.mp4")
     }else if(window.location.pathname.includes("/perm")){
         source.setAttribute("src","/troll/chicken.mp4")
+    }else if(window.location.pathname.includes("/amis")){
+        source.setAttribute("src","/troll/kiwi.mp4")
+    }else if(window.location.pathname.includes("/messagerie")){
+        source.setAttribute("src","/troll/schnappi.mp4")
     }else if(window.location.pathname.includes("/options")){
-        source.setAttribute("src","/troll/tamponne.mp4")
+        source.setAttribute("src","/troll/pizza.mp4")
+    }else if(window.location.pathname.includes("/credit")){
+        source.setAttribute("src","/troll/world.mp4")
+    }else if(window.location.pathname.includes("/tuto")){
+        source.setAttribute("src","/troll/shark.mp4")
+    }else if(window.location.pathname.includes("/listeArcade")){
+        source.setAttribute("src","/troll/kart.mp4")
     }else{
         source.setAttribute("src","")
     }

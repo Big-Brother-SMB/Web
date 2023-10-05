@@ -656,10 +656,10 @@ def appel():
           print(user["code_barre"])
           if user["code_barre"] != None:
             for l in user["code_barre"]:
-              keyboard.press(l)
-              keyboard.release(l)
               keyboard.press(Key.shift)
               keyboard.release(Key.shift)
+              keyboard.press(l)
+              keyboard.release(l)
             keyboard.press(Key.enter)
             keyboard.release(Key.enter)
     refresh()
