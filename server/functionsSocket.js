@@ -34,10 +34,10 @@ module.exports = class funcSocket{
         });    
     }
 
-    static historiquePoints(socket,user){
-        socket.on('historiquePoints', async req => {
+    static historiqueScores(socket,user){
+        socket.on('historiqueScores', async req => {
             try{
-                socket.emit('historiquePoints',await user.listPoint)
+                socket.emit('historiqueScores',await user.listPoint)
             }catch(e){console.error(e);console.log('b3');}
         });    
     }
@@ -120,7 +120,9 @@ module.exports = class funcSocket{
     static setMyDemande(socket,user){
         socket.on('setMyDemande', async req => {
             try{
-                if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                let demande = await user.getMidiDemande(req.w,req.j*2+req.h)
+                let info = await funcDB.getMidiInfo(req.w,req.j*2+req.h)
+                if(demande.DorI!=true && info.ouvert==2){
                     await user.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,req.sandwich)
                     socket.emit('setMyDemande',"ok")
                 }
@@ -131,7 +133,9 @@ module.exports = class funcSocket{
     static delMyDemande(socket,user){
         socket.on('delMyDemande', async req => {
             try{
-                if((await user.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                let demande = await user.getMidiDemande(req.w,req.j*2+req.h)
+                let info = await funcDB.getMidiInfo(req.w,req.j*2+req.h)
+                if(demande.DorI!=true && info.ouvert==2){
                     await user.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delMyDemande',"ok")
                 }
@@ -212,8 +216,10 @@ module.exports = class funcSocket{
     static setMyDemandePerm(socket,user){
         socket.on("setMyDemandePerm", async req => {
             try{
-                if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
-                    await socket.emit("setMyDemandePerm",await user.setPermDemande(req.w,req.j,req.h,req.group,req.nb))
+                let demande = await user.getPermDemande(req.w,req.j,req.h)
+                let ouvert = await funcDB.getPermOuvert(req.w,req.j,req.h)
+                if(demande.DorI!=true && (ouvert==0 || ouvert==null)){
+                    await user.setPermDemande(req.w,req.j,req.h,req.group,req.nb)
                     socket.emit('setMyDemandePerm',"ok")
                 }
             }catch(e){console.error(e);console.log('b21');}
@@ -223,7 +229,9 @@ module.exports = class funcSocket{
     static delMyDemandePerm(socket,user){
         socket.on("delMyDemandePerm", async req => {
             try{
-                if((await user.getPermDemande(req.w,req.j,req.h)).DorI!=true){
+                let demande = await user.getPermDemande(req.w,req.j,req.h)
+                let ouvert = await funcDB.getPermOuvert(req.w,req.j,req.h)
+                if(demande.DorI!=true && (ouvert==0 || ouvert==null)){
                     await user.delPermDemande(req.w,req.j,req.h)
                     socket.emit('delMyDemandePerm',"ok")
                 }

@@ -449,21 +449,22 @@ module.exports = class User{
                                   resolve2(undefined)
                                   return
                                 }
-                                  if(info.gratuit_prio){
-                                    let groups = await moi.groups
-                                    let classe = await moi.classe
-                                    if(info.prio.indexOf(classe)!=-1){
-                                      info.cout=-info.cout
-                                    }
-                                    groups.forEach(e=>{
-                                      if(info.prio.indexOf(e)!=-1){
-                                        info.cout=0
-                                      }
-                                    })
-                                    resolve2(info)
-                                  }else{
-                                    resolve2(info)
+                                if(info.gratuit_prio){
+                                  let groups = await moi.groups
+                                  let classe = await moi.classe
+                                  if(info.prio.indexOf(classe)!=-1){
+                                    info.cout=0
                                   }
+                                  groups.forEach(e=>{
+                                    if(info.prio.indexOf(e)!=-1){
+                                      info.cout=0
+                                    }
+                                  })
+                                }
+                                if(!data[i].scan && info.ouvert==4){
+                                  info.cout+=1
+                                }
+                                resolve2(info)
                               })
                               if(r!=undefined)
                                 lists.midi.push(r)
@@ -519,10 +520,11 @@ module.exports = class User{
                                         resolve2(undefined)
                                       }
                                     })
-                                    resolve2(info)
-                                  }else{
-                                    resolve2(info)
                                   }
+                                  if(!data[i].scan && info.ouvert==4){
+                                    info.cout+=1
+                                  }
+                                  resolve2(info)
                                 })
                                 if(r!=undefined){
                                   score-=r.cout

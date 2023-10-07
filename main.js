@@ -271,7 +271,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   
       if(user.uuid!=null){
         funcSocket.score(socket,user)
-        funcSocket.historiquePoints(socket,user)
+        funcSocket.historiqueScores(socket,user)
         funcSocket.getMenuThisWeek(socket,user)
         funcSocket.getDataThisCreneau(socket,user)
         funcSocket.getTuto(socket,user)
@@ -348,6 +348,20 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         await UserSelect.algoDeSelection(w,j*2+1)
       }
     }
+
+    //supprime automatiquement les tokens
+    db.all("SELECT * FROM token", async(err, data) => {
+      try {
+        if(data!=undefined){
+          data.forEach(e=>{
+            if((new Date(e.last_use).getTime()-(Date.now()-1000*3600*24*7))<0){
+              db.run("delete from token WHERE token=?",[e.token])
+            }
+          })
+        }
+      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+    })
+
     setTimeout(loop, 30000);
   }
   loop()

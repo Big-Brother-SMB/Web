@@ -10,7 +10,8 @@ document.addEventListener('keyup', (event) => {
 
 export async function init(common){
     let divClasse = document.getElementById("classe")
-    let dName = document.getElementById("name")
+    let dName_prenom = document.getElementById("name_prenom")
+    let dName_nom = document.getElementById("name_nom")
     let connect = document.getElementById('key button')
 
     let pScore = document.getElementById("score")
@@ -42,7 +43,8 @@ export async function init(common){
 
 
     function stop(){
-        dName.removeEventListener("input",fuName)
+        dName_prenom.removeEventListener("input",fuName)
+        dName_nom.removeEventListener("input",fuName)
         divClasse.removeEventListener("change",fu1)
         bAddScore.removeEventListener("click",fu2)
         adminBox.removeEventListener("change",fu3)
@@ -95,17 +97,15 @@ export async function init(common){
                 common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
             });
             
-            dName.value = utilisateur.first_name + " " + utilisateur.last_name
-            dName.addEventListener("input",fuName=function(){
-                if(utilisateursNames.indexOf(dName.value) == -1){
-                    let name = dName.value.split(' ')
-                    first_name=name[0]
-                    if(name.length>1){
-                        last_name=name[1] 
-                    }
-                    common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
-                }
-            })
+            dName_prenom.value = utilisateur.first_name
+            dName_nom.value = utilisateur.last_name
+            fuName=function(){
+                first_name = dName_prenom.value
+                last_name = dName_nom.value
+                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+            }
+            dName_prenom.addEventListener("input",fuName)
+            dName_nom.addEventListener("input",fuName)
 
 
             divScoreEvent.innerHTML = null
@@ -226,7 +226,7 @@ export async function init(common){
                     }else{
                         pScore.innerHTML = "Score : " + score + "pts";
                     }
-                })     
+                })
             }
 
             bAddScore.addEventListener("click", fu2=async function() {

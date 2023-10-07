@@ -630,7 +630,7 @@ else:
 mode_var = StringVar()
 mode_var.set(mode_var_save)
 
-listLieux=["Champagnat","CDI","DOC","Aumônerie","Tutorat","City stade","Bien-être","Audio"]
+listLieux=["Champagnat","CDI","DOC","Aumônerie","Tutorat","City stade","Bien-être","Audio","Foyer"]
 listeCombo = ttk.Combobox(fenetre, values=listLieux)
 if lieu_var_save in listLieux:
   listeCombo.current(listLieux.index(lieu_var_save))

@@ -85,13 +85,17 @@ export async function init(common){
         user.ligne.appendChild(colD)
         user.ligne.appendChild(colI)
 
-        col= document.createElement("td")
+        let colT= document.createElement("td")
         if(user.demande.scan==true){
-            col.innerHTML="S"
+            colT.innerHTML="Scan"
         }else{
-            col.innerHTML="X"
+            colT.innerHTML="X"
         }
-        user.ligne.appendChild(col)
+        colT.addEventListener("click",async ()=>{
+            await common.socketAdminAsync('scan',[w,j,h,user.uuid,true])
+            colT.innerHTML="Scan"
+        })
+        user.ligne.appendChild(colT)
 
         col= document.createElement("td")
         col.innerHTML=new String(user.code_barre)
