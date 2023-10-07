@@ -462,6 +462,7 @@ module.exports = class User{
                                   })
                                 }
                                 if(!data[i].scan && info.ouvert==4){
+                                  info.penalite=true
                                   info.cout+=1
                                 }
                                 resolve2(info)

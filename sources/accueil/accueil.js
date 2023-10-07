@@ -12,6 +12,10 @@ export async function init(common){
     }
     document.getElementById("score").innerHTML = textScore
 
+    document.getElementById("score").addEventListener("click",()=>{
+        common.loadpage("/accueil/score")
+    })
+
     let cookies = await common.socketAsync("getCookies",null)
     console.log(cookies)
 

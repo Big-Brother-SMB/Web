@@ -116,14 +116,11 @@ export async function init(common){
             let score = 0
 
             scoreList.midi.forEach((child)=> {
-                let event = document.createElement("button")
-                event.classList.add("event")
-            
                 let obj={}
                 obj.creneau = child.creneau
                 obj.semaine = child.semaine
-                console.log(child)
                 obj.name = "Repas du " + dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
+                if(child.penalite) obj.name += " (Pénalité)"
                 obj.value = -child.cout
                 let jourForDate = Math.floor(child.creneau / 2)
                 jourForDate++
@@ -134,9 +131,6 @@ export async function init(common){
             })
             
             scoreList.perso.forEach((child)=> {
-                let event = document.createElement("button")
-                event.classList.add("event")
-            
                 let obj={}
                 obj.name = child.name
                 obj.value = child.value
@@ -145,9 +139,6 @@ export async function init(common){
                 scoreObjs.push(obj)
             })
             scoreList.global.forEach((child)=> {
-                let event = document.createElement("button")
-                event.classList.add("event")
-            
                 let obj={}
                 obj.name = child.name
                 obj.value = child.value
@@ -213,7 +204,7 @@ export async function init(common){
                     }else if(obj.type==1){
                         await common.socketAdminAsync('delPersonalPoint',[utilisateur.uuid,obj.date])
                     }else if(obj.type==2){
-                        await common.socketAdminAsync('delGlobalPoint',[obj.date])
+                        await common.socketAdminAsync('delGlobalPoint',obj.date)
                     }
 
                     scoreObjs.splice(index,1)
