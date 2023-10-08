@@ -34,10 +34,10 @@ module.exports = class funcSocket{
         });    
     }
 
-    static historiqueScores(socket,user){
-        socket.on('historiqueScores', async req => {
+    static historiqueScore(socket,user){
+        socket.on('historiqueScore', async req => {
             try{
-                socket.emit('historiqueScores',await user.listPoint)
+                socket.emit('historiqueScore',await user.listPoint)
             }catch(e){console.error(e);console.log('b3');}
         });    
     }

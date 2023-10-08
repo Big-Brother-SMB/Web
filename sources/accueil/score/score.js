@@ -5,7 +5,7 @@ export async function init(common){
     document.getElementById("btn_retour").setAttribute("url","/accueil")
 
 
-    let scoreList = await common.socketAdminAsync('getScoreList',common.uuid)
+    let scoreList = await common.socketAsync('historiqueScore',null)
     let scoreObjs = []
     let score = 0
 

@@ -93,6 +93,60 @@ export async function init(common){
         }else{
             remplace_img()
         }
+
+        let listNote = []
+        for(let i=0;i<5;i++){
+            let list = [0,0,0,0]
+            let note_brut = await common.socketAdminAsync('getAllResultsMenu',{w:week,j:i})
+            note_brut.forEach((child)=> {
+                let note = child.note
+                if(note>=0 && note<=3){
+                    list[note]++
+                }
+            })
+            listNote.push(list)
+        }
+        console.log(listNote)
+        document.getElementById('graphique').parentElement.innerHTML='<canvas id="graphique"></canvas>'
+        const cvs = document.getElementById('graphique');
+        new Chart(cvs, {
+            type: 'bar',
+            data: {
+                labels: ["Foyer","Lundi","Mardi","Jeudi","Vendredi"],
+                datasets: [{
+                    label: '😰',
+                    data: listNote.map(row => (row[0])),
+                    borderWidth: 1,
+                    fill: false,
+                    backgroundColor: '#bb0b0b'
+                },{
+                    label: '🙁',
+                    data: listNote.map(row => (row[1])),
+                    borderWidth: 1,
+                    fill: false,
+                    backgroundColor: '#ca898d'
+                },{
+                    label: '😃',
+                    data: listNote.map(row => (row[2])),
+                    borderWidth: 1,
+                    fill: false,
+                    backgroundColor: '#93d900'
+                },{
+                    label: '😋',
+                    data: listNote.map(row => (row[3])),
+                    borderWidth: 1,
+                    fill: false,
+                    backgroundColor: '#00C909'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                    beginAtZero: true
+                    }
+                }
+            }
+        });
     }
 
 

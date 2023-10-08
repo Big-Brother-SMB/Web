@@ -273,7 +273,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   
       if(user.uuid!=null){
         funcSocket.score(socket,user)
-        funcSocket.historiqueScores(socket,user)
+        funcSocket.historiqueScore(socket,user)
         funcSocket.getMenuThisWeek(socket,user)
         funcSocket.getDataThisCreneau(socket,user)
         funcSocket.getTuto(socket,user)
