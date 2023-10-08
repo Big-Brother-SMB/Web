@@ -421,7 +421,48 @@ module.exports = class funcDB{
 
 
 
+  //sondage menu
+  static getAllResultsMenu(semaine,menu){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM sondage_menu where semaine=? and menu=?",[semaine,menu], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve([])
+          }
+        }catch(e){console.error(e);console.log('a-4');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
 
+  static getSondageMenu(uuid,semaine,menu){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM sondage_menu where uuid=? and semaine=? and menu=?",[uuid,semaine,menu], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data.note)
+          }else{
+            resolve(-1)
+          }
+        }catch(e){console.error(e);console.log('a-5');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  static setSondageMenu(uuid,semaine,menu,note){
+    db.get("SELECT * FROM sondage_menu where uuid=? and semaine=? and menu=?",[uuid,semaine,menu], (err, data) => {
+      if(note==-1){
+        db.run("DELETE FROM sondage_menu WHERE uuid=? and semaine=? and menu=?",[uuid,semaine,menu])
+      }else if(data==undefined){
+        db.run("INSERT INTO sondage_menu(uuid,semaine,menu,note) VALUES (?,?,?,?)",[uuid,semaine,menu,note])
+      } else{
+        db.run("UPDATE sondage_menu SET note=? where uuid=? and semaine=? and menu=?",[note,uuid,semaine,menu])
+      }
+    })
+  }
 
 
 

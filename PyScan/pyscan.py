@@ -414,7 +414,10 @@ def controle():
         canvas.itemconfig(image_container,image=imgLoading)
         lieu="Foyer"
         if mode_var_save=="Perm":
-          lieu = lieu_var_save
+          if lieu_var_save=="All":
+            lieu = "Champagnat"
+          else:
+            lieu = lieu_var_save
         socketReq('setLocalisation',{"w":week,"j":day,"h":time[1],"lieu":lieu,"uuid":user['uuid']},True)
         refreshPassages()
         canvas.itemconfig(image_container,image=imgDico.get(lieu))
@@ -630,7 +633,7 @@ else:
 mode_var = StringVar()
 mode_var.set(mode_var_save)
 
-listLieux=["Champagnat","CDI","DOC","Aumônerie","Tutorat","City stade","Bien-être","Audio","Foyer"]
+listLieux=["Champagnat","CDI","DOC","Aumônerie","Tutorat","City stade","Bien-être","Audio","Foyer","All"]
 listeCombo = ttk.Combobox(fenetre, values=listLieux)
 if lieu_var_save in listLieux:
   listeCombo.current(listLieux.index(lieu_var_save))
@@ -644,30 +647,37 @@ def appel():
   buttonAppel.pack_forget()
 
   timeTab = getTime()
+  if timeTab[0]=="Midi":
+    timeTab = ("Perm",timeTab[1]+3)
   if timeTab[0]=="Perm":
     text.set("...")
-    time.sleep(3)
-    liste_d_appel = socketReq('getLocalisation',{"w":week,"j":day,"h":timeTab[1]},True)
-    keyboard = Controller()
-    for user in listUsers:
-      for enregistrement in liste_d_appel:
-        if user["uuid"]==enregistrement["uuid"]:
-          time.sleep(0.2)
-          print(user["code_barre"])
-          if user["code_barre"] != None:
-            for l in user["code_barre"]:
-              keyboard.press(Key.shift)
-              keyboard.release(Key.shift)
-              keyboard.press(l)
-              keyboard.release(l)
-            keyboard.press(Key.enter)
-            keyboard.release(Key.enter)
-    refresh()
-    canvas.itemconfig(image_container,image=imgOk)
+    def lireCode():
+      time.sleep(3)
+      liste_d_appel = socketReq('getLocalisation',{"w":week,"j":day,"h":timeTab[1]},True)
+      keyboard = Controller()
+      for user in listUsers:
+        for enregistrement in liste_d_appel:
+          if user["uuid"]==enregistrement["uuid"]:
+            if user["code_barre"] != None and (enregistrement["lieu"]==lieu_var_save or "All"==lieu_var_save):
+              time.sleep(0.1)
+              def lireCode2(user):
+                text.set(user["code_barre"])
+                print(user["code_barre"],user["first_name"],user["uuid"])
+                for l in user["code_barre"]:
+                  keyboard.press(Key.shift)
+                  keyboard.release(Key.shift)
+                  keyboard.press(l)
+                  keyboard.release(l)
+                keyboard.press(Key.enter)
+                keyboard.release(Key.enter)
+              threading.Thread(target=lireCode2,args=(user,)).start()
+      refresh()
+      canvas.itemconfig(image_container,image=imgOk)
+      text.set("Terminée")
+      buttonAppel.pack()
+    threading.Thread(target=lireCode).start()
   else:
     canvas.itemconfig(image_container,image=imgCroix)
-  text.set("Terminée")
-  buttonAppel.pack()
 
 
 buttonAppel = Button(fenetre, text="Faire l'appel", command=appel, font=("Arial", 15))
@@ -689,7 +699,7 @@ def refresh_options():
     labelPassage11.pack_forget()
     labelPassage12.pack_forget()
 
-  if mode_var.get()=="Perm":
+  if mode_var.get()=="Perm" or mode_var.get()=="Appel":
     listeCombo.pack()
   else:
     listeCombo.pack_forget()

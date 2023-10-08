@@ -43,6 +43,60 @@ export async function init(common){
         }else{
             remplace_img()
         }
+
+
+        //sondage
+        for (let i=0;i<listSondage.length;i++){
+            const sondage = listSondage[i]
+            let note = await common.socketAsync("getSondageMenu",{w:week,j:i})
+            listNote[i]=note
+            if(note==-1){
+                for (const elem of sondage){
+                    elem.classList.remove("grayscale");
+                }
+            }else{
+                for (const elem of sondage){
+                    elem.classList.add("grayscale");
+                }
+                sondage[note].classList.remove("grayscale")
+            }
+        }
+    }
+
+
+
+
+    let listSondage = []
+    let listNote = []
+    let menuLoop=0
+    for(const obj of document.getElementById("all_sondages").children){
+        let listElem = []
+        if(obj.className=="Sondage"){
+            const menu = menuLoop
+            menuLoop++
+            for (let i=0;i<obj.children.length;i++){
+                const elem = obj.children[i]
+                const index = i
+                listElem.push(elem)
+                elem.addEventListener("click",async function(){
+                    if (listNote[menu] == null || listNote[menu] != index){
+                        for (const elem of listSondage[menu]){
+                            elem.classList.add("grayscale");
+                        }
+                        elem.classList.remove("grayscale");
+                        listNote[menu]=index
+                    }else{
+                        for (const elem of listSondage[menu]){
+                            elem.classList.remove("grayscale");
+                        }
+                        listNote[menu]=-1
+                    }
+                    await common.socketAsync("setSondageMenu",{w:week,j:menu,note:listNote[menu]})
+                })
+            }
+            listSondage.push(listElem)
+            listNote.push(-1)
+        }
     }
 
     refreshDatabase();

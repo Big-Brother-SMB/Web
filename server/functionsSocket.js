@@ -256,6 +256,23 @@ module.exports = class funcSocket{
         });
     }
 
+    static getSondageMenu(socket,user){
+        socket.on('getSondageMenu', async req => {
+            try{
+                socket.emit('getSondageMenu',await funcDB.getSondageMenu(user.uuid,req.w,req.j))
+            }catch(e){console.error(e);console.log('b24');}
+        });
+    }
+
+    static setSondageMenu(socket,user){
+        socket.on('setSondageMenu', async req => {
+            try{
+                await funcDB.setSondageMenu(user.uuid,req.w,req.j,req.note)
+                socket.emit('setSondageMenu',"ok")
+            }catch(e){console.error(e);console.log('b25');}
+        });
+    }
+
 
 
 

@@ -445,8 +445,17 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v10")
+                socket.emit("pyScanVersion","v11")
             }catch(e){console.error(e);console.log('48');}
+        });
+    }
+
+    static getAllResultsMenu(socket,user){
+        socket.on('getAllResultsMenu', async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit('getAllResultsMenu',await funcDB.getAllResultsMenu(req.w,req.j))
+            }catch(e){console.error(e);console.log('b24');}
         });
     }
 

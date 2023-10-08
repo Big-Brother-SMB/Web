@@ -260,6 +260,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.getLocalisation(socket,user)
       funcSocketAdmin.setLocalisation(socket,user)
       funcSocketAdmin.delLocalisation(socket,user)
+
+      funcSocketAdmin.getAllResultsMenu(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -292,6 +294,9 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.delMyDemandePerm(socket,user)
         funcSocket.suppAllToken(socket,user)
         funcSocket.getCookies(socket,user)
+        
+        funcSocket.getSondageMenu(socket,user)
+        funcSocket.setSondageMenu(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });

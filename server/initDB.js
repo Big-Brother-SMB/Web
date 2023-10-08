@@ -65,6 +65,12 @@ module.exports = (db)=>{
         db.run('CREATE TABLE midi_amis(semaine int2,creneau int2,uuid uuid,amis uuid)')
     })
 
+    //sondage menu
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='sondage_menu'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE sondage_menu(uuid uuid,semaine int2,menu int2,note int2)')
+    })
+
     //point
     db.get("SELECT * FROM sqlite_master where type='table' AND name='point_global'", (err, data) => {
       if(data==undefined)
