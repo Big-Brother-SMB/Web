@@ -326,28 +326,29 @@ def getTime():
   now = datetime.now()
 
   if autoTime:
+    h=("Perm",-1)
     match parseTime(now.hour,now.minute):
       case num if parseTime(7,50) <= num <  parseTime(8,44):
         h = ("Perm",0)
       case num if parseTime(8,44) <= num <  parseTime(9,43):
         h = ("Perm",1)
-      case num if parseTime(9,43) <= num <  parseTime(10,55):
+      case num if parseTime(10,1) <= num <  parseTime(10,55):
         h = ("Perm",2)
       case num if parseTime(10,55) <= num <  parseTime(11,54):
         if day==2:
           h = ("Perm",3)
         else:
           h = ("Midi",0)
-      case num if parseTime(11,54) <= num <  parseTime(13,7):
+      case num if parseTime(11,54) <= num <  parseTime(13,9):
         if day==2:
           h = ("Perm",4)
         else:
           h = ("Midi",1)
-      case num if parseTime(13,7) <= num <  parseTime(14,8):
+      case num if parseTime(13,9) <= num <  parseTime(14,8):
         h = ("Perm",5)
       case num if parseTime(14,8) <= num <  parseTime(15,7):
         h = ("Perm",6)
-      case num if parseTime(15,7) <= num <  parseTime(16,19):
+      case num if parseTime(15,25) <= num <  parseTime(16,19):
         h = ("Perm",7)
       case num if parseTime(16,19) <= num <  parseTime(17,18):
         h = ("Perm",8)
@@ -355,6 +356,8 @@ def getTime():
     h=manualTime
   if h[0]=="Midi":
     textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(h[1]+11) + "h")
+  elif h[1]==-1:
+    textH.set("semaine n°" + str(week) + " " + days[day] + " (-1)h")
   else:
     textH.set("semaine n°" + str(week) + " " + days[day] + " " + str(h[1]+8) + "h")
   if not autoTime:

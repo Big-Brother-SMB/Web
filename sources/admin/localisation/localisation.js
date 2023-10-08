@@ -135,7 +135,7 @@ export async function init(common){
     j = j-1
     function getHour(){
         let d = new Date();
-        const horaires = [[7,50],[8,44],[9,43],[10,55],[11,54],[13,7],[14,8],[15,7],[16,19],[17,18]]
+        const horaires = [[7,50],[8,44],[9,43],[10,55],[11,54],[13,9],[14,8],[15,7],[16,19],[17,18]]
         let i = 0
         h = 0
         while(i<horaires.length-1 && h==-1){
