@@ -73,12 +73,12 @@ def socketReq(event,data,admin):
       time.sleep(0.1)
       for i in range(len(msg)):
         if event==msg[i][0]:
-          x=msg[i][1]
+          x=msg[i]
           del msg[i]
       timeOut-=1
       if timeOut<=0:
-        x=socketReq(event,data,admin)
-    return x
+        x=[event,socketReq(event,data,admin)]
+    return x[1]
   except ValueError:
     return []
 
@@ -171,24 +171,37 @@ def setDate(today):
 setDate(datetime.today())
 
 #fonction actualiser
+listPermDemande= []
+permOuvert = []
 listDemande11 = []
 listDemande12 = []
 listUsers = []
-def refresh():
+def refresh(loop):
+  global listPermDemande
+  global permOuvert
   global listDemande11
   global listDemande12
   global listUsers
   global week
   global dayMidi
 
+  timeTab = getTime()
+  if timeTab[0]=="Midi":
+    timeTab = ("Perm",timeTab[1]+3)
+
+  if timeTab[1]>4:
+    timeTab=(timeTab[0],timeTab[1]-1)
+  if timeTab[1]!=-1:
+    listPermDemande = socketReq('listDemandesPerm',{"w":week,"j":day,"h":timeTab[1]},False)
+    permOuvert = socketReq('getOuvertPerm',{"w":week,"j":day,"h":timeTab[1]},False)
+  if permOuvert==None:
+    permOuvert=0
   listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
   listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
   listUsers = socketReq('getListPass', None,True)
-
-  getTime()
   refreshPassages()
-
-  threading.Timer(30, refresh).start()
+  if loop:
+    threading.Timer(30, refresh,args=(True,)).start()
 
 def refreshPassages():
   global listDemande11
@@ -407,13 +420,23 @@ def controle():
         buttonInscrire.pack()
     else:
       #perm
+      global listPermDemande
+      testAcceptPerm = False
+      for e in listPermDemande:
+        if e['DorI']==1 and (e['group2'] in user['groups'] or e['group2'] == user['classe']):
+          testAcceptPerm=True1
+      global permOuvert
+
       if time[0]=="Midi":
         time = ("Perm",time[1]+3)
-      if user["ban"]!=None and mode_var_save=="Foyer":
+      if mode_var_save=="Foyer" and user["ban"]!=None:
         canvas.itemconfig(image_container,image=imgCroix)
         fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
         alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
-      else:
+      elif mode_var_save=="Foyer" and time[1]!=-1 and (permOuvert==0 or permOuvert==3) and not testAcceptPerm:
+        canvas.itemconfig(image_container,image=imgCroix)
+        alert("Non inscrit", user["first_name"] + " " + user["last_name"])
+      elif time[1]!=-1:
         canvas.itemconfig(image_container,image=imgLoading)
         lieu="Foyer"
         if mode_var_save=="Perm":
@@ -421,9 +444,12 @@ def controle():
             lieu = "Champagnat"
           else:
             lieu = lieu_var_save
+        
         socketReq('setLocalisation',{"w":week,"j":day,"h":time[1],"lieu":lieu,"uuid":user['uuid']},True)
         refreshPassages()
         canvas.itemconfig(image_container,image=imgDico.get(lieu))
+      else:
+        canvas.itemconfig(image_container,image=imgUnknown)
     if socketReq('getUserHasCookie', user['uuid'],True):
       buttonCookie.pack()
   else:
@@ -595,7 +621,7 @@ def add():
   if time[0]=="Midi":
     socketReq('setDorI', [week,dayMidi,time[1],user['uuid'],True],True)
     socketReq('scan', [week,dayMidi,time[1],user['uuid'],True],True)
-    refresh()
+    refresh(False)
     canvas.itemconfig(image_container,image=imgOk)
   else:
     canvas.itemconfig(image_container,image=imgCroix)
@@ -674,7 +700,7 @@ def appel():
                 keyboard.press(Key.enter)
                 keyboard.release(Key.enter)
               threading.Thread(target=lireCode2,args=(user,)).start()
-      refresh()
+      refresh(False)
       canvas.itemconfig(image_container,image=imgOk)
       text.set("Terminée")
       buttonAppel.pack()
@@ -727,7 +753,7 @@ def windowDate():
     setDate(datetime(year=int(dateTab[2]), month=int(dateTab[1]), day=int(dateTab[0])))
     canvas.itemconfig(image_container,image=imgLoading)
     newWindow.destroy()
-    refresh()
+    refresh(False)
     canvas.itemconfig(image_container,image=imgUnknown)
   btn = Button(newWindow, text='Confirmer', command=confirme, font=("Arial", 15))
   btn.pack()
@@ -757,5 +783,5 @@ fenetre.config(menu=menubar)
 
 APP = App(fenetre,text,name)
 
-refresh()
+refresh(True)
 fenetre.mainloop()
