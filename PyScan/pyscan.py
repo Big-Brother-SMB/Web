@@ -424,7 +424,7 @@ def controle():
       testAcceptPerm = False
       for e in listPermDemande:
         if e['DorI']==1 and (e['group2'] in user['groups'] or e['group2'] == user['classe']):
-          testAcceptPerm=True1
+          testAcceptPerm=True
       global permOuvert
 
       if time[0]=="Midi":
