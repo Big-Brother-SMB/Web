@@ -99,9 +99,11 @@ export async function init(common){
   let iG = 0
 
   let divG1 = document.createElement("div")
-  divG1.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+  divG1.style="display: inline-block;*display: inline;width:30%;vertical-align: top;"
   let divG2 = document.createElement("div")
-  divG2.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+  divG2.style="display: inline-block;*display: inline;width:30%;vertical-align: top;"
+  let divG3 = document.createElement("div")
+  divG3.style="display: inline-block;*display: inline;width:30%;vertical-align: top;"
   let loop2 = 0
   g_c[0].forEach(function(child) {
     const index = iG;
@@ -129,9 +131,12 @@ export async function init(common){
     if (loop2==0){
         loop2=1
         divG1.appendChild(gr);
+    } else if (loop2==1){
+        loop2=2
+        divG2.appendChild(gr);
     } else {
         loop2=0
-        divG2.appendChild(gr);
+        divG3.appendChild(gr);
     }
     if(listInscrit.includes(groupes[index])){
         cbGroupes[index].checked = true
@@ -140,6 +145,7 @@ export async function init(common){
   })
   divGroupes.appendChild(divG1);
   divGroupes.appendChild(divG2);
+  divGroupes.appendChild(divG3);
 
 
 
@@ -161,7 +167,7 @@ export async function init(common){
     nSelectAll.innerHTML ="selectionner tous les " + nomNiveau[n]
     nSelectAll.addEventListener("click", async function() {
         console.log("niveau " + n + " select all")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = true
             if(!listInscrit.includes(listNiveau[n][i])){
                 listInscrit.push(listNiveau[n][i])
@@ -176,7 +182,7 @@ export async function init(common){
     nSelectNone.innerHTML ="retirer tous les " + nomNiveau[n]
     nSelectNone.addEventListener("click", async function() {
         console.log("niveau " + n + " select none")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = false
             if(listInscrit.includes(listNiveau[n][i])){
                 listInscrit = listInscrit.filter(o => o != listNiveau[n][i]);
@@ -191,7 +197,7 @@ export async function init(common){
     nInversed.innerHTML ="Inverser tous les " + nomNiveau[n]
     nInversed.addEventListener("click", async function() {
         console.log("niveau " + n + " inversed")
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = !cbClasses[n][i].checked
             if(cbClasses[n][i].checked){
                 if(!listInscrit.includes(listNiveau[n][i])){
@@ -238,7 +244,7 @@ export async function init(common){
   document.getElementById("select all").addEventListener("click", async function() {
     console.log("select all")
     for(let n in cbClasses){
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = true
             if(!listInscrit.includes(listNiveau[n][i])){
                 listInscrit.push(listNiveau[n][i])
@@ -251,7 +257,7 @@ export async function init(common){
   document.getElementById("select none").addEventListener("click", async function() {
     console.log("select none")
     for(let n in cbClasses){
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = false
             if(listInscrit.includes(listNiveau[n][i])){
                 listInscrit = listInscrit.filter(o => o != listNiveau[n][i]);
@@ -264,7 +270,7 @@ export async function init(common){
   document.getElementById("inversed").addEventListener("click", async function() {
     console.log("inversed")
     for(let n in cbClasses){
-        for(i in cbClasses[n]){
+        for(let i in cbClasses[n]){
             cbClasses[n][i].checked = !cbClasses[n][i].checked
             if(cbClasses[n][i].checked){
                 if(!listInscrit.includes(listNiveau[n][i])){

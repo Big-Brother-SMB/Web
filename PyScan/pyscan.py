@@ -185,6 +185,9 @@ def refresh(loop):
   global week
   global dayMidi
 
+  if loop:
+    threading.Timer(30, refresh,args=(True,)).start()
+
   timeTab = getTime()
   if timeTab[0]=="Midi":
     timeTab = ("Perm",timeTab[1]+3)
@@ -200,8 +203,6 @@ def refresh(loop):
   listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
   listUsers = socketReq('getListPass', None,True)
   refreshPassages()
-  if loop:
-    threading.Timer(30, refresh,args=(True,)).start()
 
 def refreshPassages():
   global listDemande11
@@ -370,7 +371,7 @@ def getTime():
   if h[0]=="Midi":
     textH.set("semaine n°" + str(week) + " " + days[day] + " à " + str(h[1]+11) + "h")
   elif h[1]==-1:
-    textH.set("semaine n°" + str(week) + " " + days[day] + " (-1)h")
+    textH.set("semaine n°" + str(week) + " " + days[day] + " Hors Créneau")
   else:
     textH.set("semaine n°" + str(week) + " " + days[day] + " " + str(h[1]+8) + "h")
   if not autoTime:

@@ -306,9 +306,11 @@ export async function init(common){
     let iG = 0
 
     let divG1 = document.createElement("div")
-    divG1.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+    divG1.style="display: inline-block;*display: inline;width:30%;vertical-align: top;"
     let divG2 = document.createElement("div")
-    divG2.style="display: inline-block;*display: inline;width:40%;vertical-align: top;"
+    divG2.style="display: inline-block;*display: inline;width:30%;vertical-align: top;"
+    let divG3 = document.createElement("div")
+    divG3.style="display: inline-block;*display: inline;width:30%;vertical-align: top;"
     let loop2 = 0
     g_c[0].forEach(function(child) {
         const index = iG;
@@ -335,9 +337,12 @@ export async function init(common){
         if (loop2==0){
             loop2=1
             divG1.appendChild(gr);
+        } else if (loop2==1){
+            loop2=2
+            divG2.appendChild(gr);
         } else {
             loop2=0
-            divG2.appendChild(gr);
+            divG3.appendChild(gr);
         }
         if(list_prio.includes(groupes[index])){
             cbGroupes[index].checked = true
@@ -346,6 +351,7 @@ export async function init(common){
     })
     divGroupes.appendChild(divG1);
     divGroupes.appendChild(divG2);
+    divGroupes.appendChild(divG3);
 
 
 

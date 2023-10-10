@@ -106,7 +106,7 @@ export async function init(common){
                 for(let i=0;i<listScan.length;i++){
                     if(listScan[i].uuid==uuid){
                         test=false
-                        if(listScan[i].lieu!=lieu){
+                        if(listScan[i].lieu!=lieu && h!=-1){
                             await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
                             listScan[i].lieu=lieu
                             audio.play();
@@ -114,7 +114,7 @@ export async function init(common){
                         }
                     }
                 }
-                if(test){
+                if(test && h!=-1){
                     await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
                     listScan.push({semaine:common.actualWeek,jour:j,creneau:h,uuid:uuid,lieu:lieu})
                     audio.play();
@@ -137,7 +137,7 @@ export async function init(common){
         let d = new Date();
         const horaires = [[7,50],[8,44],[9,43],[10,55],[11,54],[13,9],[14,8],[15,7],[16,19],[17,18]]
         let i = 0
-        h = 0
+        h = -1
         while(i<horaires.length-1 && h==-1){
             if((d.getHours() == horaires[i][0] && d.getMinutes() >= horaires[i][1])
             || (d.getHours() == horaires[i+1][0] && d.getMinutes() < horaires[i+1][1])){
@@ -147,10 +147,12 @@ export async function init(common){
             }
             i++
         }
-        document.getElementById("heure").innerHTML = (String(horaires[h][0]).length == 1?"0":"") + horaires[h][0] + ":" + 
+        if(h!=-1){
+            document.getElementById("heure").innerHTML = (String(horaires[h][0]).length == 1?"0":"") + horaires[h][0] + ":" + 
             (String(horaires[h][1]).length == 1?"0":"") + horaires[h][1] + " à " + 
             (String(horaires[h+1][0]).length == 1?"0":"") + horaires[h+1][0] + ":" + 
             (String(horaires[h+1][1]).length == 1?"0":"") + horaires[h+1][1]
+        }
     }
 
     let listScan=[];
@@ -221,9 +223,13 @@ export async function init(common){
     async function loop(){
         if(window.location.pathname=="/admin/localisation"){
             getHour()
-            listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
+            if(h!=-1) {
+                listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
+            }else{
+                listScan = [];
+            }
             actualisationList()
-            setTimeout(loop,60000);
+            setTimeout(loop,15000);
         }
     }
     loop();
