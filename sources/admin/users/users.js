@@ -255,7 +255,7 @@ export async function init(common){
                         let codeBar2 = child.code_barre
                         if(codeBar2==val && child!=utilisateur){
                             test=false
-                            infoCodeCarte.innerHTML += "déjà utiliser par: " + common.name(utilisateur.first_name,utilisateur.last_name)
+                            infoCodeCarte.innerHTML += "déjà utiliser par: " + common.name(child.first_name,child.last_name)
                         }
                     })
                     if(test){

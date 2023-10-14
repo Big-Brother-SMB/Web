@@ -1027,20 +1027,20 @@ h2{
 }
 
 @keyframes loader {
-  from {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }
 
 @keyframes loader-reverse {
-  from {
+  0% {
     transform: rotate(360deg);
   }
-  to {
-    transform: rotate(-360deg);
+  100% {
+    transform: rotate(0deg);
   }
 }
 
@@ -1098,6 +1098,14 @@ textarea{
 
 .grayscale{
   filter: grayscale(1);
+}
+
+.opacity{
+  filter: opacity(0.4);
+}
+
+.opacity.grayscale{
+  filter: opacity(0.4) grayscale(1);
 }
 
 /*-------------------------------accueil-----------------------------------*/
@@ -1268,7 +1276,7 @@ p.cookie.period{
   border-bottom: 5px solid #ff0000;
   border-left: 5px solid #ff0000;
   border-right: 5px solid #ff0000;
-  animation: 12s loader linear infinite;
+  animation: 8s loader linear infinite;
 }
 
 .circle-pass .circle-pass{
@@ -1277,26 +1285,26 @@ p.cookie.period{
   border-bottom: 7px solid #007400;
   border-left: 7px solid #007400;
   border-right: 7px solid #007400;
-  animation: 12s loader-reverse linear infinite;
+  animation: 4s loader-reverse linear infinite;
 }
 .circle-pass .circle-pass .circle-pass{
   border-bottom: 9px solid #0000ff;
   border-left: 9px solid #0000ff;
   border-right: 9px solid #0000ff;
-  animation: 2.4s loader linear infinite;
+  animation: 2s loader linear infinite;
 }
 .circle-pass .circle-pass .circle-pass .circle-pass{
   border-bottom: 15px solid #91568c;
   border-left: 15px solid #91568c;
   border-right: 15px solid #91568c;
-  animation: 1.5s loader-reverse linear infinite;
+  animation: 0.75s loader-reverse linear infinite;
 }
 
 .circle-pass-img {
   height: 180%;
   position: relative;
   top: -90%;
-  animation: 1s loader linear infinite;
+  animation: 1.044s loader linear infinite;
 }
 
 
@@ -1424,7 +1432,7 @@ p.cookie.period{
   }
 
   25%,75%{
-    background-color: rgba(255, 255, 0, 0.3);
+    background-color: rgba(255, 255, 0, 0.5);
   }
 }
 

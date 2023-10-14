@@ -78,7 +78,8 @@ def socketReq(event,data,admin):
       if timeOut<=0:
         x=[event,socketReq(event,data,admin)]
     return x[1]
-  except ValueError:
+  except Exception as e:
+    print(e)
     return []
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
@@ -174,14 +175,16 @@ setDate(datetime.today())
 
 
 #fonction actualiser
-listPermDemande= []
-permOuvert = []
+listLocalisation= []
+listFoyerDemande= []
+foyerOuvert = 0
 listDemande11 = []
 listDemande12 = []
 listUsers = []
 def refresh(loop):
-  global listPermDemande
-  global permOuvert
+  global listLocalisation
+  global listFoyerDemande
+  global foyerOuvert
   global listDemande11
   global listDemande12
   global listUsers
@@ -194,13 +197,14 @@ def refresh(loop):
 
   refreshTime()
   creneauPerm = timeSlot[1]
-  if timeSlot[1]>4:
+  if creneauPerm>4:
     creneauPerm=timeSlot[1]-1
   if timeSlot[1]!=-1:
-    listPermDemande = socketReq('listDemandesPerm',{"w":week,"j":day,"h":creneauPerm},False)
-    permOuvert = socketReq('getOuvertPerm',{"w":week,"j":day,"h":creneauPerm},False)
-  if permOuvert==None:
-    permOuvert=0
+    listLocalisation = socketReq('getLocalisation',{"w":week,"j":day,"h":timeSlot[1]},True)
+    listFoyerDemande = socketReq('listDemandesPerm',{"w":week,"j":day,"h":creneauPerm},False)
+    foyerOuvert = socketReq('getOuvertPerm',{"w":week,"j":day,"h":creneauPerm},False)
+  if foyerOuvert==None:
+    foyerOuvert=0
   listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
   listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
   listUsers = socketReq('getListPass', None,True)
@@ -246,7 +250,28 @@ def refreshTime():
 
 
 def refreshPassages():
+  global listLocalisation
+  NBplacesDispo="?"
+  lieu = lieu_var_save
+  if lieu_var_save=="DOC":
+    NBplacesDispo = str(10)
+  elif lieu_var_save=="Tutorat":
+    NBplacesDispo = str(15)
+  elif lieu_var_save=="Aumônerie":
+    NBplacesDispo = str(15)
+  elif lieu_var_save=="All":
+    lieu="Champagnat"
+
+  NBplaces=0
+  for e in listLocalisation:
+    if e['lieu']==lieu:
+      NBplaces+=1
+  placePerm.set(lieu + ": " + str(NBplaces) + "/" + NBplacesDispo)
+  
+  
   global listDemande11
+  global listDemande12
+
   NBinscrit11=0
   NBscan11=0
   for child in listDemande11:
@@ -254,7 +279,6 @@ def refreshPassages():
       NBinscrit11+=1
       if child["scan"]==1:
         NBscan11+=1
-  global listDemande12
   NBinscrit12=0
   NBscan12=0
   for child in listDemande12:
@@ -379,6 +403,7 @@ def controle():
   
   canvas.itemconfig(image_container,image=imgLoading)
   global listUsers
+  user="None"
   for userE in listUsers:
     if userE["code_barre"]==number:
       user = userE
@@ -415,19 +440,19 @@ def controle():
         buttonInscrire.pack()
     else:
       #perm
-      global listPermDemande
+      global listFoyerDemande
       testAcceptPerm = False
-      for e in listPermDemande:
+      for e in listFoyerDemande:
         if e['DorI']==1 and (e['group2'] in user['groups'] or e['group2'] == user['classe']):
           testAcceptPerm=True
       
-      global permOuvert
+      global foyerOuvert
       if mode_var_save=="Foyer" and user["ban"]!=None:
         canvas.itemconfig(image_container,image=imgCroix)
         fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
         alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
         buttonPass.pack()
-      elif mode_var_save=="Foyer" and timeSlot[1]!=-1 and (permOuvert==0 or permOuvert==3) and not testAcceptPerm:
+      elif mode_var_save=="Foyer" and timeSlot[1]!=-1 and (foyerOuvert==0 or foyerOuvert==3) and not testAcceptPerm:
         canvas.itemconfig(image_container,image=imgCroix)
         alert("Non inscrit", user["first_name"] + " " + user["last_name"])
         buttonPass.pack()
@@ -441,6 +466,11 @@ def controle():
             lieu = lieu_var_save
         
         socketReq('setLocalisation',{"w":week,"j":day,"h":timeSlot[1],"lieu":lieu,"uuid":user['uuid']},True)
+        global listLocalisation
+        for i in range(len(listLocalisation)-1,-1,-1):
+          if user['uuid'] == listLocalisation[i]['uuid']:
+            del listLocalisation[i]
+        listLocalisation.append({'uuid': user['uuid'], 'lieu': lieu, 'semaine': week, 'jour': day, 'creneau': timeSlot[1]})
         refreshPassages()
         canvas.itemconfig(image_container,image=imgDico.get(lieu))
       else:
@@ -660,17 +690,17 @@ def cookie():
 buttonCookie = Button(fenetre, text='Utiliser cookie', command=cookie, font=("Arial", 15))
 
 
+placePerm = StringVar()
+labelPlacePerm = Label(fenetre, textvariable=placePerm, font=("Arial", 20))
+
 passage = StringVar()
 labelPassage = Label(fenetre, textvariable=passage, font=("Arial", 20))
-labelPassage.pack()
 
 passage11 = StringVar()
 labelPassage11 = Label(fenetre, textvariable=passage11, font=("Arial", 20))
-labelPassage11.pack()
 
 passage12 = StringVar()
 labelPassage12 = Label(fenetre, textvariable=passage12, font=("Arial", 20))
-labelPassage12.pack()
 
 son_bool = BooleanVar()
 if son_bool_save=="False":
@@ -695,7 +725,7 @@ def appel():
   canvas.itemconfig(image_container,image=imgLoading)
   buttonAppel.pack_forget()
 
-  if timeSlot[0]=="Perm":
+  if timeSlot[1]!=-1:
     text.set("...")
     def lireCode():
       time.sleep(3)
@@ -708,7 +738,7 @@ def appel():
               time.sleep(0.1)
               def lireCode2(user):
                 text.set(user["code_barre"])
-                print(user["code_barre"],user["first_name"],user["uuid"])
+                print(">>>",user["code_barre"],user["last_name"],user["first_name"],)
                 for l in user["code_barre"]:
                   keyboard.press(Key.shift)
                   keyboard.release(Key.shift)
@@ -729,6 +759,7 @@ def appel():
 buttonAppel = Button(fenetre, text="Faire l'appel", command=appel, font=("Arial", 15))
 
 def refreshOptions():
+  refreshPassages()
   canvas.itemconfig(image_container,image=imgUnknown)
   buttonInscrire.pack_forget()
   buttonPass.pack_forget()
@@ -751,8 +782,10 @@ def refreshOptions():
 
   if mode_var.get()=="Perm" or mode_var.get()=="Appel":
     listeCombo.pack()
+    labelPlacePerm.pack()
   else:
     listeCombo.pack_forget()
+    labelPlacePerm.pack_forget()
   
   if mode_var.get()=="Appel":
     buttonAppel.pack()
@@ -787,7 +820,7 @@ filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool, 
 menubar.add_cascade(label="File", menu=filemenu)
 modemenu = Menu(menubar, tearoff=0)
 modemenu.add_checkbutton(label="Foyer", onvalue="Foyer", variable=mode_var, command=refreshOptions)
-modemenu.add_checkbutton(label="Perm", onvalue="Perm", variable=mode_var, command=refreshOptions)
+modemenu.add_checkbutton(label="Perm Scan", onvalue="Perm", variable=mode_var, command=refreshOptions)
 modemenu.add_checkbutton(label="Appel", onvalue="Appel", variable=mode_var, command=refreshOptions)
 menubar.add_cascade(label="Mode", menu=modemenu)
 

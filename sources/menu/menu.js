@@ -50,6 +50,17 @@ export async function init(common){
             const sondage = listSondage[i]
             let note = await common.socketAsync("getSondageMenu",{w:week,j:i})
             listNote[i]=note
+            if((common.generedDate(week,i).getTime() > Date.now() && i!=0)
+                || common.generedDate(week,1).getTime() > Date.now() && i==0){
+                for (const elem of sondage){
+                    elem.classList.add("opacity");
+                }
+            }else{
+                for (const elem of sondage){
+                    elem.classList.remove("opacity");
+                }
+            }
+
             if(note==-1){
                 for (const elem of sondage){
                     elem.classList.remove("grayscale");
@@ -79,19 +90,21 @@ export async function init(common){
                 const index = i
                 listElem.push(elem)
                 elem.addEventListener("click",async function(){
-                    if (listNote[menu] == null || listNote[menu] != index){
-                        for (const elem of listSondage[menu]){
-                            elem.classList.add("grayscale");
-                        }
-                        elem.classList.remove("grayscale");
-                        listNote[menu]=index
-                    }else{
-                        for (const elem of listSondage[menu]){
+                    if(!listSondage[menu][0].classList.contains("opacity")){
+                        if (listNote[menu] == null || listNote[menu] != index){
+                            for (const elem of listSondage[menu]){
+                                elem.classList.add("grayscale");
+                            }
                             elem.classList.remove("grayscale");
+                            listNote[menu]=index
+                        }else{
+                            for (const elem of listSondage[menu]){
+                                elem.classList.remove("grayscale");
+                            }
+                            listNote[menu]=-1
                         }
-                        listNote[menu]=-1
+                        await common.socketAsync("setSondageMenu",{w:week,j:menu,note:listNote[menu]})
                     }
-                    await common.socketAsync("setSondageMenu",{w:week,j:menu,note:listNote[menu]})
                 })
             }
             listSondage.push(listElem)
