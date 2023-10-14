@@ -138,15 +138,20 @@ export async function init(common){
         const horaires = [[7,50],[8,44],[9,43],[10,55],[11,54],[13,9],[14,8],[15,7],[16,19],[17,18]]
         let i = 0
         h = -1
-        while(i<horaires.length-1 && h==-1){
-            if((d.getHours() == horaires[i][0] && d.getMinutes() >= horaires[i][1])
-            || (d.getHours() == horaires[i+1][0] && d.getMinutes() < horaires[i+1][1])){
-                h = i;
-            }else if(d.getHours() == 12){
-                h = 4
+        if(creneau == 0){
+            while(i<horaires.length-1 && h==-1){
+                if((d.getHours() == horaires[i][0] && d.getMinutes() >= horaires[i][1])
+                || (d.getHours() == horaires[i+1][0] && d.getMinutes() < horaires[i+1][1])){
+                    h = i;
+                }else if(d.getHours() == 12){
+                    h = 4
+                }
+                i++
             }
-            i++
+        }else{
+            h = creneau - 1
         }
+
         if(h!=-1){
             document.getElementById("heure").innerHTML = (String(horaires[h][0]).length == 1?"0":"") + horaires[h][0] + ":" + 
             (String(horaires[h][1]).length == 1?"0":"") + horaires[h][1] + " à " + 
@@ -154,6 +159,20 @@ export async function init(common){
             (String(horaires[h+1][1]).length == 1?"0":"") + horaires[h+1][1]
         }
     }
+
+    
+    let selectCreneau = document.getElementById("selectCreneau")
+    const listCreneau = ["auto","8h","9h","10h","11h","12h","13h","14h","15h","16h"]
+    for(let i in listCreneau){
+        let opt = document.createElement("option")
+        opt.innerHTML = listCreneau[i]
+        selectCreneau.appendChild(opt);
+    }
+    let creneau = 0;
+    selectCreneau.addEventListener("change", async function() {
+        creneau = this.selectedIndex
+        actualisation()
+    });
 
     let listScan=[];
 
@@ -230,17 +249,20 @@ export async function init(common){
         })
     }
 
-
+    async function actualisation(){
+        getHour()
+        if(h!=-1) {
+            listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
+        }else{
+            listScan = [];
+        }
+        actualisationList()
+        setTimeout(loop,15000);
+    }    
 
     async function loop(){
         if(window.location.pathname=="/admin/localisation"){
-            getHour()
-            if(h!=-1) {
-                listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
-            }else{
-                listScan = [];
-            }
-            actualisationList()
+            actualisation()
             setTimeout(loop,15000);
         }
     }
