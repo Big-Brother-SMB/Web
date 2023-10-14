@@ -335,7 +335,7 @@ export class common{
 
     if(!this.tuto){
       this.popUp_Active("(1/5) Bienvenue sur le site du Foyer !"
-        ,"<div class='divImgPopup'><img src='/Images/amis.png'><img src='/Images/reservation.png'></div><br>"
+        ,"<div class='divImgPopup'><img src='/assets/nav_bar/amis.png'><img src='/assets/nav_bar/midi.png'></div><br>"
         +"Ce site permet aux éléves du lycée SMB de <b>manger au Foyer du lycée avec leurs amis</b> en déposant une demande.<br>"
         +"Cette demande sera étudiée par <b>un algorithme qui a pour objectif</b>:<br><br>"
         +"1)De pouvoir manger avec ses amis.<br>"
@@ -347,22 +347,22 @@ export class common{
         ,(btn)=>{
           btn.addEventListener("click",()=>{
             this.popUp_Active("(2/5) Bienvenue sur le site du Foyer !"
-              ,"<div class='divImgPopup'><img src='/Images/discussion.png'><img src='/Images/jeux-de-societe.png'><img src='/Images/arcade.png'></div><br>"
+              ,"<div class='divImgPopup'><img src='/assets/nav_bar/perm.png'><img src='/assets/nav_bar/emprunt.png'><img src='/assets/nav_bar/arcade.png'></div><br>"
               +"Ce site permet aussi de passer <b>des heures de permanence au Foyer</b>, en déposant une demande <b>pour sa classe</b>."
               ,(btn)=>{
                 btn.addEventListener("click",()=>{
                   this.popUp_Active("(3/5) Bienvenue sur le site du Foyer !"
-                    ,"<div class='divImgPopup'><img src='/Images/video.png'></div><br>"
+                    ,"<div class='divImgPopup'><img src='/assets/nav_bar/tuto.png'></div><br>"
                     +'Pour plus d\'informations,  consultez l\'onglet <b>"Aide"</b>'
                     ,(btn)=>{
                       btn.addEventListener("click",()=>{
                         this.popUp_Active("(4/5) Bienvenue sur le site du Foyer !"
-                          ,"<div class='divImgPopup'><img src='/Images/association.png'></div><br>"
+                          ,"<div class='divImgPopup'><img src='/assets/nav_bar/association.png'></div><br>"
                           +'Le site permet aux <b>associations et aux projets lycéens</b> de pouvoir avoir une page de présentation.<br>Ces pages sont consultables dans <b>l\'onglet "Projets&Asso"</b>.'
                           ,(btn)=>{
                             btn.addEventListener("click",()=>{
                               this.popUp_Active("(5/5) Bienvenue sur le site du Foyer !"
-                                ,"<div class='divImgPopup'><img src='/Images/messagerie.png'><img src='/Images/reglages.png'></div><br>"
+                                ,"<div class='divImgPopup'><img src='/assets/nav_bar/messagerie.png'><img src='/assets/nav_bar/admin.png'></div><br>"
                                 +"<b>Si tu as envie de faire partie de l'équipe de développement du site du Foyer, contacte nous!</b><br><br>"
                                 +"Si tu rencontres un problème avec le site, contacte :<br>"
                                 +"Jean-Charles au Foyer ou nathan.denut@stemariebeaucamps.fr"

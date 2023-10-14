@@ -29,18 +29,18 @@ export async function init(common){
     try{
         if(info_horaire.ouvert!=5){
             if(my_demande.DorI==true){
-                document.getElementById("circle-pass-img").setAttribute("src","/Images/jaccepte.png")
+                document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/ok.png")
                 if(info_horaire.prio.indexOf(common.classe)!=-1){
-                    document.getElementById("circle-pass-img").setAttribute("src","/Images/priorite.png")
+                    document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/prio.png")
                 }
                 common.groups.forEach(e=>{
                     if(info_horaire.prio.indexOf(e)!=-1){
-                        document.getElementById("circle-pass-img").setAttribute("src","/Images/priorite.png")
+                        document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/prio.png")
                     }
                 })
             }else{
                 document.getElementById('prio').classList.add("cache");
-                document.getElementById("circle-pass-img").setAttribute("src","/Images/erreur.png")
+                document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/croix.png")
                 if(info_horaire.prio.indexOf(common.classe)!=-1){
                     document.getElementById('prio').classList.remove("cache");
                 }
@@ -51,7 +51,7 @@ export async function init(common){
                 })
             }
         }else{
-            document.getElementById("circle-pass-img").setAttribute("src","/Images/erreur.png")
+            document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/croix.png")
         }
 
         if(my_demande.sandwich!=0 && my_demande.sandwich!=null && my_demande.sandwich!=undefined){

@@ -117,13 +117,13 @@ input[type="checkbox"] {
 
 @media screen and (max-width: 1000px) {
   body {
-    background-image: url("Images/Portrait.jpg");
+    background-image: url("/assets/index/portrait.jpg");
     background-size: 150%;
   }
 }
 @media screen and (min-width: 1000px) and (max-width: 1400px){
   body {
-    background-image: url("Images/Paysage.jpg");
+    background-image: url("/assets/index/paysage.jpg");
     background-size: 170%;
   }
 }
@@ -159,7 +159,7 @@ input[type="checkbox"] {
     background-size: cover;
     background-position-x: center;
     background-position-y: center;
-    background-image: url("Images/Portrait.jpg");
+    background-image: url("/assets/index/portrait.jpg");
   }
   #img_section,#main_section{
     height: 100%;

@@ -37,12 +37,12 @@ export async function init(common){
             {
                 let div= document.createElement("div")
                 let imgProc= document.createElement("img")
-                imgProc.src="/Images/document.png"
+                imgProc.src="/assets/action/procuration.png"
                 imgProc.className="imgProcuration"
                 div.append(imgProc)
                 div.innerHTML+='<br>'
                 let imgReci= document.createElement("img")
-                imgReci.src="/Images/le-respect.png"
+                imgReci.src="/assets/action/reciproque.png"
                 imgReci.className="imgReciproque"
                 div.append(imgReci)
                 ami.append(div)
@@ -70,7 +70,7 @@ export async function init(common){
             let amiProc = document.createElement("button")
             amiProc.classList.add("ami")
             amiProc.classList.add("amiProc")
-            amiProc.innerHTML="<img src='/Images/document.png'></img>"
+            amiProc.innerHTML="<img src='/assets/action/procuration.png'></img>"
 
             amiProc.addEventListener("click", async function() {
                 child.IgiveProc=!child.IgiveProc

@@ -112,7 +112,7 @@ list_id_data.forEach(id_data=>{
     let img = document.createElement('img')
     img.classList.add("account_img")
     if(id_data.picture==null || id_data.picture==""){
-      img.setAttribute("src","https://lh3.googleusercontent.com/a/default-user=s96-c")//"/Images/account.png")
+      img.setAttribute("src","https://lh3.googleusercontent.com/a/default-user=s96-c")
     }else{
       img.setAttribute("src",id_data.picture)
     }
@@ -125,7 +125,7 @@ list_id_data.forEach(id_data=>{
 
     let supp = document.createElement('img')
     supp.classList.add('account_img_supp')
-    supp.setAttribute("src","/Images/erreur.png")
+    supp.setAttribute("src","/assets/index/remove.png")
     supp.addEventListener('click',()=>{
       const index = list_id_data.indexOf(id_data)
       list_id_data.splice(index,1)

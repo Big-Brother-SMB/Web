@@ -70,7 +70,7 @@ export async function init(common){
             searchName(name,scan)
             return;
         }else{
-            document.getElementById("pass-img").setAttribute("src","/Images/innexistant.jpg")
+            document.getElementById("pass-img").setAttribute("src","/assets/pass/innexistant.jpg")
         }
     }
 
@@ -188,24 +188,24 @@ export async function init(common){
                     scanB.classList.remove("cache");
                     inscB.classList.add("cache");
                 }
-                document.getElementById("pass-img").setAttribute("src","/Images/jaccepte.png")
+                document.getElementById("pass-img").setAttribute("src","/assets/pass/ok.png")
                 if(info_horaire.prio.indexOf(classe)!=-1){
-                    document.getElementById("pass-img").setAttribute("src","/Images/priorite.png")
+                    document.getElementById("pass-img").setAttribute("src","/assets/pass/prio.png")
                 }
                 user.groups.forEach(function(child) {
                     if(info_horaire.prio.indexOf(child)!=-1){
-                        document.getElementById("pass-img").setAttribute("src","/Images/priorite.png")
+                        document.getElementById("pass-img").setAttribute("src","/assets/pass/prio.png")
                     }
                 })
             }else{
                 let test=true
                 if(info_horaire.prio.indexOf(classe)!=-1){
-                    document.getElementById("pass-img").setAttribute("src","/Images/prioSelf.png")
+                    document.getElementById("pass-img").setAttribute("src","/assets/pass/prioSelf.png")
                     test=false
                 }
                 user.groups.forEach(function(child) {
                     if(info_horaire.prio.indexOf(child)!=-1){
-                        document.getElementById("pass-img").setAttribute("src","/Images/prioSelf.png")
+                        document.getElementById("pass-img").setAttribute("src","/assets/pass/prioSelf.png")
                         test=false
                     }
                 })
@@ -226,15 +226,15 @@ export async function init(common){
                     scanB.classList.remove("cache")
                     inscB.classList.add("cache")
                     if(h2==0){
-                        document.getElementById("pass-img").setAttribute("src","/Images/ok11.png")
+                        document.getElementById("pass-img").setAttribute("src","/assets/pass/ok11.png")
                     }else{
-                        document.getElementById("pass-img").setAttribute("src","/Images/ok12.png")
+                        document.getElementById("pass-img").setAttribute("src","/assets/pass/ok12.png")
                     }
                 }else{
                     scanB.classList.add("cache")
                     inscB.classList.remove("cache")
                     if(test){
-                        document.getElementById("pass-img").setAttribute("src","/Images/erreur.png")
+                        document.getElementById("pass-img").setAttribute("src","/assets/pass/croix.png")
                     }
                 }
             }
@@ -278,7 +278,7 @@ export async function init(common){
         }
         await common.socketAdminAsync('setDorI',[common.actualWeek,j,h,inputNameId,true])
         await common.socketAdminAsync('scan',[common.actualWeek,j,h,inputNameId,true])
-        document.getElementById("pass-img").setAttribute("src","/Images/jaccepte.png")
+        document.getElementById("pass-img").setAttribute("src","/assets/pass/ok.png")
         affichagePassages()
         console.log('pass test')
     })

@@ -12,6 +12,7 @@ import time
 from math import *
 from zipfile import ZipFile
 import requests
+import traceback
 
 
 
@@ -71,7 +72,7 @@ def socketReq(event,data,admin):
     while x==None:
       time.sleep(0.1)
       for i in range(len(msg)):
-        if event==msg[i][0]:
+        if i<len(msg) and event==msg[i][0]:
           x=msg[i]
           del msg[i]
       timeOut-=1
@@ -79,7 +80,7 @@ def socketReq(event,data,admin):
         x=[event,socketReq(event,data,admin)]
     return x[1]
   except Exception as e:
-    print(e)
+    traceback.print_exc()
     return []
 
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
