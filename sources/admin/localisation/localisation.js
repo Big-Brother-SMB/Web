@@ -161,10 +161,12 @@ export async function init(common){
 
     function actualisationList(){
         table.innerHTML=''
+        let NBinscrits = 0
         listUsers.forEach(user=>{
             for(let i=0;i<listScan.length;i++){
                 const scan=listScan[i]
                 if(user.uuid==scan.uuid && scan.lieu==lieu && scan.semaine==common.actualWeek && scan.jour==j && scan.creneau==h){
+                    NBinscrits++
                     let ligne = document.createElement("tr")
                     
                     let nom = document.createElement("td")
@@ -188,6 +190,17 @@ export async function init(common){
                 }
             }
         })
+
+        let NBplaces = 0
+        if(lieu=="DOC"){
+            NBplaces=10
+        }else if(lieu=="Tutorat"){
+            NBplaces=15
+        }else if(lieu=="Aumônerie"){
+            NBplaces=15
+        }
+        if(NBplaces == 0) NBplaces="?" 
+        document.getElementById("lieu").innerHTML = "Lieu: " + lieu + "(" + NBinscrits + "/" + NBplaces + ")"
     }
     
 
@@ -213,7 +226,6 @@ export async function init(common){
                 }
                 lieu = null;
             }
-            document.getElementById("lieu").innerHTML = "Lieu: " + lieu
             actualisationList()
         })
     }

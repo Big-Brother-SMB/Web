@@ -998,7 +998,7 @@ h2{
   border-bottom: 4px solid #416a8a;
   border-left: 4px solid #416a8a;
   border-right: 4px solid #416a8a;
-  animation: 2s loader-reverse linear infinite;
+  animation: 1s loader-reverse linear infinite;
   transform-origin: 50% 0%;
 }
 
@@ -1010,7 +1010,7 @@ h2{
   border-bottom: 2px solid #7c2a6c;
   border-left: 2px solid #7c2a6c;
   border-right: 2px solid #7c2a6c;
-  animation: 1s loader linear infinite;
+  animation: 0.5s loader linear infinite;
   transform-origin: 50% 0%;
 }
 
@@ -1022,7 +1022,7 @@ h2{
   border-bottom: 5px solid #56916c;
   border-left: 5px solid #56916c;
   border-right: 5px solid #56916c;
-  animation: 1.5s loader-reverse linear infinite;
+  animation: 0.4s loader-reverse linear infinite;
   transform-origin: 50% 0%;
 }
 
