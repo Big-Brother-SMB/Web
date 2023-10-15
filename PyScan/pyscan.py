@@ -571,7 +571,7 @@ class App(threading.Thread):
 #init fenetre
 fenetre = Tk()
 fenetre.geometry("450x700+0+0")
-fenetre.title("Scanner")
+fenetre.title("PyScan")
 fenetre.iconphoto(True, PhotoImage(file='image/logo.png'))
 def on_closing():
   print(">>> Exit")
