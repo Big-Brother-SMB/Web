@@ -728,6 +728,9 @@ def appel():
 
   if timeSlot[1]!=-1:
     text.set("...")
+    name.set("")
+    info.set("")
+
     def lireCode():
       time.sleep(3)
       liste_d_appel = socketReq('getLocalisation',{"w":week,"j":day,"h":timeSlot[1]},True)
@@ -736,9 +739,10 @@ def appel():
         for enregistrement in liste_d_appel:
           if user["uuid"]==enregistrement["uuid"]:
             if user["code_barre"] != None and (enregistrement["lieu"]==lieu_var_save or "All"==lieu_var_save):
-              time.sleep(0.1)
               def lireCode2(user):
                 text.set(user["code_barre"])
+                name.set(user["first_name"] + " " + user["last_name"])
+                info.set("classe : " + user["classe"])
                 print(">>>",user["code_barre"],user["last_name"],user["first_name"],)
                 for l in user["code_barre"]:
                   keyboard.press(Key.shift)
@@ -748,13 +752,16 @@ def appel():
                 keyboard.press(Key.enter)
                 keyboard.release(Key.enter)
               threading.Thread(target=lireCode2,args=(user,)).start()
-      refresh(False)
+              time.sleep(0.1)
       canvas.itemconfig(image_container,image=imgOk)
       text.set("Terminée")
+      name.set("")
+      info.set("")
       buttonAppel.pack()
     threading.Thread(target=lireCode).start()
   else:
     canvas.itemconfig(image_container,image=imgCroix)
+    buttonAppel.pack()
 
 
 buttonAppel = Button(fenetre, text="Faire l'appel", command=appel, font=("Arial", 15))
