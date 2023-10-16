@@ -1297,14 +1297,14 @@ p.cookie.period{
   border-bottom: 15px solid #91568c;
   border-left: 15px solid #91568c;
   border-right: 15px solid #91568c;
-  animation: 0.75s loader-reverse linear infinite;
+  animation: 1s loader-reverse linear infinite;
 }
 
 .circle-pass-img {
   height: 180%;
   position: relative;
   top: -90%;
-  animation: 1.044s loader linear infinite;
+  animation: 1.6s loader linear infinite;
 }
 
 

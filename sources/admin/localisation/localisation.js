@@ -157,6 +157,8 @@ export async function init(common){
             (String(horaires[h][1]).length == 1?"0":"") + horaires[h][1] + " à " + 
             (String(horaires[h+1][0]).length == 1?"0":"") + horaires[h+1][0] + ":" + 
             (String(horaires[h+1][1]).length == 1?"0":"") + horaires[h+1][1]
+        }else{
+            document.getElementById("heure").innerHTML = "???"
         }
     }
 

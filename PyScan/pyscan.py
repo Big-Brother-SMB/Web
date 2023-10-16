@@ -602,7 +602,7 @@ textH = StringVar()
 labelH = Label(fenetre, textvariable=textH, font=("Arial", 15))
 labelH.pack()
 
-listCreneau=["Créneau Automatique","8h","9h","10h","11h","12h","13h","14h","15h","16h"]
+listCreneau=["Créneau Automatique","8h","9h","10h","11h","12h","13h","14h","15h","16h","Hors Créneau"]
 creneauCombo = ttk.Combobox(fenetre, values=listCreneau, state="readonly")
 def actionComboboxSelectedCreneau(event):
   global modeSelectTimeSlot
@@ -726,10 +726,10 @@ def appel():
   canvas.itemconfig(image_container,image=imgLoading)
   buttonAppel.pack_forget()
 
+  name.set("")
+  info.set("")
   if timeSlot[1]!=-1:
     text.set("...")
-    name.set("")
-    info.set("")
 
     def lireCode():
       time.sleep(3)
@@ -762,6 +762,7 @@ def appel():
   else:
     canvas.itemconfig(image_container,image=imgCroix)
     buttonAppel.pack()
+    text.set("Hors Créneau")
 
 
 buttonAppel = Button(fenetre, text="Faire l'appel", command=appel, font=("Arial", 15))
