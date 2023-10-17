@@ -259,7 +259,6 @@ export async function init(common){
             listScan = [];
         }
         actualisationList()
-        setTimeout(loop,15000);
     }    
 
     async function loop(){
