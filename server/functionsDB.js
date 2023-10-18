@@ -23,7 +23,6 @@ module.exports = class funcDB{
       tab.push([e,3])
     })
     this.setClasse(tab)*/
-    //this.setGroup(['Club info','Matches Heads'])
   }
 
   //var
