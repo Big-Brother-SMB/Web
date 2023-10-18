@@ -22,8 +22,8 @@ module.exports = class funcDB{
     t3.forEach(e=>{
       tab.push([e,3])
     })
-    this.setClasse(tab)
-    this.setGroup(['Club info','Matches Heads'])*/
+    this.setClasse(tab)*/
+    //this.setGroup(['Club info','Matches Heads'])
   }
 
   //var

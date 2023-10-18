@@ -49,8 +49,10 @@ export async function init(common){
         for (let i=0;i<listSondage.length;i++){
             const sondage = listSondage[i]
             let note = await common.socketAsync("getSondageMenu",{w:week,j:i})
+            let j = i
+            if(j>2)j++
             listNote[i]=note
-            if((common.generedDate(week,i).getTime() > Date.now() && i!=0)
+            if((common.generedDate(week,j).getTime() > Date.now() && i!=0)
                 || common.generedDate(week,1).getTime() > Date.now() && i==0){
                 for (const elem of sondage){
                     elem.classList.add("opacity");

@@ -220,7 +220,6 @@ export async function init(common){
         }else if(lieu=="Aumônerie"){
             NBplaces=15
         }
-        if(NBplaces == 0) NBplaces="?" 
         document.getElementById("lieu").innerHTML = "Lieu: " + lieu + "(" + NBinscrits + "/" + NBplaces + ")"
     }
     

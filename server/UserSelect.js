@@ -13,7 +13,7 @@ module.exports = class UserSelect{
     static usersList = []
     static enCour = false
   
-    constructor(uuid,score,prio,amis,date,pass){
+    constructor(uuid,score,prio,amis,date,pass,vip){
         this.uuid = uuid
         this.score = score
         this.prio = prio
@@ -23,6 +23,7 @@ module.exports = class UserSelect{
 
         //-1=refuser ; 0=defaut ; 1=inscrit
         this.pass = pass
+        this.vip = vip
     }
   
     static async algoDeSelection(semaine,creneau){
@@ -52,9 +53,13 @@ module.exports = class UserSelect{
           if(info.prio.indexOf(await user.classe)!=-1){
             prio = true
           }
+          let vip=false;
           (await user.groups).forEach(function(child) {
             if(info.prio.indexOf(child)!=-1){
               prio=true
+            }
+            if(["VIP","Club info"].indexOf(child)!=-1){
+              vip=true
             }
           })
           let amis = listDemandes[i].amis
@@ -62,7 +67,7 @@ module.exports = class UserSelect{
           if(listDemandes[i].DorI==1){
             pass=1
           }
-          this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date,pass))
+          this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date,pass,vip))
         }
     
         //détermine datetoday
@@ -95,6 +100,13 @@ module.exports = class UserSelect{
     
         //trie les utilisateurs par ordre décroissant par rapport au score 
         this.usersList.sort(function compareFn(a, b) {
+          if(a.vip != b.vip){
+            if(a.vip){
+              return -1
+            }else{
+              return 1
+            }
+          }
           if(a.score < b.score){
               return 1
           }else if(a.score > b.score){
@@ -124,8 +136,6 @@ module.exports = class UserSelect{
           let nbAmisPrio=0
           let nbAmis=0
           for(let a in this.usersList[u].amis){
-            //let ami = UserSelect.searchAmi(a)
-            //if(ami!=null && ami.prio){
             if(UserSelect.searchAmi(this.usersList[u].amis[a]).prio){
               nbAmisPrio++
             }
@@ -251,7 +261,7 @@ module.exports = class UserSelect{
                   }
                 })
                 
-                if(testScore && nbAmisNonInscrit+inscrits<=places){
+                if((testScore || this.usersList[i].vip) && nbAmisNonInscrit+inscrits<=places){
                   //inscrit l'utilisateur et les amis
                   inscrits += nbAmisNonInscrit
                   this.usersList[i].pass=1

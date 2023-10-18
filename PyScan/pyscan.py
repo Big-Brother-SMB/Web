@@ -223,9 +223,9 @@ def refreshTime():
       h = ("Perm",0,-1)
     case num if (parseTime(8,44) <= num <  parseTime(9,43) and modeSelectTimeSlot==0) or modeSelectTimeSlot==2:
       h = ("Perm",1,-1)
-    case num if (parseTime(10,1) <= num <  parseTime(10,55) and modeSelectTimeSlot==0) or modeSelectTimeSlot==3:
+    case num if (parseTime(10,1) <= num <  parseTime(10,45) and modeSelectTimeSlot==0) or modeSelectTimeSlot==3:
       h = ("Perm",2,-1)
-    case num if (parseTime(10,55) <= num <  parseTime(11,54) and modeSelectTimeSlot==0) or modeSelectTimeSlot==4:
+    case num if (parseTime(10,45) <= num <  parseTime(11,54) and modeSelectTimeSlot==0) or modeSelectTimeSlot==4:
       if day==2:
         h = ("Perm",3,0)
       else:
@@ -252,7 +252,7 @@ def refreshTime():
 
 def refreshPassages():
   global listLocalisation
-  NBplacesDispo="?"
+  NBplacesDispo="0"
   lieu = lieu_var_save
   if lieu_var_save=="DOC":
     NBplacesDispo = str(10)
