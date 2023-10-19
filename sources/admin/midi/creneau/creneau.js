@@ -38,7 +38,7 @@ export async function init(common){
     let prio_mode = 0
     let nbSandwich = 0
     let nbSandwich_vege = 0
-    let mode_sandwich = 0
+    let mode_sandwich = 1
     let bonus_avance = 1.1
     let algo_auto = 0
     let message = ""
@@ -145,7 +145,7 @@ export async function init(common){
         message = info.msg
     }
 
-    if(info.list_prio != null){
+    if(info.prio != null){
         list_prio = info.prio
     }
 
