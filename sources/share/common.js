@@ -114,7 +114,7 @@ export class common{
           }
         }
       }
-      funcPosts()
+      if(this.readCookie("key")!=null) funcPosts()
       
 
       //-------------------listener-------------------------
