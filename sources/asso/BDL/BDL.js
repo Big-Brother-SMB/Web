@@ -1,4 +1,4 @@
-const group_name = "Club info"
+const group_name = "BDL"
 export async function init(common){
     let list_post = await common.socketAsync("getPost","");
 

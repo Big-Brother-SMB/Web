@@ -87,11 +87,34 @@ export class common{
         }
       }
 
-      let list_nav_btn = document.getElementsByClassName('nav_btn')
+      const list_nav_btn = document.getElementsByClassName('nav_btn')
+      //----------------------------notif----------------------------------
+      let list_post = await common.socketAsync("getPost","");
+      let posts = {}
+      list_post.forEach(element => {
+        if(!element.lu){
+          if(posts[element.group2]==undefined){
+            posts[element.group2]=1
+          }else{
+            posts[element.group2]++
+          }
+          if(posts['asso']==undefined){
+            posts['asso']=1
+          }else{
+            posts['asso']++
+          }
+        }
+      });
+
+      //-------------------listener-------------------------
       for (var i = 0; i < list_nav_btn.length; i++) {
         const index = i;
+        if(posts[list_nav_btn[i].getAttribute('group')]!=undefined){
+          list_nav_btn[i].classList.add('notif')
+          list_nav_btn[i].getElementsByClassName("badge")[0].innerHTML=posts[list_nav_btn[i].getAttribute('group')]
+        }
         list_nav_btn[i].addEventListener('click', async ()=>{
-          let url = document.getElementsByClassName('nav_btn')[index].attributes.url.value
+          let url = list_nav_btn[index].attributes.url.value
           if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){
             document.getElementById("mySidenav").classList.remove("open");
             document.body.classList.remove("stop");
@@ -224,21 +247,8 @@ export class common{
           document.body.classList.remove("stop");
         }
       });
-
-
-      let list_nav_btn = document.getElementsByClassName('nav_btn')
-
-      for (var i = 0; i < list_nav_btn.length; i++) {
-        const index = i;
-        list_nav_btn[i].addEventListener('click', async ()=>{
-          let url = document.getElementsByClassName('nav_btn')[index].attributes.url.value
-          if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){
-            side.classList.remove("open");
-            document.body.classList.remove("stop");
-          }
-          this.loadpage(url)
-        });
-      }
+      
+      this.loadpage("sidebar:" + document.location.pathname.split("/")[1])
     }
 
     //-------------------------------------retour--------------------------------------
@@ -381,13 +391,6 @@ export class common{
           },{once:true})
       })
     }
-
-    //---------------------------listes---------------------------
-
-    /*const listClasse = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"
-    ,"1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"
-    ,"TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"
-    ,"PCSI","PC","professeur-personnel"]*/
 
     //--------------------------banderole--------------------------------
 
@@ -749,11 +752,15 @@ export class common{
 
   //---------------------------------pop-up-----------------------------------------
   static popUp_Active(titre,body,action){
-    document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'
+    document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'+'<a id="popup-close-button">&#x274C;</a>'
     document.getElementById("popup-body").innerHTML = body
     document.getElementById("popup-option").innerHTML="<button id='popup_btn'>OK</button>"
     document.getElementById("popup").classList.add('active')
     document.getElementById("overlay").classList.add('active')
+
+    document.getElementById("popup-close-button").addEventListener("click",() => {
+      common.popUp_Stop()
+    });
     action(document.getElementById("popup_btn"))
   }
 

@@ -463,6 +463,88 @@ module.exports = class funcDB{
     })
   }
 
+  //post
+
+  static setPost(id,from,group,title,text,date){
+    db.get("SELECT * FROM post where id=?",[id], (err, data) => {
+      if(data==undefined){
+        db.run("INSERT INTO post(id,from2,group2,title,text,date) VALUES (?,?,?,?,?,?)",[id,from,group,title,text,date])
+      } else{
+        db.run("UPDATE news SET from2=?,group2=?,title=?,text=?,date=? WHERE id=?",[from,group,title,text,date,id])
+      }
+    })
+  }
+
+  static getPostWithAllLu(id){
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM post WHERE id=?",[id],async (err, data) => {
+        try {
+          if(data!=undefined){
+            let r = await new Promise(async function(resolve2, reject2) {
+              db.all("SELECT * FROM post_lu WHERE id=?",[id], async (err, data2) => {
+                resolve2(data2)
+              })
+            })
+            if(r!=undefined){
+              data.lu=[]
+              r.forEach(e=>{
+                data.lu.push(e.user)
+              })
+            }else{
+              data.lu=[]
+            }
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('7-a11');;resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  static getPost(user){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM post",async (err, data) => {
+        try {
+          if(data!=undefined){
+            for(let i=0;i<data.length;i++){
+              let r = await new Promise(async function(resolve2, reject2) {
+                db.all("SELECT * FROM post_lu WHERE id=?",[data[i].id], async (err, data2) => {
+                  resolve2(data2)
+                })
+              })
+              data[i].lu=false
+              if(r!=undefined){
+                r.forEach(e=>{
+                  if(e.user==user){
+                    data[i].lu=true
+                  }
+                })
+              }
+            }
+            resolve(data)
+          }else{
+            resolve([])
+          }
+        }catch(e){console.error(e);console.log('8-a11');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  static postLu(id,user){
+    db.get("SELECT * FROM post_lu where id=? and user=?",[id,user], (err, data) => {
+      if(data==undefined){
+        db.run("INSERT INTO post_lu(id,user) VALUES (?,?)",[id,user])
+      }
+    })
+  }
+
+  static delPost(id){
+    db.run("delete from post WHERE id=?",[id])
+    db.run("delete from post_lu WHERE id=?",[id])
+  }
 
 
 
@@ -570,13 +652,13 @@ module.exports = class funcDB{
 
   //% messages / news / sondages
 
-  static addSondage(from,texte,title,date,mode,choix){
+  static addSondage(from,text,title,date,mode,choix){
     let id=uuidG.v4()
-    db.run("INSERT INTO sondages(id,from2,texte,title,date,mode,choix) VALUES (?,?,?,?,?,?,?)",[id,from,texte,title,date,mode,choix])
+    db.run("INSERT INTO sondages(id,from2,text,title,date,mode,choix) VALUES (?,?,?,?,?,?,?)",[id,from,text,title,date,mode,choix])
     return id
   }
-  static setSondage(id,from,texte,title,date,mode,choix){
-    db.run("UPDATE sondages SET from2=?,texte=?,title=?,date=?,mode=?,choix=? WHERE id=?",[from,texte,title,date,mode,choix,id])
+  static setSondage(id,from,text,title,date,mode,choix){
+    db.run("UPDATE sondages SET from2=?,text=?,title=?,date=?,mode=?,choix=? WHERE id=?",[from,text,title,date,mode,choix,id])
   }
   static getSondage(id){
     return new Promise(function(resolve, reject) {
@@ -615,13 +697,13 @@ module.exports = class funcDB{
 
 
 
-  static addNews(from,texte,title,date){
+  static addNews(from,text,title,date){
     let id=uuidG.v4()
-    db.run("INSERT INTO news(id,from2,texte,title,date) VALUES (?,?,?,?,?)",[id,from,texte,title,date])
+    db.run("INSERT INTO news(id,from2,text,title,date) VALUES (?,?,?,?,?)",[id,from,text,title,date])
     return id
   }
-  static setNews(id,from,texte,title,date){
-    db.run("UPDATE news SET from2=?,texte=?,title=?,date=? WHERE id=?",[from,texte,title,date,id])
+  static setNews(id,from,text,title,date){
+    db.run("UPDATE news SET from2=?,text=?,title=?,date=? WHERE id=?",[from,text,title,date,id])
   }
   static getNews(id){
     return new Promise(function(resolve, reject) {
@@ -652,13 +734,13 @@ module.exports = class funcDB{
     db.run("delete from news_lu WHERE id=?",[id])
   }
 
-  static addMessage(from,to,lu,texte,title,date){
+  static addMessage(from,to,lu,text,title,date){
     let id=uuidG.v4()
-    db.run("INSERT INTO messages(id,from2,to2,lu,texte,title,date) VALUES (?,?,?,?,?,?,?)",[id,from,to,lu,texte,title,date])
+    db.run("INSERT INTO messages(id,from2,to2,lu,text,title,date) VALUES (?,?,?,?,?,?,?)",[id,from,to,lu,text,title,date])
     return id
   }
-  static setMessage(id,from,to,lu,texte,title,date){
-    db.run("UPDATE messages SET from2=?,to2=?,lu=?,texte=?,title=?,date=? WHERE id=?",[from,to,lu,texte,title,date,id])
+  static setMessage(id,from,to,lu,text,title,date){
+    db.run("UPDATE messages SET from2=?,to2=?,lu=?,text=?,title=?,date=? WHERE id=?",[from,to,lu,text,title,date,id])
   }
   static getMessage(id){
     return new Promise(function(resolve, reject) {

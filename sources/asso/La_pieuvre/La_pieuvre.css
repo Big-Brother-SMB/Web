@@ -1,11 +1,11 @@
-@import url('https://fonts.cdnfonts.com/css/newrocker');
-
+@import url('https://fonts.cdnfonts.com/css/technology');
 body{
-    background-image: url("/asso/Matches_Heads/Images/logo.jpg");
+    background-image: url("/asso/La_pieuvre/Images/fond.png");
+    background-color: white;
 }
 
 footer{
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(0, 0, 0, 0.75);
     backdrop-filter: invert(80%);
 }
 
@@ -16,7 +16,7 @@ div.presentation,.imgAsso{
     padding: 7px;
     border-radius: 30px;
     border: rgb(71, 71, 71) solid 2px;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(5px);
 }
 
@@ -27,10 +27,10 @@ div.presentation,.imgAsso{
 }
 
 .presentation p{
-    color: black;
+    color: rgb(255, 255, 255);
     margin: 1.3rem auto;
     text-align: justify !important;
-    font-size: 1.7rem !important;  
+    font-size: 1.3rem !important;  
     width: 90%;
 
     /*text-indent: 45px;*/
@@ -39,7 +39,7 @@ div.presentation,.imgAsso{
     word-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-}
+  }
 
 .imgAsso{
     width: 300px;
@@ -53,7 +53,7 @@ div.presentation,.imgAsso{
 }
 
 .imgAsso p{
-    color: black;
+    color: rgb(255, 255, 255);
     margin: 5px 0 ;
     font-size: 1.7rem !important;  
 }
@@ -70,10 +70,9 @@ a:hover {
     cursor:pointer;  
 }
 
-
 h2{
-    font-family: 'NewRocker', sans-serif !important;
+    font-family: 'Technology', sans-serif !important;
     font-size: 4rem;
     color: rgb(189, 0, 0);
-    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+    text-shadow: -2px 0 rgba(0, 128, 0, 0.4), 0 2px rgba(0, 128, 0, 0.4), 2px 0 rgba(0, 128, 0, 0.4), 0 -2px rgba(0, 128, 0, 0.4);
 }

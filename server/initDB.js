@@ -111,25 +111,29 @@ module.exports = (db)=>{
         db.run('CREATE TABLE localisation(uuid uuid,lieu text,semaine int2,jour int2,creneau int2)')
     })
 
-    //pdf / post
+    //post / pdf
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='post'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE post(id uuid,from2 uuid,group2 text,title text,text text,date Date)')
+    })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='post_lu'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE post_lu(id uuid,user uuid)')
+    })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='pdf'", (err, data) => {
       if(data==undefined)
         db.run('CREATE TABLE pdf(id uuid,from2 uuid,group2 text,title text,date Date)')
     })
-    /*db.get("SELECT * FROM sqlite_master where type='table' AND name='post'", (err, data) => {
-      if(data==undefined)
-        db.run('CREATE TABLE post(id uuid,from2 uuid,group2 text,texte text,title text,date Date)')
-    })*/
 
 
     //messages / news / sondage
     /*db.get("SELECT * FROM sqlite_master where type='table' AND name='messages'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE messages(id uuid,from2 text,to2 text,lu boolean,texte text,title text,date text)')
+        db.run('CREATE TABLE messages(id uuid,from2 text,to2 text,lu boolean,text text,title text,date text)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='news'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE news(id uuid,from2 text,texte text,title text,date Date)')
+        db.run('CREATE TABLE news(id uuid,from2 text,text text,title text,date Date)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='news_lu'", (err, data) => {
       if(data==undefined)
@@ -137,7 +141,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='sondages'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE sondages(id uuid,from2 text,texte text,title text,date Date,mode int2,choix text)')
+        db.run('CREATE TABLE sondages(id uuid,from2 text,text text,title text,date Date,mode int2,choix text)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='sondages_reponse'", (err, data) => {
       if(data==undefined)

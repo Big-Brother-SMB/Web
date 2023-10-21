@@ -2,6 +2,9 @@ const funcDB = require('./functionsDB.js')
 const User = require('./User.js')
 
 
+
+const listGroups = ["Club info","Matches Heads","La pieuvre","BDL","Lycéens humanitaires"]
+
 module.exports = class funcSocket{
     static log(socket,user){
         socket.on('log', async req => {
@@ -277,6 +280,72 @@ module.exports = class funcSocket{
         });
     }
 
+    static setPost(socket,user){
+        socket.on('setPost', async req => {
+            let test = false
+            let user_groups = await user.groups
+            listGroups.forEach(async g=>{
+                if(user_groups.indexOf(g)!=-1){
+                    test = true
+                }
+            })
+            if((await user.admin == 0 || await user.admin == null) && !test) return
+            try{
+                await funcDB.setPost(req.id,user.uuid,req.group,req.title,req.text,req.date)
+                socket.emit('setPost',"ok")
+            }catch(e){console.error(e);console.log('b26');}
+        });
+    }
+
+    static getPostWithAllLu(socket,user){
+        socket.on('getPostWithAllLu', async req => {
+            let test = false
+            let user_groups = await user.groups
+            listGroups.forEach(async g=>{
+                if(user_groups.indexOf(g)!=-1){
+                    test = true
+                }
+            })
+            if((await user.admin == 0 || await user.admin == null) && !test) return
+            try{
+                socket.emit('getPostWithAllLu',await funcDB.getPostWithAllLu(req.id))
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
+
+    static getPost(socket,user){
+        socket.on('getPost', async req => {
+            try{
+                socket.emit('getPost',await funcDB.getPost(user.uuid))
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
+
+    static postLu(socket,user){
+        socket.on('postLu', async req => {
+            try{
+                await funcDB.postLu(req.id,user.uuid)
+                socket.emit('postLu',"ok")
+            }catch(e){console.error(e);console.log('b26');}
+        });
+    }
+
+    static delPost(socket,user){
+        socket.on('delPost', async req => {
+            let test = false
+            let user_groups = await user.groups
+            listGroups.forEach(async g=>{
+                if(user_groups.indexOf(g)!=-1){
+                    test = true
+                }
+            })
+            if((await user.admin == 0 || await user.admin == null) && !test) return
+            try{
+                await funcDB.delPost(req.id)
+                socket.emit('delPost',"ok")
+            }catch(e){console.error(e);console.log('b26');}
+        });
+    }
 
 
 

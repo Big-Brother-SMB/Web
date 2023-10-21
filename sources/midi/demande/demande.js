@@ -113,10 +113,9 @@ export async function init(common){
         }
     
         const suppMyDemande = async function() {
-            common.popUp_Active('Procuration:','attente',async (bnt)=>{
+            common.popUp_Active('Procuration:','',async (bnt)=>{
                 bnt.innerHTML='Confirmer'
                 let from = document.createElement('from')
-                document.getElementById('popup-body').innerHTML=''
     
                 let textIntro = document.createElement('p')
                 textIntro.innerHTML="Supprimer la demande de:"

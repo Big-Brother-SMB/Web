@@ -32,7 +32,7 @@ body.stop{
 
 .menu_img_a{
   height: 8em;
-  right: 1px;
+  right: 20px;
   position: absolute;
   margin-left: auto;
 }
@@ -191,6 +191,10 @@ input,select,textarea{
   position: relative;
 }
 
+#mySidenav.asso .nav_img{
+  border-radius:500px;
+}
+
 .nav_split{
   border: 1px solid #0000003f;
   width: 75%;
@@ -313,7 +317,7 @@ input,select,textarea{
   border-radius :25px 25px 0px 0px;
   background-color: rgb(60,80,112);
   color: white;
-  font-size: 40px;
+  font-size: 4rem;
 }
 
 #popup-header b{
@@ -326,7 +330,7 @@ input,select,textarea{
   height: 135px ;
 }
 
-#popup-header .close-button {
+#popup-close-button {
   cursor: pointer;
   border: none;
   outline: none;
@@ -334,11 +338,14 @@ input,select,textarea{
   font-size: 4rem;
   font-weight: bold;
   color: white;
+  right: 20px;
+  position: absolute;
+  margin-left: auto;
 }
 
 #popup-body {
   padding: 20px 50px;
-  font-size : 150% !important;
+  font-size : 2.5rem !important;
   text-align: justify !important;
 }
 
@@ -366,12 +373,12 @@ input,select,textarea{
   background-color: #b5c3e4;
   color: rgb(0, 0, 0);
   font-size: 2.5rem;
-  width : 50%;
-  height: auto;
+  min-width : 30%;
+  height: 60px;
   border-radius: 15px;
   position : relative;
   bottom : 5%;
-  left: 25%;
+  margin: auto;
 }
 
 #overlay {
@@ -1136,7 +1143,7 @@ textarea{
     height: 72px;
 }
 
-div.cookie{
+div.divPostAccueil{
   border: 10px ridge #32a1ce;
   border-radius: 50px;
   width: 90%;
@@ -1148,30 +1155,30 @@ div.cookie{
   text-overflow: ellipsis;
 }
 
-div.cookie.ban{
+div.divPostAccueil.ban{
   background-color: rgb(146, 106, 113);
 }
-div.cookie.abo{
+div.divPostAccueil.abo{
   background-color: orange;
 }
-div.cookie.ticket{
+div.divPostAccueil.ticket{
   background-color: rgb(124, 195, 243);
 }
 
-p.cookie{
+.divPostAccueil .date, .divPostAccueil .quantity, .divPostAccueil .justificatif, .divPostAccueil .period{
   text-align: left !important;
   margin-left: 30px;
 }
-p.cookie.titre{
+.divPostAccueil .titre{
   color: rgb(206, 0, 0);
   text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   font-weight: bold;
 }
-p.cookie.date, p.cookie.quantity, p.cookie.justificatif{
+.divPostAccueil .date, .divPostAccueil .quantity, .divPostAccueil .justificatif{
   color: #000000 !important;
   font-size: 1.8rem !important;
 }
-p.cookie.period{
+.divPostAccueil .period{
   color: #000000 !important;
   font-size: 1rem !important;
   font-style: oblique;
@@ -1506,4 +1513,61 @@ p.cookie.period{
 
 .badge:empty{
   display:none
+}
+
+
+/*----------------------Post---------------------------*/
+
+h4{
+  border-radius: 15px;
+  border: rgb(71, 71, 71) solid 2px;
+  background-color: rgba(193, 190, 235, 0.877);
+  backdrop-filter: blur(5px);
+  margin-left: 30%;
+  margin-right: 30%;
+  font-size: 4rem;
+  color: rgb(206, 0, 0);
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+
+
+div.divPost{
+  border: rgb(71, 71, 71) solid 2px;
+  background-color: rgba(193, 190, 235, 0.877);
+  backdrop-filter: blur(5px);
+  border-radius: 50px;
+  width: 90%;
+  margin: 15px auto;
+
+  white-space: break-spaces;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.divPost .text{
+  text-align: left !important;
+  margin-left: 60px;
+  color: #000000 !important;
+  font-size: 2.5rem !important;
+}
+.divPost .titre{
+  color: rgb(206, 0, 0);
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  font-weight: bold;
+}
+
+
+#iconWritePost{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  height: 9em;
+  width: 9em;
+  border-radius: 4.5em;
+  padding: 0;
+}
+
+#iconWritePost img{
+  height: 70%;    
 }

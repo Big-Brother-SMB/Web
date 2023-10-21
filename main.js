@@ -297,6 +297,12 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         
         funcSocket.getSondageMenu(socket,user)
         funcSocket.setSondageMenu(socket,user)
+
+        funcSocket.setPost(socket,user)
+        funcSocket.getPostWithAllLu(socket,user)
+        funcSocket.getPost(socket,user)
+        funcSocket.postLu(socket,user)
+        funcSocket.delPost(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });

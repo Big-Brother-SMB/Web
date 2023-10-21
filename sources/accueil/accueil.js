@@ -24,12 +24,12 @@ export async function init(common){
     //troll
     if(common.readCookie("troll")!=null){
             let div = document.createElement("div")
-            div.className="cookie abo"
+            div.className="divPostAccueil abo"
             div.style.backgroundColor = "#AAAA00"
 
 
             let time = document.createElement("p")
-            time.className="cookie abo titre"
+            time.className="titre"
             time.style.color="#0000FF"
             div.appendChild(time)
 
@@ -68,16 +68,16 @@ export async function init(common){
     }
     {   
         let div = document.createElement("div")
-        div.className="cookie ban"
+        div.className="divPostAccueil ban"
 
         let titre = document.createElement("p")
-        titre.className="cookie ban titre"
+        titre.className="titre"
         titre.innerHTML='Mes groupes:'
         div.appendChild(titre)
 
 
         let justificatif= document.createElement("p")
-        justificatif.className="cookie ban justificatif"
+        justificatif.className="justificatif"
         for(const group of common.groups){
             justificatif.innerHTML+= group + '   /   '
         }
@@ -91,20 +91,20 @@ export async function init(common){
     for(const ban of cookies.ban){
         if(new Date(ban.fin).getTime()>Date.now()){
             let div = document.createElement("div")
-            div.className="cookie ban"
+            div.className="divPostAccueil ban"
 
             let titre = document.createElement("p")
-            titre.className="cookie ban titre"
+            titre.className="titre"
             titre.innerHTML='Banni:'
             div.appendChild(titre)
 
             let date = document.createElement("p")
-            date.className="cookie ban date"
+            date.className="date"
             date.innerHTML='De la semaine '+ new Date(ban.debut).getWeek() +' à '+new Date(ban.fin).getWeek()
             div.appendChild(date)
 
             let justificatif= document.createElement("p")
-            justificatif.className="cookie ban justificatif"
+            justificatif.className="justificatif"
             justificatif.innerHTML='Justificatif:<br>'+ban.justificatif
             div.appendChild(justificatif)
 
@@ -115,30 +115,30 @@ export async function init(common){
     for(const abo of cookies.abo){
         if(abo.quantity!=0 || new Date(abo.fin).getTime()>Date.now()){
             let div = document.createElement("div")
-            div.className="cookie abo"
+            div.className="divPostAccueil abo"
 
             let titre = document.createElement("p")
-            titre.className="cookie abo titre"
+            titre.className="titre"
             titre.innerHTML='Abonnement cookies:'
             div.appendChild(titre)
 
             let date = document.createElement("p")
-            date.className="cookie abo date"
+            date.className="date"
             date.innerHTML='De la semaine '+ new Date(abo.debut).getWeek() +' à '+new Date(abo.fin).getWeek()
             div.appendChild(date)
 
             let quantity = document.createElement("p")
-            quantity.className="cookie abo quantity"
+            quantity.className="quantity"
             quantity.innerHTML='Quantité: '+abo.quantity
             div.appendChild(quantity)
 
             let justificatif= document.createElement("p")
-            justificatif.className="cookie abo justificatif"
+            justificatif.className="justificatif"
             justificatif.innerHTML='Justificatif:<br>'+abo.justificatif
             div.appendChild(justificatif)
 
             let period = document.createElement("p")
-            period.className="cookie abo period"
+            period.className="period"
             period.innerHTML+="*period: "
             switch(abo.period){
                 case 0:
@@ -164,15 +164,15 @@ export async function init(common){
     for(const ticket of cookies.ticket){
         if(ticket.date==null){
             let div = document.createElement("div")
-            div.className="cookie ticket"
+            div.className="divPostAccueil ticket"
 
             let titre = document.createElement("p")
-            titre.className="cookie ticket titre"
-            titre.innerHTML='Bon pour un cookie'
+            titre.className="titre"
+            titre.innerHTML='Bon pour un divPostAccueil'
             div.appendChild(titre)
 
             let justificatif= document.createElement("p")
-            justificatif.className="cookie abo justificatif"
+            justificatif.className="justificatif"
             justificatif.innerHTML='Justificatif:<br>'+ticket.justificatif
             div.appendChild(justificatif)
 
