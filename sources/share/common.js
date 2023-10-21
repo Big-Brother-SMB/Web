@@ -89,30 +89,37 @@ export class common{
 
       const list_nav_btn = document.getElementsByClassName('nav_btn')
       //----------------------------notif----------------------------------
-      let list_post = await common.socketAsync("getPost","");
-      let posts = {}
-      list_post.forEach(element => {
-        if(!element.lu){
-          if(posts[element.group2]==undefined){
-            posts[element.group2]=1
-          }else{
-            posts[element.group2]++
+      const funcPosts = async function(){
+        let list_post = await common.socketAsync("getPost","");
+        let posts = {}
+        list_post.forEach(element => {
+          if(!element.lu){
+            if(posts[element.group2]==undefined){
+              posts[element.group2]=1
+            }else{
+              posts[element.group2]++
+            }
+            if(posts['asso']==undefined){
+              posts['asso']=1
+            }else{
+              posts['asso']++
+            }
           }
-          if(posts['asso']==undefined){
-            posts['asso']=1
-          }else{
-            posts['asso']++
+        });
+
+        for (var i = 0; i < list_nav_btn.length; i++) {
+          if(posts[list_nav_btn[i].getAttribute('group')]!=undefined){
+            list_nav_btn[i].classList.add('notif')
+            list_nav_btn[i].getElementsByClassName("badge")[0].innerHTML=posts[list_nav_btn[i].getAttribute('group')]
           }
         }
-      });
+      }
+      funcPosts()
+      
 
       //-------------------listener-------------------------
       for (var i = 0; i < list_nav_btn.length; i++) {
         const index = i;
-        if(posts[list_nav_btn[i].getAttribute('group')]!=undefined){
-          list_nav_btn[i].classList.add('notif')
-          list_nav_btn[i].getElementsByClassName("badge")[0].innerHTML=posts[list_nav_btn[i].getAttribute('group')]
-        }
         list_nav_btn[i].addEventListener('click', async ()=>{
           let url = list_nav_btn[index].attributes.url.value
           if(url.substring(0,8)!="sidebar:" && window.innerWidth<1000){

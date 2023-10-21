@@ -1469,24 +1469,16 @@ div.divPostAccueil.ticket{
     transform: scale(1) rotate(15deg);
   }
 
-  45% {
+  50% {
     transform: scale(1) rotate(-10deg);
   }
 
-  50% {
+  60% {
     transform: scale(1) rotate(10deg);
   }
 
-  60% {
-    transform: scale(1) rotate(-5deg);
-  }
-
-  70% {
-    transform: scale(1) rotate(5deg);
-  }
-
-  90% {
-    transform: scale(1) rotate(0);
+  75% {
+    transform: scale(1) rotate(0deg);
   }
 }
 
@@ -1549,10 +1541,11 @@ div.divPost{
   text-align: left !important;
   margin-left: 60px;
   color: #000000 !important;
-  font-size: 2.5rem !important;
+  font-size: 2rem !important;
 }
 .divPost .titre{
   color: rgb(206, 0, 0);
+  font-size: 3rem !important;
   text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   font-weight: bold;
 }
