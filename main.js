@@ -270,6 +270,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocket.id_data(socket,user)
       funcSocket.getBanderole(socket,user)
       funcSocket.log(socket,user)
+      funcSocket.getPost(socket,user)
   
       if(user.uuid!=null){
         funcSocket.score(socket,user)
@@ -300,7 +301,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
         funcSocket.setPost(socket,user)
         funcSocket.getPostWithAllLu(socket,user)
-        funcSocket.getPost(socket,user)
         funcSocket.postLu(socket,user)
         funcSocket.delPost(socket,user)
       }

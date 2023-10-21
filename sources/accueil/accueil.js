@@ -17,7 +17,6 @@ export async function init(common){
     })
 
     let cookies = await common.socketAsync("getCookies",null)
-    console.log(cookies)
 
     const section = document.getElementById('cookies')
 

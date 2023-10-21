@@ -26,8 +26,6 @@ export async function init(common){
             }
         })
 
-        console.log(listAmis)
-
         divAmis.innerHTML = ""
         listAmis.forEach(child=>{
             let ami = document.createElement("button")
@@ -60,7 +58,7 @@ export async function init(common){
                 await common.socketAsync('setAmis',listAmisBrut)
                 reload()
             })
-            console.log("eee",child.HeGiveMeProc,child)
+            
             if(child.HeGiveMeProc == 1){
                 ami.classList.add('procuration')
             }else if(child.HeGiveMeProc == null){

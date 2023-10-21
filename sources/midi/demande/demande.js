@@ -262,7 +262,6 @@ export async function init(common){
         */
         let listUsers = await common.socketAsync('listUsersName',null)
         let listAmisBrut = await common.socketAsync('getAmis',null)
-        console.log("brut",listAmisBrut)
     
         //créer la liste d'amis global
         let listAmis=[]
@@ -302,7 +301,6 @@ export async function init(common){
                 //modif
                 document.getElementById("DIVmodif").classList.remove("cache")
                 
-                console.log(my_demande)
                 Ami.listPrisNonAmi(listAmis,my_demande.amis)
                 if(my_demande.sandwich!=null) document.querySelectorAll('input[name="sandwich"]')[my_demande.sandwich].checked=true
             }
@@ -320,7 +318,6 @@ export async function init(common){
                 }
             })
         })
-        console.log(listAmis)
         common.nameOrder(listAmis)
     
         //info
@@ -373,7 +370,6 @@ export async function init(common){
         });
 
         function update(){
-            console.log(listAmis)
             let pb = 0
             listAmis.forEach(child=>{
                 if(child.DorI==null && child.pris==1){

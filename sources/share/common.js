@@ -304,7 +304,6 @@ export class common{
     } else {
       if(window.location.pathname.includes("/asso")){
         let btn = document.getElementById("without_account")
-        console.log(btn)
         if(btn!=null) btn.setAttribute('href',"/")
       }else if(window.location.pathname=="/credit"){
         document.getElementById("mySidenav").classList.add("cache")
@@ -658,7 +657,7 @@ export class common{
       //document.getElementById("css").href = name;
       if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
     }catch(Exception){
-      console.log(Exception)
+      console.error(Exception)
     }
   }
   

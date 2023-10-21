@@ -2,8 +2,6 @@ const group_name = "Matches Heads"
 export async function init(common){
     let list_post = await common.socketAsync("getPost","");
 
-    console.log("post:",await common.socketAsync("getPost",""))
-
     const section = document.getElementById('post')
     
     list_post.sort((a, b) => (a.date < b.date) ? 1 : -1)
