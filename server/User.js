@@ -159,7 +159,7 @@ module.exports = class User{
           const payload = {
             title: title,
             body: body,
-            icon: icon,
+            badge: icon,
             user_id: uuid,
             data: {
               url:address + url
