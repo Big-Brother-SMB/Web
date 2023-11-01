@@ -299,6 +299,7 @@ module.exports = class funcSocket{
             })
             if((await user.admin == 0 || await user.admin == null) && !test) return
             try{
+                //%sendNotif
                 await funcDB.setPost(req.id,user.uuid,req.group,req.title,req.text,req.date)
                 socket.emit('setPost',"ok")
             }catch(e){console.error(e);console.log('b26');}
