@@ -162,6 +162,10 @@ module.exports = class funcSocket{
                 })
                 let ami = await new User(req.uuidAmi)
                 if((hasPermission && await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                    ami.sendNotif("Dépôt d'une demande",
+                        "Votre demande a été déposé par " + await user.first_name + " " + await user.last_name,
+                        '/assets/nav_bar/midi.png',
+                        'midi')
                     await ami.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,null)
                     socket.emit('setAmiDemande',"ok")
                 }
@@ -181,6 +185,10 @@ module.exports = class funcSocket{
                 })
                 let ami = await new User(req.uuidAmi)
                 if((await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                    ami.sendNotif("Suppression d'une demande",
+                        "Votre demande a été supprimé par " + await user.first_name + " " + await user.last_name,
+                        '/assets/nav_bar/midi.png',
+                        'midi')
                     await ami.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delAmiDemande',"ok")
                 }
@@ -389,7 +397,22 @@ module.exports = class funcSocket{
         });
     }
 
-
+    static subscribeNotification(socket,user){
+        socket.on('subscribeNotification', async req => {
+            try{
+                user.subscribeNotification(req)
+                socket.emit('subscribeNotification',"ok")
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
+    
+    static existNotificationSubscription(socket,user){
+        socket.on('existNotificationSubscription', async req => {
+            try{
+                socket.emit('existNotificationSubscription',await user.existNotificationSubscription())
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
 
 
 

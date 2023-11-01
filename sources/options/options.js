@@ -8,6 +8,15 @@ export async function init(common){
         common.writeCookie("name_mode", this.checked)
     })
 
+    let notifAccept = document.getElementById("notifAccept")
+    notifAccept.checked = common.readBoolCookie("notifAccept")
+    notifAccept.addEventListener("change", async function () {
+        common.writeCookie("notifAccept", this.checked)
+        await navigator.serviceWorker.register("/share/sw.js").then((registration) => {
+            registration.active.postMessage({notif:notifAccept.checked,user:common.uuid});
+        });
+        if(this.checked) common.askNotificationPermission()
+    })
 
     let switchAllAmis = document.getElementById("allAmis")
     switchAllAmis.checked = common.readBoolCookie("allAmis")
@@ -28,7 +37,6 @@ export async function init(common){
             rad.checked = true
         }
     }
-
 
     document.getElementById("voirToken").addEventListener("click", async function () {
         common.popUp_Active("Token",common.key,(btn)=>{

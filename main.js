@@ -15,6 +15,7 @@ const { generateKey } = require('crypto');
 const { table } = require('console');
 const { promisify } = require('util');
 const formidable = require('formidable');
+const parseString = require('xml2js').parseString;
 
 const User = require('./server/User.js')
 const funcDB = require('./server/functionsDB.js')
@@ -25,27 +26,11 @@ const init_DB = require('./server/initDB.js')
 const generatePage = require('./server/generatePage.js')
 const funcDate = require('./server/functionsDate.js')
 
-/*const { WebSocketServer } = require('ws');
-
-const server2 = new WebSocketServer({ port: 3001 });
-
-server2.on("connection", (socket) => {
-  function loopT(){
-    socket.send(JSON.stringify({
-      type: "bonjour du client",
-      content: [ 3, "4" ],
-      info: 'cc'
-    }));
-    setTimeout(loopT,5000)
-  }
-  loopT()
-});*/
-
-
 console.log("start")
 
 const jsonObj = JSON.parse(fs.readFileSync(path.join(__dirname,"..","code.json")));
-let address = jsonObj.address
+const address = jsonObj.address
+const VAPID_PUBLIC_KEY = jsonObj.vapidPublicKey
 const oauth2Client = new google.auth.OAuth2(
   jsonObj.client_id,
   jsonObj.code_secret,
@@ -67,7 +52,8 @@ let mimeTypes = {
   '.zip': 'application/zip',
   '.xml': 'application/xml',
   '.txt': 'text/plain',
-  '.pdf': 'application/pdf'
+  '.pdf': 'application/pdf',
+  '.json': 'application/json'
 };
 
 function mimeTypesFunc(extName){
@@ -100,6 +86,9 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
     if (req.url == '/connexion/apigoogle') {
       res.writeHead(301, { "Location": authorizationUrl });
       res.end();
+    } else if (req.url == '/push/key') {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify({"key":VAPID_PUBLIC_KEY}));
     } else if (req.url == '/fileupload/pdf') {
       let form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
@@ -192,7 +181,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           res.end();
         }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=43200'});//sec = 12h | 43200
+            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=10'});//sec = 12h | 43200
             res.end(file);
           }else {
             res.writeHead(404);
@@ -306,6 +295,9 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
         funcSocket.allHoraireMidi(socket,user)
         funcSocket.allHorairePerm(socket,user)
+
+        funcSocket.subscribeNotification(socket,user)
+        funcSocket.existNotificationSubscription(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });

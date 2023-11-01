@@ -1,11 +1,16 @@
 const uuidG = require('uuid');
 const rand = require("generate-key");
+const webpush = require('web-push');
 const fs = require('fs');
 const path = require('node:path');
-const funcDB = require('./functionsDB.js')
+const funcDB = require('./functionsDB.js');
+const { subscribe } = require('diagnostics_channel');
 
 const jsonObj = JSON.parse(fs.readFileSync(path.join(__dirname,"..","..","code.json")));
 const py_token = jsonObj.admin
+const address = jsonObj.address
+const VAPID_PRIVATE_KEY = jsonObj.vapidPrivateKey
+const VAPID_PUBLIC_KEY = jsonObj.vapidPublicKey
 
 let db
 
@@ -73,7 +78,7 @@ module.exports = class User{
       return new Promise(function(resolve, reject) {
         try{
           let tokenAuth = rand.generateKey();
-          let date = hashHour()
+          let date = new Date()
           db.run("INSERT INTO token(token,uuid,creation,last_use) VALUES(?,?,?,?)", [tokenAuth,uuid,date,date])
           resolve(tokenAuth)
         } catch (e) {console.error(e);console.log('d5');}
@@ -85,29 +90,101 @@ module.exports = class User{
   }
 
   static searchToken(token){
-      return new Promise(function(resolve, reject) {
-        try{
-        db.get("SELECT uuid FROM token where token=?",[token], async(err, data) => {
-          try {
-            if(data!=undefined){
-              db.run("UPDATE token SET last_use=? where token=?",[hashHour(),token])
-              resolve(new User(data.uuid))
-            }else if(py_token==token){
-              let user = await User.createUser("super.admin@admin.super","https://foyerlycee.stemariebeaucamps.fr/assets/nav_bar/admin.png")
+    return new Promise(function(resolve, reject) {
+      try{
+      db.get("SELECT uuid FROM token where token=?",[token], async(err, data) => {
+        try {
+          if(data!=undefined){
+            db.run("UPDATE token SET last_use=? where token=?",[new Date(),token])
+            resolve(new User(data.uuid))
+          }else if(py_token==token){
+            let user = await User.createUser("super.admin@admin.super","https://foyerlycee.stemariebeaucamps.fr/assets/nav_bar/admin.png")
 
-              if(await user.admin < 1){
-                user.admin=1
-              }
-              resolve(user)
-            }else{
-              resolve(new User(null))
+            if(await user.admin < 1){
+              user.admin=1
             }
-          }catch(e){console.error(e);console.log('d6');;resolve(null)}
-        })
-        setTimeout(reject,5000)
-        } catch (e) {console.error(e);console.log('d7');}
+            resolve(user)
+          }else{
+            resolve(new User(null))
+          }
+        }catch(e){console.error(e);console.log('d6');;resolve(null)}
       })
-    }
+      setTimeout(reject,5000)
+      } catch (e) {console.error(e);console.log('d7');}
+    })
+  }
+
+  async subscribeNotification(subscribe){
+    let uuid = this.uuid
+    let subscription_id = uuidG.v4()
+    let date = new Date()
+    db.get("SELECT * FROM users_notification_subscription where uuid=? and endpoint=? and p256dh=? and auth=?",[uuid,subscribe.endpoint,subscribe.keys.p256dh,subscribe.keys.auth], async(err, data) => {
+      try {
+        if(data==undefined){
+          db.run("INSERT INTO users_notification_subscription(subscription_id,uuid,endpoint,p256dh,auth,creation,last_use) VALUES(?,?,?,?,?,?,?)", [subscription_id,uuid,subscribe.endpoint,subscribe.keys.p256dh,subscribe.keys.auth,date,date])
+        }
+      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+    })
+    return
+  }
+  async existNotificationSubscription(){
+    let uuid = this.uuid
+    return new Promise(function(resolve, reject) {
+      db.get("SELECT * FROM users_notification_subscription where uuid=?",[uuid], async(err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(true)
+          }else{
+            resolve(false)
+          }
+        }catch(e){console.error(e);console.log('d6');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  async sendNotif(title,body,icon,url){
+    let uuid = this.uuid
+    db.all("SELECT * FROM users_notification_subscription where uuid=?",[uuid], async(err, data) => {
+      try {
+        data.forEach(subscription=>{
+          const pushSubscription = {
+            endpoint: subscription.endpoint,
+            keys: {
+              auth: subscription.auth,
+              p256dh: subscription.p256dh
+            }
+          };
+
+          const payload = {
+            title: title,
+            body: body,
+            icon: icon,
+            user_id: uuid,
+            data: {
+              url:address + url
+            }
+          };
+          
+          const options = {
+            vapidDetails: {
+                subject: 'mailto:example_email@example.com',
+                publicKey: VAPID_PUBLIC_KEY,
+                privateKey:VAPID_PRIVATE_KEY
+            },
+            TTL: 60,
+          };
+          webpush.sendNotification(pushSubscription, JSON.stringify(payload), options).then((_) => {
+            console.log('SENT NOTIF!!!');
+          }).catch((_) => {
+            db.run("delete from users_notification_subscription WHERE subscription_id=?",[subscription.subscription_id])
+            console.log('ERROR NOTIF!!!');
+            console.error(_)
+          });
+        })
+      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+    })
+  }
 
   static listUsersName(){
       return new Promise(function(resolve, reject) {
@@ -712,15 +789,4 @@ module.exports = class User{
   suppPDF(id){
     db.run("DELETE FROM pdf WHERE id=?",[id])
   }
-}
-
-
-function hashHour(){
-    let d =  new Date()
-    return d.getFullYear()
-    + "-" + (String((d.getMonth() + 1)).length == 1?"0":"") + (d.getMonth() + 1)
-    + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate()
-    + " " + (String(d.getHours()).length == 1?"0":"") + d.getHours()
-    + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes()
-    + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
 }

@@ -32,6 +32,10 @@ module.exports = (db)=>{
       if(data==undefined)
         db.run('CREATE TABLE token(token text,uuid UUID,creation text,last_use text)')
     })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='users_notification_subscription'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE users_notification_subscription(subscription_id UUID, uuid UUID, endpoint text, p256dh text, auth text, creation text, last_use text)')
+    })
 
     //perm
     db.get("SELECT * FROM sqlite_master where type='table' AND name='perm_info'", (err, data) => {

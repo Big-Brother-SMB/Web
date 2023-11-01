@@ -221,6 +221,7 @@ module.exports = class UserSelect{
           if(this.usersList[i].pass==1){
             let user = new User(this.usersList[i].uuid)
             let infoD = await user.getMidiDemande(semaine,creneau)
+            user.sendNotif("Accepter au foyer","Vous êtes accepté au foyer.",'/assets/pass/ok.png',"pass")
             await user.setMidiDemande(semaine,creneau,infoD.amis,true,infoD.scan)
           }
         }

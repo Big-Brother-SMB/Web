@@ -268,6 +268,22 @@ export class common{
       }
       this.loadpage(url)
     });
+
+    //---------------------------------pop-up notif--------------------------------------------
+
+    if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
+
+    if((!this.existCookie("notifTest") && this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator))
+    && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)) || !(await navigator.serviceWorker.register("/share/sw.js")).active)){
+      this.popUp_Active("Notification site du Foyer!"
+      ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
+      +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
+        btn.addEventListener("click",()=>{
+          common.askNotificationPermission()
+          this.popUp_Stop()
+        },{once:true})
+      })
+    }
   }
 
     
@@ -319,6 +335,16 @@ export class common{
     //-----------------------------------log------------------------------
 
     await this.socketAsync("log",document.location.pathname)
+
+    //-----------------------------------notif--------------------------
+
+    await navigator.serviceWorker.register("/share/sw.js").then((registration) => {
+      try{
+        registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
+      }catch(e){
+        console.error(e);
+      }
+    });
 
     //---------------------------securité page admin + deco + tuto---------------------------
 
@@ -519,7 +545,44 @@ export class common{
     }
   }
 
+  //-------------------------notification navigateur---------------------
 
+  static async askNotificationPermission() {
+    document.cookie = "notifTest=test; max-age=" + (3600*10) + "; path=/";
+    if (("Notification" in window) && ("serviceWorker" in navigator)) {
+      if (Notification.permission != "granted") {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          common.registerServiceWorker();
+        }
+      }else if(Notification.permission === "granted"){
+        common.registerServiceWorker();
+      }
+    }
+  }
+
+  static async registerServiceWorker() {
+    const registration = await navigator.serviceWorker.register("/share/sw.js");
+    let subscription = await registration.pushManager.getSubscription();
+    // L'utilisateur n'est pas déjà abonné, on l'abonne au notification push
+    if (!subscription) {
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: await common.getPublicKey(),
+      });
+    }
+  
+    await common.socketAsync("subscribeNotification",subscription)
+  }
+  
+  static async getPublicKey() {
+    const { key } = await fetch("/push/key", {
+      headers: {
+        Accept: "application/json",
+      },
+    }).then((r) => r.json());
+    return key;
+  }
 
   //---------------------------fonctions diver---------------------------
 
@@ -551,8 +614,8 @@ export class common{
     return text
   }
 
-  //renvoie sous forme (4 au 11 juin)
-  static intervalSemaine(semaine){ //nombreSemaineSup = nombre de semaine ce trouve l'intervalle à creer
+  //renvoie sous forme (4 au 11 juin), soit la date du lundi et du vendredi
+  static intervalSemaine(semaine){ //semaine = semaine de l'intervalle à afficher
     let jour = new Date().getDay()-1;
     if(jour==-1) jour=6
     let dateBeg=(Date.now()+604800000*(semaine - actualWeek))-jour*86400000; //86400000ms=1 jour et 604800000ms= 1semaine
