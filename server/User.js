@@ -159,7 +159,8 @@ module.exports = class User{
           const payload = {
             title: title,
             body: body,
-            badge: icon,
+            badge: "/assets/logo.png",
+            icon: icon,
             user_id: uuid,
             data: {
               url:address + url
