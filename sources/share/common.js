@@ -480,10 +480,10 @@ export class common{
   static async socketAsync(channel,msg,time){
         let socket = this.socket
         return new Promise(function(resolve, reject) {
-          socket.emit(channel,msg);
           socket.once(channel,result => {
             resolve(result)
           });
+          socket.emit(channel,msg);
           if(time==undefined){
             time=5000
           }

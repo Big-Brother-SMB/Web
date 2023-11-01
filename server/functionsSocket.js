@@ -347,10 +347,47 @@ module.exports = class funcSocket{
         });
     }
 
+    static allHoraireMidi(socket,user){
+        socket.on('allHoraireMidi', async req => {
+            try{
+                let info_horaire = [[undefined,undefined],[undefined,undefined],[undefined,undefined],[undefined,undefined]]
+                let my_demande = [[undefined,undefined],[undefined,undefined],[undefined,undefined],[undefined,undefined]]
+                let list_demandes = [[undefined,undefined],[undefined,undefined],[undefined,undefined],[undefined,undefined]]
+                for (let j = 0; j < 4; j++) {
+                    for (let h = 0; h < 2; h++) {
+                        let info = await funcDB.getMidiInfo(req.w,j*2+h)
+                        if(info==undefined) info={prio:[]}
+                        info_horaire[j][h] = info
+                        my_demande[j][h] = await user.getMidiDemande(req.w,j*2+h)
+                        list_demandes[j][h] = await funcDB.listMidiDemandes(req.w,j*2+h)
+                    }
+                }
+                socket.emit('allHoraireMidi',{info_horaire:info_horaire,my_demande:my_demande,list_demandes:list_demandes})
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
 
-
-
-
+    static allHorairePerm(socket,user){
+        socket.on('allHorairePerm', async req => {
+            try{
+                let listDemandes = []
+                let ouvert = []
+                for (let j = 0; j < 5; j++) {
+                    listDemandes.push([])
+                    ouvert.push([])
+                    for (let h = 0; h < 8; h++) {
+                        listDemandes[j].push(await funcDB.listPermDemandes(req.w,j,h))
+                        let ouv = await funcDB.getPermOuvert(req.w,j,h)
+                        if (ouv == null){
+                            ouv = 0
+                        }
+                        ouvert[j].push(ouv)
+                    }
+                }
+                socket.emit('allHorairePerm',{listDemandes:listDemandes,ouvert:ouvert})
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
 
 
 

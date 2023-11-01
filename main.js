@@ -303,6 +303,9 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.getPostWithAllLu(socket,user)
         funcSocket.postLu(socket,user)
         funcSocket.delPost(socket,user)
+
+        funcSocket.allHoraireMidi(socket,user)
+        funcSocket.allHorairePerm(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });

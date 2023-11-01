@@ -83,12 +83,14 @@ export async function init(common){
         }
         document.getElementById("menuSemaine").innerHTML = "<u>Menu de la semaine n°" + week + " :</u><br>" + menu
 
+
+        let allHoraireMidi = await common.socketAsync("allHoraireMidi",{w:week})
+        
         for (let j = 0; j < 4; j++) {
             for (let h = 0; h < 2; h++) {
-                let info_horaire = await common.socketAsync("getDataThisCreneau",{w:week,j:j,h:h})
-                if(info_horaire==undefined) info_horaire={prio:[]}
-                let my_demande = await common.socketAsync("getMyDemande",{w:week,j:j,h:h})
-                let list_demandes = await common.socketAsync("listDemandes",{w:week,j:j,h:h})
+                let info_horaire = allHoraireMidi.info_horaire[j][h]
+                let my_demande = allHoraireMidi.my_demande[j][h]
+                let list_demandes = allHoraireMidi.list_demandes[j][h]
 
                 placesTotal[j][h] = info_horaire["places"];
                 if(placesTotal[j][h]==null || placesTotal[j][h]==""){

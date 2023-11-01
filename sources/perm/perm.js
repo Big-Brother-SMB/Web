@@ -75,16 +75,16 @@ export async function init(common){
         }
 
 
+        let allHorairePerm = await common.socketAsync("allHorairePerm",{w:week})
+        ouvert = allHorairePerm.ouvert
 
         for (let j = 0; j < 5; j++) {
             for (let h = 0; h < 8; h++) {
                 let nbDemandesPerm = 0
                 let groupsInscrits = []
 
-                let listDemandes = await common.socketAsync("listDemandesPerm",{w:week,j:j,h:h})
-
                 bouton[j][h].className = "case perm blue"
-                listDemandes.forEach(function(child){
+                allHorairePerm.listDemandes[j][h].forEach(function(child){
                     if(child.DorI){
                         groupsInscrits.push(child.group2)
                     }else{
@@ -95,12 +95,6 @@ export async function init(common){
                     }
                 })
 
-                let ouv = await common.socketAsync("getOuvertPerm",{w:week,j:j,h:h})
-                if (ouv == null){
-                    ouv = 0
-                }
-                ouvert[j][h] = ouv
-
                 if (nbDemandesPerm==1){
                     bouton[j][h].innerHTML = nbDemandesPerm.toString()+" demande en cours"
                 }else if (nbDemandesPerm>1){
@@ -108,7 +102,7 @@ export async function init(common){
                 }else {
                     bouton[j][h].innerHTML="aucune info"
                 }
-                switch(ouv){
+                switch(ouvert[j][h]){
                     case 0:
                         let str = ""
                         groupsInscrits.forEach(function (child) {
