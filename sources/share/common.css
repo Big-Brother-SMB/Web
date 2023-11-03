@@ -317,7 +317,7 @@ input,select,textarea{
   border-radius :25px 25px 0px 0px;
   background-color: rgb(60,80,112);
   color: white;
-  font-size: 4rem;
+  font-size: 2.3rem;
 }
 
 #popup-header b{
@@ -335,17 +335,18 @@ input,select,textarea{
   border: none;
   outline: none;
   background: none;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: bold;
   color: white;
   right: 20px;
+  top:20px;
   position: absolute;
   margin-left: auto;
 }
 
 #popup-body {
   padding: 20px 50px;
-  font-size : 2.5rem !important;
+  font-size : 1.2rem !important;
   text-align: justify !important;
 }
 

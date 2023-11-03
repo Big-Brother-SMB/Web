@@ -187,6 +187,49 @@ module.exports = class User{
     })
   }
 
+  static async sendNotifAll(title,body,icon,url){
+    db.all("SELECT * FROM users_notification_subscription", async(err, data) => {
+      try {
+        data.forEach(subscription=>{
+          const pushSubscription = {
+            endpoint: subscription.endpoint,
+            keys: {
+              auth: subscription.auth,
+              p256dh: subscription.p256dh
+            }
+          };
+
+          const payload = {
+            title: title,
+            body: body,
+            badge: "/assets/logo.png",
+            icon: icon,
+            user_id: subscription.uuid,
+            data: {
+              url:address + url
+            }
+          };
+          
+          const options = {
+            vapidDetails: {
+                subject: 'mailto:example_email@example.com',
+                publicKey: VAPID_PUBLIC_KEY,
+                privateKey:VAPID_PRIVATE_KEY
+            },
+            TTL: 60,
+          };
+          webpush.sendNotification(pushSubscription, JSON.stringify(payload), options).then((_) => {
+            console.log('SENT NOTIF!!!');
+          }).catch((_) => {
+            db.run("delete from users_notification_subscription WHERE subscription_id=?",[subscription.subscription_id])
+            console.log('ERROR NOTIF!!!');
+            console.error(_)
+          });
+        })
+      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+    })
+  }
+
   static listUsersName(){
       return new Promise(function(resolve, reject) {
         try{

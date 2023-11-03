@@ -4,6 +4,7 @@ const User = require('./User.js')
 
 
 const listGroups = ["Club info","Matches Heads","La pieuvre","BDL","Lycéens humanitaires"]
+const srcs = {"Club info":"Club_Info","Matches Heads":"Matches_Heads","La pieuvre":"La_pieuvre","BDL":"BDL","Lycéens humanitaires":"humanitaire"}
 
 module.exports = class funcSocket{
     static log(socket,user){
@@ -292,14 +293,15 @@ module.exports = class funcSocket{
         socket.on('setPost', async req => {
             let test = false
             let user_groups = await user.groups
+            let src = srcs[req.group]
             listGroups.forEach(async g=>{
-                if(user_groups.indexOf(g)!=-1){
+                if(user_groups.indexOf(g)!=-1 && req.group==g){
                     test = true
                 }
             })
             if((await user.admin == 0 || await user.admin == null) && !test) return
             try{
-                //%sendNotif
+                User.sendNotifAll(req.title,req.text,"/asso/"+src+"/Images/logo.jpg","asso/"+src)
                 await funcDB.setPost(req.id,user.uuid,req.group,req.title,req.text,req.date)
                 socket.emit('setPost',"ok")
             }catch(e){console.error(e);console.log('b26');}
