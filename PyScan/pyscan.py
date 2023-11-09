@@ -295,7 +295,6 @@ def refreshPassages():
 
 
 
-
 #fonction de scan
 days = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"]
 month = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"]
@@ -304,12 +303,12 @@ number = ""
 user="None"
 def alert(titre,text):
   global fenetre
-  fenetre.focus_force()
   if son_bool.get():
+    fenetre.focus_force()
     t1 = threading.Thread(target=playsound, args=('alert.mp3',))
     t1.start()
-  t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
-  t2.start()
+    t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
+    t2.start()
 
 
 
@@ -825,7 +824,7 @@ menubar = Menu(fenetre)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
 filemenu.add_command(label="Date", command=windowDate)
-filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool, command=refreshOptions)
+filemenu.add_checkbutton(label="Son & msg", onvalue=1, offvalue=0, variable=son_bool, command=refreshOptions)
 menubar.add_cascade(label="File", menu=filemenu)
 modemenu = Menu(menubar, tearoff=0)
 modemenu.add_checkbutton(label="Foyer", onvalue="Foyer", variable=mode_var, command=refreshOptions)

@@ -65,7 +65,7 @@ module.exports = class UserSelect{
           let amis = listDemandes[i].amis
           let pass=0;
           if(listDemandes[i].DorI==1){
-            pass=1
+            pass=2
           }
           this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date,pass,vip))
         }
@@ -250,14 +250,14 @@ module.exports = class UserSelect{
                 let testScore=true
                 //test si les amis ont tous plus de points que l'utilisateur ou qu'il sont déja inscrit
                 this.usersList[i].amisEloigner.forEach(a=>{
-                  if(UserSelect.usersList[i].score>UserSelect.searchAmi(a).score && UserSelect.searchAmi(a).pass!=1){
+                  if(UserSelect.usersList[i].score>UserSelect.searchAmi(a).score && UserSelect.searchAmi(a).pass<1){
                     testScore=false
                   }
                 })
                 //test si il y a assez de places pour inscrire l'utilisateur et ses amis éloignier
                 let nbAmisNonInscrit = this.usersList[i].amisEloigner.length+1
                 this.usersList[i].amisEloigner.forEach(a=>{
-                  if(UserSelect.searchAmi(a).pass==1){
+                  if(UserSelect.searchAmi(a).pass>=1){
                     nbAmisNonInscrit--
                   }
                 })
@@ -267,7 +267,10 @@ module.exports = class UserSelect{
                   inscrits += nbAmisNonInscrit
                   this.usersList[i].pass=1
                   this.usersList[i].amisEloigner.forEach(a=>{
-                    UserSelect.searchAmi(a).pass=1
+                    let ami = UserSelect.searchAmi(a)
+                    if(ami.pass<1){
+                      ami.pass=1
+                    }
                   })
                   //recommence à tester depuis le début de la liste quand des inscriptions ont eu lieu
                   break bloc2;
