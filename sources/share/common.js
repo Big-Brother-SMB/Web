@@ -411,15 +411,24 @@ export class common{
       //---------------------------------pop-up notif--------------------------------------------
       if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
 
-      if((!this.existCookie("notifTest") && this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator))
+      if((this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator))
       && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)) || !(await navigator.serviceWorker.register("/share/sw.js")).active)){
         this.popUp_Active("Notification site du Foyer!"
         ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
         +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
+          btn.innerHTML="Bloquer"
           btn.addEventListener("click",()=>{
+            common.writeCookie("notifAccept",false)
+            this.popUp_Stop()
+          },{once:true})
+
+          let btn2 = document.createElement("button")
+          btn2.innerHTML="Accepter"
+          btn2.addEventListener("click",()=>{
             common.askNotificationPermission()
             this.popUp_Stop()
           },{once:true})
+          btn.parentNode.appendChild(btn2)
         })
       }
     }
@@ -550,7 +559,6 @@ export class common{
   //-------------------------notification navigateur---------------------
 
   static async askNotificationPermission() {
-    document.cookie = "notifTest=test; max-age=" + (3600*10) + "; path=/";
     if (("Notification" in window) && ("serviceWorker" in navigator)) {
       if (Notification.permission != "granted") {
         const permission = await Notification.requestPermission();
