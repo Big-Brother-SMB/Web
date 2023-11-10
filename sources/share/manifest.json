@@ -1,0 +1,18 @@
+{
+ "lang" : "fr",
+ "dir" : "ltr",
+ "name" : "Foyer SMB",
+ "short_name" : "Foyer SMB",
+ "icons" :   [
+   {
+     "src" : "\/assets\/apple-touch-icon.png",
+     "sizes" : "300x300",
+     "type" : "image\/png"
+   }
+ ],
+ "theme_color" : "#009DCF",
+ "background_color" : "#1a1a1a",
+ "start_url" : "/accueil",
+ "display" : "standalone",
+ "orientation" : "natural"
+}
