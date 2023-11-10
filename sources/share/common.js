@@ -268,22 +268,6 @@ export class common{
       }
       this.loadpage(url)
     });
-
-    //---------------------------------pop-up notif--------------------------------------------
-
-    if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
-
-    if((!this.existCookie("notifTest") && this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator))
-    && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)) || !(await navigator.serviceWorker.register("/share/sw.js")).active)){
-      this.popUp_Active("Notification site du Foyer!"
-      ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
-      +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
-        btn.addEventListener("click",()=>{
-          common.askNotificationPermission()
-          this.popUp_Stop()
-        },{once:true})
-      })
-    }
   }
 
     
@@ -341,6 +325,7 @@ export class common{
     await navigator.serviceWorker.register("/share/sw.js").then((registration) => {
       try{
         registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
+        registration.update()
       }catch(e){
         console.error(e);
       }
@@ -422,7 +407,24 @@ export class common{
               })
           },{once:true})
       })
+    }else{
+      //---------------------------------pop-up notif--------------------------------------------
+      if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
+
+      if((!this.existCookie("notifTest") && this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator))
+      && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)) || !(await navigator.serviceWorker.register("/share/sw.js")).active)){
+        this.popUp_Active("Notification site du Foyer!"
+        ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
+        +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
+          btn.addEventListener("click",()=>{
+            common.askNotificationPermission()
+            this.popUp_Stop()
+          },{once:true})
+        })
+      }
     }
+
+    
 
     //--------------------------banderole--------------------------------
 
