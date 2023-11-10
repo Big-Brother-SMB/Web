@@ -1,16 +1,16 @@
 {
  "lang" : "fr",
  "dir" : "ltr",
- "name" : "Foyer SMB",
- "short_name" : "Foyer SMB",
+ "name" : "Appli Foyer SMB",
+ "short_name" : "Foyer",
  "icons" :   [
    {
-     "src" : "\/apple-touch-icon.png",
-     "sizes" : "300x300",
+     "src" : "\/assets\/logo.png",
+     "sizes" : "192x192",
      "type" : "image\/png"
    }
  ],
- "theme_color" : "#009DCF",
+ "theme_color" : "#1a1a1a",
  "background_color" : "#1a1a1a",
  "start_url" : "/accueil",
  "display" : "standalone",
