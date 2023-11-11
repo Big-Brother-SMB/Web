@@ -460,6 +460,39 @@ module.exports = class funcSocket{
     }
 
 
+    //CDI
+    static setCDIOuvert(socket,user){
+        socket.on('setCDIOuvert',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await funcDB.setCDIOuvert(req.w,req.j,req.h,req.ouvert)
+                socket.emit('setCDIOuvert','ok')
+            }catch(e){console.error(e);console.log('15');}
+        })
+    }
+
+    static setCDIInscrit(socket,user){
+        socket.on('setCDIInscrit',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await funcDB.setCDIInscrit(req.w,req.j,req.h,req.groups)
+                socket.emit('setCDIInscrit','ok')
+            }catch(e){console.error(e);console.log('17');}
+        })
+    }
+
+    //DOC
+    static setDOCInfo(socket,user){
+        socket.on('setDOCOuvert',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await funcDB.setDOCOuvert(req.w,req.j,req.h,req.ouvert)
+                socket.emit('setDOCOuvert','ok')
+            }catch(e){console.error(e);console.log('15');}
+        })
+    }
+
+
 
         /*
     socket.on("req lu", async req => {

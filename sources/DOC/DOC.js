@@ -1,55 +1,7 @@
 const Day = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"]
 const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h","16h-17h"]
 
-const listModePerm = ["Annuler","Sélection","Fermé","Ouvert à tous","Réservation","Vacances"]
-
-
 export async function init(common){
-    function superSelection(mode2,x2){
-        const mode = mode2
-        const x = x2
-        return async function(){
-            common.popUp_Active('Set mode','attente',async (bnt)=>{
-                let select = document.createElement('select')
-                document.getElementById('popup-body').innerHTML=''
-                document.getElementById('popup-body').appendChild(select)
-                for(const i in listModePerm){
-                    let opt = document.createElement("option")
-                    opt.innerHTML = listModePerm[i]
-                    select.appendChild(opt);
-                }
-        
-                bnt.innerHTML='Confirmer'
-                bnt.addEventListener('click',async ()=>{
-                    if(mode=="j" && select.selectedIndex!=0){
-                        for(let h = 0; h < 8; h++){
-                            if(!((x == 2 && h >3) || (h == 3 && x != 2))){
-                                await common.socketAdminAsync('setPermOuvert',[week,x,h,select.selectedIndex-1])
-                            }
-                        }
-                    }else if(mode=="h" && select.selectedIndex!=0){
-                        for (let j = 0; j < 5; j++) {
-                            if(!((j == 2 && x >3) || (x == 3 && j != 2))){
-                                await common.socketAdminAsync('setPermOuvert',[week,j,x,select.selectedIndex-1])
-                            }
-                        }
-                    }else if(mode=="all" && select.selectedIndex!=0){
-                        for (let j = 0; j < 5; j++) {
-                            for(let h = 0; h < 9; h++){
-                                if(!((j == 2 && h >3) || (h == 3 && j != 2))){
-                                    await common.socketAdminAsync('setPermOuvert',[week,j,h,select.selectedIndex-1])
-                                }
-                            }
-                        }
-                    }
-                    common.popUp_Stop()
-                    refreshDatabase()
-                }, { once: true })
-            })
-        }
-    }
-
-
     let bouton = [];
     let demande = []
     let ouvert = []
@@ -60,17 +12,13 @@ export async function init(common){
     divHoraires.classList.add("heure")
     let text = document.createElement("button")
     text.className = "case perm info jour heure";
-    text.innerHTML = "Tout"
-    text.addEventListener("click",superSelection("all"))
     divHoraires.appendChild(text);
     
     for (let h = 0; h < 8; h++) {
         let horaire = document.createElement("button")
         horaire.innerHTML = horaires[h]
-        horaire.addEventListener("click",superSelection("h",h))
         horaire.className = "case perm info heure"
         divHoraires.appendChild(horaire);
-
     }
     creneaudiv.appendChild(divHoraires);
 
@@ -79,7 +27,6 @@ export async function init(common){
         let text = document.createElement("button")
         text.className = "case perm info jour";
         text.innerHTML = Day[j]
-        text.addEventListener("click",superSelection("j",j))
         div.appendChild(text);
 
         bouton[j] = []
@@ -135,7 +82,6 @@ export async function init(common){
             for (let h = 0; h < 8; h++) {
                 let nbDemandesPerm = 0
                 let groupsInscrits = []
-                
 
                 bouton[j][h].className = "case perm blue"
                 allHorairePerm.listDemandes[j][h].forEach(function(child){
@@ -143,6 +89,9 @@ export async function init(common){
                         groupsInscrits.push(child.group2)
                     }else{
                         nbDemandesPerm++
+                        if(common.uuid==child.uuid){
+                            bouton[j][h].className = "case perm demande"
+                        }
                     }
                 })
 
@@ -157,6 +106,9 @@ export async function init(common){
                     case 0:
                         let str = ""
                         groupsInscrits.forEach(function (child) {
+                            if(child == common.classe || common.groups.indexOf(child)!=-1){
+                                bouton[j][h].className = "case perm green"
+                            }
                             if(str != ""){
                                 str += ", "
                             }
@@ -180,6 +132,9 @@ export async function init(common){
                         
                         let str2 = ""
                         groupsInscrits.forEach(function (child) {
+                            if(child == common.classe || common.groups.indexOf(child)!=-1){
+                                bouton[j][h].className = "case perm green"
+                            }
                             if(str2 != ""){
                                 str2 += ", "
                             }
@@ -198,6 +153,8 @@ export async function init(common){
     refreshDatabase();
 
     function select(j, h){
-        common.loadpage("/admin/perm/creneau?j="+j+"&h="+h+"&w="+week)
+        if (ouvert[j][h] == 0) {
+            common.loadpage("/perm/demande?j="+j+"&h="+h+"&w="+week)
+        }
     }
 }

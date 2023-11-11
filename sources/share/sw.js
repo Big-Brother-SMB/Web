@@ -14,19 +14,6 @@ self.addEventListener('push',(event)=>{
     if(notifAccept && data.user_id == user) {
         event.waitUntil(self.registration.showNotification(data.title, data))
     }
-
-    if(user == "24a9d4d2-e082-4432-adeb-736089448a56"){
-        function func(s){
-            s.registration.showNotification(
-                "eee",{
-                    body: "cc",
-                    icon: "/assets/nav_bar/amis.png"
-                  }
-            );
-            setTimeout(func,1000,s);
-        }
-        func(self)
-    }
 })
 
 self.addEventListener('message', function (evt) {

@@ -417,12 +417,72 @@ module.exports = class funcSocket{
         });
     }
 
+    //CDI
+    static getCDIOuvert(socket,user){
+        socket.on("getCDIOuvert", async req => {
+            try{
+                socket.emit("getCDIOuvert",await funcDB.getCDIOuvert(req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
 
+    static listCDIDemandes(socket,user){
+        socket.on('listCDIDemandes', async req => {
+            try{
+                socket.emit('listCDIDemandes',await funcDB.listCDIDemandes(req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('b18');}
+        });
+    }
 
+    static allHoraireCDI(socket,user){
+        socket.on('allHoraireCDI', async req => {
+            try{
+                let listDemandes = []
+                let ouvert = []
+                for (let j = 0; j < 5; j++) {
+                    listDemandes.push([])
+                    ouvert.push([])
+                    for (let h = 0; h < 9; h++) {
+                        listDemandes[j].push(await funcDB.listCDIDemandes(req.w,j,h))
+                        let ouv = await funcDB.getCDIOuvert(req.w,j,h)
+                        if (ouv == null){
+                            ouv = 0
+                        }
+                        ouvert[j].push(ouv)
+                    }
+                }
+                socket.emit('allHoraireCDI',{listDemandes:listDemandes,ouvert:ouvert})
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
 
+    //DOC
+    static getDOCInfo(socket,user){
+        socket.on("getDOCInfo", async req => {
+            try{
+                socket.emit("getDOCInfo",await funcDB.getDOCInfo(req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
 
-
-
+    static allHoraireDOC(socket,user){
+        socket.on('allHoraireDOC', async req => {
+            try{
+                let DOCInfo = []
+                for (let j = 0; j < 5; j++) {
+                    DOCInfo.push([])
+                    for (let h = 0; h < 9; h++) {
+                        let ouv = await funcDB.getDOCInfo(req.w,j,h)
+                        if (ouv == null){
+                            ouv = 0
+                        }
+                        DOCInfo[j].push(ouv)
+                    }
+                }
+                socket.emit('allHoraireDOC',DOCInfo)
+            }catch(e){console.error(e);console.log('b27');}
+        });
+    }
 
 
 

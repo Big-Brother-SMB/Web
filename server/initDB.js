@@ -115,7 +115,7 @@ module.exports = (db)=>{
         db.run('CREATE TABLE localisation(uuid uuid,lieu text,semaine int2,jour int2,creneau int2)')
     })
 
-    //post / pdf
+    //post 
     db.get("SELECT * FROM sqlite_master where type='table' AND name='post'", (err, data) => {
       if(data==undefined)
         db.run('CREATE TABLE post(id uuid,from2 uuid,group2 text,title text,text text,date Date)')
@@ -124,6 +124,24 @@ module.exports = (db)=>{
       if(data==undefined)
         db.run('CREATE TABLE post_lu(id uuid,user uuid)')
     })
+
+    //CDI
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='CDI_info'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE CDI_info(semaine int2,day int2,creneau int2,ouvert int2)')
+    })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='CDI_list'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE CDI_list(semaine int2,day int2,creneau int2,group2 text)')
+    })
+
+    //DOC
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='DOC_info'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE DOC_info(semaine int2,day int2,creneau int2,ouvert int2,msg text,title text,texte text,image text)')
+    })
+
+    // pdf
     db.get("SELECT * FROM sqlite_master where type='table' AND name='pdf'", (err, data) => {
       if(data==undefined)
         db.run('CREATE TABLE pdf(id uuid,from2 uuid,group2 text,title text,date Date)')

@@ -33,14 +33,6 @@ export async function init(common){
                                 await common.socketAdminAsync('setPermOuvert',[week,j,x,select.selectedIndex-1])
                             }
                         }
-                    }else if(mode=="all" && select.selectedIndex!=0){
-                        for (let j = 0; j < 5; j++) {
-                            for(let h = 0; h < 9; h++){
-                                if(!((j == 2 && h >3) || (h == 3 && j != 2))){
-                                    await common.socketAdminAsync('setPermOuvert',[week,j,h,select.selectedIndex-1])
-                                }
-                            }
-                        }
                     }
                     common.popUp_Stop()
                     refreshDatabase()
@@ -60,8 +52,6 @@ export async function init(common){
     divHoraires.classList.add("heure")
     let text = document.createElement("button")
     text.className = "case perm info jour heure";
-    text.innerHTML = "Tout"
-    text.addEventListener("click",superSelection("all"))
     divHoraires.appendChild(text);
     
     for (let h = 0; h < 8; h++) {

@@ -251,6 +251,10 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.delLocalisation(socket,user)
 
       funcSocketAdmin.getAllResultsMenu(socket,user)
+
+      funcSocketAdmin.setCDIOuvert(socket,user)
+      funcSocketAdmin.setCDIInscrit(socket,user)
+      funcSocketAdmin.setDOCInfo(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -298,6 +302,12 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
         funcSocket.subscribeNotification(socket,user)
         funcSocket.existNotificationSubscription(socket,user)
+
+        funcSocket.getCDIOuvert(socket,user)
+        funcSocket.listCDIDemandes(socket,user)
+        funcSocket.getDOCInfo(socket,user)
+        funcSocket.allHoraireCDI(socket,user)
+        funcSocket.allHoraireDOC(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });
