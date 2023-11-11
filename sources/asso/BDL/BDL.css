@@ -1,7 +1,7 @@
 @import url('https://fonts.cdnfonts.com/css/technology');
 body{
-    background-image: url("/asso/BDL/Images/fond.png");
-    background-color: white;
+    background: center / contain no-repeat url("/asso/BDL/Images/fond.png");
+    background-attachment: fixed;
 }
 
 footer{
@@ -16,7 +16,7 @@ div.presentation,.imgAsso{
     padding: 7px;
     border-radius: 30px;
     border: rgb(71, 71, 71) solid 2px;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(148, 148, 148, 0.85);
     backdrop-filter: blur(5px);
 }
 
@@ -27,13 +27,13 @@ div.presentation,.imgAsso{
 }
 
 .presentation p{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     margin: 1.3rem auto;
     text-align: justify !important;
     font-size: 1.3rem !important;  
     width: 90%;
 
-    /*text-indent: 45px;*/
+    text-indent: 45px;
 
     white-space: break-spaces;
     word-wrap: break-word;
@@ -71,8 +71,9 @@ a:hover {
 }
 
 h2{
-    /*font-family: 'Technology', sans-serif !important;*/
-    font-size: 4rem;
-    color: rgb(189, 0, 0);
-    /*text-shadow: -2px 0 rgba(0, 128, 0, 0.4), 0 2px rgba(0, 128, 0, 0.4), 2px 0 rgba(0, 128, 0, 0.4), 0 -2px rgba(0, 128, 0, 0.4);*/
+    font-family: 'Fira Sans',serif !important;
+    font-variant-caps: small-caps;
+    font-size: 3rem;
+    color: rgb(63, 105, 196);
+    text-shadow: -1px 0 rgba(18, 37, 143), 0 1px rgba(18, 37, 143), 1px 0 rgba(18, 37, 143), 0 -1px rgba(18, 37, 143);
 }
