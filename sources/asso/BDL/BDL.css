@@ -30,7 +30,7 @@ div.presentation,.imgAsso{
     color: rgb(0, 0, 0);
     margin: 1.3rem auto;
     text-align: justify !important;
-    font-size: 1.3rem !important;  
+    font-size: 1.5rem !important;  
     width: 90%;
 
     text-indent: 45px;
@@ -73,7 +73,7 @@ a:hover {
 h2{
     font-family: 'Fira Sans',serif !important;
     font-variant-caps: small-caps;
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: rgb(63, 105, 196);
     text-shadow: -1px 0 rgba(18, 37, 143), 0 1px rgba(18, 37, 143), 1px 0 rgba(18, 37, 143), 0 -1px rgba(18, 37, 143);
 }
