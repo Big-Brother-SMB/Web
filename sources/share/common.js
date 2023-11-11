@@ -320,17 +320,6 @@ export class common{
 
     await this.socketAsync("log",document.location.pathname)
 
-    //-----------------------------------notif--------------------------
-
-    await navigator.serviceWorker.register("/share/sw.js").then((registration) => {
-      try{
-        registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
-        registration.update()
-      }catch(e){
-        console.error(e);
-      }
-    });
-
     //---------------------------securité page admin + deco + tuto---------------------------
 
 
@@ -433,6 +422,17 @@ export class common{
       }
     }
 
+    //-----------------------------------notif--------------------------
+
+    await navigator.serviceWorker.register("/share/sw.js").then((registration) => {
+      try{
+        registration.update().then(() => {
+          registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
+        })
+      }catch(e){
+        console.error(e);
+      }
+    });
     
 
     //--------------------------banderole--------------------------------
@@ -572,7 +572,14 @@ export class common{
   }
 
   static async registerServiceWorker() {
-    const registration = await navigator.serviceWorker.register("/share/sw.js");
+    const registration = await navigator.serviceWorker.register("/share/sw.js")
+    try{
+      registration.update().then(() => {
+        registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
+      })
+    }catch(e){
+      console.error(e);
+    }
     let subscription = await registration.pushManager.getSubscription();
     // L'utilisateur n'est pas déjà abonné, on l'abonne au notification push
     if (!subscription) {
