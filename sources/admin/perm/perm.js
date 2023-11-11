@@ -1,7 +1,7 @@
 const Day = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"]
 const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","13h-14h","14h-15h","15h-16h","16h-17h"]
 
-const listModePerm = ["Annuler","Sélection","Fermé","Ouvert à tous","Réservation","Vacances"]
+const listModePerm = ["Annuler","horaire non planifié","Sélection","Fermé","Ouvert à tous","Réservation","Vacances"]
 
 
 export async function init(common){
@@ -155,6 +155,10 @@ export async function init(common){
                 }
                 switch(ouvert[j][h]){
                     case 0:
+                        bouton[j][h].innerHTML = "horaire non planifié"
+                        bouton[j][h].className = "case perm default"
+                        break;
+                    case 1:
                         let str = ""
                         groupsInscrits.forEach(function (child) {
                             if(str != ""){
@@ -166,15 +170,15 @@ export async function init(common){
                             bouton[j][h].innerHTML = str
                         }
                         break;
-                    case 1:
+                    case 2:
                         bouton[j][h].innerHTML = "fermé"
                         bouton[j][h].className = "case perm red"
                         break;
-                    case 2:
+                    case 3:
                         bouton[j][h].innerHTML = "ouvert à tous"
                         bouton[j][h].className = "case perm green"
                         break;
-                    case 3:
+                    case 4:
                         bouton[j][h].innerHTML = "réservé"
                         bouton[j][h].className = "case perm yellow"
                         
@@ -187,7 +191,7 @@ export async function init(common){
                         });
                         if(str2!="") bouton[j][h].innerHTML = str2
                         break;
-                    case 4:
+                    case 5:
                         bouton[j][h].innerHTML = "vacances"
                         bouton[j][h].className = "case perm default"
                         break;

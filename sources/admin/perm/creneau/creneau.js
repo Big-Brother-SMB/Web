@@ -20,7 +20,7 @@ export async function init(common){
     w = parseInt(params.w)
   }
 
-  const listModePerm = ["Sélection","Fermé","Ouvert à tous","Réservation","Vacances"]
+  const listModePerm = ["horaire non planifié","Sélection","Fermé","Ouvert à tous","Réservation","Vacances"]
 
 
   let divSpecial = document.getElementById("divSpecial")

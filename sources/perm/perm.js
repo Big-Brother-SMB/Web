@@ -104,6 +104,10 @@ export async function init(common){
                 }
                 switch(ouvert[j][h]){
                     case 0:
+                        bouton[j][h].innerHTML = "horaire non planifié"
+                        bouton[j][h].className = "case perm default"
+                        break;
+                    case 1:
                         let str = ""
                         groupsInscrits.forEach(function (child) {
                             if(child == common.classe || common.groups.indexOf(child)!=-1){
@@ -118,15 +122,15 @@ export async function init(common){
                             bouton[j][h].innerHTML = str
                         }
                         break;
-                    case 1:
+                    case 2:
                         bouton[j][h].innerHTML = "fermé"
                         bouton[j][h].className = "case perm red"
                         break;
-                    case 2:
+                    case 3:
                         bouton[j][h].innerHTML = "ouvert à tous"
                         bouton[j][h].className = "case perm green"
                         break;
-                    case 3:
+                    case 4:
                         bouton[j][h].innerHTML = "réservé"
                         bouton[j][h].className = "case perm yellow"
                         
@@ -142,7 +146,7 @@ export async function init(common){
                         });
                         if(str2!="") bouton[j][h].innerHTML = str2
                         break;
-                    case 4:
+                    case 5:
                         bouton[j][h].innerHTML = "vacances"
                         bouton[j][h].className = "case perm default"
                         break;
@@ -153,7 +157,7 @@ export async function init(common){
     refreshDatabase();
 
     function select(j, h){
-        if (ouvert[j][h] == 0) {
+        if (ouvert[j][h] == 1) {
             common.loadpage("/perm/demande?j="+j+"&h="+h+"&w="+week)
         }
     }

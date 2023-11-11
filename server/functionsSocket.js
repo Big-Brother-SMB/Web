@@ -234,7 +234,7 @@ module.exports = class funcSocket{
             try{
                 let demande = await user.getPermDemande(req.w,req.j,req.h)
                 let ouvert = await funcDB.getPermOuvert(req.w,req.j,req.h)
-                if(demande.DorI!=true && (ouvert==0 || ouvert==null)){
+                if(demande.DorI!=true && ouvert==1){
                     await user.setPermDemande(req.w,req.j,req.h,req.group,req.nb)
                     socket.emit('setMyDemandePerm',"ok")
                 }
@@ -247,7 +247,7 @@ module.exports = class funcSocket{
             try{
                 let demande = await user.getPermDemande(req.w,req.j,req.h)
                 let ouvert = await funcDB.getPermOuvert(req.w,req.j,req.h)
-                if(demande.DorI!=true && (ouvert==0 || ouvert==null)){
+                if(demande.DorI!=true && ouvert==1){
                     await user.delPermDemande(req.w,req.j,req.h)
                     socket.emit('delMyDemandePerm',"ok")
                 }
