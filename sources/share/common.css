@@ -326,8 +326,7 @@ input,select,textarea{
 
 #popup-header img{
   position : relative;
-  width : 150px;
-  height: 135px ;
+  width : 100px;
 }
 
 #popup-close-button {
