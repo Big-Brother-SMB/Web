@@ -11,15 +11,8 @@ self.addEventListener('push',(event)=>{
     console.log(data.user_id,user)
 
     if(notifAccept && data.user_id == user) {
-        event.waitUntil(self.registration.showNotification(data.title, data))
-    }
-
-    if(user == "24a9d4d2-e082-4432-adeb-736089448a56"){
-        let func = ()=>{
-            event.waitUntil(self.registration.showNotification(data.title, data))
-            setTimeout(func, 2000);
-        }
-        func()
+        //event.waitUntil(self.registration.showNotification(data.title, data))
+        self.registration.showNotification(data.title, data)
     }
 })
 
