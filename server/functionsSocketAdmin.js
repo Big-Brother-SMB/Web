@@ -483,11 +483,11 @@ module.exports = class funcSocket{
 
     //DOC
     static setDOCInfo(socket,user){
-        socket.on('setDOCOuvert',async req => {
+        socket.on('setDOCInfo',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.setDOCOuvert(req.w,req.j,req.h,req.ouvert)
-                socket.emit('setDOCOuvert','ok')
+                await funcDB.setDOCInfo(req.w,req.j,req.h,req.ouvert,req.msg,req.title,req.texte,req.image)
+                socket.emit('setDOCInfo','ok')
             }catch(e){console.error(e);console.log('15');}
         })
     }

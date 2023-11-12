@@ -91,6 +91,9 @@ export async function init(common){
                     case 1:
                         let str = ""
                         allHorairePerm.listDemandes[j][h].forEach(function (child) {
+                            if(child == common.classe || common.groups.indexOf(child)!=-1){
+                                bouton[j][h].className = "case perm green"
+                            }
                             if(str != ""){
                                 str += ", "
                             }

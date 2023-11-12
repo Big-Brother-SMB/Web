@@ -1,0 +1,10 @@
+@media screen and (min-width: 1000px) {
+    .case.perm{
+        width: 9.5%;
+    }
+}
+
+.case.info.heure.jour{
+    visibility: visible;
+    background-color: coral;
+}

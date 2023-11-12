@@ -603,7 +603,7 @@ module.exports = class funcDB{
           if(data!=undefined){
             resolve(data)
           }else{
-            resolve(null)
+            resolve({semaine:semaine,day:day,creneau:creneau,ouvert:0,msg:"",title:"",texte:"",image:""})
           }
         }catch(e){console.error(e);console.log('a2');;resolve(null)}
       })

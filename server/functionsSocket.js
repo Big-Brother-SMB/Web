@@ -473,9 +473,6 @@ module.exports = class funcSocket{
                     DOCInfo.push([])
                     for (let h = 0; h < 9; h++) {
                         let ouv = await funcDB.getDOCInfo(req.w,j,h)
-                        if (ouv == null){
-                            ouv = 0
-                        }
                         DOCInfo[j].push(ouv)
                     }
                 }
