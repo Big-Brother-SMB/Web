@@ -39,6 +39,7 @@ export async function init(common){
             if(j == 2 && h >3){
                 bouton[j][h].style.visibility = "hidden";
             }
+            bouton[j][h].onclick = function () { select(j, h) };
             bouton[j][h].className = "case perm default"
             div.appendChild(bouton[j][h]);
 
@@ -116,4 +117,20 @@ export async function init(common){
         }
     }
     refreshDatabase();
+
+    function select(j, h){
+        let title = allHorairePerm[j][h].title
+        if(title == undefined || title == null){
+            title=""
+        }
+        let texte = allHorairePerm[j][h].texte
+        if(texte == undefined || texte == null){
+            texte=""
+        }
+        if ((allHorairePerm[j][h].ouvert == 1 || allHorairePerm[j][h].ouvert == 2) && (title != "" || texte != "")) {
+            common.popUp_Active(title,texte.replaceAll("\n","<br>"),(btn)=>{
+                btn.parentNode.removeChild(btn)
+            })
+        }
+    }
 }
