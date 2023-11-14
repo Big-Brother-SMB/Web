@@ -39,7 +39,8 @@ div.presentation,.imgAsso{
     word-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+}
+
 .presentation p.noms{
     margin-top: 1.5rem;
     text-align: right !important;
