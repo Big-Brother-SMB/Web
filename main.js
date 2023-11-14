@@ -53,7 +53,8 @@ let mimeTypes = {
   '.xml': 'application/xml',
   '.txt': 'text/plain',
   '.pdf': 'application/pdf',
-  '.json': 'application/json'
+  '.json': 'application/json',
+  '.jpeg': 'image/jpeg'
 };
 
 function mimeTypesFunc(extName){

@@ -1,7 +1,7 @@
-@import url('https://fonts.cdnfonts.com/css/technology');
 body{
-    background-image: url("/asso/humanitaire/Images/fond.png");
-    background-color: white;
+    background: center / contain no-repeat url("/asso/humanitaire/Images/fond.jpeg");
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 footer{
@@ -16,8 +16,8 @@ div.presentation,.imgAsso{
     padding: 7px;
     border-radius: 30px;
     border: rgb(71, 71, 71) solid 2px;
-    background-color: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(5px);
+    background-color: rgba(148, 148, 148, 0.3);
+    backdrop-filter: blur(8px);
 }
 
 .galerie{
@@ -27,19 +27,24 @@ div.presentation,.imgAsso{
 }
 
 .presentation p{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     margin: 1.3rem auto;
     text-align: justify !important;
-    font-size: 1.3rem !important;  
+    font-size: 1.5rem !important;  
     width: 90%;
 
-    /*text-indent: 45px;*/
+    text-indent: 45px;
 
     white-space: break-spaces;
     word-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+.presentation p.noms{
+    margin-top: 1.5rem;
+    text-align: right !important;
+    text-indent: 0px;
+}
 
 .imgAsso{
     width: 300px;
@@ -71,8 +76,9 @@ a:hover {
 }
 
 h2{
-    /*font-family: 'Technology', sans-serif !important;*/
-    font-size: 4rem;
-    color: rgb(189, 0, 0);
-    /*text-shadow: -2px 0 rgba(0, 128, 0, 0.4), 0 2px rgba(0, 128, 0, 0.4), 2px 0 rgba(0, 128, 0, 0.4), 0 -2px rgba(0, 128, 0, 0.4);*/
+    font-family: 'Fira Sans',sans-serif !important;
+    font-weight: bolder;
+    font-size: 3rem;
+    color: rgb(227, 230, 62);
+    text-shadow: -2px 0 rgb(17, 114, 4), 0 2px rgb(17, 114, 4), 2px 0 rgb(17, 114, 4), 0 -2px rgb(17, 114, 4);
 }
