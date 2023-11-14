@@ -1,0 +1,8 @@
+#popup-body {
+    font-size : 1.7rem !important;
+}
+
+#popup-body from input[type="checkbox"]{
+    height: 25px;
+    width: 25px;
+}
