@@ -388,10 +388,12 @@ module.exports = class funcDB{
   }
 
 
-  
-  static getLocalisation(semaine,jour,creneau){
+  //lieu
+  static getAllLieu(semaine,day,creneau){
+    console.log(semaine,day,creneau)
     return new Promise(function(resolve, reject) {
-      db.all("SELECT * FROM localisation where semaine=? and jour=? and creneau=?",[semaine,jour,creneau], (err, data) => {
+      db.all("SELECT * FROM lieu_list where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
+        console.log(data)
         try {
           if(data!=undefined){
             resolve(data)
@@ -404,18 +406,33 @@ module.exports = class funcDB{
     })
   }
 
-  static setLocalisation(uuid,lieu,semaine,jour,creneau){
-    db.get("SELECT * FROM localisation where uuid=? and semaine=? and jour=? and creneau=?",[uuid,semaine,jour,creneau], (err, data) => {
+  static getLieu(lieu,semaine,day,creneau){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM lieu_list where lieu=? and semaine=? and day=? and creneau=?",[lieu,semaine,day,creneau], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
+  static setLieu(uuid,lieu,semaine,day,creneau,scan){
+    db.get("SELECT * FROM lieu_list where uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau], (err, data) => {
       if(data==undefined){
-        db.run("INSERT INTO localisation(uuid,lieu,semaine,jour,creneau) VALUES (?,?,?,?,?)",[uuid,lieu,semaine,jour,creneau])
+        db.run("INSERT INTO lieu_list(uuid,lieu,semaine,day,creneau,scan) VALUES (?,?,?,?,?,?)",[uuid,lieu,semaine,day,creneau,scan])
       } else{
-        db.run("UPDATE localisation SET lieu=? where uuid=? and semaine=? and jour=? and creneau=?",[lieu,uuid,semaine,jour,creneau])
+        db.run("UPDATE lieu_list SET lieu=?,scan=? where uuid=? and semaine=? and day=? and creneau=?",[lieu,scan,uuid,semaine,day,creneau])
       }
     })
   }
 
-  static delLocalisation(uuid,semaine,jour,creneau){
-    db.run("DELETE FROM localisation WHERE uuid=? and semaine=? and jour=? and creneau=?",[uuid,semaine,jour,creneau])
+  static delLieu(uuid,semaine,day,creneau){
+    db.run("DELETE FROM lieu_list WHERE uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau])
   }
 
 

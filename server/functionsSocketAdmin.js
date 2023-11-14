@@ -412,30 +412,39 @@ module.exports = class funcSocket{
         });
     }
 
-    static getLocalisation(socket,user){
+    static getAllLieu(socket,user){
         socket.on("getLocalisation", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("getLocalisation",await funcDB.getLocalisation(req.w,req.j,req.h))
+                socket.emit("getLocalisation",await funcDB.getAllLieu(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('49');}
         });
     }
 
-    static setLocalisation(socket,user){
+    static getLieu(socket,user){
+        socket.on("getLieu", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("getLieu",await funcDB.getLieu(req.lieu,req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('49');}
+        });
+    }
+
+    static setLieu(socket,user){
         socket.on("setLocalisation", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.setLocalisation(req.uuid,req.lieu,req.w,req.j,req.h)
+                await funcDB.setLieu(req.uuid,req.lieu,req.w,req.j,req.h,req.scan)
                 socket.emit("setLocalisation",'ok')
             }catch(e){console.error(e);console.log('50');}
         });
     }
 
-    static delLocalisation(socket,user){
+    static delLieu(socket,user){
         socket.on("delLocalisation", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.delLocalisation(req.uuid,req.w,req.j,req.h)
+                await funcDB.delLieu(req.uuid,req.w,req.j,req.h)
                 socket.emit("delLocalisation","ok")
             }catch(e){console.error(e);console.log('51');}
         });

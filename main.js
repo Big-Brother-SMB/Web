@@ -246,9 +246,10 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
       funcSocketAdmin.pyScanVersion(socket,user)
 
-      funcSocketAdmin.getLocalisation(socket,user)
-      funcSocketAdmin.setLocalisation(socket,user)
-      funcSocketAdmin.delLocalisation(socket,user)
+      funcSocketAdmin.getAllLieu(socket,user)
+      funcSocketAdmin.getLieu(socket,user)
+      funcSocketAdmin.setLieu(socket,user)
+      funcSocketAdmin.delLieu(socket,user)
 
       funcSocketAdmin.getAllResultsMenu(socket,user)
 

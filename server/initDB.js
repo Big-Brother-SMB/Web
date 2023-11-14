@@ -109,12 +109,6 @@ module.exports = (db)=>{
         db.run('CREATE TABLE ban(id uuid,uuid uuid,debut Date,fin Date,justificatif text)')
     })
 
-    //localisation
-    db.get("SELECT * FROM sqlite_master where type='table' AND name='localisation'", (err, data) => {
-      if(data==undefined)
-        db.run('CREATE TABLE localisation(uuid uuid,lieu text,semaine int2,jour int2,creneau int2)')
-    })
-
     //post 
     db.get("SELECT * FROM sqlite_master where type='table' AND name='post'", (err, data) => {
       if(data==undefined)
@@ -135,10 +129,14 @@ module.exports = (db)=>{
         db.run('CREATE TABLE CDI_list(semaine int2,day int2,creneau int2,group2 text)')
     })
 
-    //DOC
-    db.get("SELECT * FROM sqlite_master where type='table' AND name='DOC_info'", (err, data) => {
+    //LIEU
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='lieu_info'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE DOC_info(semaine int2,day int2,creneau int2,ouvert int2,msg text,title text,texte text,image text)')
+        db.run('CREATE TABLE lieu_info(lieu text,semaine int2,day int2,creneau int2,ouvert int2,msg text,title text,texte text,places int2)')
+    })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='lieu_list'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE lieu_list(uuid uuid,lieu text,semaine int2,day int2,creneau int2,scan bool)')
     })
 
     // pdf

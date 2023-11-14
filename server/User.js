@@ -748,6 +748,23 @@ module.exports = class User{
     return false
   }
 
+  //lieu
+  static getLieu(semaine,day,creneau){
+    let uuid=this.uuid
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM lieu_list where uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve(null)
+          }
+        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
+
   //messagerie
   getAllMessages(){
     let uuid=this.uuid
