@@ -48,6 +48,7 @@ export async function init(common){
             if(j == 2 && h >3){
                 bouton[j][h].style.visibility = "hidden";
             }
+            bouton[j][h].onclick = function () { select(j, h) };
             bouton[j][h].className = "case perm default"
             div.appendChild(bouton[j][h]);
 
@@ -97,28 +98,27 @@ export async function init(common){
                         bouton[j][h].className="case perm default"
                         break;
                     case 1:
-                        let str = ""
-                        /*allHorairePerm.listDemandes[j][h].forEach(function (child) {
-                            if(child == common.classe || common.groups.indexOf(child)!=-1){
-                                bouton[j][h].className = "case perm green"
-                            }
-                            if(str != ""){
-                                str += ", "
-                            }
-                            str += child.group2
-                        });*/
-                        if(str != ""){
+                        let str = ouvert[j][h].msg
+                        if(str != "" && str != undefined && str != null){
                             bouton[j][h].innerHTML = str
-                            bouton[j][h].className="case perm yellow"
                         }else{
-                            bouton[j][h].innerHTML="ouvert"
+                            bouton[j][h].innerHTML = "ouvert"
                         }
                         break;
                     case 2:
+                        bouton[j][h].className = "case perm yellow"
+                        let str2 = ouvert[j][h].msg
+                        if(str2 != "" && str2 != undefined && str2 != null){
+                            bouton[j][h].innerHTML = str2
+                        }else{
+                            bouton[j][h].innerHTML = "réservé"
+                        }
+                        break;
+                    case 3:
                         bouton[j][h].innerHTML = "fermé"
                         bouton[j][h].className = "case perm red"
                         break;
-                    case 3:
+                    case 4:
                         bouton[j][h].innerHTML = "vacances"
                         bouton[j][h].className = "case perm default"
                         break;
@@ -127,4 +127,20 @@ export async function init(common){
         }
     }
     refreshDatabase();
+
+    function select(j, h){
+        let title = ouvert[j][h].title
+        if(title == undefined || title == null){
+            title=""
+        }
+        let texte = ouvert[j][h].texte
+        if(texte == undefined || texte == null){
+            texte=""
+        }
+        if ((ouvert[j][h].ouvert == 1 || ouvert[j][h].ouvert == 2 || ouvert[j][h].ouvert == 3) && (title != "" || texte != "")) {
+            common.popUp_Active(title,texte.replaceAll("\n","<br>"),(btn)=>{
+                btn.parentNode.removeChild(btn)
+            })
+        }
+    }
 }

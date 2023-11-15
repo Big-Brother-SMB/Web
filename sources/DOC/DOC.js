@@ -91,24 +91,32 @@ export async function init(common){
                         let str = allHorairePerm[j][h].msg
                         if(str != "" && str != undefined && str != null){
                             bouton[j][h].innerHTML = str
-                            //bouton[j][h].className="case perm yellow"
                         }else{
-                            bouton[j][h].innerHTML="ouvert aux<br>terminals"
+                            bouton[j][h].innerHTML = "ouvert"
                         }
                         break;
                     case 2:
+                        bouton[j][h].className = "case perm yellow"
                         let str2 = allHorairePerm[j][h].msg
-                        if(str2 == "" || str2 == undefined || str2 == null){
-                            str2 = ""
+                        if(str2 != "" && str2 != undefined && str2 != null){
+                            bouton[j][h].innerHTML = str2
+                        }else{
+                            bouton[j][h].innerHTML = "réservé"
                         }
-                        bouton[j][h].innerHTML = "Alumni<br>" + str2
-                        bouton[j][h].className = "case perm demande"
                         break;
                     case 3:
+                        let str3 = allHorairePerm[j][h].msg
+                        if(str3 == "" || str3 == undefined || str3 == null){
+                            str3 = ""
+                        }
+                        bouton[j][h].innerHTML = "Alumni<br>" + str3
+                        bouton[j][h].className = "case perm demande"
+                        break;
+                    case 4:
                         bouton[j][h].innerHTML = "fermé"
                         bouton[j][h].className = "case perm red"
                         break;
-                    case 4:
+                    case 5:
                         bouton[j][h].innerHTML = "vacances"
                         bouton[j][h].className = "case perm default"
                         break;
@@ -127,7 +135,7 @@ export async function init(common){
         if(texte == undefined || texte == null){
             texte=""
         }
-        if ((allHorairePerm[j][h].ouvert == 1 || allHorairePerm[j][h].ouvert == 2) && (title != "" || texte != "")) {
+        if ((allHorairePerm[j][h].ouvert == 1 || allHorairePerm[j][h].ouvert == 2 || allHorairePerm[j][h].ouvert == 3) && (title != "" || texte != "")) {
             common.popUp_Active(title,texte.replaceAll("\n","<br>"),(btn)=>{
                 btn.parentNode.removeChild(btn)
             })

@@ -22,10 +22,10 @@ export async function init(common){
                 let listModePerm = []
                 switch(info[0][0].lieu){
                     case "CDI":
-                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Fermé","Vacances"]
+                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
                         break;
                     case "DOC":
-                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Alumni","Fermé","Vacances"]
+                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Alumni","Fermé","Vacances"]
                         break;
                 }
                 for(const i in listModePerm){
@@ -168,26 +168,27 @@ export async function init(common){
                                 bouton[j][h].className="case perm default"
                                 break;
                             case 1:
-                                //let str = ""+listEleves[j][h].length
-                                /*allHoraire.listDemandes[j][h].forEach(function (child) {
-                                    if(str != ""){
-                                        str += ", "
-                                    }
-                                    str += child.group2
-                                });
-                                if(str != ""){
+                                let str = info[j][h].msg
+                                if(str != "" && str != undefined && str != null){
                                     bouton[j][h].innerHTML = str
-                                    bouton[j][h].className="case perm yellow"
                                 }else{
-                                    bouton[j][h].innerHTML="ouvert"
-                                }*/
-                                bouton[j][h].innerHTML="ouvert"
+                                    bouton[j][h].innerHTML = "ouvert"
+                                }
                                 break;
                             case 2:
+                                bouton[j][h].className = "case perm yellow"
+                                let str2 = info[j][h].msg
+                                if(str2 != "" && str2 != undefined && str2 != null){
+                                    bouton[j][h].innerHTML = str2
+                                }else{
+                                    bouton[j][h].innerHTML = "réservé"
+                                }
+                                break;
+                            case 3:
                                 bouton[j][h].innerHTML = "fermé"
                                 bouton[j][h].className = "case perm red"
                                 break;
-                            case 3:
+                            case 4:
                                 bouton[j][h].innerHTML = "vacances"
                                 bouton[j][h].className = "case perm default"
                                 break;
@@ -203,24 +204,32 @@ export async function init(common){
                                 let str = info[j][h].msg
                                 if(str != "" && str != undefined && str != null){
                                     bouton[j][h].innerHTML = str
-                                    //bouton[j][h].className="case perm yellow"
                                 }else{
-                                    bouton[j][h].innerHTML="ouvert aux<br>terminals"
+                                    bouton[j][h].innerHTML = "ouvert"
                                 }
                                 break;
                             case 2:
+                                bouton[j][h].className = "case perm yellow"
                                 let str2 = info[j][h].msg
-                                if(str2 == "" || str2 == undefined || str2 == null){
-                                    str2 = ""
+                                if(str2 != "" && str2 != undefined && str2 != null){
+                                    bouton[j][h].innerHTML = str2
+                                }else{
+                                    bouton[j][h].innerHTML = "réservé"
                                 }
-                                bouton[j][h].innerHTML = "Alumni<br>" + str2
-                                bouton[j][h].className = "case perm demande"
                                 break;
                             case 3:
+                                let str3 = info[j][h].msg
+                                if(str3 == "" || str3 == undefined || str3 == null){
+                                    str3 = ""
+                                }
+                                bouton[j][h].innerHTML = "Alumni<br>" + str3
+                                bouton[j][h].className = "case perm demande"
+                                break;
+                            case 4:
                                 bouton[j][h].innerHTML = "fermé"
                                 bouton[j][h].className = "case perm red"
                                 break;
-                            case 4:
+                            case 5:
                                 bouton[j][h].innerHTML = "vacances"
                                 bouton[j][h].className = "case perm default"
                                 break;

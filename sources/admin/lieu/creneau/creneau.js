@@ -19,7 +19,7 @@ export async function init(common){
   }
   if(params.lieu!=null){
     lieu = params.lieu
-    document.getElementById('title').innerHTML=lieu
+    document.getElementById('title').innerHTML="Selection " + lieu
   }
   document.getElementById("btn_retour").classList.remove("cache")
   document.getElementById("btn_retour").setAttribute("url","/admin/lieu?lieu="+lieu)
@@ -35,10 +35,10 @@ export async function init(common){
   let listModePerm = []
   switch(info.lieu){
       case "CDI":
-          listModePerm = ["horaire non planifié","Ouvert","Fermé","Vacances"]
+          listModePerm = ["horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
           break;
       case "DOC":
-          listModePerm = ["horaire non planifié","Ouvert","Alumni","Fermé","Vacances"]
+          listModePerm = ["horaire non planifié","Ouvert","Réservé","Alumni","Fermé","Vacances"]
           break;
   }
   for(let i in listModePerm){
