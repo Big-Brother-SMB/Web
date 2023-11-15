@@ -5,6 +5,14 @@ const listModePerm = ["Annuler","horaire non planifié","Ouvert","Fermé","Vacan
 
 
 export async function init(common){
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+    let lieu = ""
+    if(params.lieu!=null){
+        lieu = parseInt(params.lieu)
+    }
+    
     let bouton = []
     let ouvert = []
 
@@ -77,20 +85,20 @@ export async function init(common){
         }
 
 
-        let allHorairePerm = await common.socketAsync("allHoraireCDI",{w:week})
-        ouvert = allHorairePerm.ouvert
+        let allHorairePerm = await common.socketAsync("allHoraireLieu",{lieu:"CDI",w:week})
+        ouvert = allHorairePerm.info
 
         for (let j = 0; j < 5; j++) {
             for (let h = 0; h < 9; h++) {
                 bouton[j][h].className = "case perm blue"
-                switch(ouvert[j][h]){
+                switch(ouvert[j][h].ouvert){
                     case 0:
                         bouton[j][h].innerHTML = "horaire non planifié"
                         bouton[j][h].className="case perm default"
                         break;
                     case 1:
                         let str = ""
-                        allHorairePerm.listDemandes[j][h].forEach(function (child) {
+                        /*allHorairePerm.listDemandes[j][h].forEach(function (child) {
                             if(child == common.classe || common.groups.indexOf(child)!=-1){
                                 bouton[j][h].className = "case perm green"
                             }
@@ -98,7 +106,7 @@ export async function init(common){
                                 str += ", "
                             }
                             str += child.group2
-                        });
+                        });*/
                         if(str != ""){
                             bouton[j][h].innerHTML = str
                             bouton[j][h].className="case perm yellow"

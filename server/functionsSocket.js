@@ -418,18 +418,10 @@ module.exports = class funcSocket{
     }
 
     //CDI
-    static getCDIOuvert(socket,user){
-        socket.on("getCDIOuvert", async req => {
+    static getCDIGroups(socket,user){
+        socket.on('getCDIGroups', async req => {
             try{
-                socket.emit("getCDIOuvert",await funcDB.getCDIOuvert(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b19');}
-        });
-    }
-
-    static listCDIDemandes(socket,user){
-        socket.on('listCDIDemandes', async req => {
-            try{
-                socket.emit('listCDIDemandes',await funcDB.listCDIDemandes(req.w,req.j,req.h))
+                socket.emit('getCDIGroups',await funcDB.getCDIGroups(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b18');}
         });
     }
@@ -437,46 +429,68 @@ module.exports = class funcSocket{
     static allHoraireCDI(socket,user){
         socket.on('allHoraireCDI', async req => {
             try{
-                let listDemandes = []
-                let ouvert = []
+                let listGroups = []
                 for (let j = 0; j < 5; j++) {
-                    listDemandes.push([])
-                    ouvert.push([])
+                    listGroups.push([])
                     for (let h = 0; h < 9; h++) {
-                        listDemandes[j].push(await funcDB.listCDIDemandes(req.w,j,h))
-                        let ouv = await funcDB.getCDIOuvert(req.w,j,h)
-                        if (ouv == null){
-                            ouv = 0
-                        }
-                        ouvert[j].push(ouv)
+                        listGroups[j].push(await funcDB.getCDIGroups(req.w,j,h))
                     }
                 }
-                socket.emit('allHoraireCDI',{listDemandes:listDemandes,ouvert:ouvert})
+                socket.emit('allHoraireCDI',listGroups)
             }catch(e){console.error(e);console.log('b27');}
         });
     }
 
-    //DOC
-    static getDOCInfo(socket,user){
-        socket.on("getDOCInfo", async req => {
+    //Lieu
+    static getMyLieu(socket,user){
+        socket.on("getMyLieu", async req => {
             try{
-                socket.emit("getDOCInfo",await funcDB.getDOCInfo(req.w,req.j,req.h))
+                socket.emit("getMyLieu",await user.getLieu(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b19');}
         });
     }
 
-    static allHoraireDOC(socket,user){
-        socket.on('allHoraireDOC', async req => {
+    static setMyLieu(socket,user){
+        socket.on("setMyLieu", async req => {
             try{
-                let DOCInfo = []
+                await user.setLieu(req.lieu,req.w,req.j,req.h)
+                socket.emit("setMyLieu","ok")
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+    static getLieuList(socket,user){
+        socket.on("getLieuList", async req => {
+            try{
+                socket.emit("getLieuList",await funcDB.getLieuList(req.lieu,req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+    static getLieuInfo(socket,user){
+        socket.on("getLieuInfo", async req => {
+            try{
+                socket.emit("getLieuInfo",await funcDB.getLieuInfo(req.lieu,req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+    static allHoraireLieu(socket,user){
+        socket.on('allHoraireLieu', async req => {
+            try{
+                let LieuInfo = []
+                let inscriptions = []
                 for (let j = 0; j < 5; j++) {
-                    DOCInfo.push([])
+                    LieuInfo.push([])
+                    inscriptions.push([])
                     for (let h = 0; h < 9; h++) {
-                        let ouv = await funcDB.getDOCInfo(req.w,j,h)
-                        DOCInfo[j].push(ouv)
+                        let ouv = await funcDB.getLieuInfo(req.lieu,req.w,j,h)
+                        LieuInfo[j].push(ouv)
+                        let inscription = await funcDB.getLieuList(req.lieu,req.w,j,h)
+                        inscriptions[j].push(inscription)
                     }
                 }
-                socket.emit('allHoraireDOC',DOCInfo)
+                socket.emit('allHoraireLieu',{inscriptions:inscriptions,info:LieuInfo})
             }catch(e){console.error(e);console.log('b27');}
         });
     }

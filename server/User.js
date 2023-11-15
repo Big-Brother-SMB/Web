@@ -765,6 +765,17 @@ module.exports = class User{
     })
   }
 
+  static setLieu(lieu,semaine,day,creneau,scan){
+    let uuid=this.uuid
+    db.get("SELECT * FROM 'lieu_list' where uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau], (err, data) => {
+      if(data==undefined){
+        db.run("INSERT INTO lieu_list(uuid,lieu,semaine,day,creneau,scan) VALUES (?,?,?,?,?,?)",[uuid,lieu,semaine,day,creneau,scan])
+      } else{
+        db.run("UPDATE lieu_list SET lieu=?, scan=? where uuid=? and semaine=? and day=? and creneau=?",[lieu,scan,uuid,semaine,day,creneau])
+      }
+    })
+  }
+
   //messagerie
   getAllMessages(){
     let uuid=this.uuid

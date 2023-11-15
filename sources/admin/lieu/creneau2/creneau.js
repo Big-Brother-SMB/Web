@@ -1,15 +1,13 @@
 const nomNiveau = ["secondes","premières","terminales","adultes"]
 
 export async function init(common){
-  document.getElementById("btn_retour").classList.remove("cache")
-  document.getElementById("btn_retour").setAttribute("url","/admin/CDI")
-
   const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
   });
   let j = 0
   let h = 0
   let w = 0
+  let lieu = ""
   if(params.j!=null){
     j = parseInt(params.j)
   }
@@ -19,6 +17,11 @@ export async function init(common){
   if(params.w!=null){
     w = parseInt(params.w)
   }
+  if(params.lieu!=null){
+    lieu = params.lieu
+  }
+  document.getElementById("btn_retour").classList.remove("cache")
+  document.getElementById("btn_retour").setAttribute("url","/admin/lieu?lieu="+lieu)
 
   const listModePerm = ["horaire non planifié","Ouvert","Fermé","Vacances"]
 
@@ -35,15 +38,22 @@ export async function init(common){
     divMode.appendChild(opt);
   }
 
-  divMode.selectedIndex = await common.socketAsync("getCDIOuvert",{w:w,j:j,h:h})
+
+  let info = await common.socketAsync("getLieuInfo",{lieu:lieu,w:w,j:j,h:h})
+  info.w = w
+  info.j = j
+  info.h = h
+
+  divMode.selectedIndex = info.ouvert
   divMode.addEventListener("change", async function() {
-    await common.socketAdminAsync('setCDIOuvert',{w:w,j:j,h:h,ouvert:this.selectedIndex})
+    info.ouvert = this.selectedIndex
+    await common.socketAdminAsync('setLieuInfo',info)
   });
 
   //let listUsers = await common.socketAdminAsync('getListPass',null)
   let listInscrit = []
 
-  let listInscritBrut = await common.socketAsync("listCDIDemandes",{w:w,j:j,h:h})
+  let listInscritBrut = await common.socketAsync("getLieuList",{lieu:lieu,w:w,j:j,h:h})
   listInscritBrut.forEach(function(child) {
     listInscrit.push(child.group2)
   })

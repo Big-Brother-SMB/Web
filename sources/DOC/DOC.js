@@ -77,7 +77,7 @@ export async function init(common){
         }
 
 
-        allHorairePerm = await common.socketAsync("allHoraireDOC",{w:week})
+        allHorairePerm = (await common.socketAsync("allHoraireLieu",{lieu:"DOC",w:week})).info
 
         for (let j = 0; j < 5; j++) {
             for (let h = 0; h < 9; h++) {

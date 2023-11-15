@@ -568,30 +568,7 @@ module.exports = class funcDB{
 
 
   //CDI
-  static getCDIOuvert(semaine,day,creneau){
-    return new Promise(function(resolve, reject) {
-      db.get("SELECT * FROM CDI_info where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
-        try {
-          if(data!=undefined){
-            resolve(data.ouvert)
-          }else{
-            resolve(null)
-          }
-        }catch(e){console.error(e);console.log('a2');;resolve(null)}
-      })
-      setTimeout(reject,5000)
-    })
-  }
-  static setCDIOuvert(semaine,day,creneau,ouvert){
-    db.get("SELECT * FROM 'CDI_info' where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
-      if(data==undefined){
-        db.run("INSERT INTO CDI_info(ouvert,semaine,day,creneau) VALUES (?,?,?,?)",[ouvert,semaine,day,creneau])
-      } else{
-        db.run("UPDATE CDI_info SET ouvert=? where semaine=? and day=? and creneau=?",[ouvert,semaine,day,creneau])
-      }
-    })
-  }
-  static listCDIDemandes(semaine,day,creneau){
+  static getCDIGroups(semaine,day,creneau){
     return new Promise(function(resolve, reject) {
       db.all("SELECT * FROM CDI_list WHERE semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
         try {
@@ -605,35 +582,49 @@ module.exports = class funcDB{
       setTimeout(reject,5000)
     })
   }
-  static setCDIInscrit(semaine,day,creneau,groups){
+  static setCDIGroups(semaine,day,creneau,groups){
     db.run("delete from CDI_list where semaine=? and day=? and creneau=?",[semaine,day,creneau])
     groups.forEach(g=>{
       db.run("INSERT INTO CDI_list(semaine,day,creneau,group2) VALUES (?,?,?,?)",[semaine,day,creneau,g])
     })
   }
 
-  //DOC
-  static getDOCInfo(semaine,day,creneau){
+  //Lieu
+  static getLieuInfo(lieu,semaine,day,creneau){
     return new Promise(function(resolve, reject) {
-      db.get("SELECT * FROM DOC_info where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
+      db.get("SELECT * FROM lieu_info where lieu=? and semaine=? and day=? and creneau=?",[lieu,semaine,day,creneau], (err, data) => {
         try {
           if(data!=undefined){
             resolve(data)
           }else{
-            resolve({semaine:semaine,day:day,creneau:creneau,ouvert:0,msg:"",title:"",texte:"",image:""})
+            resolve({lieu:lieu,semaine:semaine,day:day,creneau:creneau,ouvert:0,msg:"",title:"",texte:""})
           }
         }catch(e){console.error(e);console.log('a2');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
   }
-  static setDOCInfo(semaine,day,creneau,ouvert,msg,title,texte,image){
-    db.get("SELECT * FROM 'DOC_info' where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
+  static setLieuInfo(lieu,semaine,day,creneau,ouvert,msg,title,texte,places){
+    db.get("SELECT * FROM 'lieu_info' where lieu=? and semaine=? and day=? and creneau=?",[lieu,semaine,day,creneau], (err, data) => {
       if(data==undefined){
-        db.run("INSERT INTO DOC_info(ouvert,msg,title,texte,image,semaine,day,creneau) VALUES (?,?,?,?,?,?,?,?)",[ouvert,msg,title,texte,image,semaine,day,creneau])
+        db.run("INSERT INTO lieu_info(ouvert,msg,title,texte,places,lieu,semaine,day,creneau) VALUES (?,?,?,?,?,?,?,?,?)",[ouvert,msg,title,texte,places,lieu,semaine,day,creneau])
       } else{
-        db.run("UPDATE DOC_info SET ouvert=?, msg=?, title=?, texte=?, image=? where semaine=? and day=? and creneau=?",[ouvert,msg,title,texte,image,semaine,day,creneau])
+        db.run("UPDATE lieu_info SET ouvert=?, msg=?, title=?, texte=?, places=? where lieu=? and semaine=? and day=? and creneau=?",[ouvert,msg,title,texte,places,lieu,semaine,day,creneau])
       }
+    })
+  }
+  static getLieuList(lieu,semaine,day,creneau){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM lieu_list where lieu=? and semaine=? and day=? and creneau=?",[lieu,semaine,day,creneau], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve([])
+          }
+        }catch(e){console.error(e);console.log('a2');;resolve(null)}
+      })
+      setTimeout(reject,5000)
     })
   }
 

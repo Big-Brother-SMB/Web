@@ -470,35 +470,34 @@ module.exports = class funcSocket{
 
 
     //CDI
-    static setCDIOuvert(socket,user){
-        socket.on('setCDIOuvert',async req => {
+    static setCDIGroups(socket,user){
+        socket.on('setCDIGroups',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.setCDIOuvert(req.w,req.j,req.h,req.ouvert)
-                socket.emit('setCDIOuvert','ok')
-            }catch(e){console.error(e);console.log('15');}
-        })
-    }
-
-    static setCDIInscrit(socket,user){
-        socket.on('setCDIInscrit',async req => {
-            if(await user.admin == 0 || await user.admin == null) return
-            try{
-                await funcDB.setCDIInscrit(req.w,req.j,req.h,req.groups)
-                socket.emit('setCDIInscrit','ok')
+                await funcDB.setCDIGroups(req.w,req.j,req.h,req.groups)
+                socket.emit('setCDIGroups','ok')
             }catch(e){console.error(e);console.log('17');}
         })
     }
 
-    //DOC
-    static setDOCInfo(socket,user){
-        socket.on('setDOCInfo',async req => {
+    //Lieu
+    static setLieuInfo(socket,user){
+        socket.on('setLieuInfo',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await funcDB.setDOCInfo(req.w,req.j,req.h,req.ouvert,req.msg,req.title,req.texte,req.image)
-                socket.emit('setDOCInfo','ok')
+                await funcDB.setLieuInfo(req.lieu,req.w,req.j,req.h,req.ouvert,req.msg,req.title,req.texte,req.places)
+                socket.emit('setLieuInfo','ok')
             }catch(e){console.error(e);console.log('15');}
         })
+    }
+
+    static setUserLieu(socket,user){
+        socket.on("setMyLieu", async req => {
+            try{
+                await User(req.uuid).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
+                socket.emit("setMyLieu","ok")
+            }catch(e){console.error(e);console.log('b19');}
+        });
     }
 
 
