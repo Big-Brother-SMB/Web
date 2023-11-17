@@ -87,7 +87,18 @@ export async function init(common){
         let allHoraire = await common.socketAsync("allHoraireLieu",{lieu:lieu,w:week})
         info = allHoraire.info
         listEleves = allHoraire.inscriptions
-
+        let myIncriptions = []
+        for (let j = 0; j < 5; j++) {
+            myIncriptions.push([])
+            for (let h = 0; h < 9; h++) {
+                myIncriptions[j].push(false)
+                for(const i in listEleves[j][h]){
+                    if(listEleves[j][h][i].uuid==common.uuid){
+                        myIncriptions[j][h]=true
+                    }
+                }
+            }
+        }
         for (let j = 0; j < 5; j++) {
             for (let h = 0; h < 9; h++) {
                 bouton[j][h].className = "case perm blue"
@@ -106,6 +117,9 @@ export async function init(common){
                                     bouton[j][h].innerHTML = str
                                 }else{
                                     bouton[j][h].innerHTML = "ouvert"
+                                }
+                                if(myIncriptions[j][h]){
+                                    bouton[j][h].className="case perm green"
                                 }
                                 bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
                                 break;
@@ -142,6 +156,9 @@ export async function init(common){
                                 }else{
                                     bouton[j][h].innerHTML = "ouvert"
                                 }
+                                if(myIncriptions[j][h]){
+                                    bouton[j][h].className="case perm green"
+                                }
                                 bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
                                 break;
                             case 2:
@@ -150,7 +167,7 @@ export async function init(common){
                                 if(str2 != "" && str2 != undefined && str2 != null){
                                     bouton[j][h].innerHTML = str2
                                 }else{
-                                    bouton[j][h].innerHTML = "réservé"
+                                    bouton[j][h].innerHTML = "occupé"
                                 }
                                 break;
                             case 3:

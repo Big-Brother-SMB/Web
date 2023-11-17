@@ -65,7 +65,7 @@ export async function init(common){
           break;
       case "DOC":
       case "Audio":
-          listModePerm = ["horaire non planifié","Ouvert","Réservé","Alumni","Fermé","Vacances"]
+          listModePerm = ["horaire non planifié","Ouvert","Occupé","Alumni","Fermé","Vacances"]
           break;
   }
   for(let i in listModePerm){

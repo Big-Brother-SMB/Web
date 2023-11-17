@@ -54,7 +54,7 @@ export async function init(common){
                         break;
                     case "DOC":
                     case "Audio":
-                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Alumni","Fermé","Vacances"]
+                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Occupé","Alumni","Fermé","Vacances"]
                         break;
                 }
                 for(const i in listModePerm){
@@ -71,7 +71,7 @@ export async function init(common){
                                 info[x][h].w = week
                                 info[x][h].j = x
                                 info[x][h].h = h
-                                info[x][h].places = defaultPlaces(x,h,lieu)
+                                if(info[x][h].places==null) info[x][h].places = defaultPlaces(x,h,lieu)
                                 info[x][h].ouvert = select.selectedIndex-1
                                 await common.socketAdminAsync('setLieuInfo',info[x][h])
                             }
@@ -82,7 +82,7 @@ export async function init(common){
                                 info[j][x].w = week
                                 info[j][x].j = j
                                 info[j][x].h = x
-                                info[j][x].places = defaultPlaces(j,x,lieu)
+                                if(info[j][x].places==null) info[j][x].places = defaultPlaces(j,x,lieu)
                                 info[j][x].ouvert = select.selectedIndex-1
                                 await common.socketAdminAsync('setLieuInfo',info[j][x])
                             }
@@ -94,7 +94,7 @@ export async function init(common){
                                     info[j][h].w = week
                                     info[j][h].j = j
                                     info[j][h].h = h
-                                    info[j][h].places = defaultPlaces(j,h,lieu)
+                                    if(info[j][h].places==null) info[j][h].places = defaultPlaces(j,h,lieu)
                                     info[j][h].ouvert = select.selectedIndex-1
                                     await common.socketAdminAsync('setLieuInfo',info[j][h])
                                 }
@@ -208,6 +208,7 @@ export async function init(common){
                                 }else{
                                     bouton[j][h].innerHTML = "ouvert"
                                 }
+                                bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
                                 break;
                             case 2:
                                 bouton[j][h].className = "case perm yellow"
@@ -242,6 +243,7 @@ export async function init(common){
                                 }else{
                                     bouton[j][h].innerHTML = "ouvert"
                                 }
+                                bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
                                 break;
                             case 2:
                                 bouton[j][h].className = "case perm yellow"
@@ -249,7 +251,7 @@ export async function init(common){
                                 if(str2 != "" && str2 != undefined && str2 != null){
                                     bouton[j][h].innerHTML = str2
                                 }else{
-                                    bouton[j][h].innerHTML = "réservé"
+                                    bouton[j][h].innerHTML = "occupé"
                                 }
                                 break;
                             case 3:
