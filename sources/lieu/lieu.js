@@ -93,7 +93,7 @@ export async function init(common){
             myIncriptions.push([])
             for (let h = 0; h < 9; h++) {
                 myIncriptions[j].push(false)
-                info[j][h].date = common.generedDate(week,j+1).getTime() < Date.now() && common.generedDate(week,j+1,listHoraires[h+1][0],listHoraires[h+1][1]).getTime() > Date.now()
+                info[j][h].date = common.generedDate(week,j+1,7,30).getTime() < Date.now() && common.generedDate(week,j+1,listHoraires[h+1][0],listHoraires[h+1][1]).getTime() > Date.now()
                 for(const i in listEleves[j][h]){
                     if(listEleves[j][h][i].uuid==common.uuid){
                         myIncriptions[j][h]=true

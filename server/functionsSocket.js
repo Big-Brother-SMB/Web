@@ -460,7 +460,7 @@ module.exports = class funcSocket{
                 let verifyPlaces = (info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
                 verifyPlaces = verifyPlaces && (req.lieu!="DOC" || (await user.classe)[0]=="T")
                 let myLieu = await user.getLieu(req.w,req.j,req.h)
-                if((myLieu==null || myLieu.scan!=1) && verifyPlaces && funcDate.generedDate(req.w,req.j+1,7,45).getTime() < Date.now()
+                if((myLieu==null || myLieu.scan!=1) && verifyPlaces && funcDate.generedDate(req.w,req.j+1,7,30).getTime() < Date.now()
                 && funcDate.generedDate(req.w,req.j+1,listHoraires[req.h+1][0],listHoraires[req.h+1][1]).getTime() > Date.now()){
                     await user.setLieu(req.lieu,req.w,req.j,req.h,0)
                 }
@@ -473,7 +473,7 @@ module.exports = class funcSocket{
         socket.on("delMyLieu", async req => {
             try{
                 let myLieu = await user.getLieu(req.w,req.j,req.h)
-                if((myLieu==null || myLieu.scan!=1) && funcDate.generedDate(req.w,req.j+1,7,45).getTime() < Date.now()
+                if((myLieu==null || myLieu.scan!=1) && funcDate.generedDate(req.w,req.j+1,7,30).getTime() < Date.now()
                 && funcDate.generedDate(req.w,req.j+1,listHoraires[req.h][0],listHoraires[req.h][1]).getTime() > Date.now()){
                     await user.delLieu(req.w,req.j,req.h)
                 }
@@ -497,7 +497,7 @@ module.exports = class funcSocket{
                 let amiLieu = await ami.getLieu(req.w,req.j,req.h)
                 let verifyPlaces = (info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
                 verifyPlaces = verifyPlaces && (req.lieu!="DOC" || (await ami.classe)[0]=="T")
-                if(hasPermission && (amiLieu==null || amiLieu.scan!=1) && verifyPlaces && funcDate.generedDate(req.w,req.j+1,7,45).getTime() < Date.now()
+                if(hasPermission && (amiLieu==null || amiLieu.scan!=1) && verifyPlaces && funcDate.generedDate(req.w,req.j+1,7,30).getTime() < Date.now()
                 && funcDate.generedDate(req.w,req.j+1,listHoraires[req.h+1][0],listHoraires[req.h+1][1]).getTime() > Date.now()){
                     await ami.setLieu(req.lieu,req.w,req.j,req.h,0)
                 }
@@ -518,7 +518,7 @@ module.exports = class funcSocket{
                 })
                 let ami = await new User(req.uuidAmi)
                 let amiLieu = await ami.getLieu(req.w,req.j,req.h)
-                if(hasPermission && (amiLieu==null || amiLieu.scan!=1) && funcDate.generedDate(req.w,req.j+1,7,45).getTime() < Date.now()
+                if(hasPermission && (amiLieu==null || amiLieu.scan!=1) && funcDate.generedDate(req.w,req.j+1,7,30).getTime() < Date.now()
                 && funcDate.generedDate(req.w,req.j+1,listHoraires[req.h][0],listHoraires[req.h][1]).getTime() > Date.now()){
                     await ami.delLieu(req.w,req.j,req.h)
                 }
