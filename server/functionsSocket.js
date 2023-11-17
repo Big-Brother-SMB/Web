@@ -162,7 +162,7 @@ module.exports = class funcSocket{
                     }
                 })
                 let ami = await new User(req.uuidAmi)
-                if((hasPermission && await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                if(hasPermission && (await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     ami.sendNotif("Dépôt d'une demande",
                         "Votre demande a été déposé par " + await user.first_name + " " + await user.last_name,
                         '/assets/nav_bar/midi.png',
@@ -185,7 +185,7 @@ module.exports = class funcSocket{
                     }
                 })
                 let ami = await new User(req.uuidAmi)
-                if((await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                if(hasPermission && (await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
                     ami.sendNotif("Suppression d'une demande",
                         "Votre demande a été supprimé par " + await user.first_name + " " + await user.last_name,
                         '/assets/nav_bar/midi.png',
@@ -400,6 +400,7 @@ module.exports = class funcSocket{
         });
     }
 
+    //notification
     static subscribeNotification(socket,user){
         socket.on('subscribeNotification', async req => {
             try{
@@ -417,7 +418,7 @@ module.exports = class funcSocket{
         });
     }
 
-    //CDI
+    /*//CDI
     static getCDIGroups(socket,user){
         socket.on('getCDIGroups', async req => {
             try{
@@ -439,9 +440,10 @@ module.exports = class funcSocket{
                 socket.emit('allHoraireCDI',listGroups)
             }catch(e){console.error(e);console.log('b27');}
         });
-    }
+    }*/
 
     //Lieu
+    //dépôt inscription
     static getMyLieu(socket,user){
         socket.on("getMyLieu", async req => {
             try{
@@ -453,17 +455,86 @@ module.exports = class funcSocket{
     static setMyLieu(socket,user){
         socket.on("setMyLieu", async req => {
             try{
-                await user.setLieu(req.lieu,req.w,req.j,req.h)
-                socket.emit("setMyLieu","ok")
+                let info = await funcDB.getLieuInfo(req.lieu,req.w,req.j,req.h)
+                let verifyPlaces =(info.places==0 || info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
+                let myLieu = await user.getLieu(req.w,req.j,req.h)
+                if((myLieu==null || myLieu.scan!=1) && verifyPlaces){
+                    await user.setLieu(req.lieu,req.w,req.j,req.h,0)
+                    socket.emit("setMyLieu","ok")
+                }
             }catch(e){console.error(e);console.log('b19');}
         });
     }
 
+    static delMyLieu(socket,user){
+        socket.on("delMyLieu", async req => {
+            try{
+                let myLieu = await user.getLieu(req.w,req.j,req.h)
+                if(myLieu==null || myLieu.scan!=1){
+                    await user.delLieu(req.w,req.j,req.h)
+                    socket.emit("delMyLieu","ok")
+                }
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+    static setAmiLieu(socket,user){
+        socket.on("setAmiLieu", async req => {
+            try{
+                let listAmisBrut = await user.amis
+                let hasPermission=false
+                listAmisBrut.forEach(child=>{
+                    if(req.uuidAmi==child.uuid && child.HeGiveMeProc==1){
+                        hasPermission=true
+                    }
+                })
+                let info = await funcDB.getLieuInfo(req.lieu,req.w,req.j,req.h)
+                let verifyPlaces = (info.places==0 || info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
+                let ami = await new User(req.uuidAmi)
+                let amiLieu = await ami.getLieu(req.w,req.j,req.h)
+                if(hasPermission && (amiLieu==null || amiLieu.scan!=1) && verifyPlaces){
+                    await ami.setLieu(req.lieu,req.w,req.j,req.h,0)
+                    socket.emit('setAmiLieu',"ok")
+                }
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+    static delAmiLieu(socket,user){
+        socket.on("delAmiLieu", async req => {
+            try{
+                let listAmisBrut = await user.amis
+                let hasPermission=false
+                listAmisBrut.forEach(child=>{
+                    if(req.uuidAmi==child.uuid && child.HeGiveMeProc==1){
+                        hasPermission=true
+                    }
+                })
+                let ami = await new User(req.uuidAmi)
+                let amiLieu = await ami.getLieu(req.w,req.j,req.h)
+                if(hasPermission && (amiLieu==null || amiLieu.scan!=1)){
+                    await ami.delLieu(req.w,req.j,req.h)
+                    socket.emit("delAmiLieu","ok")
+                }
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+
+    //obtenir list d'inscription + info
     static getLieuList(socket,user){
         socket.on("getLieuList", async req => {
             try{
                 socket.emit("getLieuList",await funcDB.getLieuList(req.lieu,req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+    static getAllLieuList(socket,user){
+        socket.on("getAllLieuList", async req => {
+            try{
+                socket.emit("getAllLieuList",await funcDB.getAllLieuList(req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('49');}
         });
     }
 

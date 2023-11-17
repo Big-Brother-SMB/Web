@@ -749,10 +749,10 @@ module.exports = class User{
   }
 
   //lieu
-  static getLieu(semaine,day,creneau){
+  getLieu(semaine,day,creneau){
     let uuid=this.uuid
     return new Promise(function(resolve, reject) {
-      db.all("SELECT * FROM lieu_list where uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau], (err, data) => {
+      db.get("SELECT * FROM lieu_list where uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau], (err, data) => {
         try {
           if(data!=undefined){
             resolve(data)
@@ -765,7 +765,7 @@ module.exports = class User{
     })
   }
 
-  static setLieu(lieu,semaine,day,creneau,scan){
+  setLieu(lieu,semaine,day,creneau,scan){
     let uuid=this.uuid
     db.get("SELECT * FROM 'lieu_list' where uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau], (err, data) => {
       if(data==undefined){
@@ -774,6 +774,10 @@ module.exports = class User{
         db.run("UPDATE lieu_list SET lieu=?, scan=? where uuid=? and semaine=? and day=? and creneau=?",[lieu,scan,uuid,semaine,day,creneau])
       }
     })
+  }
+
+  delLieu(semaine,day,creneau){
+    db.run("DELETE FROM lieu_list WHERE uuid=? and semaine=? and day=? and creneau=?",[this.uuid,semaine,day,creneau])
   }
 
   //messagerie

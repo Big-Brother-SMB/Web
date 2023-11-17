@@ -273,7 +273,7 @@ input,select,textarea{
 
   #mySidenav{
     border-right: #000000 solid 3px;
-    min-height: calc(var(--screenH) + 260px);
+    min-height: calc(var(--screenH) + 500px);
     width: 80px;
   }
 
@@ -285,7 +285,7 @@ input,select,textarea{
 .container{
   position: relative;
   width: 100%;
-  min-height: calc(var(--screenH) + 260px);
+  min-height: calc(var(--screenH) + 500px);
 }
 
 

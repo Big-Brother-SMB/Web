@@ -29,15 +29,42 @@ export async function init(common){
   info.w = w
   info.j = j
   info.h = h
+  if(info.places==null || info.places==undefined){
+    switch(lieu){
+        case "CDI":
+          info.places = 0
+          break;
+        case "Aumonerie":
+          info.places = 15
+          break;
+        case "DOC":
+            if(j != 2 && (h == 5 || h == 4)){
+              info.places = 10
+            }else{
+              info.places = 18
+            }
+            break;
+        case "Audio":
+          info.places = 15
+          break;
+        case "Tutorat":
+          info.places = 15
+          break;
+    }
+    await common.socketAdminAsync('setLieuInfo',info)
+  }
 
 
   let divMode = document.getElementById("mode")
   let listModePerm = []
   switch(info.lieu){
+      case "Aumonerie":
+      case "Tutorat":
       case "CDI":
           listModePerm = ["horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
           break;
       case "DOC":
+      case "Audio":
           listModePerm = ["horaire non planifié","Ouvert","Réservé","Alumni","Fermé","Vacances"]
           break;
   }
@@ -72,6 +99,13 @@ export async function init(common){
   texte.value = info.texte
   texte.addEventListener("input", async function() {
     info.texte = this.value
+    await common.socketAdminAsync('setLieuInfo',info)
+  });
+
+  let places = document.getElementById("places")
+  places.value = info.places
+  places.addEventListener("input", async function() {
+    info.places = this.value
     await common.socketAdminAsync('setLieuInfo',info)
   });
 }

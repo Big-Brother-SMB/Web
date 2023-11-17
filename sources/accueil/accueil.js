@@ -94,7 +94,7 @@ export async function init(common){
 
             let titre = document.createElement("p")
             titre.className="titre"
-            titre.innerHTML='Banni:'
+            titre.innerHTML='Banni du Foyer:'
             div.appendChild(titre)
 
             let date = document.createElement("p")

@@ -412,44 +412,6 @@ module.exports = class funcSocket{
         });
     }
 
-    static getAllLieu(socket,user){
-        socket.on("getLocalisation", async req => {
-            if(await user.admin == 0 || await user.admin == null) return
-            try{
-                socket.emit("getLocalisation",await funcDB.getAllLieu(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('49');}
-        });
-    }
-
-    static getLieu(socket,user){
-        socket.on("getLieu", async req => {
-            if(await user.admin == 0 || await user.admin == null) return
-            try{
-                socket.emit("getLieu",await funcDB.getLieu(req.lieu,req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('49');}
-        });
-    }
-
-    static setLieu(socket,user){
-        socket.on("setLocalisation", async req => {
-            if(await user.admin == 0 || await user.admin == null) return
-            try{
-                await funcDB.setLieu(req.uuid,req.lieu,req.w,req.j,req.h,req.scan)
-                socket.emit("setLocalisation",'ok')
-            }catch(e){console.error(e);console.log('50');}
-        });
-    }
-
-    static delLieu(socket,user){
-        socket.on("delLocalisation", async req => {
-            if(await user.admin == 0 || await user.admin == null) return
-            try{
-                await funcDB.delLieu(req.uuid,req.w,req.j,req.h)
-                socket.emit("delLocalisation","ok")
-            }catch(e){console.error(e);console.log('51');}
-        });
-    }
-
     static pyScanVersion(socket,user){
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
@@ -469,7 +431,7 @@ module.exports = class funcSocket{
     }
 
 
-    //CDI
+   /* //CDI
     static setCDIGroups(socket,user){
         socket.on('setCDIGroups',async req => {
             if(await user.admin == 0 || await user.admin == null) return
@@ -478,7 +440,7 @@ module.exports = class funcSocket{
                 socket.emit('setCDIGroups','ok')
             }catch(e){console.error(e);console.log('17');}
         })
-    }
+    }*/
 
     //Lieu
     static setLieuInfo(socket,user){
@@ -492,11 +454,30 @@ module.exports = class funcSocket{
     }
 
     static setUserLieu(socket,user){
-        socket.on("setMyLieu", async req => {
+        socket.on("setUserLieu", async req => {
             try{
-                await User(req.uuid).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
-                socket.emit("setMyLieu","ok")
+                await (new User(req)).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
+                socket.emit("setUserLieu","ok")
             }catch(e){console.error(e);console.log('b19');}
+        });
+    }
+
+    static getUserLieu(socket,user){
+        socket.on("getUserLieu", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit("getUserLieu",await (new User(req)).getLieu(req.w,req.j,req.h))
+            }catch(e){console.error(e);console.log('49');}
+        });
+    }
+
+    static delUserLieu(socket,user){
+        socket.on("delUserLieu", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await (new User(req)).delLieu(req.w,req.j,req.h)
+                socket.emit("delUserLieu",'ok')
+            }catch(e){console.error(e);console.log('50');}
         });
     }
 

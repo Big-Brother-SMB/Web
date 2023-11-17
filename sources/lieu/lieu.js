@@ -11,103 +11,6 @@ export async function init(common){
         document.getElementById('title').innerHTML=lieu
     }
 
-    function defaultPlaces(j,h,lieu){
-        let defaultPlaces = 0
-        switch(lieu){
-            case "CDI":
-                defaultPlaces = 0
-                break;
-            case "Aumonerie":
-                defaultPlaces = 15
-                break;
-            case "DOC":
-                if(j != 2 && (h == 5 || h == 4)){
-                    defaultPlaces = 10
-                }else{
-                    defaultPlaces = 18
-                }
-                break;
-            case "Audio":
-                defaultPlaces = 15
-                break;
-            case "Tutorat":
-                defaultPlaces = 15
-                break;
-        }
-        return defaultPlaces
-    }
-
-    function superSelection(mode2,x2){
-        const mode = mode2
-        const x = x2
-        return async function(){
-            common.popUp_Active('Set mode','attente',async (bnt)=>{
-                let select = document.createElement('select')
-                document.getElementById('popup-body').innerHTML=''
-                document.getElementById('popup-body').appendChild(select)
-                let listModePerm = []
-                switch(info[0][0].lieu){
-                    case "Aumonerie":
-                    case "Tutorat":
-                    case "CDI":
-                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
-                        break;
-                    case "DOC":
-                    case "Audio":
-                        listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Alumni","Fermé","Vacances"]
-                        break;
-                }
-                for(const i in listModePerm){
-                    let opt = document.createElement("option")
-                    opt.innerHTML = listModePerm[i]
-                    select.appendChild(opt);
-                }
-        
-                bnt.innerHTML='Confirmer'
-                bnt.addEventListener('click',async ()=>{
-                    if(mode=="j" && select.selectedIndex!=0){
-                        for(let h = 0; h < 9; h++){
-                            if(!(x == 2 && h >3)){
-                                info[x][h].w = week
-                                info[x][h].j = x
-                                info[x][h].h = h
-                                info[x][h].places = defaultPlaces(x,h,lieu)
-                                info[x][h].ouvert = select.selectedIndex-1
-                                await common.socketAdminAsync('setLieuInfo',info[x][h])
-                            }
-                        }
-                    }else if(mode=="h" && select.selectedIndex!=0){
-                        for (let j = 0; j < 5; j++) {
-                            if(!(j == 2 && x >3)){
-                                info[j][x].w = week
-                                info[j][x].j = j
-                                info[j][x].h = x
-                                info[j][x].places = defaultPlaces(j,x,lieu)
-                                info[j][x].ouvert = select.selectedIndex-1
-                                await common.socketAdminAsync('setLieuInfo',info[j][x])
-                            }
-                        }
-                    }else if(mode=="all" && select.selectedIndex!=0){
-                        for (let j = 0; j < 5; j++) {
-                            for(let h = 0; h < 9; h++){
-                                if(!(j == 2 && h >3)){
-                                    info[j][h].w = week
-                                    info[j][h].j = j
-                                    info[j][h].h = h
-                                    info[j][h].places = defaultPlaces(j,h,lieu)
-                                    info[j][h].ouvert = select.selectedIndex-1
-                                    await common.socketAdminAsync('setLieuInfo',info[j][h])
-                                }
-                            }
-                        }
-                    }
-                    common.popUp_Stop()
-                    refreshDatabase()
-                }, { once: true })
-            })
-        }
-    }
-
 
     let bouton = []
     let info = []
@@ -119,14 +22,11 @@ export async function init(common){
     divHoraires.classList.add("heure")
     let text = document.createElement("button")
     text.className = "case perm info jour heure";
-    text.innerHTML = "Tout"
-    text.addEventListener("click",superSelection("all"))
     divHoraires.appendChild(text);
     
     for (let h = 0; h < 9; h++) {
         let horaire = document.createElement("button")
         horaire.innerHTML = horaires[h]
-        horaire.addEventListener("click",superSelection("h",h))
         horaire.className = "case perm info heure"
         divHoraires.appendChild(horaire);
 
@@ -138,7 +38,6 @@ export async function init(common){
         let text = document.createElement("button")
         text.className = "case perm info jour";
         text.innerHTML = Day[j]
-        text.addEventListener("click",superSelection("j",j))
         div.appendChild(text);
 
         bouton[j] = []
@@ -208,6 +107,7 @@ export async function init(common){
                                 }else{
                                     bouton[j][h].innerHTML = "ouvert"
                                 }
+                                bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
                                 break;
                             case 2:
                                 bouton[j][h].className = "case perm yellow"
@@ -242,6 +142,7 @@ export async function init(common){
                                 }else{
                                     bouton[j][h].innerHTML = "ouvert"
                                 }
+                                bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
                                 break;
                             case 2:
                                 bouton[j][h].className = "case perm yellow"
@@ -277,6 +178,24 @@ export async function init(common){
     refreshDatabase();
 
     function select(j, h){
-        common.loadpage("/admin/lieu/creneau?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+        let title = info[j][h].title
+        if(title == undefined || title == null){
+            title=""
+        }
+        let texte = info[j][h].texte
+        if(texte == undefined || texte == null){
+            texte=""
+        }
+        if (title != "" || texte != "") {
+            common.popUp_Active(title,texte.replaceAll("\n","<br>"),(btn)=>{
+                if(info[j][h].ouvert == 1) btn.innerHTML="S'inscrire"
+                btn.addEventListener("click",()=>{
+                    if(info[j][h].ouvert == 1) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+                    common.popUp_Stop()
+                })
+            })
+        }else{
+            if(info[j][h].ouvert == 1) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+        }
     }
 }

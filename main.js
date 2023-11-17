@@ -247,16 +247,14 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
       funcSocketAdmin.pyScanVersion(socket,user)
 
-      funcSocketAdmin.getAllLieu(socket,user)
-      funcSocketAdmin.getLieu(socket,user)
-      funcSocketAdmin.setLieu(socket,user)
-      funcSocketAdmin.delLieu(socket,user)
-
       funcSocketAdmin.getAllResultsMenu(socket,user)
 
-      funcSocketAdmin.setCDIGroups(socket,user)
+      //funcSocketAdmin.setCDIGroups(socket,user)
       funcSocketAdmin.setLieuInfo(socket,user)
+      
+      funcSocketAdmin.getUserLieu(socket,user)
       funcSocketAdmin.setUserLieu(socket,user)
+      funcSocketAdmin.delUserLieu(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -305,8 +303,15 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.subscribeNotification(socket,user)
         funcSocket.existNotificationSubscription(socket,user)
 
-        funcSocket.getCDIGroups(socket,user)
-        funcSocket.allHoraireCDI(socket,user)
+        //funcSocket.getCDIGroups(socket,user)
+        //funcSocket.allHoraireCDI(socket,user)
+        funcSocket.getMyLieu(socket,user)
+        funcSocket.setMyLieu(socket,user)
+        funcSocket.setAmiLieu(socket,user)
+        funcSocket.delMyLieu(socket,user)
+        funcSocket.delAmiLieu(socket,user)
+        funcSocket.getLieuList(socket,user)
+        funcSocket.getAllLieuList(socket,user)
         
         funcSocket.getLieuInfo(socket,user)
         funcSocket.allHoraireLieu(socket,user)

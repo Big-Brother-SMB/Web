@@ -387,56 +387,6 @@ module.exports = class funcDB{
     })
   }
 
-
-  //lieu
-  static getAllLieu(semaine,day,creneau){
-    console.log(semaine,day,creneau)
-    return new Promise(function(resolve, reject) {
-      db.all("SELECT * FROM lieu_list where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
-        console.log(data)
-        try {
-          if(data!=undefined){
-            resolve(data)
-          }else{
-            resolve(null)
-          }
-        }catch(e){console.error(e);console.log('a-3');resolve(null)}
-      })
-      setTimeout(reject,5000)
-    })
-  }
-
-  static getLieu(lieu,semaine,day,creneau){
-    return new Promise(function(resolve, reject) {
-      db.all("SELECT * FROM lieu_list where lieu=? and semaine=? and day=? and creneau=?",[lieu,semaine,day,creneau], (err, data) => {
-        try {
-          if(data!=undefined){
-            resolve(data)
-          }else{
-            resolve(null)
-          }
-        }catch(e){console.error(e);console.log('a-3');resolve(null)}
-      })
-      setTimeout(reject,5000)
-    })
-  }
-
-  static setLieu(uuid,lieu,semaine,day,creneau,scan){
-    db.get("SELECT * FROM lieu_list where uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau], (err, data) => {
-      if(data==undefined){
-        db.run("INSERT INTO lieu_list(uuid,lieu,semaine,day,creneau,scan) VALUES (?,?,?,?,?,?)",[uuid,lieu,semaine,day,creneau,scan])
-      } else{
-        db.run("UPDATE lieu_list SET lieu=?,scan=? where uuid=? and semaine=? and day=? and creneau=?",[lieu,scan,uuid,semaine,day,creneau])
-      }
-    })
-  }
-
-  static delLieu(uuid,semaine,day,creneau){
-    db.run("DELETE FROM lieu_list WHERE uuid=? and semaine=? and day=? and creneau=?",[uuid,semaine,day,creneau])
-  }
-
-
-
   //sondage menu
   static getAllResultsMenu(semaine,menu){
     return new Promise(function(resolve, reject) {
@@ -567,7 +517,7 @@ module.exports = class funcDB{
 
 
 
-  //CDI
+  /*//CDI
   static getCDIGroups(semaine,day,creneau){
     return new Promise(function(resolve, reject) {
       db.all("SELECT * FROM CDI_list WHERE semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
@@ -587,7 +537,7 @@ module.exports = class funcDB{
     groups.forEach(g=>{
       db.run("INSERT INTO CDI_list(semaine,day,creneau,group2) VALUES (?,?,?,?)",[semaine,day,creneau,g])
     })
-  }
+  }*/
 
   //Lieu
   static getLieuInfo(lieu,semaine,day,creneau){
@@ -597,13 +547,14 @@ module.exports = class funcDB{
           if(data!=undefined){
             resolve(data)
           }else{
-            resolve({lieu:lieu,semaine:semaine,day:day,creneau:creneau,ouvert:0,msg:"",title:"",texte:""})
+            resolve({lieu:lieu,semaine:semaine,day:day,creneau:creneau,ouvert:0,msg:"",title:"",texte:"",places:null})
           }
         }catch(e){console.error(e);console.log('a2');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
   }
+
   static setLieuInfo(lieu,semaine,day,creneau,ouvert,msg,title,texte,places){
     db.get("SELECT * FROM 'lieu_info' where lieu=? and semaine=? and day=? and creneau=?",[lieu,semaine,day,creneau], (err, data) => {
       if(data==undefined){
@@ -613,6 +564,7 @@ module.exports = class funcDB{
       }
     })
   }
+
   static getLieuList(lieu,semaine,day,creneau){
     return new Promise(function(resolve, reject) {
       db.all("SELECT * FROM lieu_list where lieu=? and semaine=? and day=? and creneau=?",[lieu,semaine,day,creneau], (err, data) => {
@@ -628,8 +580,20 @@ module.exports = class funcDB{
     })
   }
 
-
-
+  static getAllLieuList(semaine,day,creneau){
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM lieu_list where semaine=? and day=? and creneau=?",[semaine,day,creneau], (err, data) => {
+        try {
+          if(data!=undefined){
+            resolve(data)
+          }else{
+            resolve([])
+          }
+        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+      })
+      setTimeout(reject,5000)
+    })
+  }
 
 
 
