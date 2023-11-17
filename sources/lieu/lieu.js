@@ -1,5 +1,6 @@
 const Day = ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"]
 const horaires = ["8h-9h","9h-10h","10h-11h","11h-12h","12h-13h","13h-14h","14h-15h","15h-16h","16h-17h"]
+const listHoraires = [[7,50],[8,49],[10,1],[11,0],[12,20],[13,14],[14,13],[15,25],[16,24],[17,18]]
 
 export async function init(common){
     const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -92,7 +93,7 @@ export async function init(common){
             myIncriptions.push([])
             for (let h = 0; h < 9; h++) {
                 myIncriptions[j].push(false)
-                info[j][h].date = common.generedDate(week,j+1).getTime() < Date.now()
+                info[j][h].date = common.generedDate(week,j+1).getTime() < Date.now() && common.generedDate(week,j+1,listHoraires[h+1][0],listHoraires[h+1][1]).getTime() > Date.now()
                 for(const i in listEleves[j][h]){
                     if(listEleves[j][h][i].uuid==common.uuid){
                         myIncriptions[j][h]=true
@@ -205,14 +206,14 @@ export async function init(common){
         }
         if (title != "" || texte != "") {
             common.popUp_Active(title,texte.replaceAll("\n","<br>"),(btn)=>{
-                if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)) btn.innerHTML="S'inscrire"
+                if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0) && info[j][h].date) btn.innerHTML="S'inscrire"
                 btn.addEventListener("click",()=>{
-                    if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+                    if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0) && info[j][h].date) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
                     common.popUp_Stop()
                 })
             })
         }else{
-            if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+            if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0) && info[j][h].date) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
         }
     }
 }
