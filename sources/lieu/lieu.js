@@ -92,6 +92,7 @@ export async function init(common){
             myIncriptions.push([])
             for (let h = 0; h < 9; h++) {
                 myIncriptions[j].push(false)
+                info[j][h].date = common.generedDate(week,j+1).getTime() < Date.now()
                 for(const i in listEleves[j][h]){
                     if(listEleves[j][h][i].uuid==common.uuid){
                         myIncriptions[j][h]=true
@@ -123,6 +124,9 @@ export async function init(common){
                                 }
                                 if(!(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)){
                                     bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
+                                    if(!info[j][h].date){
+                                        bouton[j][h].classList.add("pasOuvert")
+                                    }
                                 }
                                 break;
                             case 2:
@@ -163,6 +167,9 @@ export async function init(common){
                                 }
                                 if(!(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)){
                                     bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
+                                    if(!info[j][h].date){
+                                        bouton[j][h].classList.add("pasOuvert")
+                                    }
                                 }
                                 break;
                             case 2:

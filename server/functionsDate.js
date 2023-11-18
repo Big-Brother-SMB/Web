@@ -32,6 +32,9 @@ module.exports = class funcDate{
   }
   
   static generedDate(week,jour,h,min,s){
+    if(h==undefined) h=0
+    if(min==undefined) min=0
+    if(s==undefined) s=0
     let nowDate = new Date()
     let jourActuel = nowDate.getDay();
     if (jourActuel==0) jourActuel=7
