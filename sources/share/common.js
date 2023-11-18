@@ -113,6 +113,12 @@ export class common{
             list_nav_btn[i].getElementsByClassName("badge")[0].innerHTML=posts[list_nav_btn[i].getAttribute('group')]
           }
         }
+
+        let d = new Date();
+        if(!common.existCookie("sondageMenuVu") && d.getHours()>=12 && (d.getDay()==1 || d.getDay()==2 || d.getDay()==4 || d.getDay()==5)){
+          let btn = document.getElementById("nav_btn_menu")
+          if(btn!=null) btn.classList.add('notif')
+        }
       }
       if(this.readCookie("key")!=null) funcPosts()
       
@@ -476,8 +482,8 @@ export class common{
 
   //cookie
   static writeCookie(key, value){
-    if(key=="week"){
-      document.cookie = key + "=" + value + "; max-age=28800; path=/";
+    if(key=="week" || key=="sondageMenuVu"){
+      document.cookie = key + "=" + value + "; max-age=43200; path=/";
     }else{
       document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
     }
