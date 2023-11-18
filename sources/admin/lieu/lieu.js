@@ -21,7 +21,7 @@ export async function init(common){
                 defaultPlaces = 15
                 break;
             case "DOC":
-                if(j != 2 && (h == 5 || h == 4)){
+                if(j != 2 && (h == 3 || h == 4)){
                     defaultPlaces = 10
                 }else{
                     defaultPlaces = 18

@@ -86,7 +86,7 @@ export async function init(common){
 
 
 
-    if(info.ouvert!=1){
+    if(info.ouvert!=1 || info.places==undefined || info.places==null || info.places==0){
         common.loadpage("/lieu?lieu="+lieu)
     }
 
@@ -113,7 +113,6 @@ export async function init(common){
         NBAmisinscrits++
     }
 
-    if(info.places==undefined || info.places==null || info.places==0) info.places=5
     let reste = info.places - NBinscrits
 
 

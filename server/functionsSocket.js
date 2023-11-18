@@ -456,12 +456,13 @@ module.exports = class funcSocket{
         socket.on("setMyLieu", async req => {
             try{
                 let info = await funcDB.getLieuInfo(req.lieu,req.w,req.j,req.h)
-                let verifyPlaces =(info.places==0 || info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
+                let verifyPlaces = (info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
+                verifyPlaces = verifyPlaces && (req.lieu!="DOC" || (await user.classe)[0]=="T")
                 let myLieu = await user.getLieu(req.w,req.j,req.h)
                 if((myLieu==null || myLieu.scan!=1) && verifyPlaces){
                     await user.setLieu(req.lieu,req.w,req.j,req.h,0)
-                    socket.emit("setMyLieu","ok")
                 }
+                socket.emit("setMyLieu","ok")
             }catch(e){console.error(e);console.log('b19');}
         });
     }
@@ -472,8 +473,8 @@ module.exports = class funcSocket{
                 let myLieu = await user.getLieu(req.w,req.j,req.h)
                 if(myLieu==null || myLieu.scan!=1){
                     await user.delLieu(req.w,req.j,req.h)
-                    socket.emit("delMyLieu","ok")
                 }
+                socket.emit("delMyLieu","ok")
             }catch(e){console.error(e);console.log('b19');}
         });
     }
@@ -489,13 +490,14 @@ module.exports = class funcSocket{
                     }
                 })
                 let info = await funcDB.getLieuInfo(req.lieu,req.w,req.j,req.h)
-                let verifyPlaces = (info.places==0 || info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
                 let ami = await new User(req.uuidAmi)
                 let amiLieu = await ami.getLieu(req.w,req.j,req.h)
+                let verifyPlaces = (info.places - (await funcDB.getLieuList(req.lieu,req.w,req.j,req.h)).length > 0)
+                verifyPlaces = verifyPlaces && (req.lieu!="DOC" || (await ami.classe)[0]=="T")
                 if(hasPermission && (amiLieu==null || amiLieu.scan!=1) && verifyPlaces){
                     await ami.setLieu(req.lieu,req.w,req.j,req.h,0)
-                    socket.emit('setAmiLieu',"ok")
                 }
+                socket.emit('setAmiLieu',"ok")
             }catch(e){console.error(e);console.log('b19');}
         });
     }
@@ -514,8 +516,8 @@ module.exports = class funcSocket{
                 let amiLieu = await ami.getLieu(req.w,req.j,req.h)
                 if(hasPermission && (amiLieu==null || amiLieu.scan!=1)){
                     await ami.delLieu(req.w,req.j,req.h)
-                    socket.emit("delAmiLieu","ok")
                 }
+                socket.emit("delAmiLieu","ok")
             }catch(e){console.error(e);console.log('b19');}
         });
     }

@@ -121,7 +121,9 @@ export async function init(common){
                                 if(myIncriptions[j][h]){
                                     bouton[j][h].className="case perm green"
                                 }
-                                bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
+                                if(!(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)){
+                                    bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
+                                }
                                 break;
                             case 2:
                                 bouton[j][h].className = "case perm yellow"
@@ -159,7 +161,9 @@ export async function init(common){
                                 if(myIncriptions[j][h]){
                                     bouton[j][h].className="case perm green"
                                 }
-                                bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
+                                if(!(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)){
+                                    bouton[j][h].innerHTML+="<br>"+listEleves[j][h].length+"/"+info[j][h].places
+                                }
                                 break;
                             case 2:
                                 bouton[j][h].className = "case perm yellow"
@@ -205,14 +209,14 @@ export async function init(common){
         }
         if (title != "" || texte != "") {
             common.popUp_Active(title,texte.replaceAll("\n","<br>"),(btn)=>{
-                if(info[j][h].ouvert == 1) btn.innerHTML="S'inscrire"
+                if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)) btn.innerHTML="S'inscrire"
                 btn.addEventListener("click",()=>{
-                    if(info[j][h].ouvert == 1) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+                    if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
                     common.popUp_Stop()
                 })
             })
         }else{
-            if(info[j][h].ouvert == 1) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+            if(info[j][h].ouvert == 1 && (lieu!="DOC" || common.classe[0]=="T") && !(info[j][h].places==undefined || info[j][h].places==null || info[j][h].places==0)) common.loadpage("/lieu/demande?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
         }
     }
 }

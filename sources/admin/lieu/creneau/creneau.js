@@ -19,7 +19,7 @@ export async function init(common){
   }
   if(params.lieu!=null){
     lieu = params.lieu
-    document.getElementById('title').innerHTML="Selection " + lieu
+    document.getElementById('title').innerHTML=lieu
   }
   document.getElementById("btn_retour").classList.remove("cache")
   document.getElementById("btn_retour").setAttribute("url","/admin/lieu?lieu="+lieu)
@@ -38,7 +38,7 @@ export async function init(common){
           info.places = 15
           break;
         case "DOC":
-            if(j != 2 && (h == 5 || h == 4)){
+            if(j != 2 && (h == 3 || h == 4)){
               info.places = 10
             }else{
               info.places = 18
