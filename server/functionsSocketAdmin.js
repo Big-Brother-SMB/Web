@@ -416,7 +416,7 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v16")
+                socket.emit("pyScanVersion","v17")
             }catch(e){console.error(e);console.log('48');}
         });
     }
@@ -456,7 +456,7 @@ module.exports = class funcSocket{
     static setUserLieu(socket,user){
         socket.on("setUserLieu", async req => {
             try{
-                await (new User(req)).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
+                await (new User(req.uuid)).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
                 socket.emit("setUserLieu","ok")
             }catch(e){console.error(e);console.log('b19');}
         });
@@ -466,7 +466,7 @@ module.exports = class funcSocket{
         socket.on("getUserLieu", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("getUserLieu",await (new User(req)).getLieu(req.w,req.j,req.h))
+                socket.emit("getUserLieu",await (new User(req.uuid)).getLieu(req.w,req.j,req.h))
             }catch(e){console.error(e);console.log('49');}
         });
     }
@@ -475,7 +475,7 @@ module.exports = class funcSocket{
         socket.on("delUserLieu", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                await (new User(req)).delLieu(req.w,req.j,req.h)
+                await (new User(req.uuid)).delLieu(req.w,req.j,req.h)
                 socket.emit("delUserLieu",'ok')
             }catch(e){console.error(e);console.log('50');}
         });

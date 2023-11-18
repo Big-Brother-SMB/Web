@@ -1564,3 +1564,7 @@ div.divPost{
 #iconWritePost img{
   height: 70%;    
 }
+
+.greenLine{
+  background-color: greenyellow;
+}

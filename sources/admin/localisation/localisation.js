@@ -1,7 +1,7 @@
 const audio = new Audio("/bip.mp3");
 
 export async function init(common){
-
+    const inscB = document.getElementById("inscB")
 
     var interval;
     let barcodeLaser = '';
@@ -65,7 +65,7 @@ export async function init(common){
             searchName(name,scan)
             return;
         }else{
-            document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"/Images/innexistant.jpg\" />"  
+            //document.getElementById("pass").innerHTML = "<img width=\"200\" height=\"200\" alt=\"\" src=\"/Images/innexistant.jpg\" />"  
         }
     }
 
@@ -101,28 +101,40 @@ export async function init(common){
 
     async function searchName(uuid,scan){
         try{
-            if(true && lieu!=null){//scan
+            inscB.classList.add("cache");
+            if(lieu!=null && h!=-1){//scan
                 let test = true
                 for(let i=0;i<listScan.length;i++){
                     if(listScan[i].uuid==uuid){
                         test=false
-                        if(listScan[i].lieu!=lieu && h!=-1){
-                            listScan[i].lieu=lieu
-                            await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
+                        if(listScan[i].lieu==lieu && h!=-1){
+                            listScan[i].scan=1
+                            await common.socketAdminAsync('setUserLieu',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid,scan:1});
                             audio.play();
                             actualisationList()
                         }
                     }
                 }
-                if(test && h!=-1){
-                    listScan.push({semaine:common.actualWeek,jour:j,creneau:h,uuid:uuid,lieu:lieu})
-                    await common.socketAdminAsync('setLocalisation',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid});
+                if(test){
+                    inscB.classList.remove("cache");
+                }
+                /*if(test && h!=-1){
+                    listScan.push({semaine:common.actualWeek,day:j,creneau:h,uuid:uuid,lieu:lieu,scan:1})
+                    await common.socketAdminAsync('setUserLieu',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:uuid,scan:1});
                     audio.play();
                     actualisationList()
-                }
+                }*/
             }
         }catch(e){console.error(e)}
     }
+
+    inscB.addEventListener("click",async function(){
+        inscB.classList.add("cache");
+        listScan.push({semaine:common.actualWeek,day:j,creneau:h,lieu:lieu,uuid:inputNameId,scan:1})
+        await common.socketAdminAsync('setUserLieu',{w:common.actualWeek,j:j,h:h,lieu:lieu,uuid:inputNameId,scan:1});
+        audio.play();
+        actualisationList()
+    })
 
 
 
@@ -137,6 +149,7 @@ export async function init(common){
         let d = new Date();
         const horaires = [[7,50],[8,44],[9,43],[10,55],[11,54],[13,9],[14,8],[15,7],[16,19],[17,18]]
         let i = 0
+        let oldH = h
         h = -1
         if(creneau == 0){
             while(i<horaires.length-1 && h==-1){
@@ -150,6 +163,9 @@ export async function init(common){
             }
         }else{
             h = creneau - 1
+        }
+        if(oldH!=h){
+            inscB.classList.add("cache");
         }
 
         if(h!=-1){
@@ -180,17 +196,18 @@ export async function init(common){
 
     const table = document.getElementById("tbody")
 
-    function actualisationList(){
+    async function actualisationList(){
         table.innerHTML=''
         let NBinscrits = 0
         listUsers.forEach(user=>{
             for(let i=0;i<listScan.length;i++){
                 const scan=listScan[i]
-                console.log(scan)
                 if(user.uuid==scan.uuid && scan.lieu==lieu && scan.semaine==common.actualWeek && scan.day==j && scan.creneau==h){
-                    console.log("ok")
                     NBinscrits++
                     let ligne = document.createElement("tr")
+                    if(scan.scan){
+                        ligne.classList.add("greenLine")
+                    }
                     
                     let nom = document.createElement("td")
                     nom.innerHTML = common.name(user.first_name,user.last_name)
@@ -203,7 +220,7 @@ export async function init(common){
                     let supp = document.createElement("td")
                     supp.innerHTML = "supp"
                     supp.addEventListener("click",async ()=>{
-                        await common.socketAdminAsync('delLocalisation',{w:common.actualWeek,j:j,h:h,uuid:scan.uuid});
+                        await common.socketAdminAsync('delUserLieu',{w:common.actualWeek,j:j,h:h,uuid:scan.uuid});
                         listScan.splice(i,1)
                         actualisationList()
                     })
@@ -214,15 +231,12 @@ export async function init(common){
             }
         })
 
-        let NBplaces = 0
-        if(lieu=="DOC"){
-            NBplaces=10
-        }else if(lieu=="Tutorat"){
-            NBplaces=15
-        }else if(lieu=="Aumônerie"){
-            NBplaces=15
-        }
-        document.getElementById("lieu").innerHTML = "Lieu: " + lieu + "(" + NBinscrits + "/" + NBplaces + ")"
+        let info = await common.socketAsync("getLieuInfo",{lieu:lieu,w:common.actualWeek,j:j,h:h})
+        if(!(info.places==undefined || info.places==null || info.places==0)){
+            document.getElementById("lieu").innerHTML = "Lieu: " + lieu + "(" + NBinscrits + "/" + info.places + ")"
+        }else{
+            document.getElementById("lieu").innerHTML = "Lieu: " + lieu + "(" + NBinscrits + ")"
+        }   
     }
     
 
@@ -236,6 +250,7 @@ export async function init(common){
     }
     for (const elem of listLieu){
         document.getElementById(elem).addEventListener("click",async function(){
+            inscB.classList.add("cache");
             if (lieu == null || lieu != elem){
                 for (const elem of listLieu){
                     document.getElementById(elem).classList.add("grayscale");
@@ -255,7 +270,7 @@ export async function init(common){
     async function actualisation(){
         getHour()
         if(h!=-1) {
-            listScan = await common.socketAdminAsync('getLocalisation',{w:common.actualWeek,j:j,h:h});
+            listScan = await common.socketAsync('getAllLieuList',{w:common.actualWeek,j:j,h:h});
         }else{
             listScan = [];
         }

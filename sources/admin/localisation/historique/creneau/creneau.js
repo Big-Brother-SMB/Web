@@ -23,7 +23,7 @@ export async function init(common){
     
     let usersList = common.nameOrder(await common.socketAdminAsync('getListPass',null))
 
-    let listScan = await common.socketAdminAsync('getLocalisation',{w:w,j:j,h:h});
+    let listScan = await common.socketAsync('getAllLieuList',{w:w,j:j,h:h});
 
     for(let i in usersList){
         usersList[i].name = common.name(usersList[i].first_name,usersList[i].last_name)
@@ -38,6 +38,9 @@ export async function init(common){
                 affList.push(usersList[i])
                 const index = affList.length - 1
                 let ligne = document.createElement("tr")
+                if(scan.scan){
+                    ligne.classList.add("greenLine")
+                }
                 affList[index].ligne=ligne
                 table.appendChild(ligne)
                 affList[index].scan = scan
@@ -71,7 +74,7 @@ export async function init(common){
         let colS= document.createElement("td")
         colS.innerHTML="suppr"
         colS.addEventListener("click",async ()=>{
-            await common.socketAdminAsync('delLocalisation',{w:w,j:j,h:h,uuid:user.uuid});
+            await common.socketAdminAsync('delUserLieu',{w:w,j:j,h:h,uuid:user.uuid});
             user.demande=null
 
             affList.splice([...table.children].indexOf(user.ligne),1)

@@ -34,7 +34,7 @@ export async function init(common){
         case "CDI":
           info.places = 0
           break;
-        case "Aumonerie":
+        case "Aumônerie":
           info.places = 15
           break;
         case "DOC":
@@ -58,7 +58,7 @@ export async function init(common){
   let divMode = document.getElementById("mode")
   let listModePerm = []
   switch(info.lieu){
-      case "Aumonerie":
+      case "Aumônerie":
       case "Tutorat":
       case "CDI":
           listModePerm = ["horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]

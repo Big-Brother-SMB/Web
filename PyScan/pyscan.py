@@ -201,7 +201,7 @@ def refresh(loop):
   if creneauPerm>4:
     creneauPerm=timeSlot[1]-1
   if timeSlot[1]!=-1:
-    listLocalisation = []#socketReq('getLocalisation',{"w":week,"j":day,"h":timeSlot[1]},True)
+    listLocalisation = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},True)
     listFoyerDemande = socketReq('listDemandesPerm',{"w":week,"j":day,"h":creneauPerm},False)
     foyerOuvert = socketReq('getOuvertPerm',{"w":week,"j":day,"h":creneauPerm},False)
   if foyerOuvert==None:
@@ -465,7 +465,7 @@ def controle():
           else:
             lieu = lieu_var_save
         
-        #socketReq('setLocalisation',{"w":week,"j":day,"h":timeSlot[1],"lieu":lieu,"uuid":user['uuid']},True)
+        socketReq('setUserLieu',{"w":week,"j":day,"h":timeSlot[1],"lieu":lieu,"uuid":user['uuid'],"scan":1},True)
         global listLocalisation
         for i in range(len(listLocalisation)-1,-1,-1):
           if user['uuid'] == listLocalisation[i]['uuid']:
@@ -669,7 +669,7 @@ def func_pass():
         lieu = "Champagnat"
       else:
         lieu = lieu_var_save
-    #socketReq('setLocalisation',{"w":week,"j":day,"h":timeSlot[1],"lieu":lieu,"uuid":user['uuid']},True)
+    socketReq('setUserLieu',{"w":week,"j":day,"h":timeSlot[1],"lieu":lieu,"uuid":user['uuid'],"scan":1},True)
     refreshPassages()
     canvas.itemconfig(image_container,image=imgDico.get(lieu))
   else:
@@ -732,7 +732,7 @@ def appel():
 
     def lireCode():
       time.sleep(3)
-      liste_d_appel = []#socketReq('getLocalisation',{"w":week,"j":day,"h":timeSlot[1]},True)
+      liste_d_appel = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},True)
       keyboard = Controller()
       for user in listUsers:
         for enregistrement in liste_d_appel:

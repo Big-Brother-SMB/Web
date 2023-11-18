@@ -17,7 +17,7 @@ export async function init(common){
             case "CDI":
                 defaultPlaces = 0
                 break;
-            case "Aumonerie":
+            case "Aumônerie":
                 defaultPlaces = 15
                 break;
             case "DOC":
@@ -47,7 +47,7 @@ export async function init(common){
                 document.getElementById('popup-body').appendChild(select)
                 let listModePerm = []
                 switch(info[0][0].lieu){
-                    case "Aumonerie":
+                    case "Aumônerie":
                     case "Tutorat":
                     case "CDI":
                         listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
@@ -193,7 +193,7 @@ export async function init(common){
             for (let h = 0; h < 9; h++) {
                 bouton[j][h].className = "case perm blue"
                 switch(info[j][h].lieu){
-                    case "Aumonerie":
+                    case "Aumônerie":
                     case "Tutorat":
                     case "CDI":
                         switch(info[j][h].ouvert){

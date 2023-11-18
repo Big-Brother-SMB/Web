@@ -103,7 +103,7 @@ export async function init(common){
             for (let h = 0; h < 9; h++) {
                 bouton[j][h].className = "case perm blue"
                 switch(info[j][h].lieu){
-                    case "Aumonerie":
+                    case "Aumônerie":
                     case "Tutorat":
                     case "CDI":
                         switch(info[j][h].ouvert){
