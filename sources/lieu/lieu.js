@@ -140,9 +140,7 @@ export async function init(common){
                                 break;
                             case 3:
                                 bouton[j][h].className = "case perm red"
-                                if(msg == ""){
-                                    bouton[j][h].innerHTML = "fermé<br>" + msg
-                                }
+                                bouton[j][h].innerHTML = "fermé<br>" + msg
                                 break;
                             case 4:
                                 bouton[j][h].innerHTML = "vacances"
@@ -179,14 +177,10 @@ export async function init(common){
                                 break;
                             case 3:
                                 bouton[j][h].className = "case perm demande"
-                                if(msg == ""){
-                                    bouton[j][h].innerHTML = "Alumni<br>" + msg
-                                }
+                                bouton[j][h].innerHTML = "Alumni<br>" + msg
                             case 4:
                                 bouton[j][h].className = "case perm red"
-                                if(msg == ""){
-                                    bouton[j][h].innerHTML = "fermé<br>" + msg
-                                }
+                                bouton[j][h].innerHTML = "fermé<br>" + msg
                                 break;
                             case 5:
                                 bouton[j][h].innerHTML = "vacances"
