@@ -9,6 +9,7 @@ export async function init(common){
         }else if(a[index].attributes.cible!=undefined){
             a[i].addEventListener("click", ()=>{
                 let elem = document.getElementById(a[index].attributes.cible.value);
+                elem.scrollIntoView()
                 elem.style.background="yellow";
                 setTimeout(function(){elem.style.background="";},1000);
             })
