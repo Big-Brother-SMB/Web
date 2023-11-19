@@ -217,8 +217,12 @@ module.exports = class UserSelect{
         inscrits=this.boucleInscription(inscrits,places)
     
         //inscription SQL
+        let indicePointsMin = 1000
         for(let i in this.usersList){
           if(this.usersList[i].pass==1){
+            if(this.usersList[i].score < indicePointsMin){
+              indicePointsMin = this.usersList[i].score
+            }
             let user = new User(this.usersList[i].uuid)
             let infoD = await user.getMidiDemande(semaine,creneau)
             user.sendNotif("Accepter au foyer","Vous êtes accepté au foyer.",'/assets/pass/ok.png',"pass")
@@ -228,8 +232,8 @@ module.exports = class UserSelect{
         
         //reponse client admin
         this.enCour = false
-        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions, il reste " + (places - inscrits) + " places","w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
-        return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>appuyer pour reload"
+        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions, il reste " + (places - inscrits) + " places","IPM:" + indicePointsMin,"w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
+        return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>IPM: " + indicePointsMin + "pts<br>appuyer pour reload"
       } catch (error) {
         console.error(error)
         console.log("error algo")
