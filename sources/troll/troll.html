@@ -3,8 +3,8 @@
   <body>
   </body>
   <script>
-    let time = Date.now()+(3600*24*1000);
-    document.cookie = "troll=" + time + "; max-age=" + (3600*24) + "; path=/";
+    let time = 3600*1;
+    document.cookie = "troll=" + (Date.now()+(time*1000)) + "; max-age=" + time + "; path=/";
     window.location.href = "/accueil";
   </script>
 </html>
