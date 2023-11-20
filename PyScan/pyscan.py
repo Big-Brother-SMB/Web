@@ -201,7 +201,7 @@ def refresh(loop):
   if creneauPerm>4:
     creneauPerm=timeSlot[1]-1
   if timeSlot[1]!=-1:
-    listLocalisation = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},True)
+    listLocalisation = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},False)
     listFoyerDemande = socketReq('listDemandesPerm',{"w":week,"j":day,"h":creneauPerm},False)
     foyerOuvert = socketReq('getOuvertPerm',{"w":week,"j":day,"h":creneauPerm},False)
   if foyerOuvert==None:
@@ -732,7 +732,7 @@ def appel():
 
     def lireCode():
       time.sleep(3)
-      liste_d_appel = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},True)
+      liste_d_appel = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},False)
       keyboard = Controller()
       for user in listUsers:
         for enregistrement in liste_d_appel:
