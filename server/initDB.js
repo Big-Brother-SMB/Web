@@ -128,10 +128,10 @@ module.exports = (db)=>{
       if(data==undefined)
         db.run('CREATE TABLE lieu_list(uuid uuid,lieu text,semaine int2,day int2,creneau int2,scan bool)')
     })
-    db.get("SELECT * FROM sqlite_master where type='table' AND name='CDI_list'", (err, data) => {
+    /*db.get("SELECT * FROM sqlite_master where type='table' AND name='CDI_list'", (err, data) => {
       if(data==undefined)
         db.run('CREATE TABLE CDI_list(semaine int2,day int2,creneau int2,group2 text)')
-    })
+    })*/
 
     // pdf
     /*db.get("SELECT * FROM sqlite_master where type='table' AND name='pdf'", (err, data) => {

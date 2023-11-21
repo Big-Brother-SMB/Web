@@ -12,6 +12,10 @@ export async function init(common){
         document.getElementById('title').innerHTML=lieu
     }
 
+    if(lieu=="CDI"){
+        document.getElementById("esidoc").classList.remove("cache")
+    }
+
 
     let bouton = []
     let info = []

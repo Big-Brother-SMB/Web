@@ -1,4 +1,5 @@
 pip install "python-socketio[client]"
 pip install pynput
 pip install playsound
-python3 pyscan.py
+Set WshShell = WScript.CreateObject("WScript.Shell")
+WshShell.Run("python3 pyscan.py") 
