@@ -199,6 +199,11 @@ export async function init(common){
     async function actualisationList(){
         table.innerHTML=''
         let NBinscrits = 0
+        if(lieu==null){
+            document.getElementById("lieuTD").classList.remove("cache")
+        }else{
+            document.getElementById("lieuTD").classList.add("cache")
+        }
         listUsers.forEach(user=>{
             for(let i=0;i<listScan.length;i++){
                 const scan=listScan[i]
@@ -208,7 +213,13 @@ export async function init(common){
                     if(scan.scan){
                         ligne.classList.add("greenLine")
                     }
-                    
+
+                    if(lieu==null){
+                        let lieuTD = document.createElement("td")
+                        lieuTD.innerHTML = scan.lieu
+                        ligne.appendChild(lieuTD)
+                    }
+
                     let nom = document.createElement("td")
                     nom.innerHTML = common.name(user.first_name,user.last_name)
                     ligne.appendChild(nom)
@@ -232,7 +243,9 @@ export async function init(common){
         })
 
         let info = await common.socketAsync("getLieuInfo",{lieu:lieu,w:common.actualWeek,j:j,h:h})
-        if(!(info.places==undefined || info.places==null || info.places==0)){
+        if(lieu == null){
+            document.getElementById("lieu").innerHTML = "(" + NBinscrits + " enregistrements)"
+        }else if(!(info.places==undefined || info.places==null || info.places==0)){
             document.getElementById("lieu").innerHTML = "Lieu: " + lieu + "(" + NBinscrits + "/" + info.places + ")"
         }else{
             document.getElementById("lieu").innerHTML = "Lieu: " + lieu + "(" + NBinscrits + ")"
