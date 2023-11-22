@@ -202,7 +202,7 @@ export async function init(common){
         listUsers.forEach(user=>{
             for(let i=0;i<listScan.length;i++){
                 const scan=listScan[i]
-                if(user.uuid==scan.uuid && scan.lieu==lieu && scan.semaine==common.actualWeek && scan.day==j && scan.creneau==h){
+                if(user.uuid==scan.uuid && (scan.lieu==lieu || lieu==null) && scan.semaine==common.actualWeek && scan.day==j && scan.creneau==h){
                     NBinscrits++
                     let ligne = document.createElement("tr")
                     if(scan.scan){
