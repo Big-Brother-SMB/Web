@@ -204,6 +204,7 @@ export async function init(common){
         }else{
             document.getElementById("lieuTD").classList.add("cache")
         }
+        console.log(lieu)
         listUsers.forEach(user=>{
             for(let i=0;i<listScan.length;i++){
                 const scan=listScan[i]

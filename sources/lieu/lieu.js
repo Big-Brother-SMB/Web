@@ -183,6 +183,7 @@ export async function init(common){
                             case 3:
                                 bouton[j][h].className = "case perm demande"
                                 bouton[j][h].innerHTML = "Alumni<br>" + msg
+                                break;
                             case 4:
                                 bouton[j][h].className = "case perm red"
                                 bouton[j][h].innerHTML = "fermé<br>" + msg

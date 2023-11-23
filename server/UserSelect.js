@@ -58,7 +58,7 @@ module.exports = class UserSelect{
             if(info.prio.indexOf(child)!=-1){
               prio=true
             }
-            if(["VIP","Club info"].indexOf(child)!=-1){
+            if(["VIP"].indexOf(child)!=-1){
               vip=true
             }
           })
