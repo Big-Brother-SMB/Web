@@ -230,7 +230,7 @@ export async function init(common){
         await setMidiInfo()
         let rep = await common.socketAdminAsync('startAlgo',[w,j,h],60000)
         document.getElementById("start algo").innerHTML = rep
-
+        await new Promise(r => setTimeout(r, 2000));//wait 2sec
         reloadInfoHoraire()
     })
 
