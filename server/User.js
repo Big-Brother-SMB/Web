@@ -77,7 +77,7 @@ module.exports = class User{
       let uuid=this.uuid
       return new Promise(function(resolve, reject) {
         try{
-          let tokenAuth = rand.generateKey();
+          let tokenAuth = rand.generateKey(24);
           let date = new Date()
           db.run("INSERT INTO token(token,uuid,creation,last_use) VALUES(?,?,?,?)", [tokenAuth,uuid,date,date])
           resolve(tokenAuth)
@@ -854,7 +854,7 @@ module.exports = class User{
     })
   }
 
-  addPDF(id,title,group){
+  /*addPDF(id,title,group){
     db.run("INSERT INTO pdf(id,from2,group2,title,date) VALUES (?,?,?,?,?)",[id,this.uuid,group,title,new Date()])
   }
 
@@ -864,5 +864,5 @@ module.exports = class User{
 
   suppPDF(id){
     db.run("DELETE FROM pdf WHERE id=?",[id])
-  }
+  }*/
 }

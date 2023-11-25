@@ -437,7 +437,7 @@ module.exports = class funcDB{
       if(data==undefined){
         db.run("INSERT INTO post(id,from2,group2,title,text,date) VALUES (?,?,?,?,?,?)",[id,from,group,title,text,date])
       } else{
-        db.run("UPDATE news SET from2=?,group2=?,title=?,text=?,date=? WHERE id=?",[from,group,title,text,date,id])
+        db.run("UPDATE post SET from2=?,group2=?,title=?,text=?,date=? WHERE id=?",[from,group,title,text,date,id])
       }
     })
   }

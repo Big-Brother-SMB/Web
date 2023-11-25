@@ -66,6 +66,15 @@ function mimeTypesFunc(extName){
   }
 }
 
+function mimeTypesFuncInvert(mimeType){
+  for (const property in mimeTypes) {
+    if(mimeTypes[property]==mimeType){
+      return property
+    }
+  }
+  return ""
+}
+
 
 const authorizationUrl = oauth2Client.generateAuthUrl({
   scope: ["https://www.googleapis.com/auth/userinfo.email","https://www.googleapis.com/auth/userinfo.profile","openid"],
@@ -90,7 +99,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
     } else if (req.url == '/push/key') {
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify({"key":VAPID_PUBLIC_KEY}));
-    } else if (req.url == '/fileupload/pdf') {
+    /*} else if (req.url == '/fileupload/pdf') {
       let form = new formidable.IncomingForm();
       form.parse(req, async function (err, fields, files) {
         try {
@@ -118,6 +127,39 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
             });
           }else{
             res.write("C'est pas un pdf ou vous n'avez pas la permision");
+            res.end();
+          }
+        } catch (error) {}
+      });*/
+    } else if (req.url == '/fileupload/image') {
+      let form = new formidable.IncomingForm();
+      form.parse(req, async function (err, fields, files) {
+        try {
+          let title = fields.title[0];
+          let group = fields.group[0];
+          let id = fields.id[0];
+          let date = fields.date[0];
+          let user = await User.searchToken(fields.token[0])
+          let userGroups = await user.groups
+          if(user.uuid!=null && (userGroups.includes(group) || await user.admin > 0)){
+            let oldpath = files.file[0].filepath;
+            let dirPath = path.join(__dirname,"sources","asso","post_image")
+            let extname = mimeTypesFuncInvert(files.file[0].mimetype)
+            let newpath = path.join(dirPath,id+extname);
+            if(!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
+            fs.copyFile(oldpath, newpath, function (err) {
+              if (err){
+                res.write("err");
+                res.end();
+                throw err;
+              }else{
+                funcDB.setPost(id,user.uuid,group,title,'<img src="/asso/post_image/'+ id+extname +'" class="image_post">',date)
+                res.write('<script>history.back()</script>');
+                res.end();
+              }
+            });
+          }else{
+            res.write("Il y a une erreur.");
             res.end();
           }
         } catch (error) {}

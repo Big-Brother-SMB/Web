@@ -915,7 +915,7 @@ export class common{
   }
 
   //-----------------------------------PDF-----------------------------------------
-  static displayPDF(divForCanvas,pdf){
+  /*static displayPDF(divForCanvas,pdf){
     let loadingTask = pdfjsLib.getDocument(pdf);
     loadingTask.promise.then(function(pdf) {
       for(let i = 1;i<=pdf.numPages;i++){
@@ -964,7 +964,7 @@ export class common{
           this.popUp_Stop()
         },{once:true})
       })
-  }
+  }*/
 }
 
 //démarre le script qui correspond à la page
