@@ -1555,6 +1555,7 @@ div.divPost{
   border-radius: 30px;
   border: 1px black solid;
   max-width:95%;
+  max-height: 95vh;
   margin: auto;
   display: block;
 }
