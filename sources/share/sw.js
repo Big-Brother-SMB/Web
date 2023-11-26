@@ -1,8 +1,18 @@
 let notifAccept = true
 let user = ""
 
-self.addEventListener('install',()=>{
+self.addEventListener('install',(event)=>{
     self.skipWaiting()
+    event.waitUntil(
+        caches.open('my-cache').then((cache) => {
+          return cache.addAll([
+            '/',
+            '/share/manifest.json',
+            '/assets/logo.png'
+            // Ajoutez d'autres fichiers statiques ici
+          ]);
+        })
+    );
     console.log("install sw")
 })
 

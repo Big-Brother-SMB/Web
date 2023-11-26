@@ -404,8 +404,8 @@ export class common{
       })
     }else{
       //---------------------------------pop-up notif--------------------------------------------
-      if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
-      this.writeCookie("notifAccept",false)//temporaire, car les notifs ne fonctionne pas 
+      //if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
+      if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",false)//temporaire, car les notifs ne fonctionne pas 
 
       if((this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator) && !window.location.pathname.includes("/asso"))
       && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)) || !(await navigator.serviceWorker.register("/share/sw.js")).active)){
