@@ -9,13 +9,14 @@ export async function init(common){
         list_post.sort((a, b) => (a.date < b.date) ? 1 : -1)
         for(const post of list_post){
             if(post.group2==group_name){
-                common.socketAsync("postLu",{id:post.id})
-    
                 let div = document.createElement("div")
                 div.className="divPost"
     
                 if(!post.lu){
-                    div.scrollIntoView()
+                    setTimeout(()=>{
+                        div.scrollIntoView()
+                        common.socketAsync("postLu",{id:post.id})
+                    }, 100)
                 }
         
                 let titre = document.createElement("p")

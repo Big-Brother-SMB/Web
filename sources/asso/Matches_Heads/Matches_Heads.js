@@ -15,7 +15,10 @@ export async function init(common){
                 div.className="divPost"
     
                 if(!post.lu){
-                    div.scrollIntoView()
+                    setTimeout(()=>{
+                        div.scrollIntoView()
+                        common.socketAsync("postLu",{id:post.id})
+                    }, 100)
                 }
         
                 let titre = document.createElement("p")
