@@ -1538,16 +1538,25 @@ div.divPost{
   text-overflow: ellipsis;
 }
 .divPost .text{
-  text-align: left !important;
-  margin-left: 60px;
+  text-align: justify !important;
+  margin: 30px 60px;
   color: #000000 !important;
   font-size: 2rem !important;
 }
+
 .divPost .titre{
   color: rgb(206, 0, 0);
   font-size: 3rem !important;
   text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   font-weight: bold;
+}
+
+.image_post{
+  border-radius: 30px;
+  border: 1px black solid;
+  max-width:95%;
+  margin: auto;
+  display: block;
 }
 
 

@@ -82,9 +82,3 @@ h2{
     color: rgb(63, 105, 196);
     text-shadow: -1px 0 rgba(18, 37, 143), 0 1px rgba(18, 37, 143), 1px 0 rgba(18, 37, 143), 0 -1px rgba(18, 37, 143);
 }
-
-.image_post{
-    border-radius: 30px;
-    border: 1px black solid;
-    max-width:95%;
-}
