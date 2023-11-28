@@ -1,4 +1,5 @@
 sources/asso/post_image
+*.xlsx
 key.json
 code.json
 save.txt

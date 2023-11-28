@@ -452,7 +452,7 @@ def controle():
         fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
         alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
         buttonPass.pack()
-      elif mode_var_save=="Foyer" and timeSlot[1]!=-1 and (foyerOuvert==0 or foyerOuvert==3) and not testAcceptPerm:
+      elif mode_var_save=="Foyer" and timeSlot[1]!=-1 and (foyerOuvert==1 or foyerOuvert==4) and not testAcceptPerm:
         canvas.itemconfig(image_container,image=imgCroix)
         alert("Non inscrit", user["first_name"] + " " + user["last_name"])
         buttonPass.pack()

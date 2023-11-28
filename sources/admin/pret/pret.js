@@ -26,6 +26,7 @@ export async function init(common){
     document.addEventListener('keydown', keydown)
 
     let inputCodeBar = document.getElementById("code_bar")
+    setTimeout(() => {inputCodeBar.focus()}, 1000);
     inputCodeBar.addEventListener("input",function(){
         let val = inputCodeBar.value
         if(String(val).length  == 5){
