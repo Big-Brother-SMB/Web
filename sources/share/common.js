@@ -114,6 +114,18 @@ export class common{
           }
         }
 
+        let global_points = await common.socketAdminAsync("getGlobalPoint",null)
+        let test=true
+        global_points.forEach(e => {
+            if("gain de la semaine " + common.actualWeek==e.name){
+                test=false
+            }
+        })
+        if(test){
+            let btn = document.getElementById("nav_btn_add_point")
+            if(btn!=null) btn.classList.add('notif')
+        }
+
         let d = new Date();
         if(!common.existCookie("sondageMenuVu") && d.getHours()>=12 && (d.getDay()==1 || d.getDay()==2 || d.getDay()==4 || d.getDay()==5)){
           let btn = document.getElementById("nav_btn_menu")
@@ -132,7 +144,45 @@ export class common{
             document.getElementById("mySidenav").classList.remove("open");
             document.body.classList.remove("stop");
           }
-          this.loadpage(url)
+          
+          if(url.substring(0,2)=="f:"){
+            if(url=="f:banderole"){
+              let banderole = await common.socketAsync("getBanderole",null)
+              banderole=window.prompt("Message de la banderole:",banderole);
+              console.log("msg:",banderole)
+              if (banderole!=null){
+                  await new Promise(r => setTimeout(r, 1000));
+                  await common.socketAdminAsync("setBanderole",banderole)
+                  document.getElementById("banderole").innerHTML = banderole
+      
+                  if (banderole != null && banderole != '') {
+                      document.getElementById("banderole").innerHTML = banderole
+                      document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
+                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
+                  }else{
+                      document.getElementsByClassName("marquee-rtl")[0].classList.add("cache")
+                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px)")
+                  }
+              }
+            }else if(url=="f:addpoint"){
+              var nbpts=prompt("Nombre de point(s) à ajouter :","1")
+              nbpts = parseFloat(nbpts.replaceAll(",","."))
+              let nomgain
+              if (nbpts!==null && !isNaN(nbpts)){
+                  nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
+                  if (nomgain!==null){
+                      await common.socketAdminAsync("addGlobalPoint",[new Date(),nomgain,nbpts])
+                      if(nomgain=="gain de la semaine " + common.actualWeek){
+                        let btn = document.getElementById("nav_btn_add_point")
+                        if(btn!=null) btn.classList.remove('notif')
+                      }
+                      alert("Ajout de points effectué")
+                  }
+              }
+            }
+          }else{
+            this.loadpage(url)
+          }
         });
       }
     }else{

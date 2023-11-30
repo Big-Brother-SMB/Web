@@ -21,57 +21,6 @@ export async function init(common){
     });
 
 
-    //point global / edit banderole
-
-    document.getElementById("add point").addEventListener("click",async function(){
-        var nbpts=prompt("Nombre de point(s) à ajouter :","1")
-        nbpts = parseFloat(nbpts.replaceAll(",","."))
-        let nomgain
-        if (nbpts!==null && !isNaN(nbpts)){
-            nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
-            if (nomgain!==null){
-                await common.socketAdminAsync("addGlobalPoint",[new Date(),nomgain,nbpts])
-                if(nomgain=="gain de la semaine " + common.actualWeek) document.getElementById("add point").style.backgroundColor= "unset"
-                alert("Ajout de points effectué")
-            }
-        }
-    });
-
-
-    let global_points = await common.socketAdminAsync("getGlobalPoint",null)
-    let test=true
-    global_points.forEach(e => {
-        if("gain de la semaine " + common.actualWeek==e.name){
-            test=false
-        }
-    })
-    if(test){
-        document.getElementById("add point").style.backgroundColor= "red"
-    }
-
-
-    document.getElementById("editbanner").addEventListener("click",async function(){
-        let banderole = await common.socketAsync("getBanderole",null)
-        banderole=window.prompt("Message de la banderole:",banderole);
-        console.log("msg:",banderole)
-        if (banderole!=null){
-            await new Promise(r => setTimeout(r, 1000));
-            await common.socketAdminAsync("setBanderole",banderole)
-            document.getElementById("banderole").innerHTML = banderole
-
-            if (banderole != null && banderole != '') {
-                document.getElementById("banderole").innerHTML = banderole
-                document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
-                document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
-            }else{
-                document.getElementsByClassName("marquee-rtl")[0].classList.add("cache")
-                document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px)")
-            }
-        }
-    })
-    
-
-
     async function refreshDatabase() {
         let text = "Semaine n°" + week + " du " + common.intervalSemaine(week)
         if (week == common.actualWeek) {
