@@ -347,11 +347,20 @@ export async function init(common){
                         div.appendChild(p)
                         div.appendChild(select)
                     }
+
+                    let btn2 = document.createElement("button")
+                    btn2.innerHTML="Donner Tout"
+                    btn2.addEventListener("click",()=>{
+                        admin_permission = list_perm
+                        setUser()
+                        common.popUp_Stop()
+                    })
+                    btn.parentNode.appendChild(btn2)
+
                     btn.addEventListener("click",()=>{
                         list_select.forEach(e=>{
                             admin_permission[e.getAttribute("key")]=e.selectedIndex
                         })
-                        console.log(admin_permission)
                         setUser()
                         common.popUp_Stop()
                     })

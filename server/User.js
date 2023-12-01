@@ -60,7 +60,7 @@ module.exports = class User{
                       }
                       first_name=first_name[0].toUpperCase()+first_name.slice(1)
                       last_name=last_name.toUpperCase();
-                      new User(uuid).admin_permission = {pass:0,foyer_repas:0,foyer_perm:0,banderole:0,user_editor:0,messagerie:0,cookie:0,admin_only:0,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0}
+                      new User(uuid).admin_permission = {pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
                       db.run("INSERT INTO users(email,uuid,first_name,last_name,admin,picture,verify) VALUES(?,?,?,?,0,?,0)", [email,uuid,first_name,last_name,picture])
                   }else{
                       uuid=data.uuid
@@ -468,7 +468,7 @@ module.exports = class User{
                 if(data!=undefined){
                     resolve(data)
                 }else{
-                    resolve({uuid:uuid,pass:0,foyer_repas:0,foyer_perm:0,banderole:0,user_editor:0,messagerie:0,cookie:0,admin_only:0,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0})
+                    resolve({uuid:uuid,pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2})
                 }
             }catch(e){console.error(e);console.log('d16');;resolve([])}
         })
@@ -477,7 +477,7 @@ module.exports = class User{
   }
   set admin_permission(obj){
     let uuid=this.uuid
-    if(obj==undefined) obj = {uuid:uuid,pass:0,foyer_repas:0,foyer_perm:0,banderole:0,user_editor:0,messagerie:0,cookie:0,admin_only:0,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0}
+    if(obj==undefined) obj = {uuid:uuid,pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
     db.serialize(()=>{
         db.run("delete from admin_permission where uuid=?",[uuid])
         db.run("INSERT INTO admin_permission(uuid,pass,foyer_repas,foyer_perm,banderole,user_editor,messagerie,cookie,admin_only,localisation,CDI,Aumônerie,DOC,Audio,Tutorat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
