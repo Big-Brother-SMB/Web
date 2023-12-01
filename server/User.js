@@ -39,7 +39,8 @@ module.exports = class User{
         } catch (e) {console.error(e);console.log('d2');}
       })
   }
-    //user et  plus
+  
+  //user et  plus
   static createUser(email,picture){
       return new Promise(function(resolve, reject) {
         try{
@@ -59,6 +60,7 @@ module.exports = class User{
                       }
                       first_name=first_name[0].toUpperCase()+first_name.slice(1)
                       last_name=last_name.toUpperCase();
+                      new User(uuid).admin_permission = {pass:0,foyer_repas:0,foyer_perm:0,banderole:0,user_editor:0,messagerie:0,cookie:0,admin_only:0,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0}
                       db.run("INSERT INTO users(email,uuid,first_name,last_name,admin,picture,verify) VALUES(?,?,?,?,0,?,0)", [email,uuid,first_name,last_name,picture])
                   }else{
                       uuid=data.uuid
@@ -103,6 +105,7 @@ module.exports = class User{
             if(await user.admin < 1){
               user.admin=1
             }
+            user.admin_permission = {pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
             resolve(user)
           }else{
             resolve(new User(null))
@@ -275,6 +278,7 @@ module.exports = class User{
                 if(data!=undefined){
                     for(let i in data){
                       data[i].groups = await (new User(data[i].uuid)).groups
+                      data[i].admin_permission = await (new User(data[i].uuid)).admin_permission
                       data[i].ban = await (new User(data[i].uuid)).ban
                     }
                     resolve(data)
@@ -314,11 +318,13 @@ module.exports = class User{
   get all(){
       let uuid = this.uuid
       let groups = this.groups
+      let admin_permission = this.admin_permission
       return new Promise(function(resolve, reject) {
           db.get("SELECT * FROM users where uuid=?",[uuid], async (err, data) => {
               try{
                   if(data!=undefined){
                       data.groups = await groups
+                      data.admin_permission = await admin_permission
                       resolve(data)
                   }else{
                       resolve(null)
@@ -331,7 +337,8 @@ module.exports = class User{
 
   set all(args){
     db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?,admin=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.admin,this.uuid])
-    this.groups=args.listGroups
+    this.groups = args.listGroups
+    this.admin_permission = args.admin_permission
   }
 
   get first_name()   {
@@ -452,6 +459,32 @@ module.exports = class User{
           })
       })
   }
+
+  get admin_permission(){
+    let uuid=this.uuid
+    return new Promise(function(resolve, reject) {
+        db.get("SELECT * FROM admin_permission where uuid=?",[uuid], (err, data) => {
+            try{
+                if(data!=undefined){
+                    resolve(data)
+                }else{
+                    resolve({uuid:uuid,pass:0,foyer_repas:0,foyer_perm:0,banderole:0,user_editor:0,messagerie:0,cookie:0,admin_only:0,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0})
+                }
+            }catch(e){console.error(e);console.log('d16');;resolve([])}
+        })
+        setTimeout(reject,5000)
+    })
+  }
+  set admin_permission(obj){
+    let uuid=this.uuid
+    if(obj==undefined) obj = {uuid:uuid,pass:0,foyer_repas:0,foyer_perm:0,banderole:0,user_editor:0,messagerie:0,cookie:0,admin_only:0,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0}
+    db.serialize(()=>{
+        db.run("delete from admin_permission where uuid=?",[uuid])
+        db.run("INSERT INTO admin_permission(uuid,pass,foyer_repas,foyer_perm,banderole,user_editor,messagerie,cookie,admin_only,localisation,CDI,Aumônerie,DOC,Audio,Tutorat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        ,[uuid,obj.pass,obj.foyer_repas,obj.foyer_perm,obj.banderole,obj.user_editor,obj.messagerie,obj.cookie,obj.admin_only,obj.localisation,obj.CDI,obj.Aumônerie,obj.DOC,obj.Audio,obj.Tutorat])
+    })
+  }
+
   //demandes
   getMidiDemande(semaine,creneau){
     let uuid = this.uuid

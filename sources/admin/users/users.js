@@ -9,10 +9,13 @@ document.addEventListener('keyup', (event) => {
 });
 
 export async function init(common){
+    await new Promise(r => setTimeout(r, 1000));
+
     let divClasse = document.getElementById("classe")
     let dName_prenom = document.getElementById("name_prenom")
     let dName_nom = document.getElementById("name_nom")
     let connect = document.getElementById('key button')
+    let admin_perm = document.getElementById('admin_perm')
 
     let pScore = document.getElementById("score")
     let divScoreEvent = document.getElementById("divScoreEvent")
@@ -51,6 +54,7 @@ export async function init(common){
         codeCarte.removeEventListener("input",fu4)
         addPrio.removeEventListener("click",fu5)
         connect.removeEventListener("click",fu6)
+        admin_perm.removeEventListener("click",fu7)
     }
 
     let fuName=function(){return}
@@ -60,6 +64,7 @@ export async function init(common){
     let fu4=function(){return}
     let fu5=function(){return}
     let fu6=function(){return}
+    let fu7=function(){return}
 
     let utilisateursNames = []
     let listUsers = common.nameOrder(await common.socketAdminAsync('getListPass',null))
@@ -81,6 +86,7 @@ export async function init(common){
         let listGroups = utilisateur.groups
         let first_name = utilisateur.first_name
         let last_name = utilisateur.last_name
+        let admin_permission = utilisateur.admin_permission
 
         if(utilisateursNames.indexOf(common.name(utilisateur.first_name,utilisateur.last_name)) == -1){
             document.getElementById("info").innerHTML = "cet utilisateur n'existe pas"
@@ -94,7 +100,7 @@ export async function init(common){
             }
             divClasse.addEventListener("change", fu1=function() {
                 classe = g_c[1][this.selectedIndex].classe
-                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                setUser()
             });
             
             dName_prenom.value = utilisateur.first_name
@@ -102,7 +108,7 @@ export async function init(common){
             fuName=function(){
                 first_name = dName_prenom.value
                 last_name = dName_nom.value
-                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                setUser()
             }
             dName_prenom.addEventListener("input",fuName)
             dName_nom.addEventListener("input",fuName)
@@ -242,7 +248,7 @@ export async function init(common){
                 adminBox.checked=false
             }
             adminBox.addEventListener("change", fu3=function() {
-                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                setUser()
             })
 
             codeCarte.value = codeBar
@@ -260,7 +266,7 @@ export async function init(common){
                     })
                     if(test){
                         codeBar=val
-                        common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                        setUser()
                     }
                 }
             });
@@ -280,7 +286,7 @@ export async function init(common){
                 addPrio.selectedIndex = 0
                 if(index != -1 && !listGroups.includes(g_c[0][index])){
                     listGroups.push(g_c[0][index].group2)
-                    common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                    setUser()
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = ""
                     }
@@ -293,7 +299,7 @@ export async function init(common){
                 prio.className = "ami"
                 prio.addEventListener("click", function() {
                     listGroups = listGroups.filter(o => o != name);
-                    common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups})
+                    setUser()
                     prio.parentNode.removeChild(prio);
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = "aucune priorités"
@@ -309,6 +315,52 @@ export async function init(common){
                     window.location.reload()
                 }
             })
+
+            admin_perm.addEventListener("click",fu7=async function(event){
+                common.popUp_Active("Permission:","",btn=>{
+                    let popup = document.getElementById("popup-body")
+                    let list_select = []
+                    let list_perm = {pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
+                    for(const [key, value] of Object.entries(list_perm)){
+                        let div = document.createElement("div")
+                        div.className = "div_popup_admin_perm"
+                        popup.appendChild(div)
+                        let p = document.createElement("p")
+                        p.innerHTML = key + ": "
+                        let select = document.createElement("select")
+                        select.setAttribute("key",key)
+                        list_select.push(select)
+                        for(let i=0;i<=value;i++) {
+                            let opt = document.createElement("option")
+                            if(i==0){
+                                opt.innerHTML = "Désactivé"
+                            }else if(i==1 && value==1){
+                                opt.innerHTML = "Activé"
+                            }else if(i==1){
+                                opt.innerHTML = "Lecture"
+                            }else{
+                                opt.innerHTML = "Ecriture"
+                            }
+                            select.appendChild(opt);
+                        }
+                        select.selectedIndex=admin_permission[key]
+                        div.appendChild(p)
+                        div.appendChild(select)
+                    }
+                    btn.addEventListener("click",()=>{
+                        list_select.forEach(e=>{
+                            admin_permission[e.getAttribute("key")]=e.selectedIndex
+                        })
+                        console.log(admin_permission)
+                        setUser()
+                        common.popUp_Stop()
+                    })
+                })
+            })
+
+            function setUser(){
+                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission})
+            }
         }
     },true);
 

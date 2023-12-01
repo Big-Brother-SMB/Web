@@ -1,0 +1,22 @@
+#popup-body{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.div_popup_admin_perm select{
+    height: 30px;
+    width: calc(95% - 150px);
+    font-size : 1.2rem !important;
+    display: inline;
+}
+
+.div_popup_admin_perm p{
+    width: 150px;
+    margin: auto;
+    display: inline-block;
+}
+
+.div_popup_admin_perm{
+    margin: 15px auto;
+    width: 100%;
+}

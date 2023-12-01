@@ -89,51 +89,8 @@ export class common{
 
       const list_nav_btn = document.getElementsByClassName('nav_btn')
       //----------------------------notif----------------------------------
-      const funcPosts = async function(){
-        let list_post = await common.socketAsync("getPost","");
-        let posts = {}
-        list_post.forEach(element => {
-          if(!element.lu){
-            if(posts[element.group2]==undefined){
-              posts[element.group2]=1
-            }else{
-              posts[element.group2]++
-            }
-            if(posts['asso']==undefined){
-              posts['asso']=1
-            }else{
-              posts['asso']++
-            }
-          }
-        });
-
-        for (var i = 0; i < list_nav_btn.length; i++) {
-          if(posts[list_nav_btn[i].getAttribute('group')]!=undefined){
-            list_nav_btn[i].classList.add('notif')
-            list_nav_btn[i].getElementsByClassName("badge")[0].innerHTML=posts[list_nav_btn[i].getAttribute('group')]
-          }
-        }
-
-        let global_points = await common.socketAdminAsync("getGlobalPoint",null)
-        let test=true
-        global_points.forEach(e => {
-            if("gain de la semaine " + common.actualWeek==e.name){
-                test=false
-            }
-        })
-        if(test){
-            let btn = document.getElementById("nav_btn_add_point")
-            if(btn!=null) btn.classList.add('notif')
-        }
-
-        let d = new Date();
-        if(!common.existCookie("sondageMenuVu") && d.getHours()>=12 && (d.getDay()==1 || d.getDay()==2 || d.getDay()==4 || d.getDay()==5)){
-          let btn = document.getElementById("nav_btn_menu")
-          if(btn!=null) btn.classList.add('notif')
-        }
-      }
-      if(this.readCookie("key")!=null) funcPosts()
       
+      if(this.readCookie("key")!=null) this.funcNotifs()
 
       //-------------------listener-------------------------
       for (var i = 0; i < list_nav_btn.length; i++) {
@@ -231,6 +188,65 @@ export class common{
 
 
 
+  //----------------------------notif + admin_permision display---------------------------------------------
+
+  static async funcNotifs(){
+    let list_post = await common.socketAsync("getPost","");
+    let posts = {}
+    list_post.forEach(element => {
+      if(!element.lu){
+        if(posts[element.group2]==undefined){
+          posts[element.group2]=1
+        }else{
+          posts[element.group2]++
+        }
+        if(posts['asso']==undefined){
+          posts['asso']=1
+        }else{
+          posts['asso']++
+        }
+      }
+    });
+
+    let admin_permission = this.admin_permission
+
+    console.log(admin_permission)
+    const list_nav_elem = document.getElementById("mySidenav").children
+    for (var i = 0; i < list_nav_elem.length; i++) {
+      if(admin_permission[list_nav_elem[i].getAttribute("permission")]==0){
+        list_nav_elem[i].classList.add('cache')
+      }
+    }
+
+    const list_nav_btn = document.getElementsByClassName('nav_btn')
+    for (var i = 0; i < list_nav_btn.length; i++) {
+      if(posts[list_nav_btn[i].getAttribute('group')]!=undefined){
+        list_nav_btn[i].classList.add('notif')
+        list_nav_btn[i].getElementsByClassName("badge")[0].innerHTML = posts[list_nav_btn[i].getAttribute('group')]
+      }
+    }
+
+    let global_points = await common.socketAdminAsync("getGlobalPoint",null)
+    let test=true
+    global_points.forEach(e => {
+        if("gain de la semaine " + common.actualWeek==e.name){
+            test=false
+        }
+    })
+    if(test){
+        let btn = document.getElementById("nav_btn_add_point")
+        if(btn!=null) btn.classList.add('notif')
+    }
+
+    let d = new Date();
+    if(!common.existCookie("sondageMenuVu") && d.getHours()>=12 && (d.getDay()==1 || d.getDay()==2 || d.getDay()==4 || d.getDay()==5)){
+      let btn = document.getElementById("nav_btn_menu")
+      if(btn!=null) btn.classList.add('notif')
+    }
+  }
+
+
+
 
 
 
@@ -311,6 +327,7 @@ export class common{
         }
       });
       
+      await common.reloadCommon()
       this.loadpage("sidebar:" + document.location.pathname.split("/")[1])
     }
 
@@ -338,15 +355,7 @@ export class common{
     this.id_data = id_data
     console.log(id_data)
 
-    this.admin
-    this.classe
-    this.codeBar
-    this.email
-    this.first_name
-    this.groups
-    this.last_name
     this.tuto=true
-    this.uuid
     if(id_data!='err'){
       this.admin = id_data.admin
       this.classe = id_data.classe
@@ -357,6 +366,7 @@ export class common{
       this.last_name = id_data.last_name
       this.tuto = id_data.tuto
       this.uuid = id_data.uuid
+      this.admin_permission = id_data.admin_permission
     } else {
       if(window.location.pathname.includes("/asso")){
         let btn = document.getElementById("without_account")
@@ -581,7 +591,9 @@ export class common{
           if(time==undefined){
             time=5000
           }
-          setTimeout(reject,time)
+          setTimeout(()=>{
+            reject({channel:channel,msg:msg,time:time})
+          },time)
         })
   }
 
@@ -596,7 +608,9 @@ export class common{
                 if(time==undefined){
                   time=5000
                 }
-                setTimeout(reject,time)
+                setTimeout(()=>{
+                  reject({channel:channel,msg:msg,time:time})
+                },time)
             })
         } else {
             console.log('error: admin = 0')
@@ -1027,7 +1041,6 @@ document.getElementById("mySidenav").className=typeSideBar
 
 import(document.location.pathname+'/'+document.location.pathname.split('/').pop()+".js").then(async (module) => {
   await common.startUp()
-  await common.reloadCommon()
   if(common.readCookie("troll")!=null) import('/troll/troll.js') //troll
   await module.init(common)
   return
