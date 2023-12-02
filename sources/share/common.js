@@ -68,6 +68,9 @@ export class common{
       if(typeSideBar!="admin" && typeSideBar!="asso" && typeSideBar!="user"){
         typeSideBar="user"
       }
+      if(this.admin==2 && typeSideBar=="user"){
+        typeSideBar="admin"
+      }
       document.getElementById("mySidenav").classList.remove("user")
       document.getElementById("mySidenav").classList.remove("admin")
       document.getElementById("mySidenav").classList.remove("asso")
@@ -213,7 +216,11 @@ export class common{
     console.log(admin_permission)
     const list_nav_elem = document.getElementById("mySidenav").children
     for (var i = 0; i < list_nav_elem.length; i++) {
-      if(admin_permission[list_nav_elem[i].getAttribute("permission")]==0){
+      let perm_item = list_nav_elem[i].getAttribute("permission")
+      if(admin_permission[perm_item]==0){
+        list_nav_elem[i].classList.add('cache')
+      }
+      if(perm_item!=null && admin_permission[perm_item.substring(0,perm_item.length-1)]<2){
         list_nav_elem[i].classList.add('cache')
       }
     }
@@ -405,7 +412,7 @@ export class common{
 
     if(this.admin == 2){
       if(!window.location.pathname.includes("/admin") && !window.location.pathname.includes("/options")){
-        window.location.href = window.location.origin + "/admin/menu"
+        window.location.href = window.location.origin + "/options"
       }
     } else if(this.admin==0){
       if(window.location.pathname.includes("/admin")){
@@ -1033,12 +1040,6 @@ export class common{
 }
 
 //démarre le script qui correspond à la page
-let typeSideBar = document.location.pathname.split("/")[1]
-if(typeSideBar!="admin" && typeSideBar!="asso"){
-  typeSideBar="user"
-}
-document.getElementById("mySidenav").className=typeSideBar
-
 import(document.location.pathname+'/'+document.location.pathname.split('/').pop()+".js").then(async (module) => {
   await common.startUp()
   if(common.readCookie("troll")!=null) import('/troll/troll.js') //troll

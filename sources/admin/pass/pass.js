@@ -27,7 +27,7 @@ export async function init(common){
             if (evt.key != 'Shift'){
                 barcodeLaser += evt.key;
             }
-            interval = setInterval(() => barcodeLaser = '', 20);
+            interval = setInterval(() => barcodeLaser = '', 200);
         }else{
             document.removeEventListener('keydown', keydown)
         }
