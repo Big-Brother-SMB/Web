@@ -60,7 +60,6 @@ module.exports = class User{
                       }
                       first_name=first_name[0].toUpperCase()+first_name.slice(1)
                       last_name=last_name.toUpperCase();
-                      new User(uuid).admin_permission = {pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
                       db.run("INSERT INTO users(email,uuid,first_name,last_name,admin,picture,verify) VALUES(?,?,?,?,0,?,0)", [email,uuid,first_name,last_name,picture])
                   }else{
                       uuid=data.uuid
@@ -105,7 +104,7 @@ module.exports = class User{
             if(await user.admin < 1){
               user.admin=1
             }
-            user.admin_permission = {pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
+            user.admin_permission = undefined
             resolve(user)
           }else{
             resolve(new User(null))
@@ -308,11 +307,11 @@ module.exports = class User{
   }
   #setInfo(key,value){
     let uuid=this.uuid
-      db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
-          if(data!=undefined){
-              db.run("UPDATE users SET "+ key +"=? where uuid=?",[value,uuid])
-          }
-      })
+    db.get("SELECT * FROM users where uuid=?",[uuid], (err, data) => {
+        if(data!=undefined){
+            db.run("UPDATE users SET "+ key +"=? where uuid=?",[value,uuid])
+        }
+    })
   }
 
   get all(){
@@ -476,12 +475,20 @@ module.exports = class User{
     })
   }
   set admin_permission(obj){
-    let uuid=this.uuid
+    let uuid = this.uuid
+    let user = this
     if(obj==undefined) obj = {uuid:uuid,pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
-    db.serialize(()=>{
-        db.run("delete from admin_permission where uuid=?",[uuid])
-        db.run("INSERT INTO admin_permission(uuid,pass,foyer_repas,foyer_perm,banderole,user_editor,messagerie,cookie,admin_only,localisation,CDI,Aumônerie,DOC,Audio,Tutorat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-        ,[uuid,obj.pass,obj.foyer_repas,obj.foyer_perm,obj.banderole,obj.user_editor,obj.messagerie,obj.cookie,obj.admin_only,obj.localisation,obj.CDI,obj.Aumônerie,obj.DOC,obj.Audio,obj.Tutorat])
+    db.get("SELECT * FROM users where uuid=?",[uuid], async (err, data) => {
+      try {
+        if(await user.admin == 0 || await user.admin == null) return
+        if(data!=undefined){
+          db.run("UPDATE admin_permission SET pass=?,foyer_repas=?,foyer_perm=?,banderole=?,user_editor=?,messagerie=?,cookie=?,admin_only=?,localisation=?,CDI=?,Aumônerie=?,DOC=?,Audio=?,Tutorat=? WHERE uuid=?"
+          ,[obj.pass,obj.foyer_repas,obj.foyer_perm,obj.banderole,obj.user_editor,obj.messagerie,obj.cookie,obj.admin_only,obj.localisation,obj.CDI,obj.Aumônerie,obj.DOC,obj.Audio,obj.Tutorat,uuid])
+        }else{
+          db.run("INSERT INTO admin_permission(uuid,pass,foyer_repas,foyer_perm,banderole,user_editor,messagerie,cookie,admin_only,localisation,CDI,Aumônerie,DOC,Audio,Tutorat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+          ,[uuid,obj.pass,obj.foyer_repas,obj.foyer_perm,obj.banderole,obj.user_editor,obj.messagerie,obj.cookie,obj.admin_only,obj.localisation,obj.CDI,obj.Aumônerie,obj.DOC,obj.Audio,obj.Tutorat])
+        }
+      }catch(e){console.error(e);console.log('d17');;resolve({})}
     })
   }
 
