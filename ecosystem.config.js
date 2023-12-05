@@ -5,7 +5,7 @@ module.exports = {
   }],
   deploy : {
     production : {
-      user : 'root',
+      user : 'john',
       host : '91.121.41.208',
       ref  : 'origin/main',
       repo : 'git@github.com:Big-Brother-SMB/Web.git',
