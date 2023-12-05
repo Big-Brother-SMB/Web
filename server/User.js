@@ -478,7 +478,7 @@ module.exports = class User{
     let uuid = this.uuid
     let user = this
     if(obj==undefined) obj = {uuid:uuid,pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
-    db.get("SELECT * FROM users where uuid=?",[uuid], async (err, data) => {
+    db.get("SELECT * FROM admin_permission where uuid=?",[uuid], async (err, data) => {
       try {
         if(await user.admin == 0 || await user.admin == null) return
         if(data!=undefined){
