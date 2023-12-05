@@ -127,7 +127,7 @@ export async function init(common){
 
   for(let i in usersList){
       listScan.forEach(scan=>{
-          if(scan.uuid==usersList[i].uuid){
+          if(scan.uuid==usersList[i].uuid && scan.lieu==lieu){
               console.log(usersList[i])
               affList.push(usersList[i])
               const index = affList.length - 1
