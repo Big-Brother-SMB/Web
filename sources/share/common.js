@@ -422,7 +422,7 @@ export class common{
 
     if(window.location.pathname.includes("/admin")) common.delCookie('troll') //troll
 
-    if(!this.tuto){
+    if(!this.tuto && this.admin!=2){
       this.popUp_Active("(1/5) Bienvenue sur le site du Foyer !"
         ,"<div class='divImgPopup'><img src='/assets/nav_bar/amis.png'><img src='/assets/nav_bar/midi.png'></div><br>"
         +"Ce site permet aux éléves du lycée SMB de <b>manger au Foyer du lycée avec leurs amis</b> en déposant une demande.<br>"
