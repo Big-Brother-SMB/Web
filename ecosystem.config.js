@@ -1,6 +1,7 @@
 module.exports = {
   apps : [{
-    script: 'main.js'
+    script: 'main.js',
+    watch: '.'
   }],
   deploy : {
     production : {
