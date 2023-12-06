@@ -335,7 +335,7 @@ module.exports = class User{
   }
 
   set all(args){
-    db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?,admin=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.admin,this.uuid])
+    db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?, admin=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.admin,this.uuid])
     this.groups = args.listGroups
     this.admin_permission = args.admin_permission
   }

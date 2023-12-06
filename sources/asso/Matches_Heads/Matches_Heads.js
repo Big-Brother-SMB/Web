@@ -9,8 +9,6 @@ export async function init(common){
         list_post.sort((a, b) => (a.date < b.date) ? 1 : -1)
         for(const post of list_post){
             if(post.group2==group_name){
-                common.socketAsync("postLu",{id:post.id})
-    
                 let div = document.createElement("div")
                 div.className="divPost"
     
@@ -31,24 +29,26 @@ export async function init(common){
                 texte.innerHTML=post.text
                 div.appendChild(texte)
 
-                div.addEventListener("click",async ()=>{
-                    common.popUp_Active('Post:','Que voulez-vous faire?',async (btn)=>{
-                        btn.innerHTML="Supprimer"
-                        btn.addEventListener("click",async ()=>{
-                            await common.socketAsync("delPost",{id:post.id});
-                            common.popUp_Stop()
-                            await new Promise(r => setTimeout(r, 500));
-                            refreshPost()
-                        },{once:true})
-              
-                        let btn2 = document.createElement("button")
-                        btn2.innerHTML="Modifier"
-                        btn2.addEventListener("click",()=>{
-                            popUp_post(post.id,post.title,post.text,post.date)
-                        },{once:true})
-                        btn.parentNode.appendChild(btn2)
+                if(common.groups.indexOf(group_name)!=-1 || common.admin > 0){
+                    div.addEventListener("click",async ()=>{
+                        common.popUp_Active('Post:','Que voulez-vous faire?',async (btn)=>{
+                            btn.innerHTML="Supprimer"
+                            btn.addEventListener("click",async ()=>{
+                                await common.socketAsync("delPost",{id:post.id});
+                                common.popUp_Stop()
+                                await new Promise(r => setTimeout(r, 500));
+                                refreshPost()
+                            },{once:true})
+                  
+                            let btn2 = document.createElement("button")
+                            btn2.innerHTML="Modifier"
+                            btn2.addEventListener("click",()=>{
+                                popUp_post(post.id,post.title,post.text,post.date)
+                            },{once:true})
+                            btn.parentNode.appendChild(btn2)
+                        })
                     })
-                })
+                }
         
                 section.appendChild(div)
             }

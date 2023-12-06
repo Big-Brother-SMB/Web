@@ -233,16 +233,18 @@ export class common{
       }
     }
 
-    let global_points = await common.socketAdminAsync("getGlobalPoint",null)
-    let test=true
-    global_points.forEach(e => {
-        if("gain de la semaine " + common.actualWeek==e.name){
-            test=false
-        }
-    })
-    if(test){
-        let btn = document.getElementById("nav_btn_add_point")
-        if(btn!=null) btn.classList.add('notif')
+    if(this.socketAdmin != undefined){
+      let global_points = await common.socketAdminAsync("getGlobalPoint",null)
+      let test=true
+      global_points.forEach(e => {
+          if("gain de la semaine " + common.actualWeek==e.name){
+              test=false
+          }
+      })
+      if(test){
+          let btn = document.getElementById("nav_btn_add_point")
+          if(btn!=null) btn.classList.add('notif')
+      }
     }
 
     let d = new Date();
@@ -396,7 +398,7 @@ export class common{
     //---------------------------securité page admin + deco + tuto---------------------------
 
 
-    if(this.admin>0 && (this.socketAdmin==undefined || this.socketAdmin==undefined)){
+    if(this.admin>0 && this.socketAdmin==undefined){
       this.socketAdmin = io("/admin",{
         auth: {
           token: this.key
