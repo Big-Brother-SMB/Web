@@ -266,7 +266,7 @@ export async function init(common){
 
     //------------------------------------Prioritaires-------------------------------------
 
-    const listPrioMode = ["Ne pas prendre en compte les prio","Prendre en compte les prio","Uniquement prio"]
+    const listPrioMode = ["Ne pas prendre en compte les prioritaires","Prendre en compte les prioritaires","Uniquement les prioritaires","Interdit aux prioritaires"]
     let divPrioMode = document.getElementById("prio mode")
     for(let i in listPrioMode){
         let opt = document.createElement("option")

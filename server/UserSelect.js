@@ -157,6 +157,16 @@ module.exports = class UserSelect{
             }
           }
         }
+
+        //active l'option interdit aux prioritaires
+        //refuse les prio
+        if(info.prio_mode==3){
+          for(let u in this.usersList){
+            if(this.usersList[u].prio){
+              this.usersList[u].pass=-1
+            }
+          }
+        }
     
         //me refuse si l'un de mes amis éloignié est refusé
         for(let i in this.usersList){
