@@ -18,7 +18,7 @@ module.exports = (db)=>{
     //users / amis / user-group / token
     db.get("SELECT * FROM sqlite_master where type='table' AND name='users'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, tuto boolean,admin int2,picture text,verify boolean)')
+        db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, tuto boolean,admin boolean,picture text,verify boolean)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='admin_permission'", (err, data) => {
       if(data==undefined)
@@ -130,7 +130,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='lieu_list'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE lieu_list(uuid uuid,lieu text,semaine int2,day int2,creneau int2,scan bool)')
+        db.run('CREATE TABLE lieu_list(uuid uuid,lieu text,semaine int2,day int2,creneau int2,scan boolean)')
     })
     /*db.get("SELECT * FROM sqlite_master where type='table' AND name='CDI_list'", (err, data) => {
       if(data==undefined)

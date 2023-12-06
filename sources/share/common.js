@@ -376,6 +376,9 @@ export class common{
       this.tuto = id_data.tuto
       this.uuid = id_data.uuid
       this.admin_permission = id_data.admin_permission
+      if(id_data.admin_permission.admin_only && id_data.admin){
+        this.admin = 2
+      }
     } else {
       if(window.location.pathname.includes("/asso")){
         let btn = document.getElementById("without_account")

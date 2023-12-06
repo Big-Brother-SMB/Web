@@ -8,7 +8,9 @@ module.exports = class funcSocket{
         socket.on('setMyAdminMode',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                user.admin = req
+                let obj = await user.admin_permission
+                obj["admin_only"] = req
+                user.admin_permission = obj
                 socket.emit('setMyAdminMode',"ok")
             }catch(e){console.error(e);console.log('3');}
         })

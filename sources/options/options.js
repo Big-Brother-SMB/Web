@@ -63,16 +63,18 @@ export async function init(common){
 
     adminS.addEventListener("change", function () {
         if(adminS.checked){
-            common.socketAdminAsync('setMyAdminMode',2)
-            common.loadpage("sidebar:admin")
-            common.admin=2
-        } else {
             common.socketAdminAsync('setMyAdminMode',1)
             common.loadpage("sidebar:admin")
+            common.admin_permission.admin_only = 1
+            common.admin=2
+        } else {
+            common.socketAdminAsync('setMyAdminMode',0)
+            common.loadpage("sidebar:admin")
+            common.admin_permission.admin_only = 0
             common.admin=1
         }
     })
-    if(common.admin===2){
+    if(common.admin_permission.admin_only==1){
         adminS.checked=true
     }
 }

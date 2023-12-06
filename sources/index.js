@@ -154,7 +154,7 @@ document.getElementById("change").addEventListener("click",function(){
 async function connect(id_data){
   if(id_data!='err'){
     writeCookie("key",id_data.key)
-    if(id_data.admin==2){
+    if(id_data.admin && id_data.admin_permission.admin_only){
       window.location.href = "/options";
     } else {
       window.location.href = "/accueil";
