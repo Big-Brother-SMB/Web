@@ -249,36 +249,20 @@ module.exports = class User{
       })
   }
 
-  static listUsersUuid(){
-    return new Promise(function(resolve, reject) {
-      try{
-        db.all("SELECT uuid FROM users ORDER BY first_name ASC, last_name ASC", (err, data) => {
-            try{
-                if(data!=undefined){
-                    let list=[]
-                    data.forEach(e=>{
-                        list.push(new User(e.uuid))
-                    })
-                    resolve(list)
-                }else{
-                    resolve([])
-                }
-            }catch(e){console.error(e);console.log('d10');;resolve([])}
-        })
-        setTimeout(reject,5000)
-      } catch (e) {console.error(e);console.log('d11');}
-    })
-  }
-
   static listUsersComplete(){
     return new Promise(function(resolve, reject) {
         db.all("SELECT * FROM users ORDER BY first_name ASC, last_name ASC", async (err, data) => {
             try{
                 if(data!=undefined){
+                    console.log("top-1")
                     for(let i in data){
-                      data[i].groups = await (new User(data[i].uuid)).groups
-                      data[i].admin_permission = await (new User(data[i].uuid)).admin_permission
-                      data[i].ban = await (new User(data[i].uuid)).ban
+                      let user = new User(data[i].uuid)
+                      data[i].groups = await user.groups
+                      console.log("top-2",data[i].groups)
+                      data[i].admin_permission = await user.admin_permission
+                      console.log("top-3",data[i].admin_permission)
+                      data[i].ban = await user.ban
+                      console.log("top-4",data[i].ban)
                     }
                     resolve(data)
                 }else{
