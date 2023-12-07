@@ -304,11 +304,12 @@ user="None"
 def alert(titre,text):
   global fenetre
   if son_bool.get():
-    fenetre.focus_force()
+    #fenetre.focus_force()
     t1 = threading.Thread(target=playsound, args=('alert.mp3',))
     t1.start()
-    t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
-    t2.start()
+    msgErr.set(titre + ":\n" + text)
+    #t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
+    #t2.start()
 
 
 
@@ -361,6 +362,7 @@ def scanKey(key):
       canvas.itemconfig(image_container,image=imgUnknown)
       name.set("")
       info.set("")
+      msgErr.set("")
     elif str(key) == "Key.enter" :
       number = ""
       laserScanNumber = ""
@@ -387,6 +389,7 @@ def scanKey(key):
         canvas.itemconfig(image_container,image=imgUnknown)
         name.set("")
         info.set("")
+        msgErr.set("")
   except ValueError:
     pass
 
@@ -481,6 +484,7 @@ def controle():
     canvas.itemconfig(image_container,image=imgUnknown)
     name.set("")
     info.set("")
+    msgErr.set("")
 
 
 
@@ -702,6 +706,11 @@ labelPassage11 = Label(fenetre, textvariable=passage11, font=("Arial", 20))
 passage12 = StringVar()
 labelPassage12 = Label(fenetre, textvariable=passage12, font=("Arial", 20))
 
+msgErr = StringVar()
+msgErr.set("")
+labelmsgErr = Label(fenetre, textvariable=msgErr, font=("Arial", 10))
+labelmsgErr.pack()
+
 son_bool = BooleanVar()
 if son_bool_save=="False":
   son_bool.set(False)
@@ -727,6 +736,7 @@ def appel():
 
   name.set("")
   info.set("")
+  msgErr.set("")
   if timeSlot[1]!=-1:
     text.set("...")
 
@@ -756,6 +766,7 @@ def appel():
       text.set("Terminée")
       name.set("")
       info.set("")
+      msgErr.set("")
       buttonAppel.pack()
     threading.Thread(target=lireCode).start()
   else:
@@ -824,7 +835,7 @@ menubar = Menu(fenetre)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
 filemenu.add_command(label="Date", command=windowDate)
-filemenu.add_checkbutton(label="Son & msg", onvalue=1, offvalue=0, variable=son_bool, command=refreshOptions)
+filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool, command=refreshOptions)
 menubar.add_cascade(label="File", menu=filemenu)
 modemenu = Menu(menubar, tearoff=0)
 modemenu.add_checkbutton(label="Foyer", onvalue="Foyer", variable=mode_var, command=refreshOptions)
