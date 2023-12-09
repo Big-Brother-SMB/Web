@@ -479,8 +479,12 @@ export class common{
       //if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
       if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",false)//temporaire, car les notifs ne fonctionne pas 
 
+      //-----------------------------------notif ServiceWorker--------------------------
+
+      common.registerServiceWorker();
+
       if((this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator) && !window.location.pathname.includes("/asso"))
-      && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)) || !(await navigator.serviceWorker.register("/share/sw.js")).active)){
+      && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)))){
         this.popUp_Active("Notification site du Foyer!"
         ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
         +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
@@ -500,19 +504,6 @@ export class common{
         })
       }
     }
-
-    //-----------------------------------notif--------------------------
-
-    await navigator.serviceWorker.register("/share/sw.js").then((registration) => {
-      try{
-        registration.update().then(() => {
-          registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
-        })
-      }catch(e){
-        console.error(e);
-      }
-    });
-    
 
     //--------------------------banderole--------------------------------
 
@@ -655,24 +646,28 @@ export class common{
   }
 
   static async registerServiceWorker() {
-    const registration = await navigator.serviceWorker.register("/share/sw.js")
-    try{
-      registration.update().then(() => {
-        registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
-      })
-    }catch(e){
-      console.error(e);
+    if("serviceWorker" in navigator){
+      const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" })
+      try{
+        registration.update().then(() => {
+          registration.active.postMessage({notif:common.readBoolCookie("notifAccept"),user:common.uuid});
+        })
+      }catch(e){
+        console.error(e);
+      }
+      if(Notification.permission === "granted"){
+        let subscription = await registration.pushManager.getSubscription();
+        // L'utilisateur n'est pas déjà abonné, on l'abonne au notification push
+        if (!subscription) {
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: await common.getPublicKey(),
+          });
+        }
+      
+        await common.socketAsync("subscribeNotification",subscription)
+      }
     }
-    let subscription = await registration.pushManager.getSubscription();
-    // L'utilisateur n'est pas déjà abonné, on l'abonne au notification push
-    if (!subscription) {
-      subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: await common.getPublicKey(),
-      });
-    }
-  
-    await common.socketAsync("subscribeNotification",subscription)
   }
   
   static async getPublicKey() {

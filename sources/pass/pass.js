@@ -1,6 +1,17 @@
 const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"]
 
 export async function init(common){
+    const containerElement = document.getElementById('single');
+
+    const bcid = 'bc'+common.codeBar;
+    // create the image element
+    const bcimg = document.createElement('img');
+    bcimg.className = "barcode";
+    bcimg.setAttribute('id', bcid);
+    containerElement.appendChild(bcimg);
+    JsBarcode('#'+bcid, common.codeBar, {format: 'code39'});
+
+
     let d = new Date();
 
     let jBrut = d.getDay();
@@ -81,17 +92,4 @@ export async function init(common){
         }catch(Exception){}
     }
     loop();
-
-
-
-    const containerElement = document.getElementById('single');
-
-
-    const bcid = 'bc'+common.codeBar;
-    // create the image element
-    const bcimg = document.createElement('img');
-    bcimg.className = "barcode";
-    bcimg.setAttribute('id', bcid);
-    containerElement.appendChild(bcimg);
-    JsBarcode('#'+bcid, common.codeBar, {format: 'code39'});
 }

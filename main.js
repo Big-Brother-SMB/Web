@@ -202,14 +202,14 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           res.end();
         }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=43200'});//sec = 12h | 43200
+            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName)});//sec = 12h | 43200   ,'Cache-Control':'public, max-age=43200'
             res.end(file);
           }else {
             res.writeHead(404);
             res.end(file);
           }
         }else{
-          res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=1'});
+          res.writeHead(200, {'Content-Type': mimeTypesFunc(extName)});
           res.end(file);
         }
       }catch(e){console.error(e);console.log('2');}

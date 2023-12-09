@@ -74,7 +74,7 @@ export async function init(common){
             common.admin=1
         }
     })
-    if(common.admin_permission.admin_only==1){
+    if(common.admin==2){
         adminS.checked=true
     }
 }

@@ -101,7 +101,7 @@ module.exports = class User{
           }else if(py_token==token){
             let user = await User.createUser("super.admin@admin.super","https://foyerlycee.stemariebeaucamps.fr/assets/nav_bar/admin.png")
 
-            if(await user.admin < 1){
+            if(!(await user.admin)){
               user.admin=1
             }
             user.admin_permission = undefined
