@@ -1,6 +1,6 @@
 import csv
 
-
+#
 with open('list2.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     with open("list.csv") as file2:
