@@ -282,6 +282,24 @@ export class common{
     }
     console.log("cookie", this.cookie)
 
+    //---------------------------pass offline-------------------------------
+    try {
+      await fetch('/accueil')
+    } catch (error) {
+      console.log(document.location.pathname=="/pass",this.existCookie("key"),this.existCookie("codeBarre"))
+      if(document.location.pathname=="/pass" && this.existCookie("key") && this.existCookie("codeBarre")){
+        const containerElement = document.getElementById('single');
+        const codeBar = this.readCookie("codeBarre")
+        const bcid = 'bc'+codeBar;
+        const bcimg = document.createElement('img');
+        bcimg.className = "barcode";
+        bcimg.setAttribute('id', bcid);
+        containerElement.appendChild(bcimg);
+        JsBarcode('#'+bcid, codeBar, {format: 'code39'});
+        return false
+      }
+    }
+
     //----------------------historique-----------------------
 
     window.addEventListener("popstate", (event) => {
@@ -369,6 +387,7 @@ export class common{
       this.admin = id_data.admin
       this.classe = id_data.classe
       this.codeBar = id_data.code_barre
+      this.writeCookie("codeBarre",this.codeBar)
       this.email = id_data.email
       this.first_name = id_data.first_name
       this.groups = id_data.groups

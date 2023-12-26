@@ -1,6 +1,5 @@
-const cacheName = "PWA-v8";
+const cacheName = "PWA-v2";
 const appShellFiles = [
-            '/',
             '/share/manifest.json',
             '/assets/logo.png',
 
@@ -13,7 +12,9 @@ const appShellFiles = [
             '/pass/pass.css',
             '/pass/pass.main.html',
             '/pass/pass.tete.html',
-            '/pass/pass.titre.html'
+            '/pass/pass.titre.html',
+            'https://cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js',
+            'https://cdn.socket.io/4.4.1/socket.io.esm.min.js'
 ];
 
 
@@ -53,10 +54,12 @@ self.addEventListener("fetch",(event)=>{
         (async () => {
             const r = await caches.match(event.request);
             if (r) {return r;}
-            let response = await fetch(event.request)
-            const cache = await caches.open(cacheName);
-            cache.put(event.request, response.clone());
-            return response;
+            try{
+                let response = await fetch(event.request)
+                //const cache = await caches.open(cacheName);
+                //cache.put(event.request, response.clone());
+                return response;
+            }catch(e){}
         })(),
     );
 })
