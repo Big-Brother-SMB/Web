@@ -12,7 +12,7 @@ export async function init(common){
     notifAccept.checked = common.readBoolCookie("notifAccept")
     notifAccept.addEventListener("change", async function () {
         common.writeCookie("notifAccept", this.checked)
-        await navigator.serviceWorker.register("/share/sw.js").then((registration) => {
+        await navigator.serviceWorker.register("/sw.js").then((registration) => {
             registration.active.postMessage({notif:notifAccept.checked,user:common.uuid});
         });
         if(this.checked) common.askNotificationPermission()

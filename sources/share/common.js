@@ -495,8 +495,12 @@ export class common{
       })
     }else{
       //---------------------------------pop-up notif--------------------------------------------
-      //if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
-      if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",false)//temporaire, car les notifs ne fonctionne pas 
+      
+      if(!this.existCookie("pointNotif")){
+        document.cookie = "pointNotif=true; max-age=1209600; path=/";
+        this.delCookie("notifAccept")
+      }
+      if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
 
       //-----------------------------------notif ServiceWorker--------------------------
 

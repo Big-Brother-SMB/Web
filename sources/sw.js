@@ -1,4 +1,4 @@
-const cacheName = "PWA-v2";
+const cacheName = "PWA-v3";
 const appShellFiles = [
             '/share/manifest.json',
             '/assets/logo.png',
