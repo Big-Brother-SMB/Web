@@ -202,7 +202,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           res.end();
         }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName)});//sec = 12h | 43200   ,'Cache-Control':'public, max-age=43200'
+            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=43200'});//sec = 12h | 43200
             res.end(file);
           }else {
             res.writeHead(404);
@@ -269,7 +269,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
       funcSocketAdmin.getAllResultsMenu(socket,user)
 
-      //funcSocketAdmin.setCDIGroups(socket,user)
       funcSocketAdmin.setLieuInfo(socket,user)
       
       funcSocketAdmin.getUserLieu(socket,user)
@@ -323,8 +322,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.subscribeNotification(socket,user)
         funcSocket.existNotificationSubscription(socket,user)
 
-        //funcSocket.getCDIGroups(socket,user)
-        //funcSocket.allHoraireCDI(socket,user)
         funcSocket.getMyLieu(socket,user)
         funcSocket.setMyLieu(socket,user)
         funcSocket.setAmiLieu(socket,user)
