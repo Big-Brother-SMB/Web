@@ -73,6 +73,13 @@ export async function init(common){
             document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
         }
 
+        for (let j = 0; j < 4; j++) {
+            for (let h = 0; h < 2; h++) {
+                bouton[j][h].className = "case midi default"
+                bouton[j][h].innerHTML = "...";
+            }
+        }
+
         let info_menu = await common.socketAsync("getMenuThisWeek",week)
         let menu
         try{

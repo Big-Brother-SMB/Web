@@ -48,7 +48,7 @@ export async function init(common){
           info.places = 15
           break;
         case "Tutorat":
-          info.places = 15
+          info.places = 10
           break;
     }
     await common.socketAdminAsync('setLieuInfo',info)

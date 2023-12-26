@@ -74,6 +74,12 @@ export async function init(common){
             document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
         }
 
+        for (let j = 0; j < 5; j++) {
+            for (let h = 0; h < 8; h++) {
+                bouton[j][h].className = "case perm default"
+                bouton[j][h].innerHTML = "...";
+            }
+        }
 
         let allHorairePerm = await common.socketAsync("allHorairePerm",{w:week})
         ouvert = allHorairePerm.ouvert

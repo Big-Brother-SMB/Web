@@ -1252,9 +1252,14 @@ div.divPostAccueil.ticket{
 /*------------------------------Pass---------------------------*/
 
 @media screen and (min-width: 1001px) {
-  #qr-reader{
+  #qr-reader, #qr-reader-reload{
     display: none;
   }
+}
+#qr-reader-reload{
+  color: #0000ff;
+  text-decoration: underline;
+  font-weight: bold;
 }
 #qr-reader{
   font-size: 3rem;
