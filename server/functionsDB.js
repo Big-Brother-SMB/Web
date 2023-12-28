@@ -5,6 +5,7 @@ let db
 module.exports = class funcDB{
   static setDB(newdb){
     db=newdb;
+    
     /*let t0 =["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
     let t1 =["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
     let t2 =["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
