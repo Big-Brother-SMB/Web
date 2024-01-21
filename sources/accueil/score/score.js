@@ -13,7 +13,11 @@ export async function init(common){
         let obj={}
         obj.creneau = child.creneau
         obj.semaine = child.semaine
-        obj.name = "Repas du " + dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(Math.floor(child.creneau / 2),child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
+        let jour = Math.floor(child.creneau / 2)+1
+        if(jour>2){
+            jour++
+        }
+        obj.name = "Repas du " + dayLowerCase[Math.floor(child.creneau / 2)] + " " + common.getDayText(jour,child.semaine) +  " à " + (11 + (child.creneau % 2)) + "h"
         if(child.penalite) obj.name += " (Pénalité)"
         obj.value = -child.cout
         let jourForDate = Math.floor(child.creneau / 2)
