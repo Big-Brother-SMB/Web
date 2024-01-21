@@ -88,8 +88,12 @@ module.exports = class funcSocket{
     static getListPass(socket,user){
         socket.on('getListPass',async req => {
             if(await user.admin == 0 || await user.admin == null) return
+            console.log("top/1")
             try{
-                socket.emit('getListPass',await User.listUsersComplete())
+                let list = await User.listUsersComplete()
+                console.log("top/2")
+                socket.emit('getListPass',list)
+                console.log("top/3")
             }catch(e){console.error(e);console.log('11');}
         })
     }
