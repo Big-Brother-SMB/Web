@@ -39,9 +39,9 @@ export async function init(common){
           break;
         case "DOC":
             if(j != 2 && (h == 3 || h == 4)){
-              info.places = 8
+              info.places = 15
             }else{
-              info.places = 12
+              info.places = 15
             }
             break;
         case "Audio":

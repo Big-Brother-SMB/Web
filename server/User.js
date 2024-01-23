@@ -253,17 +253,17 @@ module.exports = class User{
     return new Promise(function(resolve, reject) {
         db.all("SELECT * FROM users ORDER BY first_name ASC, last_name ASC", async (err, data) => {
             try{
-                console.log("top-??")
+                console.error("top-??")
                 if(data!=undefined){
-                    console.log("top-1")
+                    console.error("top-1")
                     for(let i in data){
                       let user = new User(data[i].uuid)
                       data[i].groups = await user.groups
-                      console.log("top-2",data[i].groups)
+                      console.error("top-2",data[i].groups)
                       data[i].admin_permission = await user.admin_permission
-                      console.log("top-3",data[i].admin_permission)
+                      console.error("top-3",data[i].admin_permission)
                       data[i].ban = await user.ban
-                      console.log("top-4",data[i].ban)
+                      console.error("top-4",data[i].ban)
                     }
                     resolve(data)
                 }else{

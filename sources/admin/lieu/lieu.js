@@ -22,9 +22,9 @@ export async function init(common){
                 break;
             case "DOC":
                 if(j != 2 && (h == 3 || h == 4)){
-                    defaultPlaces = 8
+                    defaultPlaces = 15
                 }else{
-                    defaultPlaces = 12
+                    defaultPlaces = 15
                 }
                 break;
             case "Audio":
