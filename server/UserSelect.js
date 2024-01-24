@@ -24,6 +24,8 @@ module.exports = class UserSelect{
         //-1=refuser ; 0=defaut ; 1=inscrit
         this.pass = pass
         this.vip = vip
+        this.vipActif = vip
+        this.NumPlace = 0
     }
   
     static async algoDeSelection(semaine,creneau){
@@ -79,6 +81,7 @@ module.exports = class UserSelect{
         //donne un bonus d'avance
         //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
         for(let u in this.usersList){
+          let vipMax = 4
           if(this.usersList[u].date.getTime() < dateToday.getTime()){
             this.usersList[u].score+=info.bonus_avance
           }
@@ -93,6 +96,9 @@ module.exports = class UserSelect{
               list_amis.splice(a,1);
               this.usersList[u].amis = list_amis
               this.usersList[u].pass=-1
+            }else if(this.usersList[u].vip && vipMax>0 && UserSelect.searchAmi(this.usersList[u].amis[a]).vipActif!=1){
+              UserSelect.searchAmi(this.usersList[u].amis[a]).vipActif=1
+              vipMax--
             }
             this.usersList[u].amis = this.usersList[u].amis.filter((x, i) => this.usersList[u].amis.indexOf(x) === i);
           }
@@ -100,8 +106,8 @@ module.exports = class UserSelect{
     
         //trie les utilisateurs par ordre décroissant par rapport au score 
         this.usersList.sort(function compareFn(a, b) {
-          if(a.vip != b.vip){
-            if(a.vip){
+          if(a.vipActif != b.vipActif){
+            if(a.vipActif){
               return -1
             }else{
               return 1
@@ -121,10 +127,23 @@ module.exports = class UserSelect{
           }
           return 0
         })
+        
+        /*let nameList = await User.listUsersComplete()
+        let nameListUUID =  nameList.map(x=>{ return x.uuid})
+        let usersListUUID =  this.usersList.map(x=>{ return x.uuid})
+        for(let b=0;b<usersListUUID.length;b++){
+          for(let a=0;a<nameListUUID.length;a++){
+            if(nameListUUID[a]==usersListUUID[b]) console.log(nameList[a].first_name + " " + nameList[a].last_name)
+          }
+        }*/
+
+        
     
         //récupère les amis éloignier des utilisateur
+        //donne la place de chaque utilisateur
         for(let u in this.usersList){
           this.usersList[u].amisComplete(this.usersList[u])
+          this.usersList[u].NumPlace=u
         }
     
         //rend prioritère les gens qui ont un pourcentage minimum de 'perMin' amis proche prioritère
@@ -264,7 +283,7 @@ module.exports = class UserSelect{
                 let testScore=true
                 //test si les amis ont tous plus de points que l'utilisateur ou qu'il sont déja inscrit
                 this.usersList[i].amisEloigner.forEach(a=>{
-                  if(UserSelect.usersList[i].score>UserSelect.searchAmi(a).score && UserSelect.searchAmi(a).pass<1){
+                  if(UserSelect.usersList[i].NumPlace<UserSelect.searchAmi(a).NumPlace && UserSelect.searchAmi(a).pass<1){
                     testScore=false
                   }
                 })
@@ -276,7 +295,7 @@ module.exports = class UserSelect{
                   }
                 })
                 
-                if((testScore || this.usersList[i].vip) && nbAmisNonInscrit+inscrits<=places){
+                if(testScore && nbAmisNonInscrit+inscrits<=places){
                   //inscrit l'utilisateur et les amis
                   inscrits += nbAmisNonInscrit
                   this.usersList[i].pass=1

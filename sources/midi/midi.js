@@ -240,7 +240,6 @@ export async function init(common){
                     text += " qui a été inscrit"
                 }else{
                     text += " <u>qui n'a pas fait de demande</u>"
-                    text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                 }
             } else if (nbAmis[j][h] > 1) {
                 text += " avec " + nbAmis[j][h] + " amis"
@@ -250,14 +249,11 @@ export async function init(common){
                     text += " qui ont tous été inscrit"
                 }else if(0 == nbAmisDemande[j][h] && 0 == nbAmisInscrit[j][h]){
                     text += " <u>qui n'ont pas fait de demandes</u>"
-                    text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                 }else {
                     if (nbAmisDemande[j][h] == 1) {
                         text += " <u>dont un seul a fait une demande</u>"
-                        text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                     } else if(nbAmisDemande[j][h]>1){
                         text += " <u>dont " + nbAmisDemande[j][h] + " ont fait une demande</u>"
-                        text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
                     }
                     if(nbAmisDemande[j][h] != 0 && nbAmisInscrit[j][h] != 0){
                         text += " et"
@@ -268,6 +264,9 @@ export async function init(common){
                         text += " dont " + nbAmisInscrit[j][h] + " ont été inscrits"
                     }
                 }
+            }
+            if (nbAmisDemande[j][h] + nbAmisInscrit[j][h] != nbAmis[j][h]) {
+                text += "<br><rouge>[DEMANDE NON VALIDE]</rouge>"
             }
         }
         bouton[j][h].innerHTML = text;
