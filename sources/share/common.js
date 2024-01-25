@@ -496,8 +496,8 @@ export class common{
     }else{
       //---------------------------------pop-up notif--------------------------------------------
       
-      if(!this.existCookie("pointNotif")){
-        document.cookie = "pointNotif=true; max-age=1209600; path=/";
+      if(!this.existCookie("pointNotif2") && !this.readBoolCookie("notifAccept")){
+        document.cookie = "pointNotif2=true; max-age=1209600; path=/";
         this.delCookie("notifAccept")
       }
       if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
@@ -511,11 +511,21 @@ export class common{
         this.popUp_Active("Notification site du Foyer!"
         ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
         +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
-          btn.innerHTML="Bloquer"
-          btn.addEventListener("click",()=>{
-            common.writeCookie("notifAccept",false)
-            this.popUp_Stop()
-          },{once:true})
+          let bloquerBoucle = 10
+          const bloquerBoucleFunc = function(){
+            btn.innerHTML="Bloquer(" + bloquerBoucle + ")"
+            if(bloquerBoucle==0){
+              btn.innerHTML="Bloquer"
+              btn.addEventListener("click",()=>{
+                common.writeCookie("notifAccept",false)
+                common.popUp_Stop()
+              },{once:true})
+            }else{
+              bloquerBoucle--
+              setTimeout(bloquerBoucleFunc, 1000);
+            }
+          }
+          bloquerBoucleFunc()
 
           let btn2 = document.createElement("button")
           btn2.innerHTML="Accepter"
@@ -524,7 +534,7 @@ export class common{
             this.popUp_Stop()
           },{once:true})
           btn.parentNode.appendChild(btn2)
-        })
+        },false)
       }
     }
 
@@ -938,16 +948,20 @@ export class common{
   }
 
   //---------------------------------pop-up-----------------------------------------
-  static popUp_Active(titre,body,action){
-    document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'+'<a id="popup-close-button">&#x274C;</a>'
+  static popUp_Active(titre,body,action,cross){
+    document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'
+    console.log("cross",cross)
+    if(cross==true || cross==undefined){
+      document.getElementById("popup-title").innerHTML += '<a id="popup-close-button">&#x274C;</a>'
+      document.getElementById("popup-close-button").addEventListener("click",() => {
+        common.popUp_Stop()
+      });
+    }
     document.getElementById("popup-body").innerHTML = body
     document.getElementById("popup-option").innerHTML="<button id='popup_btn'>OK</button>"
     document.getElementById("popup").classList.add('active')
     document.getElementById("overlay").classList.add('active')
 
-    document.getElementById("popup-close-button").addEventListener("click",() => {
-      common.popUp_Stop()
-    });
     action(document.getElementById("popup_btn"))
   }
 

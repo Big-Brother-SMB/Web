@@ -219,9 +219,9 @@ def refreshTime():
   now = datetime.now()
   h=("Perm",-1,-1)
   match parseTime(now.hour,now.minute):
-    case num if (parseTime(7,50) <= num <  parseTime(8,44) and modeSelectTimeSlot==0) or modeSelectTimeSlot==1:
+    case num if (parseTime(7,50) <= num <  parseTime(8,34) and modeSelectTimeSlot==0) or modeSelectTimeSlot==1:
       h = ("Perm",0,-1)
-    case num if (parseTime(8,44) <= num <  parseTime(9,43) and modeSelectTimeSlot==0) or modeSelectTimeSlot==2:
+    case num if (parseTime(8,34) <= num <  parseTime(9,33) and modeSelectTimeSlot==0) or modeSelectTimeSlot==2:
       h = ("Perm",1,-1)
     case num if (parseTime(10,1) <= num <  parseTime(10,45) and modeSelectTimeSlot==0) or modeSelectTimeSlot==3:
       h = ("Perm",2,-1)
@@ -230,18 +230,18 @@ def refreshTime():
         h = ("Perm",3,0)
       else:
         h = ("Midi",3,0)
-    case num if (parseTime(11,54) <= num <  parseTime(13,9) and modeSelectTimeSlot==0) or modeSelectTimeSlot==5:
+    case num if (parseTime(11,54) <= num <  parseTime(13,4) and modeSelectTimeSlot==0) or modeSelectTimeSlot==5:
       if day==2:
         h = ("Perm",4,1)
       else:
         h = ("Midi",4,1)
-    case num if (parseTime(13,9) <= num <  parseTime(14,8) and modeSelectTimeSlot==0) or modeSelectTimeSlot==6:
+    case num if (parseTime(13,4) <= num <  parseTime(13,58) and modeSelectTimeSlot==0) or modeSelectTimeSlot==6:
       h = ("Perm",5,-1)
-    case num if (parseTime(14,8) <= num <  parseTime(15,7) and modeSelectTimeSlot==0) or modeSelectTimeSlot==7:
+    case num if (parseTime(13,58) <= num <  parseTime(14,57) and modeSelectTimeSlot==0) or modeSelectTimeSlot==7:
       h = ("Perm",6,-1)
-    case num if (parseTime(15,25) <= num <  parseTime(16,19) and modeSelectTimeSlot==0) or modeSelectTimeSlot==8:
+    case num if (parseTime(15,25) <= num <  parseTime(16,9) and modeSelectTimeSlot==0) or modeSelectTimeSlot==8:
       h = ("Perm",7,-1)
-    case num if (parseTime(16,19) <= num <  parseTime(17,18) and modeSelectTimeSlot==0) or modeSelectTimeSlot==9:
+    case num if (parseTime(16,9) <= num <  parseTime(17,18) and modeSelectTimeSlot==0) or modeSelectTimeSlot==9:
       h = ("Perm",8,-1)
   timeSlot=h
   if h[1]==-1:
@@ -573,7 +573,9 @@ class App(threading.Thread):
 
 #init fenetre
 fenetre = Tk()
-fenetre.geometry("450x700+0+0")
+fenetre.attributes("-topmost", True)
+fenetre.resizable(False, False)
+fenetre.geometry("450x650+0+0")
 fenetre.title("PyScan")
 fenetre.iconphoto(True, PhotoImage(file='image/logo.png'))
 def on_closing():

@@ -88,13 +88,17 @@ module.exports = class funcSocket{
     static getListPass(socket,user){
         socket.on('getListPass',async req => {
             if(await user.admin == 0 || await user.admin == null) return
-            console.error("top/1")
+            let list = "rien"
             try{
-                let list = await User.listUsersComplete()
-                console.error("top/2")
+                console.log("top0")
+                list = await User.listUsersComplete()
+                console.log("top1")
                 socket.emit('getListPass',list)
-                console.error("top/3")
-            }catch(e){console.error(e);console.log('11');}
+                console.log("top2")
+            }catch(e){
+                console.error("completelist0:\n",data)
+                console.error(e);console.log('11');
+            }
         })
     }
 
@@ -422,7 +426,7 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v21")
+                socket.emit("pyScanVersion","v22")
             }catch(e){console.error(e);console.log('48');}
         });
     }

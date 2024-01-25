@@ -419,7 +419,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       }catch(e){console.error(e);console.log('d6');;resolve(null)}
     })
 
-    setTimeout(loop, 30000);
+    setTimeout(loop, 60000);
   }
   loop()
 })
