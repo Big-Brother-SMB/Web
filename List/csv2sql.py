@@ -18,7 +18,7 @@ with open('list.csv') as file:
         x = res.fetchone()
         if x is None:
             uuid_ = str(uuid.uuid4())
-            cur.execute('INSERT INTO users(email,uuid,first_name,last_name,classe,code_barre,admin,tuto,picture,verify) VALUES("' + rowB[11] + '","' + uuid_ + '","' + rowB[2] + '","' + rowB[1] + '","' + rowB[0] + '","' + rowB[10] + '",0,0,"",1)')
+            cur.execute('INSERT INTO users(email,uuid,first_name,last_name,classe,code_barre,admin,tuto,picture,birthday,birthmonth,verify) VALUES("' + rowB[11] + '","' + uuid_ + '","' + rowB[2] + '","' + rowB[1] + '","' + rowB[0] + '","' + rowB[10] + '",0,0,"",' + rowB[31].split("/")[0] + ',' + rowB[31].split("/")[1] + ',1)')
             for i in range(3,10):
                 if rowB[i]!='':
                     if not rowB[i] in list_prio:
@@ -26,7 +26,7 @@ with open('list.csv') as file:
                     cur.execute('INSERT INTO user_groups(uuid,group2) VALUES("' + uuid_ + '","' + rowB[i] + '")')
         else:
             uuid_ = x[0]
-            cur.execute('UPDATE users SET first_name="' + rowB[2] + '",last_name="' + rowB[1] + '",classe="' + rowB[0] + '",code_barre="' + rowB[10] + '",verify=1 WHERE uuid="' + uuid_ + '"')
+            cur.execute('UPDATE users SET first_name="' + rowB[2] + '",last_name="' + rowB[1] + '",classe="' + rowB[0] + '",code_barre="' + rowB[10] + '",birthday=' + rowB[31].split("/")[0] + ',birthmonth=' + rowB[31].split("/")[1] + ',verify=1 WHERE uuid="' + uuid_ + '"')
             cur.execute('DELETE FROM user_groups WHERE uuid="' + uuid_ + '"')
             for i in range(3,10):
                 if rowB[i]!='':
