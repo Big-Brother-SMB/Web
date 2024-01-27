@@ -11,6 +11,7 @@ class Ami{
         this.pris = pris
         this.inMyFriendList = inMyFriendList
         this.DorI = DorI
+        this.score = -100
     }
 
     static searchAmiUUID(list,uuid){
@@ -55,7 +56,7 @@ class Ami{
 
         let button = document.createElement("button")
         button.classList.add("ami")
-        button.innerHTML = Ami.common.name(this.first_name,this.last_name)
+        button.innerHTML = Ami.common.name(this.first_name,this.last_name) +" ("+ this.score + "pts)"
 
         if(this.DorI == 0){
             button.innerHTML += "<br>(a fait une demande)"
@@ -313,11 +314,24 @@ export async function init(common){
         listUsers.forEach(user=>{
             listAmis.forEach(ami=>{
                 if(ami.uuid == user.uuid){
+
                     ami.first_name = user.first_name
                     ami.last_name = user.last_name
                 }
             })
         })
+
+        //on récupère les scores des amis
+        let scoreAmis = await common.socketAsync("getScoreAmi",listAmis.map(e=>{return e.uuid}))
+        console.log("ss",scoreAmis)
+        scoreAmis.forEach(score=>{
+            listAmis.forEach(ami=>{
+                if(score.uuid == ami.uuid){
+                    ami.score=score.score
+                }
+            })
+        })
+
         common.nameOrder(listAmis)
     
         //info

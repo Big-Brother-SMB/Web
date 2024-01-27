@@ -284,7 +284,6 @@ export class common{
 
     //---------------------------pass offline-------------------------------
     try {
-      console.log(document.location.pathname=="/pass",this.existCookie("key"),this.existCookie("codeBarre"))
       if(document.location.pathname=="/pass" && this.existCookie("key") && this.existCookie("codeBarre")){
         const containerElement = document.getElementById('single');
         const codeBar = this.readCookie("codeBarre")

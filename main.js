@@ -335,6 +335,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         
         funcSocket.getLieuInfo(socket,user)
         funcSocket.allHoraireLieu(socket,user)
+
+        funcSocket.getScoreAmi(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });

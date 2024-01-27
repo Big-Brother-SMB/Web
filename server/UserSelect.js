@@ -82,6 +82,9 @@ module.exports = class UserSelect{
         //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
         for(let u in this.usersList){
           let vipMax = 4
+          if(this.usersList[u].score<-2 && !IPM){
+            this.usersList[u].pass=-1
+          }
           if(this.usersList[u].date.getTime() < dateToday.getTime()){
             this.usersList[u].score+=info.bonus_avance
           }
@@ -128,14 +131,39 @@ module.exports = class UserSelect{
           return 0
         })
         
-        let nameList = await User.listUsersComplete()
+
+
+        //outils de mesure de db
+        /*let nameList = await User.listUsersComplete()
         let nameListUUID =  nameList.map(x=>{ return x.uuid})
         let usersListUUID =  this.usersList.map(x=>{ return x.uuid})
+
+        for(let a=0;a<nameListUUID.length;a++){
+          nameList[a].score = await ( await new User(nameList[a].uuid)).score
+        }
+        nameList.sort(function compareFn(a, b) {
+          if(a.score < b.score){
+              return 1
+          }else if(a.score > b.score){
+              return -1
+          }else{
+            return 0
+          }
+        })
+        let moy = 0
+        let tour = 0
+        for(let a=0;a<nameListUUID.length;a++){
+          tour++
+          moy+=nameList[a].score
+          console.log(nameList[a].first_name + " " + nameList[a].last_name + " " + nameList[a].score)
+        }
+        console.log(moy/tour)
+
         for(let b=0;b<usersListUUID.length;b++){
           for(let a=0;a<nameListUUID.length;a++){
             if(nameListUUID[a]==usersListUUID[b]) console.log(nameList[a].first_name + " " + nameList[a].last_name)
           }
-        }
+        }*/
 
         
     

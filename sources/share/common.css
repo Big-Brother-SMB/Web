@@ -75,17 +75,17 @@ header{
 
 #main p{
   font-size: 3rem;
+  word-wrap: break-word;
   font-family: 'Ubuntu';
   text-align: center;
 }
 
 p.note{
-  font-size: 1.9rem !important;
+  font-size: 0.8rem !important;
 }
 
 p.note.left{
   text-align: left !important;
-  margin-left: 1em !important;
 }
 
 footer{
@@ -948,10 +948,6 @@ p select{
 h2{
   color: rgb(255, 0, 0);
   font-size: 3rem;
-}
-
-.btn.algo{
-  width: 500px;
 }
 
 .btn.select{

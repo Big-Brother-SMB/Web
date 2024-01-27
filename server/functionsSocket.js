@@ -37,10 +37,21 @@ module.exports = class funcSocket{
         socket.on('score', async req => {
             try{
                 let score = await user.score
-                if(score==null) score=-500
                 socket.emit('score',score)
             }catch(e){console.error(e);console.log('b2');}
-        });    
+        });
+    }
+
+    static getScoreAmi(socket,user){
+        socket.on('getScoreAmi', async req => {
+            try{
+                let score = []
+                for(let i=0;i<req.length;i++){
+                    score.push({uuid:req[i],score:await(await new User(req[i])).score})
+                }
+                socket.emit('getScoreAmi',score)
+            }catch(e){console.error(e);console.log('b2$');}
+        });
     }
 
     static historiqueScore(socket,user){
