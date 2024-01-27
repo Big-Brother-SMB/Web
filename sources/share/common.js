@@ -511,7 +511,7 @@ export class common{
         this.popUp_Active("Notification site du Foyer!"
         ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
         +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
-          let bloquerBoucle = 10
+          let bloquerBoucle = 5
           const bloquerBoucleFunc = function(){
             btn.innerHTML="Bloquer(" + bloquerBoucle + ")"
             if(bloquerBoucle==0){
@@ -950,7 +950,6 @@ export class common{
   //---------------------------------pop-up-----------------------------------------
   static popUp_Active(titre,body,action,cross){
     document.getElementById("popup-title").innerHTML = '<b>'+titre+'</b>'
-    console.log("cross",cross)
     if(cross==true || cross==undefined){
       document.getElementById("popup-title").innerHTML += '<a id="popup-close-button">&#x274C;</a>'
       document.getElementById("popup-close-button").addEventListener("click",() => {

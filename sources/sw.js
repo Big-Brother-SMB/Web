@@ -1,4 +1,4 @@
-const cacheName = "PWA-v6";
+const cacheName = "PWA-v7";
 const appShellFiles = [
             '/share/manifest.json',
             '/assets/logo.png',
@@ -49,7 +49,7 @@ self.addEventListener("activate",(event)=>{
 })
 
 self.addEventListener("fetch",(event)=>{
-    console.log(`[Service Worker] Fetching resource: ${event.request.url}`)
+    //console.log(`[Service Worker] Fetching resource: ${event.request.url}`)
     event.respondWith(
         (async () => {
             const r = await caches.match(event.request);
