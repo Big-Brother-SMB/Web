@@ -225,10 +225,19 @@ export async function init(common){
         setMidiInfo()
     });
 
+    document.getElementById("btn_IPM").addEventListener("click", async function() {
+        document.getElementById("btn_IPM").innerHTML = "..."
+        await setMidiInfo()
+        let rep = await common.socketAdminAsync('startAlgo',{w:w,j:j,h:h,IPM:true},60000)
+        document.getElementById("btn_IPM").innerHTML = rep
+        await new Promise(r => setTimeout(r, 2000));//wait 2sec
+        reloadInfoHoraire()
+    })
+
     document.getElementById("start algo").addEventListener("click", async function() {
         document.getElementById("start algo").innerHTML = "..."
         await setMidiInfo()
-        let rep = await common.socketAdminAsync('startAlgo',[w,j,h],60000)
+        let rep = await common.socketAdminAsync('startAlgo',{w:w,j:j,h:h,IPM:false},60000)
         document.getElementById("start algo").innerHTML = rep
         await new Promise(r => setTimeout(r, 2000));//wait 2sec
         reloadInfoHoraire()

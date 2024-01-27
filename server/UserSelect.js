@@ -28,7 +28,7 @@ module.exports = class UserSelect{
         this.NumPlace = 0
     }
   
-    static async algoDeSelection(semaine,creneau){
+    static async algoDeSelection(semaine,creneau,IPM){
       try {
         if(this.enCour){
           return "En cour"
@@ -60,13 +60,13 @@ module.exports = class UserSelect{
             if(info.prio.indexOf(child)!=-1){
               prio=true
             }
-            if(["VIP"].indexOf(child)!=-1){
+            if(["VIP"].indexOf(child)!=-1 && !IPM){
               vip=true
             }
           })
           let amis = listDemandes[i].amis
           let pass=0;
-          if(listDemandes[i].DorI==1){
+          if(listDemandes[i].DorI==1 && !IPM){
             pass=2
           }
           this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date,pass,vip))
@@ -128,14 +128,14 @@ module.exports = class UserSelect{
           return 0
         })
         
-        /*let nameList = await User.listUsersComplete()
+        let nameList = await User.listUsersComplete()
         let nameListUUID =  nameList.map(x=>{ return x.uuid})
         let usersListUUID =  this.usersList.map(x=>{ return x.uuid})
         for(let b=0;b<usersListUUID.length;b++){
           for(let a=0;a<nameListUUID.length;a++){
             if(nameListUUID[a]==usersListUUID[b]) console.log(nameList[a].first_name + " " + nameList[a].last_name)
           }
-        }*/
+        }
 
         
     
@@ -188,6 +188,9 @@ module.exports = class UserSelect{
         }
     
         //me refuse si l'un de mes amis éloignié est refusé
+        //récupère places/nombre inscrition
+        const places = info.places
+        let inscrits = 0
         for(let i in this.usersList){
           this.usersList[i].amisEloigner.forEach(a=>{
             a=UserSelect.searchAmi(a)
@@ -195,16 +198,11 @@ module.exports = class UserSelect{
               UserSelect.usersList[i].pass=-1
             }
           })
-        }
-    
-        //récupère places/nombre inscrition
-        const places = info.places
-        let inscrits = 0
-        listDemandes.forEach(i=>{
-          if(i.DorI==1){
+
+          if(this.usersList[i].pass>=1){
             inscrits++
           }
-        })
+        }
         const dejaInscrits = inscrits
     
         //pour les prio
@@ -245,28 +243,41 @@ module.exports = class UserSelect{
         //liste des inscrires
         inscrits=this.boucleInscription(inscrits,places)
     
-        //inscription SQL
-        let indicePointsMin = 1000
-        for(let i in this.usersList){
-          if(this.usersList[i].pass==1){
-            if(this.usersList[i].score < indicePointsMin){
-              indicePointsMin = this.usersList[i].score
-            }
-            let user = new User(this.usersList[i].uuid)
-            let infoD = await user.getMidiDemande(semaine,creneau)
-            user.sendNotif("Accepter au foyer","Vous êtes accepté au foyer.",'/assets/pass/ok.png',"pass")
-            await user.setMidiDemande(semaine,creneau,infoD.amis,true,infoD.scan)
-          }
-        }
         
-        //reponse client admin
-        this.enCour = false
-        console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions, il reste " + (places - inscrits) + " places","IPM:" + indicePointsMin,"w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
-        return "fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>IPM: " + indicePointsMin + "pts<br>appuyer pour reload"
+        if(IPM){
+          //calcule IPM
+          let indicePointsMin = 1000
+          for(let i in this.usersList){
+            if(this.usersList[i].pass>=1){
+              if(this.usersList[i].score < indicePointsMin){
+                indicePointsMin = this.usersList[i].score
+              }
+            }
+          }
+          //reponse client admin
+          this.enCour = false
+          console.log("[algo/IPM] " + inscrits + " inscriptions, il reste " + (places - inscrits) + " places","IPM:" + indicePointsMin,"w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
+          return "IPM: " + indicePointsMin + "pts<br>" + inscrits + "/" +places + " inscrits<br>Appuyer pour relancer."
+        }else{
+          //inscription SQL
+          for(let i in this.usersList){
+            if(this.usersList[i].pass==1){
+              let user = new User(this.usersList[i].uuid)
+              let infoD = await user.getMidiDemande(semaine,creneau)
+              user.sendNotif("Accepter au foyer","Vous êtes accepté au foyer.",'/assets/pass/ok.png',"pass")
+              await user.setMidiDemande(semaine,creneau,infoD.amis,true,infoD.scan)
+            }
+          }
+          //reponse client admin
+          this.enCour = false
+          console.log("[algo] " + (inscrits - dejaInscrits) + " inscriptions, il reste " + (places - inscrits) + " places","w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
+          return "Fini, " + (inscrits - dejaInscrits) + " inscriptions<br>il reste " + (places - inscrits) + " places<br>Appuyer pour relancer."
+        }
       } catch (error) {
         console.error(error)
         console.log("error algo")
         this.enCour = false
+        return "error"
       }
     }
   

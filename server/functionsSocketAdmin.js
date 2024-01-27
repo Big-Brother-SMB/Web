@@ -168,10 +168,10 @@ module.exports = class funcSocket{
     }
 
     static startAlgo(socket,user){
-        socket.on('startAlgo',async msg => {
+        socket.on('startAlgo',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                let rep = await UserSelect.algoDeSelection(msg[0],msg[1]*2+msg[2])
+                let rep = await UserSelect.algoDeSelection(req.w,req.j*2+req.h,req.IPM)
                 socket.emit('startAlgo',rep)
             }catch(e){console.error(e);console.log('18');}
         })
@@ -426,7 +426,7 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v22")
+                socket.emit("pyScanVersion","v23")
             }catch(e){console.error(e);console.log('48');}
         });
     }

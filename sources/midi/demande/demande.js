@@ -124,7 +124,7 @@ export async function init(common){
                 document.getElementById('popup-body').appendChild(from)
                 let passProcuration=true
                 listAmis.forEach(ami=>{
-                    if(ami.procuration==1 && ami.DorI!=1 && ami.pris==1){
+                    if(ami.procuration==1 && ami.DorI!=1){
                         passProcuration=false
                         let box = document.createElement('input')
                         box.setAttribute("type","checkbox")

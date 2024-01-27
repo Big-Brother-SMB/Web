@@ -573,7 +573,6 @@ class App(threading.Thread):
 
 #init fenetre
 fenetre = Tk()
-fenetre.attributes("-topmost", True)
 fenetre.resizable(False, False)
 fenetre.geometry("450x650+0+0")
 fenetre.title("PyScan")
@@ -713,6 +712,8 @@ msgErr.set("")
 labelmsgErr = Label(fenetre, textvariable=msgErr, font=("Arial", 10))
 labelmsgErr.pack()
 
+topmost_bool = BooleanVar()
+
 son_bool = BooleanVar()
 if son_bool_save=="False":
   son_bool.set(False)
@@ -790,6 +791,7 @@ def refreshOptions():
   global lieu_var_save
   if mode_var.get()=="0" or mode_var.get()=="":
     mode_var.set("Foyer")
+  fenetre.attributes("-topmost", topmost_bool.get())
   son_bool_save = str(son_bool.get())
   mode_var_save = str(mode_var.get())
   if mode_var.get()=="Foyer":
@@ -834,17 +836,22 @@ def windowDate():
   btn.pack()
   
 menubar = Menu(fenetre)
+
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
 filemenu.add_command(label="Date", command=windowDate)
-filemenu.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool, command=refreshOptions)
 menubar.add_cascade(label="File", menu=filemenu)
+
 modemenu = Menu(menubar, tearoff=0)
 modemenu.add_checkbutton(label="Foyer", onvalue="Foyer", variable=mode_var, command=refreshOptions)
 modemenu.add_checkbutton(label="Perm Scan", onvalue="Perm", variable=mode_var, command=refreshOptions)
 modemenu.add_checkbutton(label="Appel", onvalue="Appel", variable=mode_var, command=refreshOptions)
 menubar.add_cascade(label="Mode", menu=modemenu)
 
+options = Menu(menubar, tearoff=0)
+options.add_checkbutton(label="Son", onvalue=1, offvalue=0, variable=son_bool, command=refreshOptions)
+options.add_checkbutton(label="Topmost", onvalue=1, offvalue=0, variable=topmost_bool, command=refreshOptions)
+menubar.add_cascade(label="Options", menu=options)
 
 def actionComboboxSelected(event):
   global lieu_var_save
