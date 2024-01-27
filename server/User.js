@@ -265,7 +265,9 @@ module.exports = class User{
                 }
             }catch(e){
               console.error("completelist:\n",data)
-              console.error(e);console.log('d12');;resolve([])
+              console.error(e);
+              console.log('d12');
+              resolve([]);
             }
         })
         setTimeout(reject,5000)

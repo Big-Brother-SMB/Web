@@ -35,15 +35,19 @@ export async function init(common){
           info.places = 0
           break;
         case "Aumônerie":
-          info.places = 15
+          if(j != 2 && (h == 3 || h == 4)){
+            defaultPlaces = 0
+          }else{
+            defaultPlaces = 15
+          }
           break;
         case "DOC":
-            if(j != 2 && (h == 3 || h == 4)){
-              info.places = 15
-            }else{
-              info.places = 15
-            }
-            break;
+          if(j != 2 && (h == 3 || h == 4)){
+            info.places = 15
+          }else{
+            info.places = 15
+          }
+          break;
         case "Audio":
           info.places = 15
           break;

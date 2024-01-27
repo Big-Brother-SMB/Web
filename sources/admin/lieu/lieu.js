@@ -18,7 +18,11 @@ export async function init(common){
                 defaultPlaces = 0
                 break;
             case "Aumônerie":
-                defaultPlaces = 15
+                if(j != 2 && (h == 3 || h == 4)){
+                    defaultPlaces = 0
+                }else{
+                    defaultPlaces = 15
+                }
                 break;
             case "DOC":
                 if(j != 2 && (h == 3 || h == 4)){

@@ -90,11 +90,11 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             let list = "rien"
             try{
-                console.log("top0")
+                console.error("top0")
                 list = await User.listUsersComplete()
-                console.log("top1")
+                console.error("top1")
                 socket.emit('getListPass',list)
-                console.log("top2")
+                console.error("top2")
             }catch(e){
                 console.error("completelist0:\n",data)
                 console.error(e);console.log('11');
