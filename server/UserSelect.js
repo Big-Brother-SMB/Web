@@ -48,6 +48,19 @@ module.exports = class UserSelect{
         this.usersList = []
     
         //remplie la "usersList" avec des "UserSelect" en utilisant les données précédante
+
+
+        let nameList = await User.listUsersComplete()
+        let nameListUUID =  nameList.map(x=>{ return x.uuid})
+
+        //détermine datetoday
+        let jourForDate = Math.floor(creneau / 2)
+        jourForDate++
+        if(jourForDate>2)jourForDate++
+        const dateToday = funcDate.generedDate(semaine,jourForDate,0,0,0)
+        const birthday = dateToday.getDate()
+        const birthmonth = dateToday.getMonth()+1
+
         for(let i in listDemandes){
           let user = new User(listDemandes[i].uuid)
           let score = await user.score
@@ -55,7 +68,12 @@ module.exports = class UserSelect{
           if(info.prio.indexOf(await user.classe)!=-1){
             prio = true
           }
+
+
           let vip=false;
+          if(await user.birthday == birthday && await user.birthmonth == birthmonth){
+            vip=true
+          }
           (await user.groups).forEach(function(child) {
             if(info.prio.indexOf(child)!=-1){
               prio=true
@@ -64,6 +82,8 @@ module.exports = class UserSelect{
               vip=true
             }
           })
+
+          
           let amis = listDemandes[i].amis
           let pass=0;
           if(listDemandes[i].DorI==1 && !IPM){
@@ -72,17 +92,13 @@ module.exports = class UserSelect{
           this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date,pass,vip))
         }
     
-        //détermine datetoday
-        let jourForDate = Math.floor(creneau / 2)
-        jourForDate++
-        if(jourForDate>2)jourForDate++
-        let dateToday = funcDate.generedDate(semaine,jourForDate,0,0,0)
+
 
         //donne un bonus d'avance
         //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
         for(let u in this.usersList){
           let vipMax = 4
-          if(this.usersList[u].score<-2 && !IPM){
+          if(this.usersList[u].score<-2 && !this.usersList[u].vip && !IPM){
             this.usersList[u].pass=-1
           }
           if(this.usersList[u].date.getTime() < dateToday.getTime()){
@@ -134,9 +150,7 @@ module.exports = class UserSelect{
 
 
         //outils de mesure de db
-        /*let nameList = await User.listUsersComplete()
-        let nameListUUID =  nameList.map(x=>{ return x.uuid})
-        let usersListUUID =  this.usersList.map(x=>{ return x.uuid})
+        /*let usersListUUID =  this.usersList.map(x=>{ return x.uuid})
 
         for(let a=0;a<nameListUUID.length;a++){
           nameList[a].score = await ( await new User(nameList[a].uuid)).score

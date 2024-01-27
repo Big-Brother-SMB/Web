@@ -318,7 +318,7 @@ module.exports = class User{
       })
   }
 
-  set all(args){
+  set all(args){//%, birthday=?, birthmonth=?
     db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?, admin=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.admin,this.uuid])
     this.groups = args.listGroups
     this.admin_permission = args.admin_permission
@@ -371,6 +371,20 @@ module.exports = class User{
   }
   set admin(value)   {
       this.#setInfo("admin",value)
+  }
+
+  get birthday()   {
+    return this.#getInfo("birthday")
+  }
+  set birthday(value)   {
+      this.#setInfo("birthday",value)
+  }
+
+  get birthmonth()   {
+    return this.#getInfo("birthmonth")
+  }
+  set birthmonth(value)   {
+      this.#setInfo("birthmonth",value)
   }
 
   get amis(){
