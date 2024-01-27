@@ -37,12 +37,8 @@ export async function init(common){
         
         document.getElementById("menuSemaine").innerHTML = "<u>Menu du foyer :</u><br>" + menu
 
-        if(info_menu.self!="undefined" && info_menu.self!=undefined){
-            document.getElementById("menu self").setAttribute("src",info_menu.self)
-            document.getElementById("menu self").addEventListener("error", remplace_img);
-        }else{
-            remplace_img()
-        }
+        document.getElementById("menu self").addEventListener("error", remplace_img);
+        document.getElementById("menu self").setAttribute("src","/Images_menu/page-" + week + ".jpg")
 
 
         //sondage

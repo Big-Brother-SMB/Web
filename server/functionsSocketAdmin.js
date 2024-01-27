@@ -118,6 +118,14 @@ module.exports = class funcSocket{
         socket.on('setDorI',async msg => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
+                //log
+                let d = new Date()
+                let timecode =
+                    d.getFullYear() + "-" + (String(d.getMonth()+1).length == 1?"0":"") + (d.getMonth()+1) + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate() + " " +
+                    (String(d.getHours()).length == 1?"0":"") + d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
+                console.log(timecode,"  ","\t",await user.first_name + " " + await user.last_name,req)
+
+
                 let user = new User(msg[3])
                 let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
                 await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,msg[4],info.scan)

@@ -58,7 +58,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_menu'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE midi_menu(semaine int2,self text,menu text)')
+        db.run('CREATE TABLE midi_menu(semaine int2,menu text)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_list'", (err, data) => {
       if(data==undefined)
