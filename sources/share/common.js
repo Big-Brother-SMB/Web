@@ -284,8 +284,6 @@ export class common{
 
     //---------------------------pass offline-------------------------------
     try {
-      await fetch('/accueil')
-    } catch (error) {
       console.log(document.location.pathname=="/pass",this.existCookie("key"),this.existCookie("codeBarre"))
       if(document.location.pathname=="/pass" && this.existCookie("key") && this.existCookie("codeBarre")){
         const containerElement = document.getElementById('single');
@@ -296,9 +294,9 @@ export class common{
         bcimg.setAttribute('id', bcid);
         containerElement.appendChild(bcimg);
         JsBarcode('#'+bcid, codeBar, {format: 'code39'});
-        return false
       }
-    }
+    } catch (error) {}
+
 
     //----------------------historique-----------------------
 
@@ -353,10 +351,44 @@ export class common{
           document.body.classList.remove("stop");
         }
       });
+
+      
       
       await common.reloadCommon()
       this.loadpage("sidebar:" + document.location.pathname.split("/")[1])
     }
+
+    //------------------------install PWA-----------------------------
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      let deferredPrompt;
+      // Prevents the default mini-infobar or install dialog from appearing on mobile
+      e.preventDefault();
+      // Save the event because you'll need to trigger it later.
+      deferredPrompt = e;
+      // Show your customized install prompt for your PWA
+      // Your own UI doesn't have to be a single element, you
+      // can have buttons in different locations, or wait to prompt
+      // as part of a critical journey.
+      common.popUp_Active("Installer PWA","Voulez-vous installée l'application foyer?",btn=>{
+        btn.innerHTML="Installer"
+        btn.addEventListener('click', async () => {
+          // deferredPrompt is a global variable we've been using in the sample to capture the `beforeinstallevent`
+          deferredPrompt.prompt();
+          // Find out whether the user confirmed the installation or not
+          const { outcome } = await deferredPrompt.userChoice;
+          // The deferredPrompt can only be used once.
+          deferredPrompt = null;
+          // Act on the user's choice
+          if (outcome === 'accepted') {
+            console.log('User accepted the install prompt.');
+          } else if (outcome === 'dismissed') {
+            console.log('User dismissed the install prompt');
+          }
+          common.popUp_Stop()
+        });
+      })
+    });
 
     //-------------------------------------retour--------------------------------------
 
@@ -494,7 +526,7 @@ export class common{
           },{once:true})
       })
     }else{
-      //---------------------------------pop-up notif--------------------------------------------
+      //---------------------------------pop-up notif ServiceWorker---------------------------------------------
       
       if(!this.existCookie("pointNotif2") && !this.readBoolCookie("notifAccept")){
         document.cookie = "pointNotif2=true; max-age=1209600; path=/";
@@ -502,7 +534,6 @@ export class common{
       }
       if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
 
-      //-----------------------------------notif ServiceWorker--------------------------
 
       common.registerServiceWorker();
 
@@ -537,6 +568,7 @@ export class common{
         },false)
       }
     }
+
 
     //--------------------------banderole--------------------------------
 
