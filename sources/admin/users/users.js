@@ -14,6 +14,8 @@ export async function init(common){
     let divClasse = document.getElementById("classe")
     let dName_prenom = document.getElementById("name_prenom")
     let dName_nom = document.getElementById("name_nom")
+    let dBirthDay = document.getElementById("birthday")
+    let dBirthMonth = document.getElementById("birthmonth")
     let connect = document.getElementById('key button')
     let admin_perm = document.getElementById('admin_perm')
 
@@ -46,8 +48,10 @@ export async function init(common){
 
 
     function stop(){
-        dName_prenom.removeEventListener("input",fuName)
-        dName_nom.removeEventListener("input",fuName)
+        dName_prenom.removeEventListener("input",fuNameAndBirthday)
+        dName_nom.removeEventListener("input",fuNameAndBirthday)
+        dBirthDay.removeEventListener("input",fuNameAndBirthday)
+        dBirthMonth.removeEventListener("input",fuNameAndBirthday)
         divClasse.removeEventListener("change",fu1)
         bAddScore.removeEventListener("click",fu2)
         adminBox.removeEventListener("change",fu3)
@@ -57,7 +61,7 @@ export async function init(common){
         admin_perm.removeEventListener("click",fu7)
     }
 
-    let fuName=function(){return}
+    let fuNameAndBirthday=function(){return}
     let fu1=function(){return}
     let fu2=function(){return}
     let fu3=function(){return}
@@ -86,6 +90,8 @@ export async function init(common){
         let listGroups = utilisateur.groups
         let first_name = utilisateur.first_name
         let last_name = utilisateur.last_name
+        let birthday = utilisateur.birthday
+        let birthmonth = utilisateur.birthmonth
         let admin_permission = utilisateur.admin_permission
 
         if(utilisateursNames.indexOf(common.name(utilisateur.first_name,utilisateur.last_name)) == -1){
@@ -105,13 +111,19 @@ export async function init(common){
             
             dName_prenom.value = utilisateur.first_name
             dName_nom.value = utilisateur.last_name
-            fuName=function(){
+            dBirthDay.value = utilisateur.birthday
+            dBirthMonth.value = utilisateur.birthmonth
+            fuNameAndBirthday=function(){
                 first_name = dName_prenom.value
                 last_name = dName_nom.value
+                birthday = dBirthDay.value
+                birthmonth = dBirthMonth.value
                 setUser()
             }
-            dName_prenom.addEventListener("input",fuName)
-            dName_nom.addEventListener("input",fuName)
+            dName_prenom.addEventListener("input",fuNameAndBirthday)
+            dName_nom.addEventListener("input",fuNameAndBirthday)
+            dBirthDay.addEventListener("input",fuNameAndBirthday)
+            dBirthMonth.addEventListener("input",fuNameAndBirthday)
 
 
             divScoreEvent.innerHTML = null
@@ -207,26 +219,32 @@ export async function init(common){
                 }
 
                 event.addEventListener("click", async function() {
-                    const index = [...divScoreEvent.children].indexOf(event)
-                    let obj = scoreObjs[index]
-                    if(obj.type==0){
-                        await common.socketAdminAsync('delDorI',[obj.semaine,0,obj.creneau,utilisateur.uuid])
-                    }else if(obj.type==1){
-                        await common.socketAdminAsync('delPersonalPoint',[utilisateur.uuid,obj.date])
-                    }else if(obj.type==2){
-                        await common.socketAdminAsync('delGlobalPoint',obj.date)
-                    }
+                    common.popUp_Active("Supprimer un event?","Voulez-vous suppprimer l'event \"" + name + eventScore + "pts\" ?",(btn)=>{
+                        btn.innerHTML="OUI"
+                        btn.addEventListener("click",async ()=>{
+                            const index = [...divScoreEvent.children].indexOf(event)
+                            let obj = scoreObjs[index]
+                            if(obj.type==0){
+                                await common.socketAdminAsync('delDorI',[obj.semaine,0,obj.creneau,utilisateur.uuid])
+                            }else if(obj.type==1){
+                                await common.socketAdminAsync('delPersonalPoint',[utilisateur.uuid,obj.date])
+                            }else if(obj.type==2){
+                                await common.socketAdminAsync('delGlobalPoint',obj.date)
+                            }
 
-                    scoreObjs.splice(index,1)
+                            scoreObjs.splice(index,1)
 
-                    divScoreEvent.removeChild(event);
-                    score -= eventScore
-                    score = Math.round(score*100)/100
-                    if(score < 2){
-                        pScore.innerHTML = "Score : " + score + "pt";
-                    }else{
-                        pScore.innerHTML = "Score : " + score + "pts";
-                    }
+                            divScoreEvent.removeChild(event);
+                            score -= eventScore
+                            score = Math.round(score*100)/100
+                            if(score < 2){
+                                pScore.innerHTML = "Score : " + score + "pt";
+                            }else{
+                                pScore.innerHTML = "Score : " + score + "pts";
+                            }
+                            common.popUp_Stop()
+                        })
+                    })
                 })
             }
 
@@ -372,7 +390,7 @@ export async function init(common){
             })
 
             function setUser(){
-                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission})
+                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission,birthday:birthday,birthmonth:birthmonth})
             }
         }
     },true);
