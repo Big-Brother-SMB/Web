@@ -77,4 +77,19 @@ export async function init(common){
     if(common.admin==2){
         adminS.checked=true
     }
+
+
+
+
+
+    document.getElementById("installer").addEventListener("click", function () {
+        common.popUp_Active("Tuto installer PWA"
+          ,"<b>Pour instller l'application, suivez les instructions.</b><br><br>"
+          +"<div class='divImgPopupOption'><img src='/options/tuto1.jpg'><img src='/options/tuto2.jpg'></div><br>"
+          ,(btn)=>{
+            btn.addEventListener("click",()=>{
+                common.popUp_Stop()
+            },{once:true})
+        })
+    })
 }

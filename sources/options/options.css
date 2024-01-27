@@ -1,0 +1,11 @@
+#popup-body .divImgPopupOption{
+    width: 100%;
+    display: inline-flex;
+  }
+  
+  #popup-body .divImgPopupOption img{
+    display: block;
+    max-width: 50%;
+    max-height: 60vh;
+    margin: auto;
+  }
