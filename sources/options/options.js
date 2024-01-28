@@ -84,12 +84,12 @@ export async function init(common){
 
     document.getElementById("installer").addEventListener("click", function () {
         common.popUp_Active("Tuto installer PWA"
-          ,"<b>Pour instller l'application, suivez les instructions.</b><br><br>"
+          ,"<b>Pour installer l'application, suivez les instructions.</b><br><br>"
           +"<div class='divImgPopupOption'><img src='/options/tuto1.jpg'><img src='/options/tuto2.jpg'></div><br>"
           ,(btn)=>{
             btn.addEventListener("click",()=>{
                 common.popUp_Active("Tuto installer PWA"
-                ,"<b>Pour instller l'application, suivez les instructions.</b><br><br>"
+                ,"<b>Pour installer l'application, suivez les instructions.</b><br><br>"
                 +"<div class='divImgPopupOption'><img src='/options/tuto3.jpeg'><img src='/options/tuto4.jpeg'></div><br>"
                 ,(btn)=>{
                   btn.addEventListener("click",()=>{

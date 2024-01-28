@@ -8,6 +8,7 @@ export async function init(common){
     const bcimg = document.createElement('img');
     bcimg.className = "barcode";
     bcimg.setAttribute('id', bcid);
+    containerElement.innerHTML=""
     containerElement.appendChild(bcimg);
     JsBarcode('#'+bcid, common.codeBar, {format: 'code39'});
 
