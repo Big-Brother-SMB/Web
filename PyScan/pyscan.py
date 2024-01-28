@@ -59,6 +59,7 @@ def catch_all_admin(event, data):
   global msg
   msg.append((event,data))
 
+#fonction pour faire une req de donnée
 def socketReq(event,data,admin):
   #print(">>> req: (" + str(event) + ") " + str(data))
   try:
@@ -83,6 +84,7 @@ def socketReq(event,data,admin):
     traceback.print_exc()
     return []
 
+#initialisation du socket
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
 print("\n\n\n")
 print(">>> Start")
@@ -96,7 +98,7 @@ if id_data=="err" or id_data["admin"]<1:
 
 
 
-#système mise à jour et de save setting
+#système mise à jour et sauvegarde des paramètre
 def maj(version):
   print('>>> Nouvelle version trouvée')
 
@@ -129,15 +131,15 @@ def save_data():
   file.write(lieu_var_save)
   file.close()
 
+#vérifie si c'est la dernière version
 version_serveur = socketReq("pyScanVersion", None, True)
 if version_serveur!=version and version!="dev":
-  version=version_serveur
-  maj(version)
-  # enregistre les données de connection et de version
-  save_data()
+  version=version_serveur #changer numéro de version
+  maj(version) #faire la mise à jour
+  save_data() # enregistre les données de connection et de version
   print('>>> Relencer le programme')
   time.sleep(3)
-  os._exit(1)
+  os._exit(1) # arret le programme
 
 
 
@@ -196,21 +198,24 @@ def refresh(loop):
   if loop:
     threading.Timer(30, refresh,args=(True,)).start()
 
+  
   refreshTime()
   creneauPerm = timeSlot[1]
-  if creneauPerm>4:
+  if creneauPerm>4: #corrige le décalage d'une heure 
     creneauPerm=timeSlot[1]-1
   if timeSlot[1]!=-1:
-    listLocalisation = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},False)
-    listFoyerDemande = socketReq('listDemandesPerm',{"w":week,"j":day,"h":creneauPerm},False)
-    foyerOuvert = socketReq('getOuvertPerm',{"w":week,"j":day,"h":creneauPerm},False)
+    listLocalisation = socketReq('getAllLieuList',{"w":week,"j":day,"h":timeSlot[1]},False) #récupére la liste de présence des lieu(DOC,Tutorat,...)
+    listFoyerDemande = socketReq('listDemandesPerm',{"w":week,"j":day,"h":creneauPerm},False) #récupére la liste des groupe de perm
+    foyerOuvert = socketReq('getOuvertPerm',{"w":week,"j":day,"h":creneauPerm},False) #récupére le statue du créneau foyer en perm (ouvert, fermé ...)
   if foyerOuvert==None:
     foyerOuvert=0
-  listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
-  listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False)
-  listUsers = socketReq('getListPass', None,True)
+  listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False) #récupére la liste des personnes inscrit et demandeur pour manger à 11h
+  listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False) #récupére la liste des personnes inscrit et demandeur pour manger à 12h
+  listUsers = socketReq('getListPass', None,True) #récupére la liste de tout les utilisateurs
   refreshPassages()
 
+
+#fonction actualiser l'heure
 modeSelectTimeSlot=0
 timeSlot=("Perm",-1,-1)
 def refreshTime():
@@ -250,14 +255,15 @@ def refreshTime():
     textH.set("Semaine n°" + str(week) + " " + days[day] + " " + str(h[1]+8) + "h")
 
 
+#refresh les labels avec les passages
 def refreshPassages():
   global listLocalisation
   NBplacesDispo="0"
   lieu = lieu_var_save
   if lieu_var_save=="DOC":
-    NBplacesDispo = str(10)
-  elif lieu_var_save=="Tutorat":
     NBplacesDispo = str(15)
+  elif lieu_var_save=="Tutorat":
+    NBplacesDispo = str(10)
   elif lieu_var_save=="Aumônerie":
     NBplacesDispo = str(15)
   elif lieu_var_save=="All":
@@ -556,8 +562,9 @@ def export():
   print(">>>create 'Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt'")
 
 
-class App(threading.Thread):
 
+#gestion des éléments graphiques(fenetre,label,bouton,image)
+class App(threading.Thread):
     def __init__(self, tk_root, label,name):
         super(App, self).__init__()
         self.fenetre = tk_root
