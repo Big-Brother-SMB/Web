@@ -395,15 +395,15 @@ export class common{
                                       common.socketAsync('setTuto',true)
                                       this.popUp_Stop()
                                     },{once:true})
-                                  })
+                                  },false)
                               },{once:true})
-                            })
+                            },false)
                         },{once:true})
-                      })
+                      },false)
                   },{once:true})
-                })
+                },false)
             },{once:true})
-        })
+        },false)
       }else{
         //---------------------------------pop-up notif ServiceWorker---------------------------------------------
         
