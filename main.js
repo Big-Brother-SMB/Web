@@ -399,7 +399,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       if(now.getHours()==0 && now.getMinutes()==0 && info12.algo_auto==2){
         await UserSelect.algoDeSelection(w,j*2+1)
       }
-      if(now.getHours()==13 && now.getMinutes()==0 && (info11.ouvert == 2 || info12.ouvert == 2 || info11.ouvert == 4 || info12.ouvert == 4)){
+      if(now.getHours()==13 && now.getMinutes()==0 && j==3 && (info11.ouvert == 2 || info12.ouvert == 2 || info11.ouvert == 4 || info12.ouvert == 4)){
         console.log(info11.ouvert)
         User.sendNotifAll("Sondage",
             "Répondez au sondage.",
