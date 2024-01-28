@@ -291,6 +291,7 @@ export class common{
         const bcimg = document.createElement('img');
         bcimg.className = "barcode";
         bcimg.setAttribute('id', bcid);
+        containerElement.innerHTML=""
         containerElement.appendChild(bcimg);
         JsBarcode('#'+bcid, codeBar, {format: 'code39'});
       }
