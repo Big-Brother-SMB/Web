@@ -9,6 +9,7 @@ save.txt
 *.db
 *.zip
 *.pdf
+key.pem
 
 # Logs
 logs
