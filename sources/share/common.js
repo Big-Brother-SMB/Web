@@ -213,7 +213,6 @@ export class common{
 
     let admin_permission = this.admin_permission
 
-    console.log(admin_permission)
     const list_nav_elem = document.getElementById("mySidenav").children
     for (var i = 0; i < list_nav_elem.length; i++) {
       let perm_item = list_nav_elem[i].getAttribute("permission")
@@ -485,6 +484,22 @@ export class common{
       })
     });
 
+    new Promise(async function(resolve, reject) {
+      let socketInterruption = io("/interruption",{
+        auth: {
+          token: common.key
+        }
+      });
+      await new Promise(function(resolve, reject) {
+        socketInterruption.once("connect", () => {
+          resolve(null)
+        });
+      })
+      socket.on("achievement",msg => {
+        
+      });
+    })
+
     //-------------------------------------retour--------------------------------------
 
     document.getElementById("btn_retour").addEventListener('click', async ()=>{
@@ -544,7 +559,7 @@ export class common{
 
     await this.socketAsync("log",document.location.pathname)
 
-    //---------------------------securité page admin + deco + tuto---------------------------
+    //---------------------------securité page admin + deco---------------------------
 
 
     if(this.admin>0 && this.socketAdmin==undefined){
@@ -662,7 +677,7 @@ export class common{
           });
           socket.emit(channel,msg);
           if(time==undefined){
-            time=5000
+            time=10000
           }
           setTimeout(()=>{
             reject({channel:channel,msg:msg,time:time})
@@ -679,7 +694,7 @@ export class common{
                   resolve(result)
                 });
                 if(time==undefined){
-                  time=5000
+                  time=10000
                 }
                 setTimeout(()=>{
                   reject({channel:channel,msg:msg,time:time})

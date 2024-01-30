@@ -35,7 +35,7 @@ module.exports = class User{
                   }
               }catch(e){console.error(e);console.log('d1');;resolve(null)}
           })
-          setTimeout(reject,5000)
+          setTimeout(reject,10000)
         } catch (e) {console.error(e);console.log('d2');}
       })
   }
@@ -69,7 +69,7 @@ module.exports = class User{
                   resolve(new User(uuid))
               }catch(e){console.error(e);console.log('d3');;resolve(null)}
           })
-          setTimeout(reject,5000)
+          setTimeout(reject,10000)
         } catch (e) {console.error(e);console.log('d4');}
       })
   }
@@ -111,7 +111,7 @@ module.exports = class User{
           }
         }catch(e){console.error(e);console.log('d6');;resolve(null)}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
       } catch (e) {console.error(e);console.log('d7');}
     })
   }
@@ -141,7 +141,7 @@ module.exports = class User{
           }
         }catch(e){console.error(e);console.log('d6');resolve(null)}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
 
@@ -243,7 +243,7 @@ module.exports = class User{
                   }
               }catch(e){console.error(e);console.log('d8');;resolve([])}
           })
-          setTimeout(reject,5000)
+          setTimeout(reject,10000)
         } catch (e) {console.error(e);console.log('d9');}
       })
   }
@@ -264,13 +264,12 @@ module.exports = class User{
                     resolve([])
                 }
             }catch(e){
-              console.error("completelist:\n",data)
               console.error(e);
               console.log('d12');
               resolve([]);
             }
         })
-        setTimeout(reject,5000)
+        setTimeout(reject,15000)
     })
   }
 
@@ -286,7 +285,7 @@ module.exports = class User{
                 }
               }catch(e){console.error(e);console.log('d13');;resolve(null)}
           })
-          setTimeout(reject,5000)
+          setTimeout(reject,10000)
       })
   }
   #setInfo(key,value){
@@ -302,19 +301,21 @@ module.exports = class User{
       let uuid = this.uuid
       let groups = this.groups
       let admin_permission = this.admin_permission
+      let achievement = this.achievement
       return new Promise(function(resolve, reject) {
           db.get("SELECT * FROM users where uuid=?",[uuid], async (err, data) => {
               try{
                   if(data!=undefined){
                       data.groups = await groups
                       data.admin_permission = await admin_permission
+                      data.achievement = await achievement
                       resolve(data)
                   }else{
                       resolve(null)
                   }
               }catch(e){console.error(e);console.log('d14');resolve(null)}
           })
-          setTimeout(reject,5000)
+          setTimeout(reject,10000)
       })
   }
 
@@ -324,67 +325,91 @@ module.exports = class User{
     this.admin_permission = args.admin_permission
   }
 
-  get first_name()   {
+  get first_name(){
       return this.#getInfo("first_name")
   }
-  set first_name(value)   {
+  set first_name(value){
       this.#setInfo("first_name",value)
   }
 
-  get last_name()   {
+  get last_name(){
     return this.#getInfo("last_name")
   }
-  set last_name(value)   {
+  set last_name(value){
       this.#setInfo("last_name",value)
   }
 
-  get email()   {
+  get email(){
     return this.#getInfo("email")
   }
-  set email(value)   {
+  set email(value){
       this.#setInfo("email",value)
   }
 
-  get code_barre()   {
+  get code_barre(){
     return this.#getInfo("code_barre")
   }
-  set code_barre(value)   {
+  set code_barre(value){
       this.#setInfo("code_barre",value)
   }
 
-  get classe()   {
+  get classe(){
     return this.#getInfo("classe")
   }
-  set classe(value)   {
+  set classe(value){
       this.#setInfo("classe",value)
   }
 
-  get tuto()   {
+  get tuto(){
     return this.#getInfo("tuto")
   }
-  set tuto(value)   {
+  set tuto(value){
       this.#setInfo("tuto",value)
   }
 
-  get admin()   {
+  get admin(){
       return this.#getInfo("admin")
   }
-  set admin(value)   {
+  set admin(value){
       this.#setInfo("admin",value)
   }
 
-  get birthday()   {
+  get birthday(){
     return this.#getInfo("birthday")
   }
-  set birthday(value)   {
+  set birthday(value){
       this.#setInfo("birthday",value)
   }
 
-  get birthmonth()   {
+  get birthmonth(){
     return this.#getInfo("birthmonth")
   }
-  set birthmonth(value)   {
+  set birthmonth(value){
       this.#setInfo("birthmonth",value)
+  }
+
+  get achievement(){
+    let uuid=this.uuid
+    return new Promise(function(resolve, reject) {
+        db.get("SELECT * FROM achievement where uuid=?",[uuid], (err, data) => {
+            try{
+              if(data!=undefined){
+                resolve(data)
+              }else{
+                resolve({})
+              }
+            }catch(e){console.error(e);console.log('d13');;resolve(null)}
+        })
+        setTimeout(reject,10000)
+    })
+  }
+  set achievement(value){
+    let uuid=this.uuid
+    db.get("SELECT * FROM achievement where uuid=?",[uuid], (err, data) => {
+        if(data!=undefined){
+            db.run("UPDATE achievement SET "+ value[0] +"=? where uuid=?",[value[1],uuid])
+        }
+    })
   }
 
   get amis(){
@@ -415,7 +440,7 @@ module.exports = class User{
                   }
               }catch(e){console.error(e);console.log('d15');;resolve([])}
           })
-          setTimeout(reject,5000)
+          setTimeout(reject,10000)
       })
   }
   set amis(list){
@@ -444,7 +469,7 @@ module.exports = class User{
                   }
               }catch(e){console.error(e);console.log('d16');;resolve([])}
           })
-          setTimeout(reject,5000)
+          setTimeout(reject,10000)
       })
   }
   set groups(list){
@@ -469,7 +494,7 @@ module.exports = class User{
                 }
             }catch(e){console.error(e);console.log('d16');;resolve([])}
         })
-        setTimeout(reject,5000)
+        setTimeout(reject,10000)
     })
   }
   set admin_permission(obj){
@@ -512,7 +537,7 @@ module.exports = class User{
           }
         }catch(e){console.error(e);console.log('d17');;resolve({})}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
   setMidiDemande(semaine,creneau,amis,DorI,scan,sandwich){
@@ -555,7 +580,7 @@ module.exports = class User{
           }
         }catch(e){console.error(e);console.log('d18');;resolve({})}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
   setPermDemande(semaine,day,creneau,group,nb){
@@ -638,7 +663,7 @@ module.exports = class User{
               })
           }catch(e){console.error(e);console.log('d21');;resolve([])}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
   get score(){
@@ -699,7 +724,7 @@ module.exports = class User{
               })
           }catch(e){console.error(e);console.log('d24');;resolve(null)}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
 
@@ -735,7 +760,7 @@ module.exports = class User{
               })
           }catch(e){console.error(e);console.log('d24');;resolve(null)}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
 
@@ -753,7 +778,7 @@ module.exports = class User{
           }
           resolve(null)
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
 
@@ -799,7 +824,7 @@ module.exports = class User{
           }
         }catch(e){console.error(e);console.log('a-3');resolve(null)}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
 
@@ -865,7 +890,7 @@ module.exports = class User{
               })
           }catch(e){console.error(e);console.log('d27');;resolve(null)}
       })
-      setTimeout(reject,5000)
+      setTimeout(reject,10000)
     })
   }
 

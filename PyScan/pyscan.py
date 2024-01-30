@@ -61,15 +61,19 @@ def catch_all_admin(event, data):
 
 #fonction pour faire une req de donnée
 def socketReq(event,data,admin):
+  return socketReq2(event,data,admin,3)
+
+def socketReq2(event,data,admin,numTry):
   #print(">>> req: (" + str(event) + ") " + str(data))
   try:
+    numTry-=1
     if admin:
       sio.emit(event,data,namespace='/admin')
     else:
       sio.emit(event,data)
     global msg
     x=None
-    timeOut = 50
+    timeOut = 200
     while x==None:
       time.sleep(0.1)
       for i in range(len(msg)):
@@ -78,13 +82,16 @@ def socketReq(event,data,admin):
           del msg[i]
       timeOut-=1
       if timeOut<=0:
-        x=[event,socketReq(event,data,admin)]
+        if numTry==0:
+          return []
+        x=[event,socketReq2(event,data,admin,numTry)]
     return x[1]
   except Exception as e:
     traceback.print_exc()
     return []
 
 #initialisation du socket
+#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
 print("\n\n\n")
 print(">>> Start")

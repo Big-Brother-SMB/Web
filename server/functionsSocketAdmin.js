@@ -88,15 +88,9 @@ module.exports = class funcSocket{
     static getListPass(socket,user){
         socket.on('getListPass',async req => {
             if(await user.admin == 0 || await user.admin == null) return
-            let list = "rien"
             try{
-                console.error("top0")
-                list = await User.listUsersComplete()
-                console.error("top1")
-                socket.emit('getListPass',list)
-                console.error("top2")
+                socket.emit('getListPass',await User.listUsersComplete())
             }catch(e){
-                console.error("completelist0:\n",data)
                 console.error(e);console.log('11');
             }
         })
@@ -180,7 +174,7 @@ module.exports = class funcSocket{
         socket.on('startAlgo',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                let rep = await UserSelect.algoDeSelection(req.w,req.j*2+req.h,req.IPM)
+                let rep = await UserSelect.algoDeSelection(req.w,req.j*2+req.h,req.ISM)
                 socket.emit('startAlgo',rep)
             }catch(e){console.error(e);console.log('18');}
         })
@@ -435,7 +429,7 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v23")
+                socket.emit("pyScanVersion","v24")
             }catch(e){console.error(e);console.log('48');}
         });
     }

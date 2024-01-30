@@ -20,6 +20,10 @@ module.exports = (db)=>{
       if(data==undefined)
         db.run('CREATE TABLE users(uuid UUID, first_name text, last_name text, email text, code_barre CHAR[5], classe text, tuto boolean,admin boolean,picture text,birthday int2,birthmonth int2,verify boolean)')
     })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='achievement'", (err, data) => {
+      if(data==undefined)
+        db.run('CREATE TABLE achievement(uuid UUID,gold bool,anniversaire bool,troll bool,poule bool,zelda bool,apple bool)')
+    })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='admin_permission'", (err, data) => {
       if(data==undefined)
         db.run('CREATE TABLE admin_permission(uuid UUID, pass int2, foyer_repas int2, foyer_perm int2, banderole int2, user_editor int2, messagerie int2, cookie int2, admin_only int2, localisation int2, CDI int2, Aumônerie int2, DOC int2, Audio int2, Tutorat int2)')

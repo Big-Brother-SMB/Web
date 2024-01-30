@@ -28,7 +28,7 @@ module.exports = class UserSelect{
         this.NumPlace = 0
     }
   
-    static async algoDeSelection(semaine,creneau,IPM){
+    static async algoDeSelection(semaine,creneau,ISM){
       try {
         if(this.enCour){
           return "En cour"
@@ -78,7 +78,7 @@ module.exports = class UserSelect{
             if(info.prio.indexOf(child)!=-1){
               prio=true
             }
-            if(["VIP"].indexOf(child)!=-1 && !IPM){
+            if(["VIP"].indexOf(child)!=-1 && !ISM){
               vip=true
             }
           })
@@ -86,7 +86,7 @@ module.exports = class UserSelect{
           
           let amis = listDemandes[i].amis
           let pass=0;
-          if(listDemandes[i].DorI==1 && !IPM){
+          if(listDemandes[i].DorI==1 && !ISM){
             pass=2
           }
           this.usersList.push(await new UserSelect(listDemandes[i].uuid,score,prio,amis,listDemandes[i].date,pass,vip))
@@ -98,7 +98,7 @@ module.exports = class UserSelect{
         //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
         for(let u in this.usersList){
           let vipMax = 4
-          if(this.usersList[u].score<-2 && !this.usersList[u].vip && !IPM){
+          if(this.usersList[u].score<-1 && !this.usersList[u].vip && !ISM){
             this.usersList[u].pass=-1
           }
           if(this.usersList[u].date.getTime() < dateToday.getTime()){
@@ -286,20 +286,24 @@ module.exports = class UserSelect{
         inscrits=this.boucleInscription(inscrits,places)
     
         
-        if(IPM){
-          //calcule IPM
+        if(ISM){
+          //calcule ISM
           let indicePointsMin = 1000
+          let nombreUtilisateursInvalide = 0
           for(let i in this.usersList){
             if(this.usersList[i].pass>=1){
               if(this.usersList[i].score < indicePointsMin){
                 indicePointsMin = this.usersList[i].score
               }
             }
+            if(this.usersList[i].pass==-1){
+              nombreUtilisateursInvalide++
+            }
           }
           //reponse client admin
           this.enCour = false
-          console.log("[algo/IPM] " + inscrits + " inscriptions, il reste " + (places - inscrits) + " places","IPM:" + indicePointsMin,"w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
-          return "IPM: " + indicePointsMin + "pts<br>" + inscrits + "/" +places + " inscrits<br>Appuyer pour relancer."
+          console.log("[algo/ISM] " + inscrits + " inscriptions, il reste " + (places - inscrits) + " places","ISM:" + indicePointsMin,"w:"+semaine,"j:"+Math.floor(creneau / 2),"h:"+(11+creneau%2))
+          return "ISM: " + indicePointsMin + "pts<br>" + inscrits + "/" +places + " inscrits<br>" + nombreUtilisateursInvalide + " demandes invalides<br>Appuyer pour relancer."
         }else{
           //inscription SQL
           for(let i in this.usersList){
@@ -319,7 +323,7 @@ module.exports = class UserSelect{
         console.error(error)
         console.log("error algo")
         this.enCour = false
-        return "error"
+        return "error algo"
       }
     }
   
