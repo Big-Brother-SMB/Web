@@ -269,7 +269,7 @@ module.exports = class User{
               resolve([]);
             }
         })
-        setTimeout(reject,15000)
+        setTimeout(reject,10000)
     })
   }
 
