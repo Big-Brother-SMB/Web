@@ -6,7 +6,7 @@ module.exports = {
   deploy : {
     production : {
       user : 'john',
-      key: "key.pem",
+      key: "/home/nathan/.ssh/id_rsa.pub",
       host : '91.121.41.208',
       ref  : 'origin/main',
       repo : 'git@github.com:Big-Brother-SMB/Web.git',
