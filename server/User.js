@@ -256,7 +256,7 @@ module.exports = class User{
                     for(let i in data){
                       let user = new User(data[i].uuid)
                       data[i].groups = await user.groups
-                      data[i].admin_permission = await user.admin_permission
+                      data[i].admin_permission =  {uuid:uuid,pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}// await user.admin_permission
                       data[i].ban = await user.ban
                     }
                     resolve(data)
