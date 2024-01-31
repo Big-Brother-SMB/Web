@@ -261,10 +261,11 @@ module.exports = class User{
                       data[i].ban = user.ban
                     }
                     for(let i in data){
-                      await data[i].groups
-                      await data[i].admin_permission
-                      await data[i].ban
+                      data[i].groups = await data[i].groups
+                      data[i].admin_permission = await data[i].admin_permission
+                      data[i].ban = await data[i].ban
                     }
+                    console.log(data[0])
                     resolve(data)
                 }else{
                     resolve([])
