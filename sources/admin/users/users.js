@@ -71,7 +71,7 @@ export async function init(common){
     let fu7=function(){return}
 
     let utilisateursNames = []
-    let listUsers = common.nameOrder(await common.socketAdminAsync('getListPass',null))
+    let listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
 
     listUsers.forEach(function(child) {
         utilisateursNames.push(common.name(child.first_name,child.last_name))
@@ -79,7 +79,7 @@ export async function init(common){
     console.log(utilisateursNames)
     common.autocomplete(document.getElementById("search"), utilisateursNames,async function(){
         stop()
-        listUsers = common.nameOrder(await common.socketAdminAsync('getListPass',null))
+        listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
         utilisateursNames=[]
         listUsers.forEach(function(child) {
             utilisateursNames.push(common.name(child.first_name,child.last_name))

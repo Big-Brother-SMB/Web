@@ -261,7 +261,7 @@ export async function init(common){
         listAmisUUID => UUID de tout amis
         listAmis => liste Nom/Prénom/uuid/procuration de tout les amis
         */
-        let listUsers = await common.socketAsync('listUsersName',null)
+        let listUsers = await common.socketAsync('getListUserName',null)
         let listAmisBrut = await common.socketAsync('getAmis',null)
     
         //créer la liste d'amis global

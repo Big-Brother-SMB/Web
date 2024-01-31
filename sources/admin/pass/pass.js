@@ -123,7 +123,7 @@ export async function init(common){
     let code = 0
     let users_code= new Map();
 
-    let listUsers = common.nameOrder(await common.socketAdminAsync('getListPass',null))
+    let listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
     let listCreneau = await common.socketAsync('listDemandes',{w:common.actualWeek,j:j,h:h})
 
     listUsers.forEach(function(child) {

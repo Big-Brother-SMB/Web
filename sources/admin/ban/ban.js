@@ -6,7 +6,7 @@ export async function init(common){
 
     let listBan = await common.socketAdminAsync('getBan',null)
     
-    let listUsers = await common.socketAsync('listUsersName',null)
+    let listUsers = await common.socketAsync('getListUserName',null)
 
 
     const BA = document.getElementById("BA")

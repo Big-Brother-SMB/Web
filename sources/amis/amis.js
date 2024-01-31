@@ -1,7 +1,7 @@
 export async function init(common){
     let divAmis = document.getElementById("amis")
 
-    let listUsers=common.nameOrder(await common.socketAsync('listUsersName',null))
+    let listUsers=common.nameOrder(await common.socketAsync('getListUserName',null))
     let users=[]
     let usersNames=[]
 

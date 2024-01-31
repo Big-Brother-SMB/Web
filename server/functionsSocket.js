@@ -113,10 +113,10 @@ module.exports = class funcSocket{
         });
     }
 
-    static listUsersName(socket,user){
-        socket.on('listUsersName', async req => {
+    static getListUserName(socket,user){
+        socket.on('getListUserName', async req => {
             try{
-                socket.emit('listUsersName',await User.listUsersName())
+                socket.emit('getListUserName',await User.listUserName())
             }catch(e){console.error(e);console.log('b10');}
         });
     }

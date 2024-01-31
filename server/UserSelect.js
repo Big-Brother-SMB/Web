@@ -50,7 +50,7 @@ module.exports = class UserSelect{
         //remplie la "usersList" avec des "UserSelect" en utilisant les données précédante
 
 
-        let nameList = await User.listUsersComplete()
+        let nameList = await User.listUserComplete()
         let nameListUUID =  nameList.map(x=>{ return x.uuid})
 
         //détermine datetoday

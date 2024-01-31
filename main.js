@@ -232,7 +232,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.setMenu(socket,user)
       funcSocketAdmin.setMidiInfo(socket,user)
       funcSocketAdmin.getGroupAndClasse(socket,user)
-      funcSocketAdmin.getListPass(socket,user)
       funcSocketAdmin.scan(socket,user)
       funcSocketAdmin.setDorI(socket,user)
       funcSocketAdmin.delDorI(socket,user)
@@ -277,6 +276,9 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.getUserLieu(socket,user)
       funcSocketAdmin.setUserLieu(socket,user)
       funcSocketAdmin.delUserLieu(socket,user)
+
+      funcSocketAdmin.getListUserComplete(socket,user)
+      funcSocketAdmin.getListUser(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -296,7 +298,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.setTuto(socket,user)
         funcSocket.getAmis(socket,user)
         funcSocket.setAmis(socket,user)
-        funcSocket.listUsersName(socket,user)
+        funcSocket.getListUserName(socket,user)
         funcSocket.getMyDemande(socket,user)
         funcSocket.setMyDemande(socket,user)
         funcSocket.delMyDemande(socket,user)

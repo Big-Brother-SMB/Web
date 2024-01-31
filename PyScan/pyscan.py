@@ -212,7 +212,7 @@ def refresh(loop):
     foyerOuvert=0
   listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False) #récupére la liste des personnes inscrit et demandeur pour manger à 11h
   listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False) #récupére la liste des personnes inscrit et demandeur pour manger à 12h
-  listUsers = socketReq('getListPass', None,True) #récupére la liste de tout les utilisateurs
+  listUsers = socketReq('getListUserComplete', None,True) #récupére la liste de tout les utilisateurs
   refreshPassages()
 
 
@@ -500,7 +500,7 @@ def controle():
 #export
 def export():
   f = open("Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt", "w")
-  users = socketReq('getListPass', None,True)
+  users = socketReq('getListUserComplete', None,True)
   dico={}
   for e in users:
     dico[e["uuid"]] = e["first_name"] + " " + e["last_name"]

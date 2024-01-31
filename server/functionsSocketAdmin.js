@@ -85,11 +85,22 @@ module.exports = class funcSocket{
         })
     }
 
-    static getListPass(socket,user){
-        socket.on('getListPass',async req => {
+    static getListUserComplete(socket,user){
+        socket.on('getListUserComplete',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit('getListPass',await User.listUsersComplete())
+                socket.emit('getListUserComplete',await User.listUserComplete())
+            }catch(e){
+                console.error(e);console.log('11');
+            }
+        })
+    }
+
+    static getListUser(socket,user){
+        socket.on('getListUser',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit('getListUser',await User.listUser())
             }catch(e){
                 console.error(e);console.log('11');
             }
