@@ -256,9 +256,14 @@ module.exports = class User{
                     for(let i in data){
                       console.log(i)
                       let user = new User(data[i].uuid)
-                      data[i].groups = await user.groups
-                      data[i].admin_permission = await user.admin_permission
-                      data[i].ban = await user.ban
+                      data[i].groups = user.groups
+                      data[i].admin_permission = user.admin_permission
+                      data[i].ban = user.ban
+                    }
+                    for(let i in data){
+                      await data[i].groups
+                      await data[i].admin_permission
+                      await data[i].ban
                     }
                     resolve(data)
                 }else{
@@ -270,7 +275,7 @@ module.exports = class User{
               resolve([]);
             }
         })
-        setTimeout(reject,5000)
+        setTimeout(reject,15000)
     })
   }
 
