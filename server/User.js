@@ -254,18 +254,18 @@ module.exports = class User{
             try{
                 if(data!=undefined){
                     for(let i in data){
-                      console.log(i)
                       let user = new User(data[i].uuid)
                       data[i].groups = user.groups
                       data[i].admin_permission = user.admin_permission
                       data[i].ban = user.ban
                     }
                     for(let i in data){
+                      console.log(i)
                       data[i].groups = await data[i].groups
                       data[i].admin_permission = await data[i].admin_permission
                       data[i].ban = await data[i].ban
                     }
-                    console.log(data[0])
+                    console.log("top")
                     resolve(data)
                 }else{
                     resolve([])
@@ -276,7 +276,7 @@ module.exports = class User{
               resolve([]);
             }
         })
-        setTimeout(reject,15000)
+        setTimeout(reject,20000)
     })
   }
 

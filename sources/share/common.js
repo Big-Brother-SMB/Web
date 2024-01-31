@@ -677,7 +677,7 @@ export class common{
           });
           socket.emit(channel,msg);
           if(time==undefined){
-            time=5000
+            time=20000
           }
           setTimeout(()=>{
             reject({channel:channel,msg:msg,time:time})
@@ -694,7 +694,7 @@ export class common{
                   resolve(result)
                 });
                 if(time==undefined){
-                  time=5000
+                  time=20000
                 }
                 setTimeout(()=>{
                   reject({channel:channel,msg:msg,time:time})
