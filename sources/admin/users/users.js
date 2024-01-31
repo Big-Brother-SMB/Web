@@ -79,11 +79,6 @@ export async function init(common){
     console.log(utilisateursNames)
     common.autocomplete(document.getElementById("search"), utilisateursNames,async function(){
         stop()
-        listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
-        utilisateursNames=[]
-        listUsers.forEach(function(child) {
-            utilisateursNames.push(common.name(child.first_name,child.last_name))
-        })
         let utilisateur = listUsers[utilisateursNames.indexOf(document.getElementById("search").value)]
         let codeBar = utilisateur.code_barre
         let classe = utilisateur.classe
@@ -393,6 +388,11 @@ export async function init(common){
                 common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission,birthday:birthday,birthmonth:birthmonth})
             }
         }
+        listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
+        utilisateursNames=[]
+        listUsers.forEach(function(child) {
+            utilisateursNames.push(common.name(child.first_name,child.last_name))
+        })
     },true);
 
 }

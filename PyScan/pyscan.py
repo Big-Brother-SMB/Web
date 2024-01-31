@@ -197,7 +197,7 @@ def refresh(loop):
 
   print(">>> Refresh")
   if loop:
-    threading.Timer(30, refresh,args=(True,)).start()
+    threading.Timer(90, refresh,args=(True,)).start()
 
   
   refreshTime()
