@@ -5,8 +5,7 @@ module.exports = {
   }],
   deploy : {
     production : {
-      user : 'john',
-      key: "/home/nathan/.ssh/id_rsa.pub",
+      user : 'root',
       host : '91.121.41.208',
       ref  : 'origin/main',
       ssh_options: "StrictHostKeyChecking=no",
