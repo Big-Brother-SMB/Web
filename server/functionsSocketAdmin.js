@@ -88,15 +88,9 @@ module.exports = class funcSocket{
     static getListPass(socket,user){
         socket.on('getListPass',async req => {
             if(await user.admin == 0 || await user.admin == null) return
-            let list = "rien"
             try{
-                console.error("top0")
-                list = await User.listUsersComplete()
-                console.error("top1")
-                socket.emit('getListPass',list)
-                console.error("top2")
+                socket.emit('getListPass',await User.listUsersComplete())
             }catch(e){
-                console.error("completelist0:\n",data)
                 console.error(e);console.log('11');
             }
         })

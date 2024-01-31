@@ -254,6 +254,7 @@ module.exports = class User{
             try{
                 if(data!=undefined){
                     for(let i in data){
+                      console.log(i)
                       let user = new User(data[i].uuid)
                       data[i].groups = await user.groups
                       data[i].admin_permission = await user.admin_permission
@@ -264,13 +265,12 @@ module.exports = class User{
                     resolve([])
                 }
             }catch(e){
-              console.error("completelist:\n",data)
               console.error(e);
               console.log('d12');
               resolve([]);
             }
         })
-        setTimeout(reject,15000)
+        setTimeout(reject,5000)
     })
   }
 
