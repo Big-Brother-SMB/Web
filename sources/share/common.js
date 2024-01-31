@@ -484,7 +484,7 @@ export class common{
       })
     });
 
-    new Promise(async function(resolve, reject) {
+    /*new Promise(async function(resolve, reject) {
       let socketInterruption = io("/interruption",{
         auth: {
           token: common.key
@@ -498,7 +498,7 @@ export class common{
       socket.on("achievement",msg => {
         
       });
-    })
+    })*/
 
     //-------------------------------------retour--------------------------------------
 
@@ -559,7 +559,7 @@ export class common{
 
     await this.socketAsync("log",document.location.pathname)
 
-    //---------------------------securité page admin + deco---------------------------
+    //---------------------------securité page admin + deco + tuto---------------------------
 
 
     if(this.admin>0 && this.socketAdmin==undefined){
@@ -677,7 +677,7 @@ export class common{
           });
           socket.emit(channel,msg);
           if(time==undefined){
-            time=1000
+            time=5000
           }
           setTimeout(()=>{
             reject({channel:channel,msg:msg,time:time})
@@ -694,7 +694,7 @@ export class common{
                   resolve(result)
                 });
                 if(time==undefined){
-                  time=10000
+                  time=5000
                 }
                 setTimeout(()=>{
                   reject({channel:channel,msg:msg,time:time})

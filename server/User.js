@@ -256,7 +256,7 @@ module.exports = class User{
                     for(let i in data){
                       let user = new User(data[i].uuid)
                       data[i].groups = await user.groups
-                      data[i].admin_permission =  {uuid:'',pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}// await user.admin_permission
+                      data[i].admin_permission = await user.admin_permission
                       data[i].ban = await user.ban
                     }
                     resolve(data)
@@ -264,12 +264,13 @@ module.exports = class User{
                     resolve([])
                 }
             }catch(e){
+              console.error("completelist:\n",data)
               console.error(e);
               console.log('d12');
               resolve([]);
             }
         })
-        setTimeout(reject,10000)
+        setTimeout(reject,15000)
     })
   }
 
@@ -301,14 +302,14 @@ module.exports = class User{
       let uuid = this.uuid
       let groups = this.groups
       let admin_permission = this.admin_permission
-      let achievement = this.achievement
+      //let achievement = this.achievement
       return new Promise(function(resolve, reject) {
           db.get("SELECT * FROM users where uuid=?",[uuid], async (err, data) => {
               try{
                   if(data!=undefined){
                       data.groups = await groups
                       data.admin_permission = await admin_permission
-                      data.achievement = await achievement
+                      //data.achievement = await achievement
                       resolve(data)
                   }else{
                       resolve(null)
@@ -325,66 +326,66 @@ module.exports = class User{
     this.admin_permission = args.admin_permission
   }
 
-  get first_name(){
+  get first_name()   {
       return this.#getInfo("first_name")
   }
-  set first_name(value){
+  set first_name(value)   {
       this.#setInfo("first_name",value)
   }
 
-  get last_name(){
+  get last_name()   {
     return this.#getInfo("last_name")
   }
-  set last_name(value){
+  set last_name(value)   {
       this.#setInfo("last_name",value)
   }
 
-  get email(){
+  get email()   {
     return this.#getInfo("email")
   }
-  set email(value){
+  set email(value)   {
       this.#setInfo("email",value)
   }
 
-  get code_barre(){
+  get code_barre()   {
     return this.#getInfo("code_barre")
   }
-  set code_barre(value){
+  set code_barre(value)   {
       this.#setInfo("code_barre",value)
   }
 
-  get classe(){
+  get classe()   {
     return this.#getInfo("classe")
   }
-  set classe(value){
+  set classe(value)   {
       this.#setInfo("classe",value)
   }
 
-  get tuto(){
+  get tuto()   {
     return this.#getInfo("tuto")
   }
-  set tuto(value){
+  set tuto(value)   {
       this.#setInfo("tuto",value)
   }
 
-  get admin(){
+  get admin()   {
       return this.#getInfo("admin")
   }
-  set admin(value){
+  set admin(value)   {
       this.#setInfo("admin",value)
   }
 
-  get birthday(){
+  get birthday()   {
     return this.#getInfo("birthday")
   }
-  set birthday(value){
+  set birthday(value)   {
       this.#setInfo("birthday",value)
   }
 
-  get birthmonth(){
+  get birthmonth()   {
     return this.#getInfo("birthmonth")
   }
-  set birthmonth(value){
+  set birthmonth(value)   {
       this.#setInfo("birthmonth",value)
   }
 

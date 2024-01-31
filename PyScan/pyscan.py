@@ -61,19 +61,15 @@ def catch_all_admin(event, data):
 
 #fonction pour faire une req de donnée
 def socketReq(event,data,admin):
-  return socketReq2(event,data,admin,3)
-
-def socketReq2(event,data,admin,numTry):
   #print(">>> req: (" + str(event) + ") " + str(data))
   try:
-    numTry-=1
     if admin:
       sio.emit(event,data,namespace='/admin')
     else:
       sio.emit(event,data)
     global msg
     x=None
-    timeOut = 200
+    timeOut = 50
     while x==None:
       time.sleep(0.1)
       for i in range(len(msg)):
@@ -82,9 +78,7 @@ def socketReq2(event,data,admin,numTry):
           del msg[i]
       timeOut-=1
       if timeOut<=0:
-        if numTry==0:
-          return []
-        x=[event,socketReq2(event,data,admin,numTry)]
+        x=[event,socketReq(event,data,admin)]
     return x[1]
   except Exception as e:
     traceback.print_exc()
