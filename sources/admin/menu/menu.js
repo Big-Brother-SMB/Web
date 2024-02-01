@@ -36,12 +36,8 @@ export async function init(common){
         }
         document.getElementById("menuSemaine").innerHTML = val
 
-        if(info_menu.self!="undefined" && info_menu.self!=undefined){
-            document.getElementById("menu self").setAttribute("src",info_menu.self)
-            document.getElementById("menu self").addEventListener("error", remplace_img);
-        }else{
-            remplace_img()
-        }
+        document.getElementById("menu self").addEventListener("error", remplace_img);
+        document.getElementById("menu self").setAttribute("src","/Images_menu/page-" + week + ".jpg")
 
         let listNote = []
         for(let i=0;i<5;i++){
@@ -117,24 +113,6 @@ export async function init(common){
         }
         await common.socketAdminAsync("setMenu",{semaine:week,menu:p,self:info_menu.self})
         document.getElementById("menuSemaine").innerHTML = p
-    })
-
-
-    document.getElementById("menu self").addEventListener("click",async function(){
-        let info_menu = await common.socketAsync("getMenuThisWeek",week)
-        let p = info_menu.self
-        p=window.prompt("Menu du self de la semaine "+week+":",p);
-        if (p==null){
-            p=info_menu.self
-        }
-        await common.socketAdminAsync("setMenu",{semaine:week,menu:info_menu.menu,self:p})
-
-        if(p!="undefined" && p!=undefined){
-            document.getElementById("menu self").setAttribute("src",p)
-            document.getElementById("menu self").addEventListener("error", remplace_img);
-        }else{
-            remplace_img()
-        }
     })
 }
 
