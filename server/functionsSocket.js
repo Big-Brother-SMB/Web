@@ -587,8 +587,18 @@ module.exports = class funcSocket{
 
 
 
-
-
+    static setAchievement(socket,user){
+        socket.on("setAchievement", async req => {
+            try{
+                console.log(req.event)
+                if(["zelda","apple"].includes(req.event)){
+                    user.achievement = [req.event,req.value]
+                }
+                socket.emit("setAchievement","ok")
+            }catch(e){console.error(e);console.log('b43');}
+        });
+    }
+    //
 
 
 

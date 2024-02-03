@@ -323,14 +323,14 @@ module.exports = class User{
       let uuid = this.uuid
       let groups = this.groups
       let admin_permission = this.admin_permission
-      //let achievement = this.achievement
+      let achievement = this.achievement
       return new Promise(function(resolve, reject) {
           db.get("SELECT * FROM users where uuid=?",[uuid], async (err, data) => {
               try{
                   if(data!=undefined){
                       data.groups = await groups
                       data.admin_permission = await admin_permission
-                      //data.achievement = await achievement
+                      data.achievement = await achievement
                       resolve(data)
                   }else{
                       resolve(null)
@@ -430,6 +430,8 @@ module.exports = class User{
     db.get("SELECT * FROM achievement where uuid=?",[uuid], (err, data) => {
         if(data!=undefined){
             db.run("UPDATE achievement SET "+ value[0] +"=? where uuid=?",[value[1],uuid])
+        } else{
+            db.run("INSERT INTO achievement(uuid," + value[0] + ") VALUES (?,?)",[uuid,value[1]])
         }
     })
   }

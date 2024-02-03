@@ -33,8 +33,8 @@ export async function init(common){
             common.writeCookie("theme mode", i)
             common.setThemeMode(i)
         })
-        if(i == common.themeMode){
-            rad.checked = true
+        if(1 == common.achievement[rad.getAttribute("achievement")]){
+            rad.parentElement.classList.remove("cache")
         }
     }
 

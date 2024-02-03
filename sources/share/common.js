@@ -489,7 +489,7 @@ export class common{
       })
     });
 
-    /*new Promise(async function(resolve, reject) {
+    new Promise(async function(resolve, reject) {
       let socketInterruption = io("/interruption",{
         auth: {
           token: common.key
@@ -500,10 +500,10 @@ export class common{
           resolve(null)
         });
       })
-      socket.on("achievement",msg => {
+      socketInterruption.on("achievement",msg => {
         
       });
-    })*/
+    })
 
     //-------------------------------------retour--------------------------------------
 
@@ -541,6 +541,7 @@ export class common{
       this.last_name = id_data.last_name
       this.tuto = id_data.tuto
       this.uuid = id_data.uuid
+      this.achievement = id_data.achievement
       this.admin_permission = id_data.admin_permission
       if(id_data.admin_permission.admin_only && id_data.admin){
         this.admin = 2
@@ -888,7 +889,7 @@ export class common{
         case 1:
           name = "/share/dark.css"
           break;
-        case 2:
+        case 6:
           const objCache = document.createElement("div")
           objCache.style.backgroundColor="black"
           objCache.style.position="fixed"
@@ -900,7 +901,6 @@ export class common{
           document.body.appendChild(objCache)
           objCache.addEventListener("click",()=>{
             const sheikah = new Audio("/css_spe/sheikah.mp3");
-            console.log(sheikah)
             sheikah.play();
             objCache.style.backgroundColor="#0000";
             setTimeout(() => {
