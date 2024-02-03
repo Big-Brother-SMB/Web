@@ -261,6 +261,10 @@ export class common{
 
 
   static async startUp(){
+    //---------------------------theme function---------------------------
+
+        this.themeMode = this.readIntCookie("theme mode")
+        this.setThemeMode(this.themeMode)
     //-----------------------screen size------------------------------------
 
     const appHeight = () => {
@@ -601,11 +605,6 @@ export class common{
       document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
       document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
     }
-
-    //---------------------------theme function---------------------------
-
-    this.themeMode = this.readIntCookie("theme mode")
-    this.setThemeMode(this.themeMode)
 
     //----------------------cacher les boutons de changement de side bar-----------------------------
     if(this.admin > 0){
