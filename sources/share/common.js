@@ -489,21 +489,27 @@ export class common{
       })
     });
 
-    new Promise(async function(resolve, reject) {
-      let socketInterruption = io("/interruption",{
-        auth: {
-          token: common.key
+    let socketInterruption = io("/interruption",{
+      auth: {
+        token: common.key
+      }
+    });
+    
+    socketInterruption.on("connect", () => {
+      socketInterruption.on("achievement",msg => {
+        if(msg='birthday' && common.achievement["birthday"]!=1){
+          common.popUp_Active("Happy Birth!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre esthétique vous conviendra.<br>Penser à mettre le son et n\'oubliez d\'appuyer sur l\'écran noir.<br><br> Joyeux anniversaire!',(btn)=>{
+            btn.innerHTML="Récupérer le cadeau"
+            btn.addEventListener("click",()=>{
+              common.popUp_Stop()
+              common.setThemeMode(3)
+              common.writeCookie("theme mode", 3)
+            })
+          },false)
         }
       });
-      await new Promise(function(resolve, reject) {
-        socketInterruption.once("connect", () => {
-          resolve(null)
-        });
-      })
-      socketInterruption.on("achievement",msg => {
-        
-      });
-    })
+    });
+
 
     //-------------------------------------retour--------------------------------------
 
@@ -889,24 +895,48 @@ export class common{
         case 1:
           name = "/share/dark.css"
           break;
+        case 3:
+          const objCacheB = document.createElement("div")
+          objCacheB.style.backgroundColor="black"
+          objCacheB.style.position="fixed"
+          objCacheB.style.height="150vh"
+          objCacheB.style.width="150vw"
+          objCacheB.style.zIndex="150"
+          objCacheB.style.top="0"
+          objCacheB.style.transition="1s";
+          document.body.appendChild(objCacheB)
+          let func = ()=>{
+            objCacheB.removeEventListener("click",func)
+            const sheikah = new Audio("/css_spe/birthday.mp3");
+            sheikah.play();
+            objCacheB.style.backgroundColor="#0000";
+            setTimeout(() => {
+              document.body.removeChild(objCacheB)
+            }, 1000);
+          }
+          objCacheB.addEventListener("click",func)
+          name = "/css_spe/birthday.css"
+          break;
         case 6:
-          const objCache = document.createElement("div")
-          objCache.style.backgroundColor="black"
-          objCache.style.position="fixed"
-          objCache.style.height="150vh"
-          objCache.style.width="150vw"
-          objCache.style.zIndex="150"
-          objCache.style.top="0"
-          objCache.style.transition="1s";
-          document.body.appendChild(objCache)
-          objCache.addEventListener("click",()=>{
+          const objCacheZ = document.createElement("div")
+          objCacheZ.style.backgroundColor="black"
+          objCacheZ.style.position="fixed"
+          objCacheZ.style.height="150vh"
+          objCacheZ.style.width="150vw"
+          objCacheZ.style.zIndex="150"
+          objCacheZ.style.top="0"
+          objCacheZ.style.transition="1s";
+          document.body.appendChild(objCacheZ)
+          let funcZ = ()=>{
+            objCacheZ.removeEventListener("click",funcZ)
             const sheikah = new Audio("/css_spe/sheikah.mp3");
             sheikah.play();
-            objCache.style.backgroundColor="#0000";
+            objCacheZ.style.backgroundColor="#0000";
             setTimeout(() => {
-              document.body.removeChild(objCache)
+              document.body.removeChild(objCacheZ)
             }, 1000);
-          })
+          }
+          objCacheZ.addEventListener("click",funcZ)
           name = "/css_spe/zelda.css"
           break;
         default:

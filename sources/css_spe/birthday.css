@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'birthday';
+  src: url('/css_spe/VLAngelline.ttf');
+}
+
+body{
+  font-family: 'birthday';
+  font-weight: bold;
+  font-weight: lighter;
+}
+
+h1{
+  color: black;
+  text-shadow: -2px 0 rgb(189, 59, 178), 0 2px rgb(189, 59, 178), 0px 0 white, 0 0px white;
+}
+
+b{
+  color: crimson;
+}
+
+h1,h2,b, #main p, #semaine, label, .btn, input, .loading-text, .case{
+  text-transform: uppercase;
+  font-family: 'birthday' !important;
+  font-weight: bold !important;
+  line-height: 150%!important;
+  color: rgb(255, 255, 255);
+}
+
+
+body{
+  background-image: url('/css_spe/birthday.jpg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: round;
+}
+
+#mySidenav{
+  background: linear-gradient(135deg,#9e0089 20%,#795eee) !important;
+}
+
+#mySidenav a{
+  font-family: 'birthday';
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+}
+
+#mySidenav a:hover{
+  color: rgb(0, 0, 0);
+}
+
+header{
+  background: linear-gradient(180deg,#1ec556 20%,#295fc2) !important;
+}
