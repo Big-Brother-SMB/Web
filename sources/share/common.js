@@ -261,10 +261,6 @@ export class common{
 
 
   static async startUp(){
-    //---------------------------theme function---------------------------
-
-        this.themeMode = this.readIntCookie("theme mode")
-        this.setThemeMode(this.themeMode)
     //-----------------------screen size------------------------------------
 
     const appHeight = () => {
@@ -284,6 +280,11 @@ export class common{
       }
     }
     console.log("cookie", this.cookie)
+
+    //---------------------------theme function---------------------------
+
+    this.themeMode = this.readIntCookie("theme mode")
+    this.setThemeMode(this.themeMode)
 
     //---------------------------pass offline-------------------------------
     try {
