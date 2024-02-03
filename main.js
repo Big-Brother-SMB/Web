@@ -200,12 +200,12 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       
       try{
         if(!req.url.startsWith('/asso/post_image/') && (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.ttf' || extName == '.svg' || extName == '.gif' || extName == '.mp4')){
-          res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=604800'});//604800sec = 7jours | 604800
+          res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=6'});//604800sec = 7jours | 604800
           res.write(file, 'binary');
           res.end();
         }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=43200'});//sec = 12h | 43200
+            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=4'});//sec = 12h | 43200
             res.end(file);
           }else {
             res.writeHead(404);

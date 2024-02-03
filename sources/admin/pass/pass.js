@@ -70,7 +70,7 @@ export async function init(common){
             searchName(name,scan)
             return;
         }else{
-            document.getElementById("pass-img").setAttribute("src","/assets/pass/innexistant.jpg")
+            document.getElementById("pass-img").setAttribute("src","/assets/pass/innexistant.png")
         }
     }
 

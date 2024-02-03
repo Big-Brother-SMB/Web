@@ -42,7 +42,8 @@ body{
 }
 
 #mySidenav{
-  background:  #b066d3 center / 10% url("/css_spe/zelda_emblem.png") !important;
+  background: center url("/css_spe/zelda_nav.png") !important;
+  background-size: cover !important;
 }
 
 #mySidenav a{
