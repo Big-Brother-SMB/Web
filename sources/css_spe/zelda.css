@@ -1,3 +1,69 @@
+@font-face {
+  font-family: 'zelda';
+  src: url('/css_spe/HyliaSerifBeta-Regular.otf');
+}
+
+@font-face {
+  font-family: 'zelda2';
+  src: url('/css_spe/ReggaeOne-Regular.ttf');
+}
+
+body{
+  font-family: 'zelda2';
+  font-weight: lighter;
+}
+
+h1,h2,b{
+  text-transform: uppercase;
+  font-family: 'zelda';
+  font-weight: lighter;
+}
+
+h1{
+  color: black;
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+}
+
+b{
+  color: crimson;
+}
+
+#main p, #semaine, label, .btn, input, .loading-text, .case{
+  font-family: 'zelda2';
+  color: white;
+}
+
+
+body{
+  background-image: url('/css_spe/sheikah.jpg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: round;
+}
+
+#mySidenav{
+  background:  #b066d3 center / 10% url("/css_spe/zelda_emblem.png") !important;
+}
+
+#mySidenav a{
+  font-family: 'zelda';
+  color: rgb(80, 80, 80);
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+}
+
+#mySidenav a:hover{
+  color: rgb(0, 0, 0);
+}
+
+
+
+
+
+
+
+
+
+
 body, #popup-body , #popup-option, #popup{
   background-color: rgb(20, 20, 20);
 }
@@ -7,9 +73,6 @@ body, #popup-body , #popup-option, #popup{
   border: solid 2px gray;
 }
 
-p,u,h1,label{
-  color: white;
-}
 a{
   color: aqua;
 }
@@ -23,7 +86,9 @@ a{
 
 header{
   border-bottom: 3px solid rgb(73, 79, 83);
-  background: linear-gradient(90deg,#001f29 20%,#003f52);
+  background-image: url('/css_spe/header_zelda.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .marquee-rtl {
@@ -34,7 +99,6 @@ header{
 
 .btn {
   background-color: rgb(45, 45, 45);
-  color : white;
 }
 
 
@@ -151,18 +215,6 @@ input,select,textarea{
 }
 input::placeholder{
   color: rgb(1, 26, 1);
-}
-
-
-
-#mySidenav.user{
-  background: linear-gradient(#192c1d 50%,#35493a);
-}
-#mySidenav.admin{
-  background: linear-gradient(#490808 50%,#701e1e);
-}
-#mySidenav.asso{
-  background: linear-gradient(#052831 50%,#1a6368);
 }
 
 .invert{

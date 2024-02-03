@@ -605,13 +605,7 @@ export class common{
     //---------------------------theme function---------------------------
 
     this.themeMode = this.readIntCookie("theme mode")
-    if(this.themeMode<0 || this.themeMode>1){
-      this.writeCookie("theme mode",0)
-      this.themeMode = 0
-    }
-    if(true || window.location.pathname!= "/pass"){
-      this.setThemeMode(this.themeMode)
-    }
+    this.setThemeMode(this.themeMode)
 
     //----------------------cacher les boutons de changement de side bar-----------------------------
     if(this.admin > 0){
@@ -883,7 +877,7 @@ export class common{
 
   //-------------------------fonction theme css---------------------------
 
-  static setThemeMode(themeMode){
+  static async setThemeMode(themeMode){
     try{
       let name = ""
       switch(themeMode){
@@ -894,10 +888,32 @@ export class common{
         case 1:
           name = "/share/dark.css"
           break;
+        case 2:
+          const objCache = document.createElement("div")
+          objCache.style.backgroundColor="black"
+          objCache.style.position="fixed"
+          objCache.style.height="150vh"
+          objCache.style.width="150vw"
+          objCache.style.zIndex="150"
+          objCache.style.top="0"
+          objCache.style.transition="1s";
+          document.body.appendChild(objCache)
+          objCache.addEventListener("click",()=>{
+            const sheikah = new Audio("/css_spe/sheikah.mp3");
+            console.log(sheikah)
+            sheikah.play();
+            objCache.style.backgroundColor="#0000";
+            setTimeout(() => {
+              document.body.removeChild(objCache)
+            }, 1000);
+          })
+          name = "/css_spe/zelda.css"
+          break;
         default:
+          //light
+          name = ""
           break;
       }
-      //document.getElementById("css").href = name;
       if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
     }catch(Exception){
       console.error(Exception)

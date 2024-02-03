@@ -15,7 +15,7 @@ html {
 }
 
 body{
-  font-family: Arial;
+  font-family: 'Ubuntu';
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -76,7 +76,6 @@ header{
 #main p{
   font-size: 3rem;
   word-wrap: break-word;
-  font-family: 'Ubuntu';
   text-align: center;
 }
 
@@ -416,7 +415,6 @@ input,select,textarea{
   font-weight: bold;
   text-align: center;
   font-size: 3rem;
-  font-family: 'Ubuntu';
 }
 
 .semainediv{
@@ -1167,7 +1165,7 @@ div.divPostAccueil.ticket{
   margin-left: 30px;
 }
 .divPostAccueil .titre{
-  color: rgb(206, 0, 0);
+  color: rgb(206, 0, 0)!important;
   text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   font-weight: bold;
 }
@@ -1547,7 +1545,7 @@ div.divPost{
 }
 
 .divPost .titre{
-  color: rgb(206, 0, 0);
+  color: rgb(206, 0, 0) !important;
   font-size: 3rem !important;
   text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   font-weight: bold;
