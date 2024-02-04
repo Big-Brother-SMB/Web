@@ -889,6 +889,7 @@ export class common{
   static async setThemeMode(themeMode){
     try{
       let name = ""
+      common.themeMode = themeMode
       switch(themeMode){
         case 0:
           //light
