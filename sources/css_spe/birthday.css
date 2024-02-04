@@ -30,8 +30,8 @@ h1,h2,b, #main p, #semaine, label, .btn, input, .loading-text, .case{
 body{
   background-image: url('/css_spe/birthday.jpg');
   background-position: center;
-  background-size: contain;
-  background-repeat: round;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 #mySidenav{
