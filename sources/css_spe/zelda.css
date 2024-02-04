@@ -33,12 +33,18 @@ b{
   color: white;
 }
 
+button{
+  font-family: 'zelda2';
+  font-size: 1.5rem !important;
+  color: white;
+}
+
 
 body{
   background-image: url('/css_spe/sheikah.jpg');
   background-position: center;
-  background-size: contain;
-  background-repeat: round;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 #mySidenav{
@@ -242,4 +248,9 @@ input::placeholder{
 
 #main .content a{
   color: white;
+}
+
+#banderole {
+  top: -10px;
+  position: relative;
 }

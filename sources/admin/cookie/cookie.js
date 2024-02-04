@@ -32,6 +32,16 @@ export async function init(common){
         };
         i++
     };
+    listAbo.reverse()
+    listAbo.sort(function compareFn(a, b) {
+        if(new Date(a.debut).getTime()>new Date(b.debut).getTime()){
+            return -1
+        }else if(new Date(a.debut).getTime()<new Date(b.debut).getTime()){
+            return 1
+        }else{
+            return 0
+        }
+    })
     listAbo.forEach(child=>{
         let ami = document.createElement("button")
         ami.classList.add("ami")
@@ -63,6 +73,16 @@ export async function init(common){
         };
         i++
     };
+    listBon.reverse()
+    listBon.sort(function compareFn(a, b) {
+        if(new Date(a.date).getTime()>new Date(b.date).getTime()){
+            return -1
+        }else if(new Date(a.date).getTime()<new Date(b.date).getTime()){
+            return 1
+        }else{
+            return 0
+        }
+    })
     listBon.forEach(child=>{
         let ami = document.createElement("button")
         ami.classList.add("ami")

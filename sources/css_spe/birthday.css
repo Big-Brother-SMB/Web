@@ -11,7 +11,7 @@ body{
 
 h1{
   color: black;
-  text-shadow: -2px 0 rgb(189, 59, 178), 0 2px rgb(189, 59, 178), 0px 0 white, 0 0px white;
+  text-shadow: -6px 6px rgb(189, 59, 178) !important
 }
 
 b{
@@ -19,7 +19,7 @@ b{
 }
 
 h1,h2,b, #main p, #semaine, label, .btn, input, .loading-text, .case{
-  text-transform: uppercase;
+  text-shadow: -3px 3px rgb(80, 80, 80);
   font-family: 'birthday' !important;
   font-weight: bold !important;
   line-height: 150%!important;

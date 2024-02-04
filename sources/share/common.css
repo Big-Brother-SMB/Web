@@ -1,6 +1,6 @@
 :root{
   /* sidebar min-height: hauteur de la page moins header et banderole*/
-  --screenH : calc(calc(var(--vh, 1vh) * 100) - 8em - 33px);
+  --screenH : calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px);
   --vh: 1vh;
 }
 
@@ -255,6 +255,10 @@ input,select,textarea{
   #mySidenav.open{
     height: calc(var(--screenH));
   }
+
+  .container{
+    min-height: calc(var(--screenH));
+  }
 }
 
 @media screen and (min-width: 1001px) {
@@ -272,19 +276,22 @@ input,select,textarea{
 
   #mySidenav{
     border-right: #000000 solid 3px;
-    min-height: calc(var(--screenH) + 500px);
+    height: 100%;
     width: 80px;
   }
 
   #mySidenav.open{
     width: 250px;
   }
+
+  .container{
+    min-height: max(calc(50px * 18 + 18px * 5),var(--screenH));
+  }
 }
 
 .container{
   position: relative;
   width: 100%;
-  min-height: calc(var(--screenH) + 500px);
 }
 
 
@@ -522,6 +529,11 @@ input,select,textarea{
   margin: 30px auto;
   width: 50%;
   padding: 30px;
+}
+
+#menu_self{
+  max-width: calc(95vw - 100px);
+  max-height: 95vh;
 }
 
 /*------------------PERM---------------*/

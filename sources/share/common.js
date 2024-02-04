@@ -118,10 +118,10 @@ export class common{
                   if (banderole != null && banderole != '') {
                       document.getElementById("banderole").innerHTML = banderole
                       document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
-                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
+                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px - 3.8em + 1px)")
                   }else{
                       document.getElementsByClassName("marquee-rtl")[0].classList.add("cache")
-                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px)")
+                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px)")
                   }
               }
             }else if(url=="f:addpoint"){
@@ -611,7 +611,7 @@ export class common{
       if(vitesse<8) vitesse=8
       document.getElementById("banderole").style.animation = "defilement-rtl " + vitesse + "s infinite linear"
       document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
-      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
+      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px - 3.8em + 1px)")
     }
 
     //----------------------cacher les boutons de changement de side bar-----------------------------

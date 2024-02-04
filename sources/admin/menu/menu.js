@@ -36,8 +36,8 @@ export async function init(common){
         }
         document.getElementById("menuSemaine").innerHTML = val
 
-        document.getElementById("menu self").addEventListener("error", remplace_img);
-        document.getElementById("menu self").setAttribute("src","/Images_menu/page-" + week + ".jpg")
+        document.getElementById("menu_self").addEventListener("error", remplace_img);
+        document.getElementById("menu_self").setAttribute("src","/Images_menu/page-" + week + ".jpg")
 
         let listNote = []
         for(let i=0;i<5;i++){
@@ -119,5 +119,5 @@ export async function init(common){
 
 function remplace_img(){
     if(this!=undefined) this.removeEventListener("error",remplace_img);
-    document.getElementById("menu self").setAttribute("src", "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png");
+    document.getElementById("menu_self").setAttribute("src", "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png");
 }
