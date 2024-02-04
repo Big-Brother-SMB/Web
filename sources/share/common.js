@@ -498,7 +498,7 @@ export class common{
     socketInterruption.on("connect", () => {
       socketInterruption.on("achievement",msg => {
         if(msg.event=='anniversaire' && msg.uuid==common.uuid && common.achievement["anniversaire"]!=1){
-          common.popUp_Active("Happy Birth!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre esthétique vous conviendra.<br>Penser à mettre le son et n\'oubliez d\'appuyer sur l\'écran noir.<br><br> Joyeux anniversaire!',(btn)=>{
+          common.popUp_Active("Happy Birth!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre esthétique vous conviendra.<br>Penser à mettre le son et n\'oubliez d\'appuyer sur l\'écran noir.<br>Vous pouvez enlever le """cadeau""" dans "options".<br><br> Joyeux anniversaire!',(btn)=>{
             btn.innerHTML="Récupérer le cadeau"
             btn.addEventListener("click",()=>{
               common.popUp_Stop()
