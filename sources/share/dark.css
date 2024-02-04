@@ -190,3 +190,7 @@ input::placeholder{
 #main .content a{
   color: white;
 }
+
+.greenLine{
+  background-color: #104312;
+}

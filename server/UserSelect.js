@@ -98,7 +98,8 @@ module.exports = class UserSelect{
         //suprime pour chaque utilisateur les amis qui n'ont pas fait de demandes et l'utilisateur est refusé 
         for(let u in this.usersList){
           let vipMax = 4
-          if(this.usersList[u].score<-1 && !this.usersList[u].vip && !ISM){
+          if(this.usersList[u].score<-1 && !this.usersList[u].vip){
+            console.log(this.usersList[u].score)
             this.usersList[u].pass=-1
           }
           if(this.usersList[u].date.getTime() < dateToday.getTime()){

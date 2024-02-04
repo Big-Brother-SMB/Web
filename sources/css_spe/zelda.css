@@ -28,14 +28,14 @@ b{
   color: crimson;
 }
 
-#main p, #semaine, label, .btn, input, .loading-text, .case{
+#main p,#semaine, label, .btn, input, .loading-text, .case,select{
   font-family: 'zelda2';
-  color: white;
+  color: rgb(235, 235, 235);
 }
 
 button{
   font-family: 'zelda2';
-  font-size: 1.5rem !important;
+  font-size: 1.2rem !important;
   color: white;
 }
 
@@ -253,4 +253,7 @@ input::placeholder{
 #banderole {
   top: -10px;
   position: relative;
+}
+.greenLine{
+  background-color: #104312;
 }
