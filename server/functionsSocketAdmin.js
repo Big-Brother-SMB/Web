@@ -1,9 +1,14 @@
 const funcDB = require('./functionsDB.js')
 const User = require('./User.js')
 const UserSelect = require('./UserSelect.js')
+let io = null
 
 
 module.exports = class funcSocket{
+    static init(io_externe){
+        io = io_externe
+    }
+
     static setMyAdminMode(socket,user){
         socket.on('setMyAdminMode',async req => {
             if(await user.admin == 0 || await user.admin == null) return
@@ -454,18 +459,6 @@ module.exports = class funcSocket{
         });
     }
 
-
-   /* //CDI
-    static setCDIGroups(socket,user){
-        socket.on('setCDIGroups',async req => {
-            if(await user.admin == 0 || await user.admin == null) return
-            try{
-                await funcDB.setCDIGroups(req.w,req.j,req.h,req.groups)
-                socket.emit('setCDIGroups','ok')
-            }catch(e){console.error(e);console.log('17');}
-        })
-    }*/
-
     //Lieu
     static setLieuInfo(socket,user){
         socket.on('setLieuInfo',async req => {
@@ -479,6 +472,7 @@ module.exports = class funcSocket{
 
     static setUserLieu(socket,user){
         socket.on("setUserLieu", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
             try{
                 await (new User(req.uuid)).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
                 socket.emit("setUserLieu","ok")
@@ -505,7 +499,16 @@ module.exports = class funcSocket{
         });
     }
 
-
+    static setAchievement(socket,user){
+        socket.on("setAchievement", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                (new User(req.uuid)).achievement = [req.event,req.value]
+                if(req.value==1) io.of("/interruption").emit("achievement",{event:req.event,uuid:req.uuid});
+                socket.emit("setAchievement","ok")
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
 
         /*
     socket.on("req lu", async req => {

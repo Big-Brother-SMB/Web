@@ -200,12 +200,12 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       
       try{
         if(!req.url.startsWith('/asso/post_image/') && (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.ttf' || extName == '.svg' || extName == '.gif' || extName == '.mp4')){
-          res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=6'});//604800sec = 7jours | 604800
+          res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=604800'});//604800sec = 7jours | 604800
           res.write(file, 'binary');
           res.end();
         }else if(extName =='.html' || extName == '.css' || extName == '.js'){
           if(!err404){
-            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=4'});//sec = 12h | 43200
+            res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=43200'});//sec = 12h | 43200
             res.end(file);
           }else {
             res.writeHead(404);
@@ -220,6 +220,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   }).listen(3000);
   
   io = new Server(server)
+  funcSocketAdmin.init(io)
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
 
@@ -279,6 +280,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
       funcSocketAdmin.getListUserComplete(socket,user)
       funcSocketAdmin.getListUser(socket,user)
+      funcSocketAdmin.setAchievement(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -343,6 +345,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       }
     } catch (e) {console.error(e);console.log('34');}
   });
+  
+  io.of("/achievement").on("connection", async (socket) => {})
   
   async function loop(){
     //Subscription Cookie

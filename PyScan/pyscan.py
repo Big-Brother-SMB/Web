@@ -488,6 +488,8 @@ def controle():
         canvas.itemconfig(image_container,image=imgUnknown)
     if socketReq('getUserHasCookie', user['uuid'],True):
       buttonCookie.pack()
+    if user["birthday"] == datetime.today().day and user["birthmonth"] == datetime.today().month:
+      socketReq("setAchievement",{"uuid":user["uuid"],"event":"anniversaire","value":1},True)
   else:
     canvas.itemconfig(image_container,image=imgUnknown)
     name.set("")
