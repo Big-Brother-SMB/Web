@@ -7,7 +7,7 @@ export async function init(common){
     let utilisateursUUID=[]
     let utilisateursNames=[]
 
-    let listUsers=await common.socketAdminAsync('getListPass',null)
+    let listUsers=await common.socketAdminAsync('getListUser',null)
     listUsers.forEach(function(child) {
         utilisateursUUID.push(child.uuid)
         utilisateursNames.push(common.name(child.first_name,child.last_name))

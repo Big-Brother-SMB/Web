@@ -118,10 +118,10 @@ export class common{
                   if (banderole != null && banderole != '') {
                       document.getElementById("banderole").innerHTML = banderole
                       document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
-                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
+                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px - 3.8em + 1px)")
                   }else{
                       document.getElementsByClassName("marquee-rtl")[0].classList.add("cache")
-                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px)")
+                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px)")
                   }
               }
             }else if(url=="f:addpoint"){
@@ -213,7 +213,6 @@ export class common{
 
     let admin_permission = this.admin_permission
 
-    console.log(admin_permission)
     const list_nav_elem = document.getElementById("mySidenav").children
     for (var i = 0; i < list_nav_elem.length; i++) {
       let perm_item = list_nav_elem[i].getAttribute("permission")
@@ -281,6 +280,11 @@ export class common{
       }
     }
     console.log("cookie", this.cookie)
+
+    //---------------------------theme function---------------------------
+
+    this.themeMode = this.readIntCookie("theme mode")
+    this.setThemeMode(this.themeMode)
 
     //---------------------------pass offline-------------------------------
     try {
@@ -356,6 +360,101 @@ export class common{
       
       await common.reloadCommon()
       this.loadpage("sidebar:" + document.location.pathname.split("/")[1])
+
+      if(!this.tuto && this.admin!=2){
+        this.popUp_Active("(1/5) Bienvenue sur le site du Foyer !"
+          ,"<div class='divImgPopup'><img src='/assets/nav_bar/amis.png'><img src='/assets/nav_bar/midi.png'></div><br>"
+          +"Ce site permet aux éléves du lycée SMB de <b>manger au Foyer du lycée avec leurs amis</b> en déposant une demande.<br>"
+          +"Cette demande sera étudiée par <b>un algorithme qui a pour objectif</b>:<br><br>"
+          +"1)De pouvoir manger avec ses amis.<br>"
+          +"2)De sélectionner ou avantager les personnes prioritaires (c'est le responsable du Foyer qui active ou non cette fonctionnalité).<br>"
+          +"3)De permettre un meilleur remplissage du Foyer.<br>"
+          +"4)D'avantager les lycéens qui sont allés le moins souvent manger au foyer. (par le biais des points)<br>"
+          +"5)D'avantager les lycéens qui ont déposé une demande à l'avance (la veille ou avant).<br>"
+          +"<br><b>Il faut ajouter préalablement vos amis dans votre liste d'amis.</b>"
+          ,(btn)=>{
+            btn.addEventListener("click",()=>{
+              this.popUp_Active("(2/5) Bienvenue sur le site du Foyer !"
+                ,"<div class='divImgPopup'><img src='/assets/nav_bar/perm.png'><img src='/assets/nav_bar/emprunt.png'><img src='/assets/nav_bar/arcade.png'></div><br>"
+                +"Ce site permet aussi de passer <b>des heures de permanence au Foyer</b>, en déposant une demande <b>pour sa classe</b>."
+                ,(btn)=>{
+                  btn.addEventListener("click",()=>{
+                    this.popUp_Active("(3/5) Bienvenue sur le site du Foyer !"
+                      ,"<div class='divImgPopup'><img src='/assets/nav_bar/tuto.png'></div><br>"
+                      +'Pour plus d\'informations,  consultez l\'onglet <b>"Aide"</b>'
+                      ,(btn)=>{
+                        btn.addEventListener("click",()=>{
+                          this.popUp_Active("(4/5) Bienvenue sur le site du Foyer !"
+                            ,"<div class='divImgPopup'><img src='/assets/nav_bar/association.png'></div><br>"
+                            +'Le site permet aux <b>associations et aux projets lycéens</b> de pouvoir avoir une page de présentation.<br>Ces pages sont consultables dans <b>l\'onglet "Projets&Asso"</b>.'
+                            ,(btn)=>{
+                              btn.addEventListener("click",()=>{
+                                this.popUp_Active("(5/5) Bienvenue sur le site du Foyer !"
+                                  ,"<div class='divImgPopup'><img src='/assets/nav_bar/messagerie.png'><img src='/assets/nav_bar/admin.png'></div><br>"
+                                  +"<b>Si tu as envie de faire partie de l'équipe de développement du site du Foyer, contacte nous!</b><br><br>"
+                                  +"Si tu rencontres un problème avec le site, contacte :<br>"
+                                  +"Jean-Charles au Foyer ou nathan.denut@stemariebeaucamps.fr"
+                                  ,(btn)=>{
+                                    btn.addEventListener("click",()=>{
+                                      common.socketAsync('setTuto',true)
+                                      this.popUp_Stop()
+                                    },{once:true})
+                                  },false)
+                              },{once:true})
+                            },false)
+                        },{once:true})
+                      },false)
+                  },{once:true})
+                },false)
+            },{once:true})
+        },false)
+      }else{
+        //---------------------------------pop-up notif ServiceWorker---------------------------------------------
+        
+        if(!this.existCookie("pointNotif2") && !this.readBoolCookie("notifAccept")){
+          document.cookie = "pointNotif2=true; max-age=1209600; path=/";
+          this.delCookie("notifAccept")
+        }
+        if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
+
+
+        common.registerServiceWorker();
+
+        if((this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator) && !window.location.pathname.includes("/asso"))
+        && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)))){
+          this.popUp_Active("Notification site du Foyer!"
+          ,"<div class='divImgPopup' style='margin:0 0'><img style='margin: 0 7%;' src='/assets/action/notification.png'>"
+          +"<p style='margin-right:7%;padding-top:25px;font-size: 1.5rem;'>Les notifications vous permettront de rester informé·e des <b>demandes de repas déposées</b>, des <b>sondages</b>, ainsi que de <b>l'acceptation</b> ou du <b>refus</b> de votre demande.</p></div>"
+          +"<p style='text-align:center;font-size: 2.2rem;'><b>Recevez les notifications du site</b></p>"
+          ,(btn)=>{
+            let bloquerBoucle = 5
+            btn.style.background ="red"
+            const bloquerBoucleFunc = function(){
+              btn.innerHTML="Bloquer(" + bloquerBoucle + ")"
+              if(bloquerBoucle==0){
+                btn.innerHTML="Bloquer"
+                btn.addEventListener("click",()=>{
+                  common.writeCookie("notifAccept",false)
+                  common.popUp_Stop()
+                },{once:true})
+              }else{
+                bloquerBoucle--
+                setTimeout(bloquerBoucleFunc, 1000);
+              }
+            }
+            bloquerBoucleFunc()
+
+            let btn2 = document.createElement("button")
+            btn2.innerHTML="Accepter"
+            btn2.style.background ="green"
+            btn2.addEventListener("click",()=>{
+              common.askNotificationPermission()
+              this.popUp_Stop()
+            },{once:true})
+            btn.parentNode.appendChild(btn2)
+          },false)
+        }
+      }
     }
 
     //------------------------install PWA-----------------------------
@@ -389,6 +488,30 @@ export class common{
         });
       })
     });
+
+    let socketInterruption = io("/interruption",{
+      auth: {
+        token: common.key
+      }
+    });
+    
+    socketInterruption.on("connect", () => {
+      socketInterruption.on("achievement",msg => {
+        if(msg.event=='anniversaire' && msg.uuid==common.uuid && common.achievement["anniversaire"]!=1){
+          common.popUp_Active("Happy Birth!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre esthétique vous conviendra.<br>Penser à mettre le son et n\'oubliez d\'appuyer sur l\'écran noir.<br>Vous pouvez enlever le """cadeau""" dans "options".<br><br> Joyeux anniversaire!',(btn)=>{
+            btn.innerHTML="Récupérer le cadeau"
+            btn.addEventListener("click",()=>{
+              common.popUp_Stop()
+              common.setThemeMode(3)
+              common.writeCookie("theme mode", 3)
+              common.themeMode = 3
+              common.achievement["anniversaire"]=1
+            })
+          },false)
+        }
+      });
+    });
+
 
     //-------------------------------------retour--------------------------------------
 
@@ -426,6 +549,7 @@ export class common{
       this.last_name = id_data.last_name
       this.tuto = id_data.tuto
       this.uuid = id_data.uuid
+      this.achievement = id_data.achievement
       this.admin_permission = id_data.admin_permission
       if(id_data.admin_permission.admin_only && id_data.admin){
         this.admin = 2
@@ -478,96 +602,6 @@ export class common{
 
     if(window.location.pathname.includes("/admin")) common.delCookie('troll') //troll
 
-    if(!this.tuto && this.admin!=2){
-      this.popUp_Active("(1/5) Bienvenue sur le site du Foyer !"
-        ,"<div class='divImgPopup'><img src='/assets/nav_bar/amis.png'><img src='/assets/nav_bar/midi.png'></div><br>"
-        +"Ce site permet aux éléves du lycée SMB de <b>manger au Foyer du lycée avec leurs amis</b> en déposant une demande.<br>"
-        +"Cette demande sera étudiée par <b>un algorithme qui a pour objectif</b>:<br><br>"
-        +"1)De pouvoir manger avec ses amis.<br>"
-        +"2)De sélectionner ou avantager les personnes prioritaires (c'est le responsable du Foyer qui active ou non cette fonctionnalité).<br>"
-        +"3)De permettre un meilleur remplissage du Foyer.<br>"
-        +"4)D'avantager les lycéens qui sont allés le moins souvent manger au foyer. (par le biais des points)<br>"
-        +"5)D'avantager les lycéens qui ont déposé une demande à l'avance (la veille ou avant).<br>"
-        +"<br><b>Il faut ajouter préalablement vos amis dans votre liste d'amis.</b>"
-        ,(btn)=>{
-          btn.addEventListener("click",()=>{
-            this.popUp_Active("(2/5) Bienvenue sur le site du Foyer !"
-              ,"<div class='divImgPopup'><img src='/assets/nav_bar/perm.png'><img src='/assets/nav_bar/emprunt.png'><img src='/assets/nav_bar/arcade.png'></div><br>"
-              +"Ce site permet aussi de passer <b>des heures de permanence au Foyer</b>, en déposant une demande <b>pour sa classe</b>."
-              ,(btn)=>{
-                btn.addEventListener("click",()=>{
-                  this.popUp_Active("(3/5) Bienvenue sur le site du Foyer !"
-                    ,"<div class='divImgPopup'><img src='/assets/nav_bar/tuto.png'></div><br>"
-                    +'Pour plus d\'informations,  consultez l\'onglet <b>"Aide"</b>'
-                    ,(btn)=>{
-                      btn.addEventListener("click",()=>{
-                        this.popUp_Active("(4/5) Bienvenue sur le site du Foyer !"
-                          ,"<div class='divImgPopup'><img src='/assets/nav_bar/association.png'></div><br>"
-                          +'Le site permet aux <b>associations et aux projets lycéens</b> de pouvoir avoir une page de présentation.<br>Ces pages sont consultables dans <b>l\'onglet "Projets&Asso"</b>.'
-                          ,(btn)=>{
-                            btn.addEventListener("click",()=>{
-                              this.popUp_Active("(5/5) Bienvenue sur le site du Foyer !"
-                                ,"<div class='divImgPopup'><img src='/assets/nav_bar/messagerie.png'><img src='/assets/nav_bar/admin.png'></div><br>"
-                                +"<b>Si tu as envie de faire partie de l'équipe de développement du site du Foyer, contacte nous!</b><br><br>"
-                                +"Si tu rencontres un problème avec le site, contacte :<br>"
-                                +"Jean-Charles au Foyer ou nathan.denut@stemariebeaucamps.fr"
-                                ,(btn)=>{
-                                  btn.addEventListener("click",()=>{
-                                    common.socketAsync('setTuto',true)
-                                    this.popUp_Stop()
-                                  },{once:true})
-                                })
-                            },{once:true})
-                          })
-                      },{once:true})
-                    })
-                },{once:true})
-              })
-          },{once:true})
-      })
-    }else{
-      //---------------------------------pop-up notif ServiceWorker---------------------------------------------
-      
-      if(!this.existCookie("pointNotif2") && !this.readBoolCookie("notifAccept")){
-        document.cookie = "pointNotif2=true; max-age=1209600; path=/";
-        this.delCookie("notifAccept")
-      }
-      if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
-
-
-      common.registerServiceWorker();
-
-      if((this.readBoolCookie("notifAccept") && ("Notification" in window) && ("serviceWorker" in navigator) && !window.location.pathname.includes("/asso"))
-      && (Notification.permission != "granted" || !(await common.socketAsync("existNotificationSubscription",null)))){
-        this.popUp_Active("Notification site du Foyer!"
-        ,"<div class='divImgPopup'><img src='/assets/messagerie/news.png'></div><br>"
-        +"Recevez les notification du site du foyer.<br><br>",(btn)=>{
-          let bloquerBoucle = 5
-          const bloquerBoucleFunc = function(){
-            btn.innerHTML="Bloquer(" + bloquerBoucle + ")"
-            if(bloquerBoucle==0){
-              btn.innerHTML="Bloquer"
-              btn.addEventListener("click",()=>{
-                common.writeCookie("notifAccept",false)
-                common.popUp_Stop()
-              },{once:true})
-            }else{
-              bloquerBoucle--
-              setTimeout(bloquerBoucleFunc, 1000);
-            }
-          }
-          bloquerBoucleFunc()
-
-          let btn2 = document.createElement("button")
-          btn2.innerHTML="Accepter"
-          btn2.addEventListener("click",()=>{
-            common.askNotificationPermission()
-            this.popUp_Stop()
-          },{once:true})
-          btn.parentNode.appendChild(btn2)
-        },false)
-      }
-    }
 
 
     //--------------------------banderole--------------------------------
@@ -579,18 +613,7 @@ export class common{
       if(vitesse<8) vitesse=8
       document.getElementById("banderole").style.animation = "defilement-rtl " + vitesse + "s infinite linear"
       document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
-      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 33px - 3.8em + 1px)")
-    }
-
-    //---------------------------theme function---------------------------
-
-    this.themeMode = this.readIntCookie("theme mode")
-    if(this.themeMode<0 || this.themeMode>1){
-      this.writeCookie("theme mode",0)
-      this.themeMode = 0
-    }
-    if(true || window.location.pathname!= "/pass"){
-      this.setThemeMode(this.themeMode)
+      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px - 3.8em + 1px)")
     }
 
     //----------------------cacher les boutons de changement de side bar-----------------------------
@@ -657,7 +680,7 @@ export class common{
           });
           socket.emit(channel,msg);
           if(time==undefined){
-            time=5000
+            time=20000
           }
           setTimeout(()=>{
             reject({channel:channel,msg:msg,time:time})
@@ -674,7 +697,7 @@ export class common{
                   resolve(result)
                 });
                 if(time==undefined){
-                  time=5000
+                  time=20000
                 }
                 setTimeout(()=>{
                   reject({channel:channel,msg:msg,time:time})
@@ -863,9 +886,10 @@ export class common{
 
   //-------------------------fonction theme css---------------------------
 
-  static setThemeMode(themeMode){
+  static async setThemeMode(themeMode){
     try{
       let name = ""
+      common.themeMode = themeMode
       switch(themeMode){
         case 0:
           //light
@@ -874,10 +898,55 @@ export class common{
         case 1:
           name = "/share/dark.css"
           break;
+        case 3:
+          const objCacheB = document.createElement("div")
+          objCacheB.style.backgroundColor="black"
+          objCacheB.style.position="fixed"
+          objCacheB.style.height="150vh"
+          objCacheB.style.width="150vw"
+          objCacheB.style.zIndex="150"
+          objCacheB.style.top="0"
+          objCacheB.style.transition="1s";
+          document.body.appendChild(objCacheB)
+          let func = ()=>{
+            objCacheB.removeEventListener("click",func)
+            const sheikah = new Audio("/css_spe/birthday.mp3");
+            sheikah.play();
+            objCacheB.style.backgroundColor="#0000";
+            setTimeout(() => {
+              document.body.removeChild(objCacheB)
+            }, 1000);
+          }
+          objCacheB.addEventListener("click",func)
+          name = "/css_spe/birthday.css"
+          break;
+        case 6:
+          const objCacheZ = document.createElement("div")
+          objCacheZ.style.backgroundColor="black"
+          objCacheZ.style.position="fixed"
+          objCacheZ.style.height="150vh"
+          objCacheZ.style.width="150vw"
+          objCacheZ.style.zIndex="150"
+          objCacheZ.style.top="0"
+          objCacheZ.style.transition="1s";
+          document.body.appendChild(objCacheZ)
+          let funcZ = ()=>{
+            objCacheZ.removeEventListener("click",funcZ)
+            const sheikah = new Audio("/css_spe/sheikah.mp3");
+            sheikah.play();
+            objCacheZ.style.backgroundColor="#0000";
+            setTimeout(() => {
+              document.body.removeChild(objCacheZ)
+            }, 1000);
+          }
+          objCacheZ.addEventListener("click",funcZ)
+          name = "/css_spe/zelda.css"
+          break;
         default:
+          //light
+          name = ""
           break;
       }
-      //document.getElementById("css").href = name;
       if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
     }catch(Exception){
       console.error(Exception)

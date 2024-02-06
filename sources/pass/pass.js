@@ -42,6 +42,9 @@ export async function init(common){
         if(info_horaire.ouvert!=5){
             if(my_demande.DorI==true){
                 document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/ok.png")
+                if(my_demande.sandwich!=0 && my_demande.sandwich!=null && my_demande.sandwich!=undefined){
+                    document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/sandwich.png")
+                }
                 if(info_horaire.prio.indexOf(common.classe)!=-1){
                     document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/prio.png")
                 }

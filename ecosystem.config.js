@@ -8,6 +8,7 @@ module.exports = {
       user : 'root',
       host : '91.121.41.208',
       ref  : 'origin/main',
+      ssh_options: "StrictHostKeyChecking=no",
       repo : 'git@github.com:Big-Brother-SMB/Web.git',
       path : '/home/site',
       'pre-deploy-local': '',

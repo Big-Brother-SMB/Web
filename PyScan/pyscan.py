@@ -13,6 +13,7 @@ from math import *
 from zipfile import ZipFile
 import requests
 import traceback
+from PIL import Image, ImageTk
 
 
 
@@ -85,7 +86,8 @@ def socketReq(event,data,admin):
     return []
 
 #initialisation du socket
-sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
+#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
+sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
 print("\n\n\n")
 print(">>> Start")
 id_data =socketReq('id_data', None,False)
@@ -196,7 +198,7 @@ def refresh(loop):
 
   print(">>> Refresh")
   if loop:
-    threading.Timer(30, refresh,args=(True,)).start()
+    threading.Timer(90, refresh,args=(True,)).start()
 
   
   refreshTime()
@@ -211,7 +213,7 @@ def refresh(loop):
     foyerOuvert=0
   listDemande11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False) #récupére la liste des personnes inscrit et demandeur pour manger à 11h
   listDemande12 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":1},False) #récupére la liste des personnes inscrit et demandeur pour manger à 12h
-  listUsers = socketReq('getListPass', None,True) #récupére la liste de tout les utilisateurs
+  listUsers = socketReq('getListUserComplete', None,True) #récupére la liste de tout les utilisateurs
   refreshPassages()
 
 
@@ -486,6 +488,8 @@ def controle():
         canvas.itemconfig(image_container,image=imgUnknown)
     if socketReq('getUserHasCookie', user['uuid'], True):
       buttonCookie.pack()
+    if user["birthday"] == datetime.today().day and user["birthmonth"] == datetime.today().month:
+      socketReq("setAchievement",{"uuid":user["uuid"],"event":"anniversaire","value":1},True)
   else:
     canvas.itemconfig(image_container,image=imgUnknown)
     name.set("")
@@ -499,7 +503,7 @@ def controle():
 #export
 def export():
   f = open("Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt", "w")
-  users = socketReq('getListPass', None,True)
+  users = socketReq('getListUserComplete', None,True)
   dico={}
   for e in users:
     dico[e["uuid"]] = e["first_name"] + " " + e["last_name"]
@@ -578,12 +582,21 @@ class App(threading.Thread):
             listener.join()
 
 
+def openImage(path):
+  width = 256
+  height = 256
+  img = Image.open(path)
+  img = img.resize((width,height))
+  photoImg =  ImageTk.PhotoImage(img)
+  return photoImg
+
 #init fenetre
 fenetre = Tk()
 fenetre.resizable(False, False)
 fenetre.geometry("450x650+0+0")
 fenetre.title("PyScan")
-fenetre.iconphoto(True, PhotoImage(file='image/logo.png'))
+imgLogo = openImage('image/logo.png')
+fenetre.iconphoto(True, imgLogo)
 def on_closing():
   print(">>> Exit")
   os._exit(1)
@@ -592,21 +605,22 @@ fenetre.protocol("WM_DELETE_WINDOW", on_closing)
 
 
 
-imgOk = PhotoImage(file="image/ok.png")
-imgCroix = PhotoImage(file="image/croix.png")
-imgUnknown = PhotoImage(file="image/unknown.png")
-imgLoading = PhotoImage(file="image/loading.png")
-imgCookie = PhotoImage(file="image/cookie.png")
+
+imgOk = openImage("image/ok.png")
+imgCroix = openImage("image/croix.png")
+imgUnknown = openImage("image/unknown.png")
+imgLoading = openImage("image/loading.png")
+imgCookie = openImage("image/cookie.png")
 imgDico = {
-  "Audio":PhotoImage(file="image/lieu/audio.png"),
-  "Aumônerie":PhotoImage(file="image/lieu/aumonerie.png"),
-  "Bien-être":PhotoImage(file="image/lieu/bien_etre.png"),
-  "CDI":PhotoImage(file="image/lieu/CDI.png"),
-  "Champagnat":PhotoImage(file="image/lieu/champagnat.png"),
-  "City stade":PhotoImage(file="image/lieu/city_stade.png"),
-  "DOC":PhotoImage(file="image/lieu/doc.png"),
-  "Tutorat":PhotoImage(file="image/lieu/tutora.png"),
-  "Foyer":PhotoImage(file="image/logo.png")
+  "Audio":openImage("image/lieu/audio.png"),
+  "Aumônerie":openImage("image/lieu/aumonerie.png"),
+  "Bien-être":openImage("image/lieu/bien_etre.png"),
+  "CDI":openImage("image/lieu/CDI.png"),
+  "Champagnat":openImage("image/lieu/champagnat.png"),
+  "City stade":openImage("image/lieu/city_stade.png"),
+  "DOC":openImage("image/lieu/doc.png"),
+  "Tutorat":openImage("image/lieu/tutorat.png"),
+  "Foyer":openImage("image/logo.png")
 }
 
 textH = StringVar()

@@ -1,0 +1,259 @@
+@font-face {
+  font-family: 'zelda';
+  src: url('/css_spe/HyliaSerifBeta-Regular.otf');
+}
+
+@font-face {
+  font-family: 'zelda2';
+  src: url('/css_spe/ReggaeOne-Regular.ttf');
+}
+
+body{
+  font-family: 'zelda2';
+  font-weight: lighter;
+}
+
+h1,h2,b{
+  text-transform: uppercase;
+  font-family: 'zelda';
+  font-weight: lighter;
+}
+
+h1{
+  color: black;
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+}
+
+b{
+  color: crimson;
+}
+
+#main p,#semaine, label, .btn, input, .loading-text, .case,select{
+  font-family: 'zelda2';
+  color: rgb(235, 235, 235);
+}
+
+button{
+  font-family: 'zelda2';
+  font-size: 1.2rem !important;
+  color: white;
+}
+
+
+body{
+  background-image: url('/css_spe/sheikah.jpg');
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#mySidenav{
+  background: center url("/css_spe/zelda_nav.png") !important;
+  background-size: cover !important;
+}
+
+#mySidenav a{
+  font-family: 'zelda';
+  color: rgb(80, 80, 80);
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+}
+
+#mySidenav a:hover{
+  color: rgb(0, 0, 0);
+}
+
+
+
+
+
+
+
+
+
+
+body, #popup-body , #popup-option, #popup{
+  background-color: rgb(20, 20, 20);
+}
+
+#popup{
+  color: #FFFFFF;
+  border: solid 2px gray;
+}
+
+a{
+  color: aqua;
+}
+
+.bnt_display,.frameUserName,.listAmis,.listDemandes{
+  background-color: rgb(40, 40, 40);
+  color: white;
+  border-color: gray !important;
+}
+
+
+header{
+  border-bottom: 3px solid rgb(73, 79, 83);
+  background-image: url('/css_spe/header_zelda.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.marquee-rtl {
+  background-color: rgb(60, 60, 60);
+  color: white;
+  border-bottom: 2px solid gray;
+}
+
+.btn {
+  background-color: rgb(45, 45, 45);
+}
+
+
+/*Page d'options*/
+
+
+#disconnect {
+  background-color: rgb(45, 45, 45);
+  border-color: white;
+}
+
+.slider {
+  background-color: #999;
+}
+
+input:checked + .slider {
+  background-color: #0069b9;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: rgb(45, 45, 45);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+/*Page Principale*/
+
+vert {
+  color: rgb(126, 126, 26)
+}
+
+
+.case {
+  color: white;
+}
+
+.case.heure{
+  background-color: #181818;
+  border:1px rgb(78, 78, 78) solid;
+}
+
+.case.jour{
+  background-color: #383838;
+}
+
+.case.default{
+  background-color: #242424;
+  border:1px rgb(78, 78, 78) solid;
+}
+
+.case.red{
+  background: none;
+  background-color:#742f2f;
+}
+
+.case.yellow{
+  background: none;
+  background-color: #818020;
+}
+
+.case.green{
+  background: none;
+  background-color: #104312;
+}
+
+.case.blue{
+  background: none;
+  background-color: #00425a;
+}
+
+.case.demande{
+  background: radial-gradient(#47afd4 70%,#3a535c);
+  color: black;
+}
+
+#menuSemaine{
+  background-color: #42804e;
+}
+
+.ami {
+  background-color: rgb(60, 60, 60);
+  color: white;
+}
+
+/*Page Version*/
+
+
+#githubCode, #githubGraphs {
+  background-color: rgb(45, 45, 45);
+  color: white;
+}
+
+/*-----------tableaux----------------------*/
+
+thead,
+tfoot {
+    background-color: #333;
+    color: #fff;
+}
+
+td {
+  border: 1px solid #FFF;
+  color: #FFF;
+}
+
+input,select,textarea{
+  background-color: #3f3f3f;
+  color: rgb(216, 216, 216);
+}
+input::placeholder{
+  color: rgb(1, 26, 1);
+}
+
+.invert{
+  filter: invert(1) grayscale(1);
+}
+
+.imgAct{
+  border-color: #aaa;
+}
+
+
+.autocomplete-list {
+  color: white;
+  border: 1px solid #d4d4d4;
+}
+.autocomplete-list div{
+  background-color: #1f1f1f;
+  border-bottom: 1px solid #999999;
+}
+.autocomplete-list div:hover, .autocomplete-active {
+  background-color: rgb(22, 58, 94) !important;
+  color: #ffffff;
+}
+
+#main .content a{
+  color: white;
+}
+
+#banderole {
+  top: -10px;
+  position: relative;
+}
+.greenLine{
+  background-color: #104312;
+}

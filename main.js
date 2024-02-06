@@ -220,6 +220,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   }).listen(3000);
   
   io = new Server(server)
+  funcSocketAdmin.init(io)
   io.of("/admin").on("connection", async (socket) => {
     let user = await User.searchToken(socket.handshake.auth.token)
 
@@ -232,7 +233,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.setMenu(socket,user)
       funcSocketAdmin.setMidiInfo(socket,user)
       funcSocketAdmin.getGroupAndClasse(socket,user)
-      funcSocketAdmin.getListPass(socket,user)
       funcSocketAdmin.scan(socket,user)
       funcSocketAdmin.setDorI(socket,user)
       funcSocketAdmin.delDorI(socket,user)
@@ -277,6 +277,10 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.getUserLieu(socket,user)
       funcSocketAdmin.setUserLieu(socket,user)
       funcSocketAdmin.delUserLieu(socket,user)
+
+      funcSocketAdmin.getListUserComplete(socket,user)
+      funcSocketAdmin.getListUser(socket,user)
+      funcSocketAdmin.setAchievement(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -296,7 +300,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.setTuto(socket,user)
         funcSocket.getAmis(socket,user)
         funcSocket.setAmis(socket,user)
-        funcSocket.listUsersName(socket,user)
+        funcSocket.getListUserName(socket,user)
         funcSocket.getMyDemande(socket,user)
         funcSocket.setMyDemande(socket,user)
         funcSocket.delMyDemande(socket,user)
@@ -337,9 +341,12 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.allHoraireLieu(socket,user)
 
         funcSocket.getScoreAmi(socket,user)
+        funcSocket.setAchievement(socket,user)
       }
     } catch (e) {console.error(e);console.log('34');}
   });
+  
+  io.of("/achievement").on("connection", async (socket) => {})
   
   async function loop(){
     //Subscription Cookie
@@ -399,7 +406,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       if(now.getHours()==0 && now.getMinutes()==0 && info12.algo_auto==2){
         await UserSelect.algoDeSelection(w,j*2+1)
       }
-      if(now.getHours()==13 && now.getMinutes()==0 && (info11.ouvert == 2 || info12.ouvert == 2 || info11.ouvert == 4 || info12.ouvert == 4)){
+      if(now.getHours()==13 && now.getMinutes()==0 && j==3 && (info11.ouvert == 2 || info12.ouvert == 2 || info11.ouvert == 4 || info12.ouvert == 4)){
         console.log(info11.ouvert)
         User.sendNotifAll("Sondage",
             "Répondez au sondage.",

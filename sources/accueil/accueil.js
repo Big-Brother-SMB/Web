@@ -167,7 +167,7 @@ export async function init(common){
 
             let titre = document.createElement("p")
             titre.className="titre"
-            titre.innerHTML='Bon pour un divPostAccueil'
+            titre.innerHTML='Bon pour un Cookie'
             div.appendChild(titre)
 
             let justificatif= document.createElement("p")

@@ -1,9 +1,14 @@
 const funcDB = require('./functionsDB.js')
 const User = require('./User.js')
 const UserSelect = require('./UserSelect.js')
+let io = null
 
 
 module.exports = class funcSocket{
+    static init(io_externe){
+        io = io_externe
+    }
+
     static setMyAdminMode(socket,user){
         socket.on('setMyAdminMode',async req => {
             if(await user.admin == 0 || await user.admin == null) return
@@ -85,18 +90,23 @@ module.exports = class funcSocket{
         })
     }
 
-    static getListPass(socket,user){
-        socket.on('getListPass',async req => {
+    static getListUserComplete(socket,user){
+        socket.on('getListUserComplete',async req => {
             if(await user.admin == 0 || await user.admin == null) return
-            let list = "rien"
             try{
-                console.error("top0")
-                list = await User.listUsersComplete()
-                console.error("top1")
-                socket.emit('getListPass',list)
-                console.error("top2")
+                socket.emit('getListUserComplete',await User.listUserComplete())
             }catch(e){
-                console.error("completelist0:\n",data)
+                console.error(e);console.log('11');
+            }
+        })
+    }
+
+    static getListUser(socket,user){
+        socket.on('getListUser',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit('getListUser',await User.listUser())
+            }catch(e){
                 console.error(e);console.log('11');
             }
         })
@@ -180,7 +190,7 @@ module.exports = class funcSocket{
         socket.on('startAlgo',async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                let rep = await UserSelect.algoDeSelection(req.w,req.j*2+req.h,req.IPM)
+                let rep = await UserSelect.algoDeSelection(req.w,req.j*2+req.h,req.ISM)
                 socket.emit('startAlgo',rep)
             }catch(e){console.error(e);console.log('18');}
         })
@@ -435,7 +445,7 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v23")
+                socket.emit("pyScanVersion","v26")
             }catch(e){console.error(e);console.log('48');}
         });
     }
@@ -448,18 +458,6 @@ module.exports = class funcSocket{
             }catch(e){console.error(e);console.log('b24');}
         });
     }
-
-
-   /* //CDI
-    static setCDIGroups(socket,user){
-        socket.on('setCDIGroups',async req => {
-            if(await user.admin == 0 || await user.admin == null) return
-            try{
-                await funcDB.setCDIGroups(req.w,req.j,req.h,req.groups)
-                socket.emit('setCDIGroups','ok')
-            }catch(e){console.error(e);console.log('17');}
-        })
-    }*/
 
     //Lieu
     static setLieuInfo(socket,user){
@@ -474,6 +472,7 @@ module.exports = class funcSocket{
 
     static setUserLieu(socket,user){
         socket.on("setUserLieu", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
             try{
                 await (new User(req.uuid)).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
                 socket.emit("setUserLieu","ok")
@@ -500,7 +499,16 @@ module.exports = class funcSocket{
         });
     }
 
-
+    static setAchievement(socket,user){
+        socket.on("setAchievement", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                (new User(req.uuid)).achievement = [req.event,req.value]
+                if(req.value==1) io.of("/interruption").emit("achievement",{event:req.event,uuid:req.uuid});
+                socket.emit("setAchievement","ok")
+            }catch(e){console.error(e);console.log('b19');}
+        });
+    }
 
         /*
     socket.on("req lu", async req => {

@@ -23,7 +23,7 @@ export async function init(common){
 
     let listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
 
-    let usersList = common.nameOrder(await common.socketAdminAsync('getListPass',null))
+    let usersList = common.nameOrder(await common.socketAdminAsync('getListUser',null))
 
     for(let i in usersList){
         usersList[i].name = common.name(usersList[i].first_name,usersList[i].last_name)

@@ -113,10 +113,10 @@ module.exports = class funcSocket{
         });
     }
 
-    static listUsersName(socket,user){
-        socket.on('listUsersName', async req => {
+    static getListUserName(socket,user){
+        socket.on('getListUserName', async req => {
             try{
-                socket.emit('listUsersName',await User.listUsersName())
+                socket.emit('getListUserName',await User.listUserName())
             }catch(e){console.error(e);console.log('b10');}
         });
     }
@@ -587,8 +587,18 @@ module.exports = class funcSocket{
 
 
 
-
-
+    static setAchievement(socket,user){
+        socket.on("setAchievement", async req => {
+            try{
+                console.log(req.event)
+                if(["zelda","apple"].includes(req.event)){
+                    user.achievement = [req.event,req.value]
+                }
+                socket.emit("setAchievement","ok")
+            }catch(e){console.error(e);console.log('b43');}
+        });
+    }
+    //
 
 
 

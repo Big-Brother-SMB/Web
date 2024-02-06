@@ -119,7 +119,7 @@ export async function init(common){
 
   let table = document.getElementById("tbody")
 
-  let usersList = common.nameOrder(await common.socketAdminAsync('getListPass',null))
+  let usersList = common.nameOrder(await common.socketAdminAsync('getListUser',null))
 
   let listScan = await common.socketAsync('getAllLieuList',{w:w,j:j,h:h});
 
