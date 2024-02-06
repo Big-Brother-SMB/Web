@@ -312,12 +312,15 @@ user="None"
 def alert(titre,text):
   global fenetre
   if son_bool.get():
-    #fenetre.focus_force()
     t1 = threading.Thread(target=playsound, args=('alert.mp3',))
     t1.start()
     msgErr.set(titre + ":\n" + text)
-    #t2 = threading.Thread(target=messagebox.showerror, args=(titre,text))
-    #t2.start()
+
+def happy():
+  global fenetre
+  if son_bool.get():
+    t1 = threading.Thread(target=playsound, args=('happy.mp3',))
+    t1.start()
 
 
 
@@ -422,6 +425,7 @@ def controle():
   buttonPass.pack_forget()
   buttonCookie.pack_forget()
   if user != "None":
+    boolErreur = False
     name.set(user["first_name"] + " " + user["last_name"])
     classe = user["classe"]
     info.set("classe : " + classe)
@@ -447,6 +451,7 @@ def controle():
           canvas.itemconfig(image_container,image=imgOk)
       if not testInscrit:
         canvas.itemconfig(image_container,image=imgCroix)
+        boolErreur = True
         alert("Non inscrit", user["first_name"] + " " + user["last_name"])
         buttonInscrire.pack()
     else:
@@ -460,11 +465,13 @@ def controle():
       global foyerOuvert
       if mode_var_save=="Foyer" and user["ban"]!=None:
         canvas.itemconfig(image_container,image=imgCroix)
+        boolErreur = True
         fin = datetime.strptime(user["ban"]["fin"], '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%d/%m/%Y")
         alert("Banni", user["first_name"] + " " + user["last_name"] + "\n" + user["ban"]["justificatif"] + "\nPrend fin le " + fin)
         buttonPass.pack()
       elif mode_var_save=="Foyer" and timeSlot[1]!=-1 and (foyerOuvert==1 or foyerOuvert==4) and not testAcceptPerm:
         canvas.itemconfig(image_container,image=imgCroix)
+        boolErreur = True
         alert("Non inscrit", user["first_name"] + " " + user["last_name"])
         buttonPass.pack()
       elif timeSlot[1]!=-1:
@@ -489,6 +496,9 @@ def controle():
     if socketReq('getUserHasCookie', user['uuid'], True):
       buttonCookie.pack()
     if user["birthday"] == datetime.today().day and user["birthmonth"] == datetime.today().month:
+      if not boolErreur:
+        happy()
+        canvas.itemconfig(image_container,image=imgHappyBirth)
       socketReq("setAchievement",{"uuid":user["uuid"],"event":"anniversaire","value":1},True)
   else:
     canvas.itemconfig(image_container,image=imgUnknown)
@@ -593,7 +603,7 @@ def openImage(path):
 #init fenetre
 fenetre = Tk()
 fenetre.resizable(False, False)
-fenetre.geometry("450x650+0+0")
+fenetre.geometry("450x750+0+0")
 fenetre.title("PyScan")
 imgLogo = openImage('image/logo.png')
 fenetre.iconphoto(True, imgLogo)
@@ -611,6 +621,7 @@ imgCroix = openImage("image/croix.png")
 imgUnknown = openImage("image/unknown.png")
 imgLoading = openImage("image/loading.png")
 imgCookie = openImage("image/cookie.png")
+imgHappyBirth = openImage("image/birthday.png")
 imgDico = {
   "Audio":openImage("image/lieu/audio.png"),
   "Aumônerie":openImage("image/lieu/aumonerie.png"),
