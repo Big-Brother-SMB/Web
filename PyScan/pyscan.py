@@ -86,8 +86,8 @@ def socketReq(event,data,admin):
     return []
 
 #initialisation du socket
-#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
-sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
+sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
+#sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
 print("\n\n\n")
 print(">>> Start")
 id_data =socketReq('id_data', None,False)
@@ -516,6 +516,8 @@ def export():
   users = socketReq('getListUserComplete', None,True)
   dico={}
   for e in users:
+    if e["uuid"]=="bfbf386e-3515-48f5-a08f-14fd72747607":
+      print(e)
     dico[e["uuid"]] = e["first_name"] + " " + e["last_name"]
   list11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
   inscrits11 = []
@@ -533,8 +535,17 @@ def export():
       inscrits12.append(dico[child["uuid"]])
       if child["scan"]==1:
         passages12.append(dico[child["uuid"]])
-
   f.write("Liste de passage du " + days[day] +" de la semaine n°" + str(week) +"\n\n")
+
+
+
+  f.write("\n-------Anniversaires------\n\n")
+  for e in users:
+    if e["birthday"] == datetime.today().day and e["birthmonth"] == datetime.today().month:
+      f.write(e["first_name"] + " " + e["last_name"] + "\n")
+  f.write("\n")
+
+
 
 
   f.write("\n-----------11h------------\n\n")

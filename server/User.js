@@ -265,78 +265,32 @@ module.exports = class User{
     })
   }
 
+  
   static listUserComplete(){
     return new Promise(function(resolve, reject) {
-        db.all("SELECT * FROM users LEFT JOIN admin_permission ON users.uuid = admin_permission.uuid LEFT JOIN user_groups ON users.uuid = user_groups.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
-          try{
-              if(data!=undefined){
-                let utilisateur = {}
-                let list = []
-                for(let i in data){
-                  if(utilisateur.uuid != data[i].uuid || i==0){
-                    if(i!=0) list.push(utilisateur)
-                    utilisateur = { ...data[i]}
-                    delete utilisateur.group2
-                    utilisateur.groups = []
-                    //admin_permission
-                    utilisateur.admin_permission = {uuid:utilisateur.uuid, pass:utilisateur.pass, foyer_repas:utilisateur.foyer_repas, foyer_perm:utilisateur.foyer_perm, banderole:utilisateur.banderole, user_editor:utilisateur.user_editor, messagerie:utilisateur.messagerie, cookie:utilisateur.cookie, admin_only:utilisateur.admin_only, localisation:utilisateur.localisation, CDI:utilisateur.CDI, "Aumônerie":utilisateur["Aumônerie"], DOC:utilisateur.DOC, "Audio":utilisateur["Audio"], Tutorat:utilisateur.Tutorat}
-                    delete utilisateur.pass
-                    delete utilisateur.foyer_repas
-                    delete utilisateur.foyer_perm
-                    delete utilisateur.banderole
-                    delete utilisateur.user_editor
-                    delete utilisateur.messagerie
-                    delete utilisateur.cookie
-                    delete utilisateur.admin_only
-                    delete utilisateur.localisation
-                    delete utilisateur.CDI
-                    delete utilisateur["Aumônerie"]
-                    delete utilisateur.DOC
-                    delete utilisateur["Audio"]
-                    delete utilisateur.Tutorat
-
-                    utilisateur.ban = null
-                  }
-                  if(data[i].group2!=null){
-                    utilisateur.groups.push(data[i].group2)
-                  }
-                }
-
-                for(let i in data){
-                  let user = new User(data[i].uuid)
-                  data[i].ban = user.ban
-                }
-                for(let i in data){
-                  data[i].ban = await data[i].ban
-                }
-                resolve(list)
-                /*db.all("SELECT * FROM users LEFT JOIN ban ON users.uuid = ban.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
-                  try{
-                      if(data!=undefined){
-                        let iUser = 0
-                        for(let i in data){
-                          if(list[else{
+        db.all("SELECT * FROM users ORDER BY first_name ASC, last_name ASC", async (err, data) => {
+            try{
+                if(data!=undefined){
+                    for(let i in data){
+                      let user = new User(data[i].uuid)
+                      data[i].groups = user.groups
+                      data[i].admin_permission = user.admin_permission
+                      data[i].ban = user.ban
+                    }
+                    for(let i in data){
+                      data[i].groups = await data[i].groups
+                      data[i].admin_permission = await data[i].admin_permission
+                      data[i].ban = await data[i].ban
+                    }
+                    resolve(data)
+                }else{
                     resolve([])
-                }iUser].uuid != data[i].uuid){
-                            iUser++
-                          }
-                          list[iUser].ban.push({id:data[i].id,uuid:data[i].uuid,debut:data[i].debut,fin:data[i].fin,justificatif:data[i].justificatif})
-                        }
-                      }
-                      
-                  }catch(e){
-                    console.error(e);
-                  }
-                })*/
-                
-              }else{
-                resolve([])
-              }
-          }catch(e){
-            console.error(e);
-            console.log('d12');
-            resolve([]);
-          }
+                }
+            }catch(e){
+              console.error(e);
+              console.log('d12');
+              resolve([]);
+            }
         })
         setTimeout(reject,20000)
     })
