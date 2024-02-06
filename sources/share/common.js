@@ -498,9 +498,12 @@ export class common{
     socketInterruption.on("connect", () => {
       socketInterruption.on("achievement",msg => {
         if(msg.event=='anniversaire' && msg.uuid==common.uuid && common.achievement["anniversaire"]!=1){
-          common.popUp_Active("Happy Birth!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre esthétique vous conviendra.<br>Penser à mettre le son et n\'oubliez d\'appuyer sur l\'écran noir.<br>Vous pouvez enlever le """cadeau""" dans "options".<br><br> Joyeux anniversaire!',(btn)=>{
+          common.popUp_Active("Happy Birth!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre habillage vous conviendra.<br>Penser à mettre le son.<br>Vous pouvez enlever le """cadeau""" dans "options".<br><br> Joyeux anniversaire!',(btn)=>{
             btn.innerHTML="Récupérer le cadeau"
             btn.addEventListener("click",()=>{
+              const son = new Audio("/css_spe/birthday.mp3");
+              son.play();
+
               common.popUp_Stop()
               common.setThemeMode(3)
               common.writeCookie("theme mode", 3)
@@ -899,25 +902,6 @@ export class common{
           name = "/share/dark.css"
           break;
         case 3:
-          const objCacheB = document.createElement("div")
-          objCacheB.style.backgroundColor="black"
-          objCacheB.style.position="fixed"
-          objCacheB.style.height="150vh"
-          objCacheB.style.width="150vw"
-          objCacheB.style.zIndex="150"
-          objCacheB.style.top="0"
-          objCacheB.style.transition="1s";
-          document.body.appendChild(objCacheB)
-          let func = ()=>{
-            objCacheB.removeEventListener("click",func)
-            const sheikah = new Audio("/css_spe/birthday.mp3");
-            sheikah.play();
-            objCacheB.style.backgroundColor="#0000";
-            setTimeout(() => {
-              document.body.removeChild(objCacheB)
-            }, 1000);
-          }
-          objCacheB.addEventListener("click",func)
           name = "/css_spe/birthday.css"
           break;
         case 6:

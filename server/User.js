@@ -309,8 +309,6 @@ module.exports = class User{
                 for(let i in data){
                   data[i].ban = await data[i].ban
                 }
-
-                console.log(list)
                 resolve(list)
                 /*db.all("SELECT * FROM users LEFT JOIN ban ON users.uuid = ban.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
                   try{
