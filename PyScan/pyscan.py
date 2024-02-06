@@ -85,7 +85,7 @@ def socketReq(event,data,admin):
     return []
 
 #initialisation du socket
-sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
+sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
 print("\n\n\n")
 print(">>> Start")
 id_data =socketReq('id_data', None,False)
@@ -484,7 +484,7 @@ def controle():
         canvas.itemconfig(image_container,image=imgDico.get(lieu))
       else:
         canvas.itemconfig(image_container,image=imgUnknown)
-    if socketReq('getUserHasCookie', user['uuid'],True):
+    if socketReq('getUserHasCookie', user['uuid'], True):
       buttonCookie.pack()
   else:
     canvas.itemconfig(image_container,image=imgUnknown)
