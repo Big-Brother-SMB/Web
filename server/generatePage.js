@@ -64,8 +64,8 @@ module.exports = async(req_url) => {
       fichier = await readFileAsync(path.join(sources_url,pathName))
     }
   }catch(e){
-    //console.error(e);
-    console.log('c1 : ' + pathName);
+    //console.error("gP");
+    console.log('No found page: ' + pathName);
     fichier = await readFileAsync(path.join(sources_url,"share","404.html"),READ_OPTIONS)
     err404=true
   }

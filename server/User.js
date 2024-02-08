@@ -33,10 +33,10 @@ module.exports = class User{
                   }else{
                       resolve(null)
                   }
-              }catch(e){console.error(e);console.log('d1');;resolve(null)}
+              }catch(e){console.error("U");;console.log('d1');;resolve(null)}
           })
           setTimeout(reject,10000)
-        } catch (e) {console.error(e);console.log('d2');}
+        } catch (e) {console.error("U");;console.log('d2');}
       })
   }
   
@@ -67,10 +67,10 @@ module.exports = class User{
                       db.run("UPDATE users SET picture=? where email=?", [picture,email])
                   }
                   resolve(new User(uuid))
-              }catch(e){console.error(e);console.log('d3');;resolve(null)}
+              }catch(e){console.error("U");;console.log('d3');;resolve(null)}
           })
           setTimeout(reject,10000)
-        } catch (e) {console.error(e);console.log('d4');}
+        } catch (e) {console.error("U");;console.log('d4');}
       })
   }
 
@@ -82,7 +82,7 @@ module.exports = class User{
           let date = new Date()
           db.run("INSERT INTO token(token,uuid,creation,last_use) VALUES(?,?,?,?)", [tokenAuth,uuid,date,date])
           resolve(tokenAuth)
-        } catch (e) {console.error(e);console.log('d5');}
+        } catch (e) {console.error("U");;console.log('d5');}
       })
   }
   
@@ -109,10 +109,10 @@ module.exports = class User{
           }else{
             resolve(new User(null))
           }
-        }catch(e){console.error(e);console.log('d6');;resolve(null)}
+        }catch(e){console.error("U");;console.log('d6');;resolve(null)}
       })
       setTimeout(reject,10000)
-      } catch (e) {console.error(e);console.log('d7');}
+      } catch (e) {console.error("U");;console.log('d7');}
     })
   }
 
@@ -125,7 +125,7 @@ module.exports = class User{
         if(data==undefined){
           db.run("INSERT INTO users_notification_subscription(subscription_id,uuid,endpoint,p256dh,auth,creation,last_use) VALUES(?,?,?,?,?,?,?)", [subscription_id,uuid,subscribe.endpoint,subscribe.keys.p256dh,subscribe.keys.auth,date,date])
         }
-      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+      }catch(e){console.error("U");;console.log('d6');;resolve(null)}
     })
     return
   }
@@ -139,7 +139,7 @@ module.exports = class User{
           }else{
             resolve(false)
           }
-        }catch(e){console.error(e);console.log('d6');resolve(null)}
+        }catch(e){console.error("U");;console.log('d6');resolve(null)}
       })
       setTimeout(reject,10000)
     })
@@ -185,7 +185,7 @@ module.exports = class User{
             console.error(_)
           });
         })
-      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+      }catch(e){console.error("U");;console.log('d6');;resolve(null)}
     })
   }
 
@@ -227,7 +227,7 @@ module.exports = class User{
             console.error(_)
           });
         })
-      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+      }catch(e){console.error("U");;console.log('d6');;resolve(null)}
     })
   }
 
@@ -241,10 +241,10 @@ module.exports = class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){console.error(e);console.log('d8');;resolve([])}
+              }catch(e){console.error("U");;console.log('d8');;resolve([])}
           })
           setTimeout(reject,10000)
-        } catch (e) {console.error(e);console.log('d9');}
+        } catch (e) {console.error("U");;console.log('d9');}
       })
   }
 
@@ -258,10 +258,10 @@ module.exports = class User{
                 }else{
                     resolve([])
                 }
-            }catch(e){console.error(e);console.log('d8');;resolve([])}
+            }catch(e){console.error("U");;console.log('d8');;resolve([])}
         })
         setTimeout(reject,10000)
-      } catch (e) {console.error(e);console.log('d9');}
+      } catch (e) {console.error("U");;console.log('d9');}
     })
   }
 
@@ -287,7 +287,7 @@ module.exports = class User{
                     resolve([])
                 }
             }catch(e){
-              console.error(e);
+              console.error("U");;
               console.log('d12');
               resolve([]);
             }
@@ -306,7 +306,7 @@ module.exports = class User{
                 }else{
                   resolve(null)
                 }
-              }catch(e){console.error(e);console.log('d13');;resolve(null)}
+              }catch(e){console.error("U");;console.log('d13');;resolve(null)}
           })
           setTimeout(reject,10000)
       })
@@ -336,7 +336,7 @@ module.exports = class User{
                   }else{
                       resolve(null)
                   }
-              }catch(e){console.error(e);console.log('d14');resolve(null)}
+              }catch(e){console.error("U");;console.log('d14');resolve(null)}
           })
           setTimeout(reject,10000)
       })
@@ -421,7 +421,7 @@ module.exports = class User{
               }else{
                 resolve({})
               }
-            }catch(e){console.error(e);console.log('d13');;resolve(null)}
+            }catch(e){console.error("U");;console.log('d13');;resolve(null)}
         })
         setTimeout(reject,10000)
     })
@@ -463,7 +463,7 @@ module.exports = class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){console.error(e);console.log('d15');;resolve([])}
+              }catch(e){console.error("U");;console.log('d15');;resolve([])}
           })
           setTimeout(reject,10000)
       })
@@ -492,7 +492,7 @@ module.exports = class User{
                   }else{
                       resolve([])
                   }
-              }catch(e){console.error(e);console.log('d16');;resolve([])}
+              }catch(e){console.error("U");;console.log('d16');;resolve([])}
           })
           setTimeout(reject,10000)
       })
@@ -517,7 +517,7 @@ module.exports = class User{
                 }else{
                     resolve({uuid:uuid,pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2})
                 }
-            }catch(e){console.error(e);console.log('d16');;resolve([])}
+            }catch(e){console.error("U");;console.log('d16');;resolve([])}
         })
         setTimeout(reject,10000)
     })
@@ -536,7 +536,7 @@ module.exports = class User{
           db.run("INSERT INTO admin_permission(uuid,pass,foyer_repas,foyer_perm,banderole,user_editor,messagerie,cookie,admin_only,localisation,CDI,Aumônerie,DOC,Audio,Tutorat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
           ,[uuid,obj.pass,obj.foyer_repas,obj.foyer_perm,obj.banderole,obj.user_editor,obj.messagerie,obj.cookie,obj.admin_only,obj.localisation,obj.CDI,obj.Aumônerie,obj.DOC,obj.Audio,obj.Tutorat])
         }
-      }catch(e){console.error(e);console.log('d17');;resolve({})}
+      }catch(e){console.error("U");;console.log('d17');;resolve({})}
     })
   }
 
@@ -560,7 +560,7 @@ module.exports = class User{
           }else{
             resolve({})
           }
-        }catch(e){console.error(e);console.log('d17');;resolve({})}
+        }catch(e){console.error("U");;console.log('d17');;resolve({})}
       })
       setTimeout(reject,10000)
     })
@@ -603,7 +603,7 @@ module.exports = class User{
           }else{
             resolve({})
           }
-        }catch(e){console.error(e);console.log('d18');;resolve({})}
+        }catch(e){console.error("U");;console.log('d18');;resolve({})}
       })
       setTimeout(reject,10000)
     })
@@ -682,11 +682,11 @@ module.exports = class User{
                             }
                           }
                           resolve(lists)
-                      }catch(e){console.error(e);console.log('d19');;resolve([])}
+                      }catch(e){console.error("U");;console.log('d19');;resolve([])}
                     })
-                }catch(e){console.error(e);console.log('d20');;resolve([])}
+                }catch(e){console.error("U");;console.log('d20');;resolve([])}
               })
-          }catch(e){console.error(e);console.log('d21');;resolve([])}
+          }catch(e){console.error("U");;console.log('d21');;resolve([])}
       })
       setTimeout(reject,10000)
     })
@@ -743,11 +743,11 @@ module.exports = class User{
                               }
                           }
                           resolve(score)
-                      }catch(e){console.error(e);console.log('d22');;resolve(null)}
+                      }catch(e){console.error("U");;console.log('d22');;resolve(null)}
                     })
-                }catch(e){console.error(e);console.log('d23');;resolve(null)}
+                }catch(e){console.error("U");;console.log('d23');;resolve(null)}
               })
-          }catch(e){console.error(e);console.log('d24');;resolve(null)}
+          }catch(e){console.error("U");;console.log('d24');;resolve(null)}
       })
       setTimeout(reject,10000)
     })
@@ -779,11 +779,11 @@ module.exports = class User{
                             })
                           }
                           resolve(cookies)
-                      }catch(e){console.error(e);console.log('d23-1');;resolve(null)}
+                      }catch(e){console.error("U");;console.log('d23-1');;resolve(null)}
                     })
-                }catch(e){console.error(e);console.log('d23');;resolve(null)}
+                }catch(e){console.error("U");;console.log('d23');;resolve(null)}
               })
-          }catch(e){console.error(e);console.log('d24');;resolve(null)}
+          }catch(e){console.error("U");;console.log('d24');;resolve(null)}
       })
       setTimeout(reject,10000)
     })
@@ -847,7 +847,7 @@ module.exports = class User{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+        }catch(e){console.error("U");;console.log('a-3');resolve(null)}
       })
       setTimeout(reject,10000)
     })
@@ -909,11 +909,11 @@ module.exports = class User{
                               }
                           }
                           resolve(msg)
-                      }catch(e){console.error(e);console.log('d25');;resolve(null)}
+                      }catch(e){console.error("U");;console.log('d25');;resolve(null)}
                     })
-                }catch(e){console.error(e);console.log('d26');;resolve(null)}
+                }catch(e){console.error("U");;console.log('d26');;resolve(null)}
               })
-          }catch(e){console.error(e);console.log('d27');;resolve(null)}
+          }catch(e){console.error("U");;console.log('d27');;resolve(null)}
       })
       setTimeout(reject,10000)
     })

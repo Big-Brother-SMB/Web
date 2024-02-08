@@ -17,7 +17,7 @@ module.exports = class funcSocket{
                     d.getFullYear() + "-" + (String(d.getMonth()+1).length == 1?"0":"") + (d.getMonth()+1) + "-" + (String(d.getDate()).length == 1?"0":"") + d.getDate() + " " +
                     (String(d.getHours()).length == 1?"0":"") + d.getHours() + ":" + (String(d.getMinutes()).length == 1?"0":"") + d.getMinutes() + ":" + (String(d.getSeconds()).length == 1?"0":"") + d.getSeconds()
                 console.log(timecode,"  ",req,"\t",await user.first_name + " " + await user.last_name)
-            }catch(e){console.error(e);}
+            }catch(e){console.error("fs1");}
         });
     }
 
@@ -29,7 +29,7 @@ module.exports = class funcSocket{
                     id_data="err"
                 }
                 socket.emit('id_data',id_data)
-            }catch(e){console.error(e);console.log('b1');}
+            }catch(e){console.error("fs2");}
         });
     }
 
@@ -38,7 +38,7 @@ module.exports = class funcSocket{
             try{
                 let score = await user.score
                 socket.emit('score',score)
-            }catch(e){console.error(e);console.log('b2');}
+            }catch(e){console.error("fs3");}
         });
     }
 
@@ -50,7 +50,7 @@ module.exports = class funcSocket{
                     score.push({uuid:req[i],score:await(await new User(req[i])).score})
                 }
                 socket.emit('getScoreAmi',score)
-            }catch(e){console.error(e);console.log('b2$');}
+            }catch(e){console.error("fs4");}
         });
     }
 
@@ -58,7 +58,7 @@ module.exports = class funcSocket{
         socket.on('historiqueScore', async req => {
             try{
                 socket.emit('historiqueScore',await user.listPoint)
-            }catch(e){console.error(e);console.log('b3');}
+            }catch(e){console.error("fs5");}
         });    
     }
 
@@ -66,7 +66,7 @@ module.exports = class funcSocket{
         socket.on('getMenuThisWeek', async req => {
             try{
                 socket.emit('getMenuThisWeek',await funcDB.getMidiMenu(req))
-            }catch(e){console.error(e);console.log('b4');}
+            }catch(e){console.error("fs6");}
         }); 
     }
 
@@ -75,7 +75,7 @@ module.exports = class funcSocket{
             try{
                 let info = await funcDB.getMidiInfo(req.w,req.j*2+req.h)
                 socket.emit('getDataThisCreneau',info)
-            }catch(e){console.error(e);console.log('b5');}
+            }catch(e){console.error("fs7");}
         });
     }
 
@@ -83,7 +83,7 @@ module.exports = class funcSocket{
         socket.on('getTuto', req => {
             try{
                 socket.emit('getTuto',user.tuto)
-            }catch(e){console.error(e);console.log('b6');}
+            }catch(e){console.error("fs8");}
         });
     }
 
@@ -92,7 +92,7 @@ module.exports = class funcSocket{
             try{
                 user.tuto = req
                 socket.emit('setTuto','ok')
-            }catch(e){console.error(e);console.log('b7');}
+            }catch(e){console.error("fs9");}
         });
     }
 
@@ -100,7 +100,7 @@ module.exports = class funcSocket{
         socket.on('getAmis', async req => {
             try{
                 socket.emit('getAmis',await user.amis)
-            }catch(e){console.error(e);console.log('b8');}
+            }catch(e){console.error("fs10");}
         });
     }
 
@@ -109,7 +109,7 @@ module.exports = class funcSocket{
             try{
                 user.amis=req
                 socket.emit('setAmis','ok')
-            }catch(e){console.error(e);console.log('b9');}
+            }catch(e){console.error("fs11");}
         });
     }
 
@@ -117,7 +117,7 @@ module.exports = class funcSocket{
         socket.on('getListUserName', async req => {
             try{
                 socket.emit('getListUserName',await User.listUserName())
-            }catch(e){console.error(e);console.log('b10');}
+            }catch(e){console.error("fs12");}
         });
     }
 
@@ -125,7 +125,7 @@ module.exports = class funcSocket{
         socket.on('getBanderole', async req => {
             try{
                 socket.emit('getBanderole',await funcDB.getVar('banderole'))
-            }catch(e){console.error(e);console.log('b11');}
+            }catch(e){console.error("fs13");}
         });
     }
   
@@ -133,7 +133,7 @@ module.exports = class funcSocket{
         socket.on('getMyDemande', async req => {
             try{
                 socket.emit('getMyDemande',await user.getMidiDemande(req.w,req.j*2+req.h))
-            }catch(e){console.error(e);console.log('b12');}
+            }catch(e){console.error("fs14");}
         });
     }
 
@@ -146,7 +146,7 @@ module.exports = class funcSocket{
                     await user.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,req.sandwich)
                     socket.emit('setMyDemande',"ok")
                 }
-            }catch(e){console.error(e);console.log('b13');}
+            }catch(e){console.error("fs15");}
         });
     }
 
@@ -159,7 +159,7 @@ module.exports = class funcSocket{
                     await user.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delMyDemande',"ok")
                 }
-            }catch(e){console.error(e);console.log('b14');}
+            }catch(e){console.error("fs16");}
         });
     }
 
@@ -182,7 +182,7 @@ module.exports = class funcSocket{
                     await ami.setMidiDemande(req.w,req.j*2+req.h,req.amis,false,false,null)
                     socket.emit('setAmiDemande',"ok")
                 }
-            }catch(e){console.error(e);console.log('b15');}
+            }catch(e){console.error("fs17");}
         });
     }
 
@@ -205,7 +205,7 @@ module.exports = class funcSocket{
                     await ami.delMidiDemande(req.w,req.j*2+req.h)
                     socket.emit('delAmiDemande',"ok")
                 }
-            }catch(e){console.error(e);console.log('b16');}
+            }catch(e){console.error("fs18");}
         });
     }
 
@@ -213,7 +213,7 @@ module.exports = class funcSocket{
         socket.on('listDemandes', async req => {
             try{
                 socket.emit('listDemandes',await funcDB.listMidiDemandes(req.w,req.j*2+req.h))
-            }catch(e){console.error(e);console.log('b17');}
+            }catch(e){console.error("fs19");}
         });
     }
 
@@ -221,7 +221,7 @@ module.exports = class funcSocket{
         socket.on('listDemandesPerm', async req => {
             try{
                 socket.emit('listDemandesPerm',await funcDB.listPermDemandes(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b18');}
+            }catch(e){console.error("fs20");}
         });
     }
 
@@ -229,7 +229,7 @@ module.exports = class funcSocket{
         socket.on("getOuvertPerm", async req => {
             try{
                 socket.emit("getOuvertPerm",await funcDB.getPermOuvert(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs21");}
         });
     }
   
@@ -237,7 +237,7 @@ module.exports = class funcSocket{
         socket.on("getMyDemandePerm", async req => {
             try{
                 socket.emit("getMyDemandePerm",await user.getPermDemande(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b20');}
+            }catch(e){console.error("fs22");}
         });
     }
 
@@ -250,7 +250,7 @@ module.exports = class funcSocket{
                     await user.setPermDemande(req.w,req.j,req.h,req.group,req.nb)
                     socket.emit('setMyDemandePerm',"ok")
                 }
-            }catch(e){console.error(e);console.log('b21');}
+            }catch(e){console.error("fs23");}
         });
     }
 
@@ -263,7 +263,7 @@ module.exports = class funcSocket{
                     await user.delPermDemande(req.w,req.j,req.h)
                     socket.emit('delMyDemandePerm',"ok")
                 }
-            }catch(e){console.error(e);console.log('b22');}
+            }catch(e){console.error("fs24");}
         });
     }
 
@@ -272,7 +272,7 @@ module.exports = class funcSocket{
             try{
                 user.suppAllToken()
                 socket.emit('suppAllToken',"ok")
-            }catch(e){console.error(e);console.log('b22');}
+            }catch(e){console.error("fs25");}
         });
     }
 
@@ -280,7 +280,7 @@ module.exports = class funcSocket{
         socket.on('getCookies', async req => {
             try{
                 socket.emit('getCookies',await user.cookies)
-            }catch(e){console.error(e);console.log('b23');}
+            }catch(e){console.error("fs26");}
         });
     }
 
@@ -288,7 +288,7 @@ module.exports = class funcSocket{
         socket.on('getSondageMenu', async req => {
             try{
                 socket.emit('getSondageMenu',await funcDB.getSondageMenu(user.uuid,req.w,req.j))
-            }catch(e){console.error(e);console.log('b24');}
+            }catch(e){console.error("fs27");}
         });
     }
 
@@ -297,7 +297,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.setSondageMenu(user.uuid,req.w,req.j,req.note)
                 socket.emit('setSondageMenu',"ok")
-            }catch(e){console.error(e);console.log('b25');}
+            }catch(e){console.error("fs28");}
         });
     }
 
@@ -316,7 +316,7 @@ module.exports = class funcSocket{
                 User.sendNotifAll(req.title,req.text,"/asso/"+src+"/Images/logo.jpg","asso/"+src)
                 await funcDB.setPost(req.id,user.uuid,req.group,req.title,req.text,req.date)
                 socket.emit('setPost',"ok")
-            }catch(e){console.error(e);console.log('b26');}
+            }catch(e){console.error("fs29");}
         });
     }
 
@@ -332,7 +332,7 @@ module.exports = class funcSocket{
             if((await user.admin == 0 || await user.admin == null) && !test) return
             try{
                 socket.emit('getPostWithAllLu',await funcDB.getPostWithAllLu(req.id))
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs30");}
         });
     }
 
@@ -340,7 +340,7 @@ module.exports = class funcSocket{
         socket.on('getPost', async req => {
             try{
                 socket.emit('getPost',await funcDB.getPost(user.uuid))
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs31");}
         });
     }
 
@@ -349,7 +349,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.postLu(req.id,user.uuid)
                 socket.emit('postLu',"ok")
-            }catch(e){console.error(e);console.log('b26');}
+            }catch(e){console.error("fs32");}
         });
     }
 
@@ -366,7 +366,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.delPost(req.id)
                 socket.emit('delPost',"ok")
-            }catch(e){console.error(e);console.log('b26');}
+            }catch(e){console.error("fs33");}
         });
     }
 
@@ -386,7 +386,7 @@ module.exports = class funcSocket{
                     }
                 }
                 socket.emit('allHoraireMidi',{info_horaire:info_horaire,my_demande:my_demande,list_demandes:list_demandes})
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs34");}
         });
     }
 
@@ -408,7 +408,7 @@ module.exports = class funcSocket{
                     }
                 }
                 socket.emit('allHorairePerm',{listDemandes:listDemandes,ouvert:ouvert})
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs35");}
         });
     }
 
@@ -418,7 +418,7 @@ module.exports = class funcSocket{
             try{
                 user.subscribeNotification(req)
                 socket.emit('subscribeNotification',"ok")
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs36");}
         });
     }
     
@@ -426,7 +426,7 @@ module.exports = class funcSocket{
         socket.on('existNotificationSubscription', async req => {
             try{
                 socket.emit('existNotificationSubscription',await user.existNotificationSubscription())
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs37");}
         });
     }
 
@@ -435,7 +435,7 @@ module.exports = class funcSocket{
         socket.on('getCDIGroups', async req => {
             try{
                 socket.emit('getCDIGroups',await funcDB.getCDIGroups(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b18');}
+            }catch(e){console.error("fs");}
         });
     }
 
@@ -446,11 +446,11 @@ module.exports = class funcSocket{
                 for (let j = 0; j < 5; j++) {
                     listGroups.push([])
                     for (let h = 0; h < 9; h++) {
-                        listGroups[j].push(await funcDB.getCDIGroups(req.w,j,h))
+                        listGroups[j].push(await funcDB.getCconsole.error("fs")DIGroups(req.w,j,h))
                     }
                 }
                 socket.emit('allHoraireCDI',listGroups)
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs");}
         });
     }*/
 
@@ -460,7 +460,7 @@ module.exports = class funcSocket{
         socket.on("getMyLieu", async req => {
             try{
                 socket.emit("getMyLieu",await user.getLieu(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs38");}
         });
     }
 
@@ -476,7 +476,7 @@ module.exports = class funcSocket{
                     await user.setLieu(req.lieu,req.w,req.j,req.h,0)
                 }
                 socket.emit("setMyLieu","ok")
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs39");}
         });
     }
 
@@ -489,7 +489,7 @@ module.exports = class funcSocket{
                     await user.delLieu(req.w,req.j,req.h)
                 }
                 socket.emit("delMyLieu","ok")
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs40");}
         });
     }
 
@@ -513,7 +513,7 @@ module.exports = class funcSocket{
                     await ami.setLieu(req.lieu,req.w,req.j,req.h,0)
                 }
                 socket.emit('setAmiLieu',"ok")
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs41");}
         });
     }
 
@@ -534,7 +534,7 @@ module.exports = class funcSocket{
                     await ami.delLieu(req.w,req.j,req.h)
                 }
                 socket.emit("delAmiLieu","ok")
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs42");}
         });
     }
 
@@ -544,7 +544,7 @@ module.exports = class funcSocket{
         socket.on("getLieuList", async req => {
             try{
                 socket.emit("getLieuList",await funcDB.getLieuList(req.lieu,req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs43");}
         });
     }
 
@@ -552,7 +552,7 @@ module.exports = class funcSocket{
         socket.on("getAllLieuList", async req => {
             try{
                 socket.emit("getAllLieuList",await funcDB.getAllLieuList(req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('49');}
+            }catch(e){console.error("fs44");}
         });
     }
 
@@ -560,7 +560,7 @@ module.exports = class funcSocket{
         socket.on("getLieuInfo", async req => {
             try{
                 socket.emit("getLieuInfo",await funcDB.getLieuInfo(req.lieu,req.w,req.j,req.h))
-            }catch(e){console.error(e);console.log('b19');}
+            }catch(e){console.error("fs45");}
         });
     }
 
@@ -580,7 +580,7 @@ module.exports = class funcSocket{
                     }
                 }
                 socket.emit('allHoraireLieu',{inscriptions:inscriptions,info:LieuInfo})
-            }catch(e){console.error(e);console.log('b27');}
+            }catch(e){console.error("fs46");}
         });
     }
 
@@ -590,12 +590,11 @@ module.exports = class funcSocket{
     static setAchievement(socket,user){
         socket.on("setAchievement", async req => {
             try{
-                console.log(req.event)
                 if(["zelda","apple"].includes(req.event)){
                     user.achievement = [req.event,req.value]
                 }
                 socket.emit("setAchievement","ok")
-            }catch(e){console.error(e);console.log('b43');}
+            }catch(e){console.error("fs47");}
         });
     }
     //
@@ -614,7 +613,7 @@ module.exports = class funcSocket{
         socket.on("my msgs", async req => {
             try{
                 socket.emit("my msgs",await user.getAllMessages())
-            }catch(e){console.error(e);console.log('b23');}
+            }catch(e){console.error("fs48");}
         });
     }
 
@@ -623,7 +622,7 @@ module.exports = class funcSocket{
             try{
                 user.messageLu(req)
                 socket.emit("msg lu",'ok')
-            }catch(e){console.error(e);console.log('b24');}
+            }catch(e){console.error("fs49");}
         });
     }
 
@@ -632,7 +631,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.addMessage(user.uuid,"admin",false,req.texte,req.title,hashHour())
                 socket.emit("add msg",'ok')
-            }catch(e){console.error(e);console.log('b25');}
+            }catch(e){console.error("fs50");}
         });
     }
 
@@ -641,7 +640,7 @@ module.exports = class funcSocket{
             try{
                 user.sondage_reponse(req.id,req.rep)
                 socket.emit("rep sondage",'ok')
-            }catch(e){console.error(e);console.log('b26');}
+            }catch(e){console.error("fs51");}
         });
     }
 }

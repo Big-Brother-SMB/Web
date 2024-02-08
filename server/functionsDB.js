@@ -37,7 +37,7 @@ module.exports = class funcDB{
                 resolve(null)
             }
             })
-        }catch(e){console.error(e);console.log('a1');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a1');;resolve(null)}
         setTimeout(reject,5000)
     })
   }
@@ -62,7 +62,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a2');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a2');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -85,7 +85,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a3');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a3');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -108,7 +108,7 @@ module.exports = class funcDB{
           }else{
             resolve({})
           }
-        }catch(e){console.error(e);console.log('a4');;resolve({})}
+        }catch(e){console.error("fDB");;console.log('a4');;resolve({})}
       })
       setTimeout(reject,5000)
     })
@@ -138,7 +138,7 @@ module.exports = class funcDB{
           }else{
             resolve(undefined)
           }
-        }catch(e){console.error(e);console.log('a5');;resolve({prio:[]})}
+        }catch(e){console.error("fDB");;console.log('a5');;resolve({prio:[]})}
       })
       setTimeout(reject,5000)
     })
@@ -176,7 +176,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a6');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a6');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -201,7 +201,7 @@ module.exports = class funcDB{
                 })
             }
             resolve(list)
-        }catch(e){console.error(e);console.log('a7');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a7');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -218,7 +218,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a8');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a8');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -240,7 +240,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a9');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a9');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -279,7 +279,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a-1');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-1');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -294,7 +294,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a-2');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-2');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -325,7 +325,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-3');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -354,7 +354,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-3');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -382,7 +382,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-3');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -398,7 +398,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a-4');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-4');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -413,7 +413,7 @@ module.exports = class funcDB{
           }else{
             resolve(-1)
           }
-        }catch(e){console.error(e);console.log('a-5');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-5');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -465,7 +465,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('7-a11');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('7-a11');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -495,7 +495,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('8-a11');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('8-a11');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -528,7 +528,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a3');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a3');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -550,7 +550,7 @@ module.exports = class funcDB{
           }else{
             resolve({lieu:lieu,semaine:semaine,day:day,creneau:creneau,ouvert:0,msg:"",title:"",texte:"",places:null})
           }
-        }catch(e){console.error(e);console.log('a2');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a2');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -575,7 +575,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a2');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a2');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -590,7 +590,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('a-3');resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a-3');resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -686,7 +686,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error(e);console.log('d27');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('d27');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -721,7 +721,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a10');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a10');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -766,7 +766,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a11');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a11');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -793,7 +793,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error(e);console.log('a12');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a12');;resolve(null)}
       })
       setTimeout(reject,5000)
     })
@@ -840,11 +840,11 @@ module.exports = class funcDB{
                               }
                           }
                           resolve(msg)
-                      }catch(e){console.error(e);console.log('a13');;resolve(null)}
+                      }catch(e){console.error("fDB");;console.log('a13');;resolve(null)}
                     })
-                }catch(e){console.error(e);console.log('a14');;resolve(null)}
+                }catch(e){console.error("fDB");;console.log('a14');;resolve(null)}
               })
-          }catch(e){console.error(e);console.log('a15');;resolve(null)}
+          }catch(e){console.error("fDB");;console.log('a15');;resolve(null)}
       })
       setTimeout(reject,5000)
     })

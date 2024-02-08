@@ -86,8 +86,8 @@ def socketReq(event,data,admin):
     return []
 
 #initialisation du socket
-sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
-#sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
+#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
+sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
 print("\n\n\n")
 print(">>> Start")
 id_data =socketReq('id_data', None,False)
