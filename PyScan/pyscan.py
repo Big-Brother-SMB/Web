@@ -516,8 +516,6 @@ def export():
   users = socketReq('getListUserComplete', None,True)
   dico={}
   for e in users:
-    if e["uuid"]=="bfbf386e-3515-48f5-a08f-14fd72747607":
-      print(e)
     dico[e["uuid"]] = e["first_name"] + " " + e["last_name"]
   list11 = socketReq('listDemandes', {"w":week,"j":dayMidi,"h":0},False)
   inscrits11 = []
@@ -542,7 +540,7 @@ def export():
   f.write("\n-------Anniversaires------\n\n")
   for e in users:
     if e["birthday"] == datetime.today().day and e["birthmonth"] == datetime.today().month:
-      f.write(e["first_name"] + " " + e["last_name"] + "\n")
+      f.write(e["first_name"] + " " + e["last_name"] + " " + e["code_barre"] + "\n")
   f.write("\n")
 
 
@@ -584,7 +582,7 @@ def export():
     f.write(user + "\n")
   
   f.close()
-  print(">>>create 'Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt'")
+  print(">>> Create 'Liste de passage du " + days[day] +" de la semaine n°" + str(week) + ".txt'")
 
 
 
