@@ -99,7 +99,7 @@ export async function init(common){
                     +"  <input style='display: none;' type='text' name='token' value='" + common.key + "'>\n"
                     +"  <input style='display: none;' type='text' name='group' value='" + group_name + "'>\n"
                     +"  <input style='display: none;' type='text' name='id' value='" + id + "'>\n"
-                    +"  <input style='display: none;' type='text' name='date' value='" + date + "'>\n"
+                    +"  <input style='display: none;' type='text' name='date' value='" + date.toString() + "'>\n"
                     +"  <input type='submit' class='btn'>\n"
                     +"</form>",async (btn)=>{
                     btn.innerHTML='Annuler'

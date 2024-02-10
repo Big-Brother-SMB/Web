@@ -26,6 +26,16 @@ export async function init(common){
         };
         i++
     };
+    listBan.reverse()
+    listBan.sort(function compareFn(a, b) {
+        if(new Date(a.debut).getTime()>new Date(b.debut).getTime()){
+            return -1
+        }else if(new Date(a.debut).getTime()<new Date(b.debut).getTime()){
+            return 1
+        }else{
+            return 0
+        }
+    })
     listBan.forEach(child=>{
         let ami = document.createElement("button")
         ami.classList.add("ami")
