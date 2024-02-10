@@ -321,6 +321,9 @@ export class common{
     let socket = this.socket
     await new Promise(function(resolve, reject) {
       socket.once("connect", () => {
+        if(new Date(2024,1,10).getTime()<Date.now() && new Date(2024,1,14).getTime()>Date.now()){
+          socket.emit("setAchievement",{event:"carnaval",value:1})
+        }
         resolve(null)
       });
     })
@@ -926,20 +929,17 @@ export class common{
           objCacheZ.addEventListener("click",funcZ)
           name = "/css_spe/zelda.css"
           break;
+        case 8:
+          name = "/css_spe/carnaval.css"
+          break;
         default:
           //light
           name = ""
           break;
       }
-      let d1 = new Date(2024,1,10).getTime()
-      let d2 = new Date(2024,1,14).getTime()
-      if(d1<Date.now() && d2>Date.now()){
+      if(new Date(2024,1,10).getTime()<Date.now() && new Date(2024,1,14).getTime()>Date.now()){
         name = "/css_spe/carnaval.css"
       }
-      console.log(d1<Date.now(), d2>Date.now())
-      console.log(d1)
-      console.log(Date.now())
-      console.log(d2)
       if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
     }catch(Exception){
       console.error(Exception)

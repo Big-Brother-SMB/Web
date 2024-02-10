@@ -316,7 +316,7 @@ def alert(titre,text):
     t1.start()
     msgErr.set(titre + ":\n" + text)
 
-def happy():
+def birthday ():
   global fenetre
   if son_bool.get():
     t1 = threading.Thread(target=playsound, args=('happy.mp3',))
@@ -497,7 +497,7 @@ def controle():
       buttonCookie.pack()
     if user["birthday"] == datetime.today().day and user["birthmonth"] == datetime.today().month:
       if not boolErreur:
-        happy()
+        birthday()
         canvas.itemconfig(image_container,image=imgHappyBirth)
       socketReq("setAchievement",{"uuid":user["uuid"],"event":"anniversaire","value":1},True)
   else:
