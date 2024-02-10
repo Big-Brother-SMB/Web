@@ -430,30 +430,6 @@ module.exports = class funcSocket{
         });
     }
 
-    /*//CDI
-    static getCDIGroups(socket,user){
-        socket.on('getCDIGroups', async req => {
-            try{
-                socket.emit('getCDIGroups',await funcDB.getCDIGroups(req.w,req.j,req.h))
-            }catch(e){console.error("fs");}
-        });
-    }
-
-    static allHoraireCDI(socket,user){
-        socket.on('allHoraireCDI', async req => {
-            try{
-                let listGroups = []
-                for (let j = 0; j < 5; j++) {
-                    listGroups.push([])
-                    for (let h = 0; h < 9; h++) {
-                        listGroups[j].push(await funcDB.getCconsole.error("fs")DIGroups(req.w,j,h))
-                    }
-                }
-                socket.emit('allHoraireCDI',listGroups)
-            }catch(e){console.error("fs");}
-        });
-    }*/
-
     //Lieu
     //dépôt inscription
     static getMyLieu(socket,user){

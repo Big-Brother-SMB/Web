@@ -17,7 +17,7 @@ module.exports = class funcSocket{
                 obj["admin_only"] = req
                 user.admin_permission = obj
                 socket.emit('setMyAdminMode',"ok")
-            }catch(e){console.error("fsA");console.log('3');}
+            }catch(e){console.error("fsA1");}
         })
     }
 
@@ -27,7 +27,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.addGlobalPoint(msg[0],msg[1],msg[2])
                 socket.emit('addGlobalPoint',"ok")
-            }catch(e){console.error("fsA");console.log('4');}
+            }catch(e){console.error("fsA2");}
         })
     }
 
@@ -38,7 +38,7 @@ module.exports = class funcSocket{
                 let user = new User(msg[0])
                 user.addPersonalPoint(msg[1],msg[2],msg[3])
                 socket.emit('addPersonalPoint',"ok")
-            }catch(e){console.error("fsA");console.log('5');}
+            }catch(e){console.error("fsA3");}
         })
     }
 
@@ -47,7 +47,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit('getGlobalPoint',await funcDB.listGlobalPoint())
-            }catch(e){console.error("fsA");console.log('6');}
+            }catch(e){console.error("fsA4");}
         })
     }
 
@@ -57,7 +57,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.setVar("banderole",req)
                 socket.emit('setBanderole',"ok")
-            }catch(e){console.error("fsA");console.log('7');}
+            }catch(e){console.error("fsA5");}
         })
     }
 
@@ -67,7 +67,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.setMidiMenu(req.semaine,req.menu,req.self)
                 socket.emit('setMenu',"ok")
-            }catch(e){console.error("fsA");console.log('8');}
+            }catch(e){console.error("fsA6");}
         })
     }
 
@@ -77,7 +77,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.setMidiInfo(req.w,req.j*2+req.h,req.cout,req.gratuit_prio,req.ouvert,req.perMin,req.places,req.prio_mode,req.nbSandwich,req.nbSandwich_vege,req.mode_sandwich,req.bonus_avance,req.algo_auto,req.msg,req.list_prio)
                 socket.emit('setMidiInfo',"ok")
-            }catch(e){console.error("fsA");console.log('9');}
+            }catch(e){console.error("fsA7");}
         })
     }
 
@@ -86,7 +86,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit('getGroupAndClasse',[await funcDB.getGroup(),await funcDB.getClasse()])
-            }catch(e){console.error("fsA");console.log('10');}
+            }catch(e){console.error("fsA8");}
         })
     }
 
@@ -96,7 +96,7 @@ module.exports = class funcSocket{
             try{
                 socket.emit('getListUserComplete',await User.listUserComplete())
             }catch(e){
-                console.error("fsA");console.log('11');
+                console.error("fsA9");
             }
         })
     }
@@ -107,7 +107,7 @@ module.exports = class funcSocket{
             try{
                 socket.emit('getListUser',await User.listUser())
             }catch(e){
-                console.error("fsA");console.log('11');
+                console.error("fsA10");
             }
         })
     }
@@ -120,7 +120,7 @@ module.exports = class funcSocket{
                 let info = await user.getMidiDemande(msg[0],msg[1]*2+msg[2])
                 await user.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,info.DorI,msg[4])
                 socket.emit('scan','ok')
-            }catch(e){console.error("fsA");console.log('12');}
+            }catch(e){console.error("fsA11");}
         })
     }
 
@@ -141,7 +141,7 @@ module.exports = class funcSocket{
                 let info = await user2.getMidiDemande(msg[0],msg[1]*2+msg[2])
                 await user2.setMidiDemande(msg[0],msg[1]*2+msg[2],info.amis,msg[4],info.scan)
                 socket.emit('setDorI','ok')
-            }catch(e){console.error("fsA");console.log('13');}
+            }catch(e){console.error("fsA12");}
         })
     }
 
@@ -152,7 +152,7 @@ module.exports = class funcSocket{
                 let user = new User(msg[3])
                 await user.delMidiDemande(msg[0],msg[1]*2+msg[2])
                 socket.emit('delDorI','ok')
-            }catch(e){console.error("fsA");console.log('14');}
+            }catch(e){console.error("fsA13");}
         })
     }
 
@@ -162,7 +162,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.setPermOuvert(msg[0],msg[1],msg[2],msg[3])
                 socket.emit('setPermOuvert','ok')
-            }catch(e){console.error("fsA");console.log('15');}
+            }catch(e){console.error("fsA14");}
         })
     }
 
@@ -172,7 +172,7 @@ module.exports = class funcSocket{
             try{
                 await (new User(msg[3])).delPermDemande(msg[0],msg[1],msg[2])
                 socket.emit('delPermDemande','ok')
-            }catch(e){console.error("fsA");console.log('16');}
+            }catch(e){console.error("fsA15");}
         })
     }
 
@@ -182,7 +182,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.setPermInscrit(msg[0],msg[1],msg[2],msg[3])
                 socket.emit('setPermInscrit','ok')
-            }catch(e){console.error("fsA");console.log('17');}
+            }catch(e){console.error("fsA16");}
         })
     }
 
@@ -192,7 +192,7 @@ module.exports = class funcSocket{
             try{
                 let rep = await UserSelect.algoDeSelection(req.w,req.j*2+req.h,req.ISM)
                 socket.emit('startAlgo',rep)
-            }catch(e){console.error("fsA");console.log('18');}
+            }catch(e){console.error("fsA17");}
         })
     }
 
@@ -203,7 +203,7 @@ module.exports = class funcSocket{
                 let user = new User(req.uuid)
                 user.all = req
                 socket.emit('setUser','ok')
-            }catch(e){console.error("fsA");console.log('19');}
+            }catch(e){console.error("fsA18");}
         })
     }
 
@@ -213,7 +213,7 @@ module.exports = class funcSocket{
             try{
                 let user = new User(req)
                 socket.emit('getScoreList',await user.listPoint)
-            }catch(e){console.error("fsA");console.log('20');}
+            }catch(e){console.error("fsA19");}
         })
     }
 
@@ -224,7 +224,7 @@ module.exports = class funcSocket{
                 let user = new User(msg[0])
                 user.delPersonalPoint(msg[1])
                 socket.emit('delPersonalPoint','ok')
-            }catch(e){console.error("fsA");console.log('21');}
+            }catch(e){console.error("fsA20");}
         })
     }
 
@@ -234,7 +234,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.delGlobalPoint(req)
                 socket.emit('delGlobalPoint','ok')
-            }catch(e){console.error("fsA");console.log('22');}
+            }catch(e){console.error("fsA21");}
         })
     }
 
@@ -243,7 +243,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit('copyKey',await (new User(req)).createToken())
-            }catch(e){console.error("fsA");console.log('23');}
+            }catch(e){console.error("fsA22");}
         })
     }
     
@@ -253,7 +253,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.addPret(req.obj,req.uuid,req.debut)
                 socket.emit("addPret",'ok')
-            }catch(e){console.error("fsA");console.log('29');}
+            }catch(e){console.error("fsA23");}
         });
     }
 
@@ -263,7 +263,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.finPret(req.obj,req.uuid,req.debut,req.fin)
                 socket.emit("finPret",'ok')
-            }catch(e){console.error("fsA");console.log('30');}
+            }catch(e){console.error("fsA24");}
         });
     }
 
@@ -273,7 +273,7 @@ module.exports = class funcSocket{
             try{
                 funcDB.commentairePret(req.obj,req.uuid,req.debut,req.com)
                 socket.emit("commentairePret",'ok')
-            }catch(e){console.error("fsA");console.log('31');}
+            }catch(e){console.error("fsA25");}
         });
     }
 
@@ -282,7 +282,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getPretsActuel",await funcDB.getPretsActuel())
-            }catch(e){console.error("fsA");console.log('32');}
+            }catch(e){console.error("fsA26");}
         });
     }
 
@@ -291,7 +291,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getAllPrets",await funcDB.getAllPrets())
-            }catch(e){console.error("fsA");console.log('33');}
+            }catch(e){console.error("fsA27");}
         });
     }
 
@@ -303,7 +303,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.addSubscriptionCookie(req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,0,null)
                 socket.emit("newCookieSubscription","ok")
-            }catch(e){console.error("fsA");console.log('34');}
+            }catch(e){console.error("fsA28");}
         });
     }
 
@@ -313,7 +313,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.modifSubscriptionCookie(req.id,req.uuid,req.debut,req.fin,req.justificatif,req.period,req.cumulatif,req.nbAdd,req.quantity,req.maj)
                 socket.emit("modifCookieSubscription","ok")
-            }catch(e){console.error("fsA");console.log('35');}
+            }catch(e){console.error("fsA29");}
         });
     }
 
@@ -323,7 +323,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.delSubscriptionCookie(req)
                 socket.emit("delCookieSubscription","ok")
-            }catch(e){console.error("fsA");console.log('36');}
+            }catch(e){console.error("fsA30");}
         });
     }
 
@@ -332,7 +332,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getCookieSubscription",await funcDB.getSubscriptionCookie())
-            }catch(e){console.error("fsA");console.log('37');}
+            }catch(e){console.error("fsA31");}
         });
     }
 
@@ -342,7 +342,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.addTicketCookie(req.uuid,req.date,req.justificatif)
                 socket.emit("newCookieTicket","ok")
-            }catch(e){console.error("fsA");console.log('38');}
+            }catch(e){console.error("fsA32");}
         });
     }
 
@@ -352,7 +352,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.modifTicketCookie(req.id,req.uuid,req.date,req.justificatif)
                 socket.emit("modifCookieTicket","ok")
-            }catch(e){console.error("fsA");console.log('39');}
+            }catch(e){console.error("fsA33");}
         });
     }
 
@@ -362,7 +362,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.delTicketCookie(req)
                 socket.emit("delCookieTicket","ok")
-            }catch(e){console.error("fsA");console.log('40');}
+            }catch(e){console.error("fsA34");}
         });
     }
 
@@ -371,7 +371,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getCookieTicket",await funcDB.getTicketCookie())
-            }catch(e){console.error("fsA");console.log('41');}
+            }catch(e){console.error("fsA35");}
         });
     }
 
@@ -381,7 +381,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.addBan(req.uuid,req.debut,req.fin,req.justificatif)
                 socket.emit("newBan","ok")
-            }catch(e){console.error("fsA");console.log('42');}
+            }catch(e){console.error("fsA36");}
         });
     }
 
@@ -391,7 +391,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.modifBan(req.id,req.uuid,req.debut,req.fin,req.justificatif)
                 socket.emit("modifBan","ok")
-            }catch(e){console.error("fsA");console.log('43');}
+            }catch(e){console.error("fsA37");}
         });
     }
 
@@ -401,7 +401,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.delBan(req)
                 socket.emit("delBan","ok")
-            }catch(e){console.error("fsA");console.log('44');}
+            }catch(e){console.error("fsA38");}
         });
     }
 
@@ -410,7 +410,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getBan",await funcDB.getBan())
-            }catch(e){console.error("fsA");console.log('45');}
+            }catch(e){console.error("fsA39");}
         });
     }
 
@@ -419,7 +419,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getUserIsBan",await (new User(req)).ban)
-            }catch(e){console.error("fsA");console.log('46');}
+            }catch(e){console.error("fsA40");}
         });
     }
 
@@ -428,7 +428,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getUserHasCookie",await (new User(req)).hasCookie())
-            }catch(e){console.error("fsA");console.log('47');}
+            }catch(e){console.error("fsA41");}
         });
     }
 
@@ -437,7 +437,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("useCookie",await (new User(req)).useCookie())
-            }catch(e){console.error("fsA");console.log('48');}
+            }catch(e){console.error("fsA42");}
         });
     }
 
@@ -446,7 +446,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("pyScanVersion","v28")
-            }catch(e){console.error("fsA");console.log('48');}
+            }catch(e){console.error("fsA43");}
         });
     }
 
@@ -455,7 +455,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit('getAllResultsMenu',await funcDB.getAllResultsMenu(req.w,req.j))
-            }catch(e){console.error("fsA");console.log('b24');}
+            }catch(e){console.error("fsA44");}
         });
     }
 
@@ -466,7 +466,7 @@ module.exports = class funcSocket{
             try{
                 await funcDB.setLieuInfo(req.lieu,req.w,req.j,req.h,req.ouvert,req.msg,req.title,req.texte,req.places)
                 socket.emit('setLieuInfo','ok')
-            }catch(e){console.error("fsA");console.log('15');}
+            }catch(e){console.error("fsA45");}
         })
     }
 
@@ -476,7 +476,7 @@ module.exports = class funcSocket{
             try{
                 await (new User(req.uuid)).setLieu(req.lieu,req.w,req.j,req.h,req.scan)
                 socket.emit("setUserLieu","ok")
-            }catch(e){console.error("fsA");console.log('b19');}
+            }catch(e){console.error("fsA46");}
         });
     }
 
@@ -485,7 +485,7 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 socket.emit("getUserLieu",await (new User(req.uuid)).getLieu(req.w,req.j,req.h))
-            }catch(e){console.error("fsA");console.log('49');}
+            }catch(e){console.error("fsA47");}
         });
     }
 
@@ -495,7 +495,7 @@ module.exports = class funcSocket{
             try{
                 await (new User(req.uuid)).delLieu(req.w,req.j,req.h)
                 socket.emit("delUserLieu",'ok')
-            }catch(e){console.error("fsA");console.log('50');}
+            }catch(e){console.error("fsA48");}
         });
     }
 
@@ -506,7 +506,7 @@ module.exports = class funcSocket{
                 (new User(req.uuid)).achievement = [req.event,req.value]
                 if(req.value==1) io.of("/interruption").emit("achievement",{event:req.event,uuid:req.uuid});
                 socket.emit("setAchievement","ok")
-            }catch(e){console.error("fsA");console.log('b19');}
+            }catch(e){console.error("fsA49");}
         });
     }
 
@@ -516,7 +516,7 @@ module.exports = class funcSocket{
         try{
             (new User("admin")).messageLu(req)
             socket.emit("req lu",'ok')
-        }catch(e){console.error("fsA");console.log('25');}
+        }catch(e){console.error("fsA");}
     });
 
     socket.on("add req", async req => {
@@ -524,7 +524,7 @@ module.exports = class funcSocket{
         try{
             funcDB.addMessage("admin",req.destinataire,false,req.texte,req.title,hashHour())
             socket.emit("add req",'ok')
-        }catch(e){console.error("fsA");console.log('26');}
+        }catch(e){console.error("fsA");}
     });
 
     socket.on("add news", async req => {
@@ -532,7 +532,7 @@ module.exports = class funcSocket{
         try{
             funcDB.addNews("admin",req.texte,req.title,hashHour())
             socket.emit("add news",'ok')
-        }catch(e){console.error("fsA");console.log('27');}
+        }catch(e){console.error("fsA");}
     });
 
     socket.on("add sondage", async req => {
@@ -540,14 +540,14 @@ module.exports = class funcSocket{
         try{
             funcDB.addSondage("admin",req.texte,req.title,hashHour(),req.mode,req.choix)
             socket.emit("add sondage",'ok')
-        }catch(e){console.error("fsA");console.log('28');}
+        }catch(e){console.error("fsA");}
     })
 
     socket.on("admin reqs", async req => {
         if(await user.admin == 0 || await user.admin == null) return
         try{
             socket.emit("admin reqs",await funcDB.getAllMessages())
-        }catch(e){console.error("fsA");console.log('24');}
+        }catch(e){console.error("fsA");}
     });
     });*/
 }
