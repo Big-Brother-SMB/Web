@@ -155,7 +155,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
               }else{
                 const srcs = {"Club info":"Club_Info","Matches Heads":"Matches_Heads","La pieuvre":"La_pieuvre","BDL":"BDL","Lycéens humanitaires":"humanitaire"}
                 let src = srcs[group]
-                User.sendNotifAll(title,"","/asso/"+src+"/Images/logo.jpg","asso/"+src,'/asso/post_image/'+ id+extname)
+                User.sendNotifAll(title,"image","/asso/"+src+"/Images/logo.jpg","asso/"+src)// ,'/asso/post_image/'+ id+extname
                 funcDB.setPost(id,user.uuid,group,title,'<img src="/asso/post_image/'+ id+extname +'" class="image_post">',date)
                 res.write('<script>history.back()</script>');
                 res.end();
