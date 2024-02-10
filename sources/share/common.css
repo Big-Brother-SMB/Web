@@ -522,9 +522,9 @@ input,select,textarea{
 #menuSemaine{
   border-radius: 25px;
   font-size: 2rem !important;
-  color : white;
+  color : rgb(0, 0, 0);
   border: #000000 ridge 4px;
-  background-color: #42804e;
+  background-color: #3e994d;
   padding-left: 60px;
   margin: 30px auto;
   width: 50%;
@@ -1163,13 +1163,13 @@ div.divPostAccueil{
 }
 
 div.divPostAccueil.ban{
-  background-color: rgb(146, 106, 113);
+  background-color: rgb(226, 167, 177);
 }
 div.divPostAccueil.abo{
-  background-color: orange;
+  background-color: rgb(245, 209, 89);
 }
 div.divPostAccueil.ticket{
-  background-color: rgb(124, 195, 243);
+  background-color: rgb(128, 195, 240);
 }
 
 .divPostAccueil .date, .divPostAccueil .quantity, .divPostAccueil .justificatif, .divPostAccueil .period{

@@ -931,6 +931,15 @@ export class common{
           name = ""
           break;
       }
+      let d1 = new Date(2024,1,10).getTime()
+      let d2 = new Date(2024,1,14).getTime()
+      if(d1<Date.now() && d2>Date.now()){
+        name = "/css_spe/carnaval.css"
+      }
+      console.log(d1<Date.now(), d2>Date.now())
+      console.log(d1)
+      console.log(Date.now())
+      console.log(d2)
       if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
     }catch(Exception){
       console.error(Exception)

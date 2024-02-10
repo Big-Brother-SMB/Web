@@ -305,7 +305,6 @@ module.exports = class User{
                   }
                   list.push(utilisateur)
                 }
-                console.log("zaz")
                 db.all("SELECT * FROM users LEFT JOIN ban ON users.uuid = ban.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
                   try{
                       if(data!=undefined){
