@@ -45,7 +45,7 @@ export async function init(common){
 
 
   let listDemandes = await common.socketAsync("listDemandesPerm",{w:w,j:j,h:h})
-  let listUsers = await common.socketAdminAsync('getListUser',null)
+  let listUsers = await common.socketAdminAsync('getListUserComplete',null)
 
   let listInscrit = []
 

@@ -266,11 +266,11 @@ module.exports = class User{
   }
 
   
-  /*static listUserComplete(){
+  static listUserComplete(){
     return new Promise(function(resolve, reject) {
-        db.all("SELECT * FROM users LEFT JOIN admin_permission ON users.uuid = admin_permission.uuid LEFT JOIN user_groups ON users.uuid = user_groups.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
+        db.all("SELECT users.[uuid] AS real_uuid,* FROM users LEFT JOIN admin_permission ON users.uuid = admin_permission.uuid LEFT JOIN user_groups ON users.uuid = user_groups.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
           try{
-              if(data!=undefined){                
+              if(data!=undefined){
                 let utilisateur = {}
                 let list = []
                 for(let i in data){
@@ -279,6 +279,8 @@ module.exports = class User{
                     utilisateur = { ...data[i]}
                     delete utilisateur.group2
                     utilisateur.groups = []
+                    utilisateur.uuid = utilisateur.real_uuid
+                    delete utilisateur.real_uuid
                     //admin_permission
                     utilisateur.admin_permission = {uuid:utilisateur.uuid, pass:utilisateur.pass, foyer_repas:utilisateur.foyer_repas, foyer_perm:utilisateur.foyer_perm, banderole:utilisateur.banderole, user_editor:utilisateur.user_editor, messagerie:utilisateur.messagerie, cookie:utilisateur.cookie, admin_only:utilisateur.admin_only, localisation:utilisateur.localisation, CDI:utilisateur.CDI, "Aumônerie":utilisateur["Aumônerie"], DOC:utilisateur.DOC, "Audio":utilisateur["Audio"], Tutorat:utilisateur.Tutorat}
                     delete utilisateur.pass
@@ -300,40 +302,30 @@ module.exports = class User{
                   }
                   if(data[i].group2!=null){
                     utilisateur.groups.push(data[i].group2)
-                  }else{
-                    //console.log(utilisateur.first_name + " " + utilisateur.last_name + " " + i + " " + data[i].first_name + " " + data[i].last_name)
-                    //console.log(utilisateur.uuid + " " + data[i].uuid)
                   }
+                  list.push(utilisateur)
                 }
-                list.push(utilisateur)
-
-                for(let i in data){
-                  let user = new User(data[i].uuid)
-                  data[i].ban = user.ban
-                }
-                for(let i in data){
-                  data[i].ban = await data[i].ban
-                }
-                resolve(list)
-                /*db.all("SELECT * FROM users LEFT JOIN ban ON users.uuid = ban.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
+                console.log("zaz")
+                db.all("SELECT * FROM users LEFT JOIN ban ON users.uuid = ban.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
                   try{
                       if(data!=undefined){
                         let iUser = 0
                         for(let i in data){
-                          if(list[else{
-                    resolve([])
-                }iUser].uuid != data[i].uuid){
+                          if(list[iUser].uuid != data[i].uuid){
                             iUser++
                           }
-                          list[iUser].ban.push({id:data[i].id,uuid:data[i].uuid,debut:data[i].debut,fin:data[i].fin,justificatif:data[i].justificatif})
+                          if(new Date(data[i].fin).getTime()>Date.now() && new Date(data[i].debut).getTime()<Date.now()){
+                            list[iUser].ban = {id:data[i].id,uuid:data[i].uuid,debut:data[i].debut,fin:data[i].fin,justificatif:data[i].justificatif}
+                          }
                         }
                       }
-                      
+                      resolve(list)
                   }catch(e){
                     console.error(e);
+                    console.log('d12');
+                    resolve([]);
                   }
-                })*//*
-                
+                })
               }else{
                 resolve([])
               }
@@ -345,7 +337,8 @@ module.exports = class User{
         })
         setTimeout(reject,20000)
     })
-  }*/
+  }
+  /*
   static listUserComplete(){
     return new Promise(function(resolve, reject) {
         db.all("SELECT * FROM users ORDER BY first_name ASC, last_name ASC", async (err, data) => {
@@ -374,7 +367,7 @@ module.exports = class User{
         })
         setTimeout(reject,20000)
     })
-  }
+  }*/
 
   #getInfo(key){
       let uuid=this.uuid
