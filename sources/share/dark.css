@@ -145,6 +145,10 @@ td {
   color: #FFF;
 }
 
+tbody tr td {
+  background-color: rgb(20, 20, 20);
+}
+
 input,select,textarea{
   background-color: #3f3f3f;
   color: rgb(216, 216, 216);

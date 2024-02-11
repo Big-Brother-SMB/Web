@@ -284,7 +284,11 @@ export class common{
     //---------------------------theme function---------------------------
 
     this.themeMode = this.readIntCookie("theme mode")
-    this.setThemeMode(this.themeMode)
+    if(new Date(2024,1,10).getTime()<Date.now() && new Date(2024,1,14).getTime()>Date.now()){
+      this.setThemeMode(8)
+    }else{
+      this.setThemeMode(this.themeMode)
+    }
 
     //---------------------------pass offline-------------------------------
     try {
@@ -510,7 +514,6 @@ export class common{
               common.popUp_Stop()
               common.setThemeMode(3)
               common.writeCookie("theme mode", 3)
-              common.themeMode = 3
               common.achievement["anniversaire"]=1
             })
           },false)
@@ -936,9 +939,6 @@ export class common{
           //light
           name = ""
           break;
-      }
-      if(new Date(2024,1,10).getTime()<Date.now() && new Date(2024,1,14).getTime()>Date.now()){
-        name = "/css_spe/carnaval.css"
       }
       if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
     }catch(Exception){

@@ -1075,6 +1075,10 @@ td {
     border: 1px solid #333;
 }
 
+tbody tr td {
+  background-color: white;
+}
+
 thead tr:first-child{
   font-size: 2rem;
 }
