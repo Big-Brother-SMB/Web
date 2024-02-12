@@ -418,10 +418,6 @@ export class common{
       }else{
         //---------------------------------pop-up notif ServiceWorker---------------------------------------------
         
-        if(!this.existCookie("pointNotif2") && !this.readBoolCookie("notifAccept")){
-          document.cookie = "pointNotif2=true; max-age=1209600; path=/";
-          this.delCookie("notifAccept")
-        }
         if(!this.existCookie("notifAccept")) this.writeCookie("notifAccept",true)
 
 

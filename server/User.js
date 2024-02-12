@@ -274,15 +274,14 @@ module.exports = class User{
                 let utilisateur = {}
                 let list = []
                 for(let i in data){
-                  if(utilisateur.uuid != data[i].uuid || i==0){
+                  if(utilisateur.real_uuid != data[i].real_uuid || i==0){
                     if(i!=0) list.push(utilisateur)
                     utilisateur = { ...data[i]}
                     delete utilisateur.group2
                     utilisateur.groups = []
                     utilisateur.uuid = utilisateur.real_uuid
-                    delete utilisateur.real_uuid
                     //admin_permission
-                    utilisateur.admin_permission = {uuid:utilisateur.uuid, pass:utilisateur.pass, foyer_repas:utilisateur.foyer_repas, foyer_perm:utilisateur.foyer_perm, banderole:utilisateur.banderole, user_editor:utilisateur.user_editor, messagerie:utilisateur.messagerie, cookie:utilisateur.cookie, admin_only:utilisateur.admin_only, localisation:utilisateur.localisation, CDI:utilisateur.CDI, "Aumônerie":utilisateur["Aumônerie"], DOC:utilisateur.DOC, "Audio":utilisateur["Audio"], Tutorat:utilisateur.Tutorat}
+                    utilisateur.admin_permission = {uuid:utilisateur.real_uuid, pass:utilisateur.pass, foyer_repas:utilisateur.foyer_repas, foyer_perm:utilisateur.foyer_perm, banderole:utilisateur.banderole, user_editor:utilisateur.user_editor, messagerie:utilisateur.messagerie, cookie:utilisateur.cookie, admin_only:utilisateur.admin_only, localisation:utilisateur.localisation, CDI:utilisateur.CDI, "Aumônerie":utilisateur["Aumônerie"], DOC:utilisateur.DOC, "Audio":utilisateur["Audio"], Tutorat:utilisateur.Tutorat}
                     delete utilisateur.pass
                     delete utilisateur.foyer_repas
                     delete utilisateur.foyer_perm
@@ -303,7 +302,9 @@ module.exports = class User{
                   if(data[i].group2!=null){
                     utilisateur.groups.push(data[i].group2)
                   }
-                  list.push(utilisateur)
+                }
+                for(let i in list){
+                  delete list[i].real_uuid
                 }
                 db.all("SELECT * FROM users LEFT JOIN ban ON users.uuid = ban.uuid ORDER BY first_name ASC, last_name ASC, uuid ASC;", async (err, data) => {
                   try{
