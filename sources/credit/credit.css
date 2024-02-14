@@ -3,3 +3,8 @@
     font-size: 1rem !important;
     margin-left: 10px;
 }
+
+.linkEasterEgg{
+    text-decoration: underline;
+    color: blue;
+}
