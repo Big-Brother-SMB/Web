@@ -448,7 +448,10 @@ def controle():
           socketReq('scan', [week,dayMidi,timeSlot[2],user['uuid'],True],True)
           child["scan"]=1
           refreshPassages()
-          canvas.itemconfig(image_container,image=imgOk)
+          if child["sandwich"]==1:
+            canvas.itemconfig(image_container,image=imgSandwich)
+          else:
+            canvas.itemconfig(image_container,image=imgOk)
       if not testInscrit:
         canvas.itemconfig(image_container,image=imgCroix)
         boolErreur = True
@@ -629,6 +632,7 @@ imgOk = openImage("image/ok.png")
 imgCroix = openImage("image/croix.png")
 imgUnknown = openImage("image/unknown.png")
 imgLoading = openImage("image/loading.png")
+imgSandwich = openImage("image/sandwich.png")
 imgCookie = openImage("image/cookie.png")
 imgHappyBirth = openImage("image/birthday.png")
 imgDico = {
