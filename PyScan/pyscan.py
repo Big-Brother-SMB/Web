@@ -885,6 +885,7 @@ menubar = Menu(fenetre)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
 filemenu.add_command(label="Date", command=windowDate)
+filemenu.add_command(label="Refresh", command=lambda: refresh(False))
 menubar.add_cascade(label="File", menu=filemenu)
 
 modemenu = Menu(menubar, tearoff=0)
