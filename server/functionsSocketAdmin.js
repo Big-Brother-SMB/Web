@@ -445,7 +445,7 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v31")
+                socket.emit("pyScanVersion","v32")
             }catch(e){console.error("fsA43");}
         });
     }
