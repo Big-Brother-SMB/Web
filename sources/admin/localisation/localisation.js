@@ -1,6 +1,7 @@
 const audio = new Audio("/bip.mp3");
 
 export async function init(common){
+    if(common.admin_permission["localisation"]==0) common.loadpage("/options")
     const inscB = document.getElementById("inscB")
 
     var interval;

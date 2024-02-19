@@ -21,6 +21,24 @@ export async function init(common){
     lieu = params.lieu
     document.getElementById('title').innerHTML=lieu
   }
+
+  switch(lieu){
+    case "Tutorat":
+    case "DOC":
+    case "Aumônerie":
+    case "Audio":
+    case "CDI":
+        if(common.admin_permission[lieu]==0) common.loadpage("/options")
+        break;
+    case "City stade":
+        if(common.admin_permission["City_stade"]==0) common.loadpage("/options")
+        break;
+    case "Bien-être":
+        if(common.admin_permission["Bien_être"]==0) common.loadpage("/options")
+        break;
+  }
+
+
   document.getElementById("btn_retour").classList.remove("cache")
   document.getElementById("btn_retour").setAttribute("url","/admin/lieu?lieu="+lieu)
 

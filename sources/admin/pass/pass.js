@@ -3,6 +3,8 @@ const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samed
 const audio = new Audio("/bip.mp3");
 
 export async function init(common){
+    if(common.admin_permission["pass"]==0) common.loadpage("/options")
+
     let scanB = document.getElementById("scanB")
     let inscB = document.getElementById("inscB")
     let dayP = document.getElementById("day")

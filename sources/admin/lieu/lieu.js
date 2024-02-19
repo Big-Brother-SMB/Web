@@ -11,6 +11,22 @@ export async function init(common){
         document.getElementById('title').innerHTML=lieu
     }
 
+    switch(lieu){
+        case "Tutorat":
+        case "DOC":
+        case "Aumônerie":
+        case "Audio":
+        case "CDI":
+            if(common.admin_permission[lieu]==0) common.loadpage("/options")
+            break;
+        case "City stade":
+            if(common.admin_permission["City_stade"]==0) common.loadpage("/options")
+            break;
+        case "Bien-être":
+            if(common.admin_permission["Bien_être"]==0) common.loadpage("/options")
+            break;
+    }
+
     function defaultPlaces(j,h,lieu){
         let defaultPlaces = 0
         switch(lieu){
@@ -150,7 +166,7 @@ export async function init(common){
     let divHoraires = document.createElement("div")
     divHoraires.classList.add("heure")
     let text = document.createElement("button")
-    text.className = "case perm info jour heure";
+    text.className = "case perm infpermo jour heure";
     text.innerHTML = "Tout"
     text.addEventListener("click",superSelection("all"))
     divHoraires.appendChild(text);
@@ -189,7 +205,6 @@ export async function init(common){
     }
 
     let week = common.week
-
     document.getElementById("semainePrecedente").addEventListener("click", function () {
         week = week - 1
         common.writeCookie("week", week)

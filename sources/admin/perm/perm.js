@@ -5,6 +5,8 @@ const listModePerm = ["Annuler","horaire non planifié","Sélection","Fermé","O
 
 
 export async function init(common){
+    if(common.admin_permission["foyer_perm"]==0) common.loadpage("/options")
+
     function superSelection(mode2,x2){
         const mode = mode2
         const x = x2

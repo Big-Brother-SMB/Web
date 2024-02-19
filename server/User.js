@@ -555,37 +555,38 @@ module.exports = class User{
 
   get admin_permission(){
     let uuid=this.uuid
-    return new Promise(function(resolve, reject) {
+    return new Promise(async function(resolve, reject) {
         db.get("SELECT * FROM admin_permission where uuid=?",[uuid], (err, data) => {
             try{
-                if(data!=undefined){
-                    resolve(data)
-                }else{
-                    resolve({uuid:uuid,groupe_permission:0,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:0,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2})
-                }
+              data = User.obj_groupe_permission(data,uuid)
+              resolve(data)
             }catch(e){console.error("U");;console.log('d16');;resolve([])}
         })
         setTimeout(reject,10000)
     })
   }
+
+  static obj_groupe_permission(obj,uuid){
+    if(obj==undefined || obj.groupe_permission==1){
+      //DEV
+      return {uuid:uuid,groupe_permission:1,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:0,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
+    }else if(obj.groupe_permission==2){
+      //Foyer
+      return {uuid:uuid,groupe_permission:2,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:0,cookie:2,admin_only:1,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0,City_stade:0,"Bien_être":0}
+    }else if(obj.groupe_permission==3){
+      //Perm
+      return {uuid:uuid,groupe_permission:3,pass:1,foyer_repas:1,foyer_perm:1,banderole:0,user_editor:0,messagerie:0,cookie:1,admin_only:1,localisation:2,CDI:2,Aumônerie:1,DOC:1,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
+    }else if(obj.groupe_permission==4){
+      //Responsable
+      return {uuid:uuid,groupe_permission:4,pass:0,foyer_repas:0,foyer_perm:1,banderole:1,user_editor:1,messagerie:0,cookie:1,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
+    }
+    return obj
+  }
+
   set admin_permission(obj){
     let uuid = this.uuid
     let user = this
-    if(obj==undefined) obj = {uuid:uuid,groupe_permission:0,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:0,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
-    if(obj.groupe_permission==1){
-      //DEV
-      obj = {uuid:uuid,groupe_permission:1,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:0,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
-    }else if(obj.groupe_permission==2){
-      //Foyer
-      console.log("ee")
-      obj = {uuid:uuid,groupe_permission:2,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:0,cookie:2,admin_only:1,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0,City_stade:0,"Bien_être":0}
-    }else if(obj.groupe_permission==3){
-      //Perm
-      obj = {uuid:uuid,groupe_permission:3,pass:1,foyer_repas:1,foyer_perm:1,banderole:0,user_editor:0,messagerie:0,cookie:1,admin_only:1,localisation:2,CDI:2,Aumônerie:1,DOC:1,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
-    }else if(obj.groupe_permission==4){
-      //Responsable
-      obj = {uuid:uuid,groupe_permission:4,pass:0,foyer_repas:0,foyer_perm:1,banderole:1,user_editor:1,messagerie:0,cookie:1,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
-    }
+    obj = User.obj_groupe_permission(obj,uuid)
     db.get("SELECT * FROM admin_permission where uuid=?",[uuid], async (err, data) => {
       try {
         if(await user.admin == 0 || await user.admin == null) return
@@ -593,10 +594,10 @@ module.exports = class User{
           db.run("UPDATE admin_permission SET groupe_permission=?,pass=?,foyer_repas=?,foyer_perm=?,banderole=?,user_editor=?,messagerie=?,cookie=?,admin_only=?,localisation=?,CDI=?,Aumônerie=?,DOC=?,Audio=?,Tutorat=?,City_stade=?, Bien_être=? WHERE uuid=?"
           ,[obj.groupe_permission,obj.pass,obj.foyer_repas,obj.foyer_perm,obj.banderole,obj.user_editor,obj.messagerie,obj.cookie,obj.admin_only,obj.localisation,obj.CDI,obj.Aumônerie,obj.DOC,obj.Audio,obj.Tutorat,obj.City_stade,obj.Bien_être,uuid])
         }else{
-          db.run("INSERT INTO admin_permission(uuid,groupe_permission,pass,foyer_repas,foyer_perm,banderole,user_editor,messagerie,cookie,admin_only,localisation,CDI,Aumônerie,DOC,Audio,Tutorat,City_stade,Bien_être) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+          db.run("INSERT INTO admin_permission(uuid,groupe_permission,pass,foyer_repas,foyer_perm,banderole,user_editor,messagerie,cookie,admin_only,localisation,CDI,Aumônerie,DOC,Audio,Tutorat,City_stade,Bien_être) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
           ,[uuid,obj.groupe_permission,obj.pass,obj.foyer_repas,obj.foyer_perm,obj.banderole,obj.user_editor,obj.messagerie,obj.cookie,obj.admin_only,obj.localisation,obj.CDI,obj.Aumônerie,obj.DOC,obj.Audio,obj.Tutorat,obj.City_stade,obj.Bien_être])
         }
-      }catch(e){console.error("U");;console.log('d17');;resolve({})}
+      }catch(e){console.error("U");;console.log('d17');}
     })
   }
 

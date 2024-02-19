@@ -1,6 +1,8 @@
 const nomNiveau = ["secondes","premières","terminales","adultes"]
 
 export async function init(common){
+    if(common.admin_permission["foyer_repas"]==0) common.loadpage("/options")
+    
     document.getElementById("btn_retour").classList.remove("cache")
     document.getElementById("btn_retour").setAttribute("url","/admin/midi")
 

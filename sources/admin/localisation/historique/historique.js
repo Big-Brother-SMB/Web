@@ -5,6 +5,8 @@ const listModePerm = ["Annuler","Sélection","Fermé","Ouvert à tous","Réserva
 
 
 export async function init(common){
+    if(common.admin_permission["localisation"]==0) common.loadpage("/options")
+
     document.getElementById("btn_retour").classList.remove("cache")
     document.getElementById("btn_retour").setAttribute("url","/admin/localisation")
 

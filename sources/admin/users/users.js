@@ -9,6 +9,8 @@ document.addEventListener('keyup', (event) => {
 });
 
 export async function init(common){
+    if(common.admin_permission["user_editor"]==0) common.loadpage("/options")
+
     await new Promise(r => setTimeout(r, 1000));
 
     let divClasse = document.getElementById("classe")

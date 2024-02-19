@@ -1,4 +1,6 @@
 export async function init(common){
+    if(common.admin_permission["cookie"]==0) common.loadpage("/options")
+    
     document.getElementById("ajouter abonnement").addEventListener('click',()=>{
         common.loadpage("/admin/cookie/edit?modeAbo=true")
     })

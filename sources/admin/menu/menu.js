@@ -1,4 +1,6 @@
 export async function init(common){
+    if(common.admin_permission["foyer_repas"]==0) common.loadpage("/options")
+    
     let week = common.week
     document.getElementById("semainePrecedente").addEventListener("click", function () {
         week--

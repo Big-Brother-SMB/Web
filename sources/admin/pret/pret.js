@@ -1,4 +1,6 @@
 export async function init(common){
+    if(common.admin_permission["foyer_perm"]!=2) common.loadpage("/options")
+    
     var interval;
     let barcodeLaser = '';
     const keydown = function(evt) {
