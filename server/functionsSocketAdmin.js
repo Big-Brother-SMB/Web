@@ -15,6 +15,7 @@ module.exports = class funcSocket{
             try{
                 let obj = await user.admin_permission
                 obj["admin_only"] = req
+                obj["groupe_permission"] = 0
                 user.admin_permission = obj
                 socket.emit('setMyAdminMode',"ok")
             }catch(e){console.error("fsA1");}

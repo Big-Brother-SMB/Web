@@ -337,7 +337,7 @@ export async function init(common){
                 common.popUp_Active("Permission:","",btn=>{
                     let popup = document.getElementById("popup-body")
                     let list_select = []
-                    let list_perm = {pass:1,foyer_repas:1,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2}
+                    let list_perm = {groupe_permission:0,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
                     for(const [key, value] of Object.entries(list_perm)){
                         let div = document.createElement("div")
                         div.className = "div_popup_admin_perm"
@@ -347,18 +347,27 @@ export async function init(common){
                         let select = document.createElement("select")
                         select.setAttribute("key",key)
                         list_select.push(select)
-                        for(let i=0;i<=value;i++) {
-                            let opt = document.createElement("option")
-                            if(i==0){
-                                opt.innerHTML = "Désactivé"
-                            }else if(i==1 && value==1){
-                                opt.innerHTML = "Activé"
-                            }else if(i==1){
-                                opt.innerHTML = "Lecture"
-                            }else{
-                                opt.innerHTML = "Ecriture"
+                        if("groupe_permission"==key){
+                            const liste_groupe_permission = ["Non défini","DEV","Foyer","Perm","Responsable"]
+                            for(let i in liste_groupe_permission){
+                                let opt = document.createElement("option")
+                                opt.innerHTML = liste_groupe_permission[i]
+                                select.appendChild(opt);
                             }
-                            select.appendChild(opt);
+                        }else{
+                            for(let i=0;i<=value;i++) {
+                                let opt = document.createElement("option")
+                                if(i==0){
+                                    opt.innerHTML = "Désactivé"
+                                }else if(i==1 && value==1){
+                                    opt.innerHTML = "Activé"
+                                }else if(i==1){
+                                    opt.innerHTML = "Lecture"
+                                }else{
+                                    opt.innerHTML = "Ecriture"
+                                }
+                                select.appendChild(opt);
+                            }
                         }
                         select.selectedIndex=admin_permission[key]
                         div.appendChild(p)
@@ -385,6 +394,7 @@ export async function init(common){
             })
 
             function setUser(){
+                console.log(admin_permission)
                 common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission,birthday:birthday,birthmonth:birthmonth})
             }
         }

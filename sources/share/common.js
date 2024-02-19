@@ -212,7 +212,6 @@ export class common{
     });
 
     let admin_permission = this.admin_permission
-
     const list_nav_elem = document.getElementById("mySidenav").children
     for (var i = 0; i < list_nav_elem.length; i++) {
       let perm_item = list_nav_elem[i].getAttribute("permission")

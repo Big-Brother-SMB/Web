@@ -26,7 +26,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='admin_permission'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE admin_permission(uuid UUID, pass int2, foyer_repas int2, foyer_perm int2, banderole int2, user_editor int2, messagerie int2, cookie int2, admin_only int2, localisation int2, CDI int2, Aumônerie int2, DOC int2, Audio int2, Tutorat int2)')
+        db.run('CREATE TABLE admin_permission(uuid UUID, groupe_permission int2, pass int2, foyer_repas int2, foyer_perm int2, banderole int2, user_editor int2, messagerie int2, cookie int2, admin_only int2, localisation int2, CDI int2, Aumônerie int2, DOC int2, Audio int2, Tutorat int2, City_stade int2, Bien_être int2)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='amis'", (err, data) => {
       if(data==undefined)
