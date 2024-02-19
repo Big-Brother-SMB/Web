@@ -37,6 +37,12 @@ export async function init(common){
             case "Tutorat":
                 defaultPlaces = 10
                 break;
+            case "City stade":
+                defaultPlaces = 20
+                break;
+            case "Bien-être":
+                defaultPlaces = 30
+                break;
         }
         return defaultPlaces
     }
@@ -47,12 +53,15 @@ export async function init(common){
         return async function(){
             common.popUp_Active('Set mode','attente',async (bnt)=>{
                 let select = document.createElement('select')
+                select.style.width="100%"
                 document.getElementById('popup-body').innerHTML=''
                 document.getElementById('popup-body').appendChild(select)
                 let listModePerm = []
                 switch(info[0][0].lieu){
                     case "Aumônerie":
                     case "Tutorat":
+                    case "City stade":
+                    case "Bien-être":
                     case "CDI":
                         listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
                         break;
@@ -66,7 +75,14 @@ export async function init(common){
                     opt.innerHTML = listModePerm[i]
                     select.appendChild(opt);
                 }
-        
+
+                let placeField = document.createElement("input")//document.getElementById("placeField")
+                placeField.autocomplete="off"
+                placeField.type="number"
+                placeField.placeholder="Places"
+                placeField.style="width: 230px;margin:auto;display:block;margin-top:20px"
+                document.getElementById('popup-body').appendChild(placeField)
+
                 bnt.innerHTML='Confirmer'
                 bnt.addEventListener('click',async ()=>{
                     if(mode=="j" && select.selectedIndex!=0){
@@ -75,7 +91,11 @@ export async function init(common){
                                 info[x][h].w = week
                                 info[x][h].j = x
                                 info[x][h].h = h
-                                if(info[x][h].places==null) info[x][h].places = defaultPlaces(x,h,lieu)
+                                if(placeField.value!=""){
+                                    info[x][h].places = parseInt(placeField.value)
+                                }else if(info[x][h].places==null){
+                                    info[x][h].places = defaultPlaces(x,h,lieu)
+                                }
                                 info[x][h].ouvert = select.selectedIndex-1
                                 await common.socketAdminAsync('setLieuInfo',info[x][h])
                             }
@@ -86,7 +106,11 @@ export async function init(common){
                                 info[j][x].w = week
                                 info[j][x].j = j
                                 info[j][x].h = x
-                                if(info[j][x].places==null) info[j][x].places = defaultPlaces(j,x,lieu)
+                                if(placeField.value!=""){
+                                    info[j][x].places = parseInt(placeField.value)
+                                }else if(info[j][x].places==null){
+                                    info[j][x].places = defaultPlaces(j,x,lieu)
+                                }
                                 info[j][x].ouvert = select.selectedIndex-1
                                 await common.socketAdminAsync('setLieuInfo',info[j][x])
                             }
@@ -98,7 +122,11 @@ export async function init(common){
                                     info[j][h].w = week
                                     info[j][h].j = j
                                     info[j][h].h = h
-                                    if(info[j][h].places==null) info[j][h].places = defaultPlaces(j,h,lieu)
+                                    if(placeField.value!=""){
+                                        info[j][h].places = parseInt(placeField.value)
+                                    }else if(info[j][h].places==null){
+                                        info[j][h].places = defaultPlaces(j,h,lieu)
+                                    }
                                     info[j][h].ouvert = select.selectedIndex-1
                                     await common.socketAdminAsync('setLieuInfo',info[j][h])
                                 }
@@ -212,6 +240,8 @@ export async function init(common){
                 switch(info[j][h].lieu){
                     case "Aumônerie":
                     case "Tutorat":
+                    case "City stade":
+                    case "Bien-être":
                     case "CDI":
                         switch(info[j][h].ouvert){
                             case 0:

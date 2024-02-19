@@ -123,6 +123,8 @@ export async function init(common){
                 bouton[j][h].innerHTML = msg
                 switch(info[j][h].lieu){
                     case "Aumônerie":
+                    case "City stade":
+                    case "Bien-être":
                     case "Tutorat":
                     case "CDI":
                         switch(info[j][h].ouvert){

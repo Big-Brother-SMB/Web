@@ -285,7 +285,7 @@ input,select,textarea{
   }
 
   .container{
-    min-height: max(calc(50px * 19 + 18px * 5),var(--screenH));
+    min-height: max(calc(50px * 21 + 18px * 5),var(--screenH));/*50px par image et 18 px par barre de séparation*/
   }
 }
 
