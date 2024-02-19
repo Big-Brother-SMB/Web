@@ -575,11 +575,11 @@ module.exports = class User{
       return {uuid:uuid,groupe_permission:2,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:0,cookie:2,admin_only:1,localisation:0,CDI:0,Aumônerie:0,DOC:0,Audio:0,Tutorat:0,City_stade:0,"Bien_être":0}
     }else if(obj.groupe_permission==3){
       //Perm
-      return {uuid:uuid,groupe_permission:3,pass:1,foyer_repas:1,foyer_perm:1,banderole:0,user_editor:0,messagerie:0,cookie:1,admin_only:1,localisation:2,CDI:2,Aumônerie:1,DOC:1,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
-    }else if(obj.groupe_permission==4){
+      return {uuid:uuid,groupe_permission:3,pass:1,foyer_repas:0,foyer_perm:1,banderole:0,user_editor:0,messagerie:0,cookie:0,admin_only:1,localisation:2,CDI:2,Aumônerie:1,DOC:1,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
+    }else if(obj.groupe_permission==4){//cookie:1
       //Responsable
-      return {uuid:uuid,groupe_permission:4,pass:0,foyer_repas:0,foyer_perm:1,banderole:1,user_editor:1,messagerie:0,cookie:1,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
-    }
+      return {uuid:uuid,groupe_permission:4,pass:0,foyer_repas:0,foyer_perm:1,banderole:1,user_editor:1,messagerie:0,cookie:0,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
+    }//cookie:1
     return obj
   }
 
