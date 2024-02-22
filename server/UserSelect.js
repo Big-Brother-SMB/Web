@@ -99,7 +99,6 @@ module.exports = class UserSelect{
         for(let u in this.usersList){
           let vipMax = 4
           if(this.usersList[u].score<-1 && !this.usersList[u].vip){
-            console.log(this.usersList[u].score)
             this.usersList[u].pass=-1
           }
           if(this.usersList[u].date.getTime() < dateToday.getTime()){
@@ -149,13 +148,20 @@ module.exports = class UserSelect{
         })
         
 
+        //récupère les amis éloignier des utilisateur
+        //donne la place de chaque utilisateur
+        for(let u in this.usersList){
+          this.usersList[u].amisComplete(this.usersList[u])
+          this.usersList[u].NumPlace=u
+        }
 
-        //outils de mesure de db
+
+        //-------------------------------------outils de mesure de db--------------------------------------------
         /*let usersListUUID =  this.usersList.map(x=>{ return x.uuid})
-
         for(let a=0;a<nameListUUID.length;a++){
           nameList[a].score = await ( await new User(nameList[a].uuid)).score
         }
+
         nameList.sort(function compareFn(a, b) {
           if(a.score < b.score){
               return 1
@@ -170,24 +176,29 @@ module.exports = class UserSelect{
         for(let a=0;a<nameListUUID.length;a++){
           tour++
           moy+=nameList[a].score
-          console.log(nameList[a].first_name + " " + nameList[a].last_name + " " + nameList[a].score)
+          //console.log(nameList[a].first_name + " " + nameList[a].last_name + " " + nameList[a].score)
         }
         console.log(moy/tour)
-
+        
+        nameListUUID =  nameList.map(x=>{ return x.uuid})
         for(let b=0;b<usersListUUID.length;b++){
           for(let a=0;a<nameListUUID.length;a++){
-            if(nameListUUID[a]==usersListUUID[b]) console.log(nameList[a].first_name + " " + nameList[a].last_name)
+            if(nameListUUID[a]==usersListUUID[b] && this.usersList[b].pass>-9){
+              let scoreMinimum=300
+              this.usersList[b].amisEloigner.forEach(a=>{
+                if(UserSelect.searchAmi(a).score < scoreMinimum){
+                  scoreMinimum = UserSelect.searchAmi(a).score 
+                }
+              })
+              if(scoreMinimum>nameList[a].score){
+                console.log(this.usersList[b].pass + " " + nameList[a].uuid + " " + nameList[a].first_name + " " + nameList[a].last_name + "\t" + nameList[a].score)
+                console.log(scoreMinimum)
+              }
+            } 
           }
         }*/
+        //----------------------------------------------------------------------------------------------------
 
-        
-    
-        //récupère les amis éloignier des utilisateur
-        //donne la place de chaque utilisateur
-        for(let u in this.usersList){
-          this.usersList[u].amisComplete(this.usersList[u])
-          this.usersList[u].NumPlace=u
-        }
     
         //rend prioritère les gens qui ont un pourcentage minimum de 'perMin' amis proche prioritère
         let usersList2 = []
@@ -353,6 +364,8 @@ module.exports = class UserSelect{
                   }
                 })
                 
+                //console.log(nbAmisNonInscrit,inscrits,places)
+                //if(nbAmisNonInscrit+inscrits>places) console.log("limite "+UserSelect.usersList[i].NumPlace,"\t",nbAmisNonInscrit,inscrits,places)
                 if(testScore && nbAmisNonInscrit+inscrits<=places){
                   //inscrit l'utilisateur et les amis
                   inscrits += nbAmisNonInscrit
