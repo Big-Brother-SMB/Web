@@ -147,7 +147,7 @@ module.exports = class UserSelect{
 
         for(let u in this.usersList){
           //refuse les demandes si l'utilisateur à 0 points ou moins, sauf si il est vipActif
-          if(this.usersList[u].score<=0 && !this.usersList[u].vipActif){
+          if(this.usersList[u].score<0 && !this.usersList[u].vipActif){
             this.usersList[u].pass=-1
           }
         }

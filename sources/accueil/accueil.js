@@ -62,9 +62,28 @@ export async function init(common){
             })
 
             section.appendChild(div)
-
-            
     }
+
+    let dateToday = new Date()
+    if(common.id_data.birthday == dateToday.getDate() && common.id_data.birthmonth == dateToday.getMonth()+1){
+        let div = document.createElement("div")
+        div.className="divPostAccueil anniv"
+
+        let titre = document.createElement("p")
+        titre.className="titre"
+        titre.innerHTML='Happy Birth'
+        div.appendChild(titre)
+
+
+        let justificatif= document.createElement("p")
+        justificatif.className="justificatif"
+        justificatif.innerHTML="Pour votre anniversaire, vous avez le droit à un cookie gratuit!\n\nEt vous possédé pour aujourd'hui le statut de VIP pour le repas.\nCela signifie que vous et 4 de vos amis serez prioritaire, quelle que soit vos points(même négatif).\n*si la demande possède plus de 4 amis: seule les 4 amis avec le moins de point auront le droit au statut VIP"
+        div.appendChild(justificatif)
+
+
+        section.appendChild(div)
+    }
+
     {   
         let div = document.createElement("div")
         div.className="divPostAccueil ban"
@@ -85,7 +104,6 @@ export async function init(common){
 
         section.appendChild(div)
     }
-
 
     for(const ban of cookies.ban){
         if(new Date(ban.fin).getTime()>Date.now()){

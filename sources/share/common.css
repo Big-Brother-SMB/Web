@@ -1169,6 +1169,9 @@ div.divPostAccueil{
 div.divPostAccueil.ban{
   background-color: rgb(226, 167, 177);
 }
+div.divPostAccueil.anniv{
+  background-color: rgb(245, 89, 219);
+}
 div.divPostAccueil.abo{
   background-color: rgb(245, 209, 89);
 }
