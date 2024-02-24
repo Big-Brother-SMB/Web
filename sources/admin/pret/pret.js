@@ -82,7 +82,7 @@ export async function init(common){
     })
 
 
-    var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Poker","Jeu d'échecs","Jungle Speed","Jeu de cartes"]
+    var listAct=["Arcade","Baby Foot 1","Baby Foot 2","Billard","Piano","Guitare","Batterie","Jeu de cartes","Poker","Jeu d'échecs","Jungle Speed","Focus"]
 
     function debutPret(elem){
         if (inputNameId!=null){

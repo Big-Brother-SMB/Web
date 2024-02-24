@@ -909,14 +909,18 @@ export class common{
         case 6:
           const objCacheZ = document.createElement("div")
           objCacheZ.style.backgroundColor="black"
+          objCacheZ.innerHTML="Click"
+          objCacheZ.style.padding="50vh 50vw"
+          objCacheZ.style.color="white"
           objCacheZ.style.position="fixed"
-          objCacheZ.style.height="150vh"
-          objCacheZ.style.width="150vw"
+          objCacheZ.style.height="100vh"
+          objCacheZ.style.width="100vw"
           objCacheZ.style.zIndex="150"
           objCacheZ.style.top="0"
           objCacheZ.style.transition="1s";
           document.body.appendChild(objCacheZ)
           let funcZ = ()=>{
+            objCacheZ.innerHTML=""
             objCacheZ.removeEventListener("click",funcZ)
             const sheikah = new Audio("/css_spe/sheikah.mp3");
             sheikah.play();

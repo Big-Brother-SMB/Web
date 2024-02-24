@@ -71,7 +71,7 @@ export async function init(common){
 
         let titre = document.createElement("p")
         titre.className="titre"
-        titre.innerHTML='Happy Birth'
+        titre.innerHTML='Happy Birthday'
         div.appendChild(titre)
 
 
