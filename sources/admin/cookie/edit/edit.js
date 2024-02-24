@@ -177,4 +177,8 @@ export async function init(common){
             })
         }
     }
+
+    if(common.admin_permission["cookie"]<2) document.getElementById("supp").classList.add("cache")
+    if(common.admin_permission["cookie"]<2) document.getElementById("save").classList.add("cache")
+    if(common.admin_permission["cookie"]<2) document.getElementById("read only").classList.remove("cache")
 }

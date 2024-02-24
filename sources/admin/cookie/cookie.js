@@ -4,9 +4,11 @@ export async function init(common){
     document.getElementById("ajouter abonnement").addEventListener('click',()=>{
         common.loadpage("/admin/cookie/edit?modeAbo=true")
     })
+    if(common.admin_permission["cookie"]<2) document.getElementById("ajouter abonnement").classList.add('cache')
     document.getElementById("ajouter ticket").addEventListener('click',()=>{
         common.loadpage("/admin/cookie/edit")
     })
+    if(common.admin_permission["cookie"]<2) document.getElementById("ajouter ticket").classList.add('cache')
 
 
     let listAbo = await common.socketAdminAsync('getCookieSubscription',null)
