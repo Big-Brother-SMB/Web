@@ -566,7 +566,7 @@ module.exports = class funcSocket{
     static setAchievement(socket,user){
         socket.on("setAchievement", async req => {
             try{
-                if(["zelda","apple","carnaval"].includes(req.event)){
+                if(["zelda","apple","carnaval","anniversaire"].includes(req.event)){
                     user.achievement = [req.event,req.value]
                 }
                 socket.emit("setAchievement","ok")

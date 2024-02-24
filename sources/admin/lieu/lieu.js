@@ -166,7 +166,7 @@ export async function init(common){
     let divHoraires = document.createElement("div")
     divHoraires.classList.add("heure")
     let text = document.createElement("button")
-    text.className = "case perm infpermo jour heure";
+    text.className = "case perm info jour heure";
     text.innerHTML = "Tout"
     text.addEventListener("click",superSelection("all"))
     divHoraires.appendChild(text);

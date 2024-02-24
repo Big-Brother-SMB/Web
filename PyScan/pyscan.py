@@ -500,7 +500,7 @@ def controle():
       if not boolErreur:
         birthday()
         canvas.itemconfig(image_container,image=imgHappyBirth)
-      socketReq("setAchievement",{"uuid":user["uuid"],"event":"anniversaire","value":1},True)
+      socketReq("setAchievement",{"uuid":user["uuid"],"event":"anniversaire","value":0},True)
   else:
     canvas.itemconfig(image_container,image=imgUnknown)
     name.set("")

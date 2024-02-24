@@ -255,7 +255,21 @@ export class common{
 
 
 
+  static async birthday(){
+    common.popUp_Active("Happy Birthday!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre habillage vous conviendra.<br>Penser à mettre le son.<br>Vous pouvez enlever le """cadeau""" dans "options".<br><br> Joyeux anniversaire!',(btn)=>{
+      btn.innerHTML="Récupérer le cadeau"
+      btn.addEventListener("click",()=>{
+        const son = new Audio("/css_spe/birthday.mp3");
+        son.play();
 
+        common.popUp_Stop()
+        common.setThemeMode(3)
+        common.writeCookie("theme mode", 3)
+        common.achievement["anniversaire"]=1
+        this.socket.emit("setAchievement",{event:"anniversaire",value:1})
+      })
+    },false)
+  }
 
 
 
@@ -324,6 +338,7 @@ export class common{
     let socket = this.socket
     await new Promise(function(resolve, reject) {
       socket.once("connect", () => {
+        //période spécial
         if(new Date(2024,1,10).getTime()<Date.now() && new Date(2024,1,14).getTime()>Date.now()){
           socket.emit("setAchievement",{event:"carnaval",value:1})
         }
@@ -500,18 +515,7 @@ export class common{
     socketInterruption.on("connect", () => {
       socketInterruption.on("achievement",msg => {
         if(msg.event=='anniversaire' && msg.uuid==common.uuid && common.achievement["anniversaire"]!=1){
-          common.popUp_Active("Happy Birth!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre habillage vous conviendra.<br>Penser à mettre le son.<br>Vous pouvez enlever le """cadeau""" dans "options".<br><br> Joyeux anniversaire!',(btn)=>{
-            btn.innerHTML="Récupérer le cadeau"
-            btn.addEventListener("click",()=>{
-              const son = new Audio("/css_spe/birthday.mp3");
-              son.play();
-
-              common.popUp_Stop()
-              common.setThemeMode(3)
-              common.writeCookie("theme mode", 3)
-              common.achievement["anniversaire"]=1
-            })
-          },false)
+          common.birthday()
         }
       });
     });
@@ -618,6 +622,12 @@ export class common{
       document.getElementById("banderole").style.animation = "defilement-rtl " + vitesse + "s infinite linear"
       document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
       document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px - 3.8em + 1px)")
+    }
+
+    //-------------------------------------vérifie les achievements----------------------------
+
+    if(common.achievement["anniversaire"]===0){
+      common.birthday()
     }
 
     //----------------------cacher les boutons de changement de side bar-----------------------------
