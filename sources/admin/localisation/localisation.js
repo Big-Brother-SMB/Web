@@ -1,4 +1,5 @@
 const audio = new Audio("/bip.mp3");
+const audioError = new Audio("/negative_beeps.mp3");
 
 export async function init(common){
     if(common.admin_permission["localisation"]==0) common.loadpage("/options")
@@ -117,7 +118,12 @@ export async function init(common){
                     }
                 }
                 if(test){
-                    inscB.classList.remove("cache");
+                    inputName.style.background="red"
+                    audioError.play();
+                    setTimeout(() => {
+                        inputName.style.background=null
+                    }, 1000);
+                    if(common.admin_permission["localisation"]==2) inscB.classList.remove("cache");
                 }
                 /*if(test && h!=-1){
                     listScan.push({semaine:common.actualWeek,day:j,creneau:h,uuid:uuid,lieu:lieu,scan:1})
@@ -205,7 +211,7 @@ export async function init(common){
         }else{
             document.getElementById("lieuTD").classList.add("cache")
         }
-        console.log(lieu)
+        
         listUsers.forEach(user=>{
             for(let i=0;i<listScan.length;i++){
                 const scan=listScan[i]
@@ -230,14 +236,16 @@ export async function init(common){
                     classe.innerHTML = user.classe
                     ligne.appendChild(classe)
 
-                    let supp = document.createElement("td")
-                    supp.innerHTML = "supp"
-                    supp.addEventListener("click",async ()=>{
-                        await common.socketAdminAsync('delUserLieu',{w:common.actualWeek,j:j,h:h,uuid:scan.uuid});
-                        listScan.splice(i,1)
-                        actualisationList()
-                    })
-                    ligne.appendChild(supp)
+                    if(common.admin_permission["localisation"]==2){
+                        let supp = document.createElement("td")
+                        supp.innerHTML = "supp"
+                        supp.addEventListener("click",async ()=>{
+                            await common.socketAdminAsync('delUserLieu',{w:common.actualWeek,j:j,h:h,uuid:scan.uuid});
+                            listScan.splice(i,1)
+                            actualisationList()
+                        })
+                        ligne.appendChild(supp)
+                    }
 
                     table.appendChild(ligne)
                 }

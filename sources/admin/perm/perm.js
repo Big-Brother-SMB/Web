@@ -63,13 +63,13 @@ export async function init(common){
     let text = document.createElement("button")
     text.className = "case perm info jour heure";
     text.innerHTML = "Tout"
-    text.addEventListener("click",superSelection("all"))
+    if(common.admin_permission["foyer_perm"]==2) text.addEventListener("click",superSelection("all"))
     divHoraires.appendChild(text);
     
     for (let h = 0; h < 8; h++) {
         let horaire = document.createElement("button")
         horaire.innerHTML = horaires[h]
-        horaire.addEventListener("click",superSelection("h",h))
+        if(common.admin_permission["foyer_perm"]==2) horaire.addEventListener("click",superSelection("h",h))
         horaire.className = "case perm info heure"
         divHoraires.appendChild(horaire);
 
@@ -81,7 +81,7 @@ export async function init(common){
         let text = document.createElement("button")
         text.className = "case perm info jour";
         text.innerHTML = Day[j]
-        text.addEventListener("click",superSelection("j",j))
+        if(common.admin_permission["foyer_perm"]==2) text.addEventListener("click",superSelection("j",j))
         div.appendChild(text);
 
         bouton[j] = []
@@ -210,6 +210,6 @@ export async function init(common){
     refreshDatabase();
 
     function select(j, h){
-        common.loadpage("/admin/perm/creneau?j="+j+"&h="+h+"&w="+week)
+        if(common.admin_permission["foyer_perm"]==2) common.loadpage("/admin/perm/creneau?j="+j+"&h="+h+"&w="+week)
     }
 }

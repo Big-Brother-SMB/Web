@@ -99,23 +99,24 @@ export async function init(common){
 
 
     refreshDatabase();
-
-    document.getElementById("menuSemaine").addEventListener("click",async function(){
-        let info_menu = await common.socketAsync("getMenuThisWeek",week)
-        let p= info_menu.menu
-        if (p==null || p=="" || p=="null"){
-            p = "inconnu pour le moment"
-        }
-        p=window.prompt("Menu de la semaine "+week+":",p);
-        if (p==null){
-            p=info_menu.menu
-        }
-        if (p=="" || p=="null"){
-            p = "inconnu pour le moment"
-        }
-        await common.socketAdminAsync("setMenu",{semaine:week,menu:p,self:info_menu.self})
-        document.getElementById("menuSemaine").innerHTML = p
-    })
+    if(common.admin_permission["foyer_repas"]==2){
+        document.getElementById("menuSemaine").addEventListener("click",async function(){
+            let info_menu = await common.socketAsync("getMenuThisWeek",week)
+            let p= info_menu.menu
+            if (p==null || p=="" || p=="null"){
+                p = "inconnu pour le moment"
+            }
+            p=window.prompt("Menu de la semaine "+week+":",p);
+            if (p==null){
+                p=info_menu.menu
+            }
+            if (p=="" || p=="null"){
+                p = "inconnu pour le moment"
+            }
+            await common.socketAdminAsync("setMenu",{semaine:week,menu:p,self:info_menu.self})
+            document.getElementById("menuSemaine").innerHTML = p
+        })
+    }
 }
 
 

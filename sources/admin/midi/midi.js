@@ -180,7 +180,11 @@ export async function init(common){
     }
 
     function select(j, h) {
-        common.loadpage("/admin/midi/creneau?j="+j+"&h="+h+"&w="+week)
+        if(common.admin_permission["foyer_repas"]==2){
+            common.loadpage("/admin/midi/creneau?j="+j+"&h="+h+"&w="+week)
+        }else{
+            common.loadpage("/admin/midi/liste?j="+j+"&h="+h+"&w="+week);
+        }
     }
 
     refreshDatabase();

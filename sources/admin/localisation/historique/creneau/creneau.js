@@ -36,7 +36,6 @@ export async function init(common){
     for(let i in usersList){
         listScan.forEach(scan=>{
             if(scan.uuid==usersList[i].uuid){
-                console.log(usersList[i])
                 affList.push(usersList[i])
                 const index = affList.length - 1
                 let ligne = document.createElement("tr")
@@ -72,17 +71,18 @@ export async function init(common){
         col= document.createElement("td")
         col.innerHTML=new String(user.code_barre)
         user.ligne.appendChild(col)
+        if(common.admin_permission["localisation"]==2){
+            let colS= document.createElement("td")
+            colS.innerHTML="suppr"
+            colS.addEventListener("click",async ()=>{
+                await common.socketAdminAsync('delUserLieu',{w:w,j:j,h:h,uuid:user.uuid});
+                user.demande=null
 
-        let colS= document.createElement("td")
-        colS.innerHTML="suppr"
-        colS.addEventListener("click",async ()=>{
-            await common.socketAdminAsync('delUserLieu',{w:w,j:j,h:h,uuid:user.uuid});
-            user.demande=null
-
-            affList.splice([...table.children].indexOf(user.ligne),1)
-            table.removeChild(user.ligne)
-            user.ligne=null
-        })
-        user.ligne.appendChild(colS)
+                affList.splice([...table.children].indexOf(user.ligne),1)
+                table.removeChild(user.ligne)
+                user.ligne=null
+            })
+            user.ligne.appendChild(colS)
+        }
     }
 }

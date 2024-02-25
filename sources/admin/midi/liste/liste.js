@@ -18,8 +18,16 @@ export async function init(common){
     }
 
 
+
+
+
+
     document.getElementById("btn_retour").classList.remove("cache")
-    document.getElementById("btn_retour").setAttribute("url","/admin/midi/creneau?j="+j+"&h="+h+"&w="+w)
+    if(common.admin_permission["foyer_repas"]==2){
+        document.getElementById("btn_retour").setAttribute("url","/admin/midi/creneau?j="+j+"&h="+h+"&w="+w)
+    }else{
+        document.getElementById("btn_retour").setAttribute("url","/admin/midi")
+    }
 
     let table = document.getElementById("tbody")
 
@@ -103,17 +111,19 @@ export async function init(common){
         col.innerHTML=new String(user.code_barre)
         user.ligne.appendChild(col)
 
-        let colS= document.createElement("td")
-        colS.innerHTML="suppr"
-        colS.addEventListener("click",async ()=>{
-            await common.socketAdminAsync('delDorI',[w,j,h,user.uuid])
-            user.demande=null
+        if(common.admin_permission["foyer_midi"]==2){
+            let colS= document.createElement("td")
+            colS.innerHTML="suppr"
+            colS.addEventListener("click",async ()=>{
+                await common.socketAdminAsync('delDorI',[w,j,h,user.uuid])
+                user.demande=null
 
-            affList.splice([...table.children].indexOf(user.ligne),1)
-            table.removeChild(user.ligne)
-            user.ligne=null
-        })
-        user.ligne.appendChild(colS)
+                affList.splice([...table.children].indexOf(user.ligne),1)
+                table.removeChild(user.ligne)
+                user.ligne=null
+            })
+            user.ligne.appendChild(colS)
+        }
     }
 
 
@@ -127,6 +137,13 @@ export async function init(common){
 
     let demande=document.getElementById("demande")
     let inscrit=document.getElementById("inscrit")
+
+    if(common.admin_permission["foyer_midi"]!=2){
+        search.classList.add("cache")
+        demande.classList.add("cache")
+        inscrit.classList.add("cache")
+    }
+
     demande.addEventListener("click",async function(){
         if(utilisateursNames.indexOf(search.value)!=-1){
             let user = usersList[utilisateursNames.indexOf(search.value)]

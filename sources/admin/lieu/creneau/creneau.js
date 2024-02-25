@@ -22,21 +22,23 @@ export async function init(common){
     document.getElementById('title').innerHTML=lieu
   }
 
+  let permission=true
   switch(lieu){
-    case "Tutorat":
-    case "DOC":
-    case "Aumônerie":
-    case "Audio":
-    case "CDI":
-        if(common.admin_permission[lieu]==0) common.loadpage("/options")
-        break;
-    case "City stade":
-        if(common.admin_permission["City_stade"]==0) common.loadpage("/options")
-        break;
-    case "Bien-être":
-        if(common.admin_permission["Bien_être"]==0) common.loadpage("/options")
-        break;
+      case "Tutorat":
+      case "DOC":
+      case "Aumônerie":
+      case "Audio":
+      case "CDI":
+          if(common.admin_permission[lieu]<2) permission=false
+          break;
+      case "City stade":
+          if(common.admin_permission["City_stade"]<2) permission=false
+          break;
+      case "Bien-être":
+          if(common.admin_permission["Bien_être"]<2) permission=false
+          break;
   }
+  if(permission==false) common.loadpage("/options")
 
 
   document.getElementById("btn_retour").classList.remove("cache")

@@ -11,21 +11,23 @@ export async function init(common){
         document.getElementById('title').innerHTML=lieu
     }
 
+    let permission=true
     switch(lieu){
         case "Tutorat":
         case "DOC":
         case "Aumônerie":
         case "Audio":
         case "CDI":
-            if(common.admin_permission[lieu]==0) common.loadpage("/options")
+            if(common.admin_permission[lieu]==0) permission=false
             break;
         case "City stade":
-            if(common.admin_permission["City_stade"]==0) common.loadpage("/options")
+            if(common.admin_permission["City_stade"]==0) permission=false
             break;
         case "Bien-être":
-            if(common.admin_permission["Bien_être"]==0) common.loadpage("/options")
+            if(common.admin_permission["Bien_être"]==0) permission=false
             break;
     }
+    if(permission==false) common.loadpage("/options")
 
     function defaultPlaces(j,h,lieu){
         let defaultPlaces = 0
@@ -92,7 +94,7 @@ export async function init(common){
                     select.appendChild(opt);
                 }
 
-                let placeField = document.createElement("input")//document.getElementById("placeField")
+                let placeField = document.createElement("input")
                 placeField.autocomplete="off"
                 placeField.type="number"
                 placeField.placeholder="Places"
@@ -168,13 +170,13 @@ export async function init(common){
     let text = document.createElement("button")
     text.className = "case perm info jour heure";
     text.innerHTML = "Tout"
-    text.addEventListener("click",superSelection("all"))
+    if(permission==true) text.addEventListener("click",superSelection("all"))
     divHoraires.appendChild(text);
     
     for (let h = 0; h < 9; h++) {
         let horaire = document.createElement("button")
         horaire.innerHTML = horaires[h]
-        horaire.addEventListener("click",superSelection("h",h))
+        if(permission==true) horaire.addEventListener("click",superSelection("h",h))
         horaire.className = "case perm info heure"
         divHoraires.appendChild(horaire);
 
@@ -186,7 +188,7 @@ export async function init(common){
         let text = document.createElement("button")
         text.className = "case perm info jour";
         text.innerHTML = Day[j]
-        text.addEventListener("click",superSelection("j",j))
+        if(permission==true) text.addEventListener("click",superSelection("j",j))
         div.appendChild(text);
 
         bouton[j] = []
@@ -333,6 +335,6 @@ export async function init(common){
     refreshDatabase();
 
     function select(j, h){
-        common.loadpage("/admin/lieu/creneau?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
+        if(permission==true) common.loadpage("/admin/lieu/creneau?j="+j+"&h="+h+"&w="+week+"&lieu="+lieu)
     }
 }
