@@ -6,10 +6,4 @@ export async function init(common){
           window.location.href = "/accueil";
         }, 1000);
     })
-
-    document.getElementById("troll").addEventListener("click",async ()=>{
-        let time = 3600*1;
-        document.cookie = "troll=" + (Date.now()+(time*1000)) + "; max-age=" + time + "; path=/";
-        window.location.href = "/accueil";
-    })
 }   

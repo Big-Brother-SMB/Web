@@ -2,6 +2,7 @@
 
 body{
     background-image: url("/asso/Matches_Heads/Images/logo.jpg");
+    background-size: unset;
 }
 
 footer{

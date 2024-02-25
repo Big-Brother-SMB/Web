@@ -1,0 +1,40 @@
+body{
+    background-image: url('/css_spe/carnaval/carnaval.jpg');
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  @font-face {
+    font-family: 'carnaval';
+    src: url('/css_spe/carnaval/carnaval.ttf');
+  }
+
+  h1,#mySidenav a p{
+    font-family: 'carnaval' !important;
+    font-weight: bold !important;
+    line-height: 150%!important;
+  }
+
+  #mySidenav{
+    background: linear-gradient(135deg,#00b7ff 1%,#f864e4) !important;
+  }
+
+  header{
+    background: linear-gradient(130deg,#6405cf 10%,#89f311) !important;
+  }
+
+  h1,h2,b, #main p, #semaine, label, .loading-text{
+    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+    color: rgb(0, 0, 0);
+  }
+
+  body{
+    backdrop-filter: blur(2px);
+  }
+  
+
+  #main .hautpage p{
+
+    background-color: beige;
+  }

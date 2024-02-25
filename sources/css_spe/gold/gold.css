@@ -1,0 +1,115 @@
+  @font-face {
+    font-family: 'Kate';
+    src: url('/css_spe/gold/SpartanMB-Black.otf');
+  }
+
+  @font-face {
+    font-family: 'valkyrie';
+    src: url('/css_spe/gold/valkyrie.bold-extended-italic.ttf');
+  }
+
+  h1,h2,.nav_btn p{
+    text-transform: uppercase;
+    font-family: 'Kate';
+  }
+  @media screen and (min-width: 1001px) {
+    .nav_btn p{
+      font-size: 17px !important;
+    }
+  }
+
+  p,.btn,#main p, #semaine, label, .loading-text, .case{
+    font-family: 'valkyrie';
+    color: rgb(0, 0, 0);
+  }
+
+  .divPostAccueil .titre{
+    text-shadow: initial !important;
+  }
+
+  .case.heure{
+    background: radial-gradient(#373d42 1%,#000000);
+    color: white;
+  }
+
+  .case.jour{
+    background: radial-gradient(#26619C  20%,#4082c4 );;
+    color: white;
+  }
+
+
+  .case.default{
+    background-color: rgba(180, 180, 180, 0.473);
+  }
+  
+  .case.red{
+    background: radial-gradient(#861a22 20%,#c92731);
+    color: white;
+  }
+  
+  .case.yellow{
+    background: radial-gradient(#f0c300 20%,#e0cd77);
+  }
+  
+  .case.green{
+    background: radial-gradient(#01D758 20%,#005a0f);
+  }
+  
+  .case.blue{
+    background-color: #78abbd;
+  }
+  
+  .case.demande{
+    background: radial-gradient(#0131B4 70%,#3a535c);
+    color: white;
+  }
+
+  #menuSemaine{
+    background-image: url('/css_spe/gold/ardoise.jpg');
+    background-size: cover;
+    color: #fcf6f0 !important;
+  }
+  
+
+  #disconnect{
+    font-family: 'valkyrie';
+  }
+
+
+  body{
+    background-image: url('/css_spe/gold/gold_background.jpg');
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  #mySidenav{
+    background: linear-gradient(135deg,#a3af60 1%,#c2d679) !important;
+  }
+
+  #mySidenav a{
+    color: rgb(80, 80, 80);
+    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+  }
+  
+  #mySidenav a:hover{
+    color: rgb(0, 0, 0);
+  }
+  
+
+  header{
+    background: linear-gradient(130deg,#550751 10%,#960d8a) !important;
+  }
+
+  body{
+    backdrop-filter: blur(2px);
+  }
+  
+
+  #main .hautpage p, .listAmis{
+    background-color: rgb(224, 224, 162);
+  }
+
+  .ami,input,select,.autocomplete-list div,.btn{
+    background: radial-gradient(gold,rgb(129, 123, 86));
+  }

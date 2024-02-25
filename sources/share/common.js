@@ -259,7 +259,7 @@ export class common{
     common.popUp_Active("Happy Birthday!!!",'Voici un """cadeau""" de la part des développeurs, nous espérons que notre habillage vous conviendra.<br>Penser à mettre le son.<br>Vous pouvez enlever le """cadeau""" dans "options".<br><br> Joyeux anniversaire!',(btn)=>{
       btn.innerHTML="Récupérer le cadeau"
       btn.addEventListener("click",()=>{
-        const son = new Audio("/css_spe/birthday.mp3");
+        const son = new Audio("/css_spe/birthday/birthday.mp3");
         son.play();
 
         common.popUp_Stop()
@@ -608,10 +608,6 @@ export class common{
       }
     }
 
-    if(window.location.pathname.includes("/admin")) common.delCookie('troll') //troll
-
-
-
     //--------------------------banderole--------------------------------
 
     let banderole = await common.socketAsync("getBanderole",null)
@@ -905,6 +901,7 @@ export class common{
       let name = ""
       common.themeMode = themeMode
       switch(themeMode){
+        default:
         case 0:
           //light
           name = ""
@@ -912,8 +909,14 @@ export class common{
         case 1:
           name = "/share/dark.css"
           break;
+        case 2:
+          name = "/css_spe/gold/gold.css"
+          break;
         case 3:
-          name = "/css_spe/birthday.css"
+          name = "/css_spe/birthday/birthday.css"
+          break;
+        case 4:
+          name = "/css_spe/troll/troll.css"
           break;
         case 6:
           const objCacheZ = document.createElement("div")
@@ -931,7 +934,7 @@ export class common{
           let funcZ = ()=>{
             objCacheZ.innerHTML=""
             objCacheZ.removeEventListener("click",funcZ)
-            const sheikah = new Audio("/css_spe/sheikah.mp3");
+            const sheikah = new Audio("/css_spe/zelda/sheikah.mp3");
             sheikah.play();
             objCacheZ.style.backgroundColor="#0000";
             setTimeout(() => {
@@ -939,14 +942,10 @@ export class common{
             }, 1000);
           }
           objCacheZ.addEventListener("click",funcZ)
-          name = "/css_spe/zelda.css"
+          name = "/css_spe/zelda/zelda.css"
           break;
         case 8:
-          name = "/css_spe/carnaval.css"
-          break;
-        default:
-          //light
-          name = ""
+          name = "/css_spe/carnaval/carnaval.css"
           break;
       }
       if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll

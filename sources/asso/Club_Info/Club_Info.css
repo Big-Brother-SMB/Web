@@ -2,6 +2,7 @@
 body{
     background-image: url("/asso/Club_Info/Images/fond.png");
     background-color: white;
+    background-size: unset;
 }
 
 footer{
