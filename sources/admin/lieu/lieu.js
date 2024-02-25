@@ -11,6 +11,10 @@ export async function init(common){
         document.getElementById('title').innerHTML=lieu
     }
 
+    if(lieu=="CDI"){
+        document.getElementById("esidoc").classList.remove("cache")
+    }
+
     let permission=true
     switch(lieu){
         case "Tutorat":
@@ -84,7 +88,9 @@ export async function init(common){
                         listModePerm = ["Annuler","horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
                         break;
                     case "DOC":
-                    case "Audio":
+                    case "Audio":    if(lieu=="CDI"){
+                        document.getElementById("esidoc").classList.remove("cache")
+                    }
                         listModePerm = ["Annuler","horaire non planifié","Ouvert","Occupé","Alumni","Fermé","Vacances"]
                         break;
                 }
