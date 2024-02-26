@@ -22,7 +22,7 @@ h1,h2,b, #main p, #semaine, label, .btn, input, .loading-text, .case{
   font-family: 'birthday' !important;
   font-weight: bold !important;
   line-height: 150%!important;
-  color: rgb(255, 255, 255);
+  color: black;
 }
 
 .case{

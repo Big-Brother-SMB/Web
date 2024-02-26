@@ -63,7 +63,10 @@ export async function init(common){
 
         let justificatif= document.createElement("p")
         justificatif.className="justificatif"
-        justificatif.innerHTML="Pour votre anniversaire, vous avez le droit à un cookie gratuit!\n\nEt vous possédé pour aujourd'hui le statut de VIP pour le repas.\nCela signifie que vous et 4 de vos amis serez prioritaire, quelle que soit vos points(même négatif).\n*si la demande possède plus de 4 amis: seule les 4 amis avec le moins de point auront le droit au statut VIP"
+        justificatif.innerHTML="Pour votre anniversaire, vous avez le droit à un cookie gratuit !"
+        +"<br>En plus, vous avez, pour la journée, le statut VIP pour le repas."
+        +"<br>Cela signifie que vous et 4 de vos amis seront prioritaires, quelles que soient vos quantités de points (même en points négatifs)"
+        +"<br>*Si la demande possède plus de 4 amis, seuls les 4 amis avec le moins de points auront le statut VIP"
         div.appendChild(justificatif)
 
 

@@ -111,7 +111,7 @@ export async function init(common){
         col.innerHTML=new String(user.code_barre)
         user.ligne.appendChild(col)
 
-        if(common.admin_permission["foyer_midi"]==2){
+        if(common.admin_permission["foyer_repas"]==2){
             let colS= document.createElement("td")
             colS.innerHTML="suppr"
             colS.addEventListener("click",async ()=>{
@@ -138,7 +138,7 @@ export async function init(common){
     let demande=document.getElementById("demande")
     let inscrit=document.getElementById("inscrit")
 
-    if(common.admin_permission["foyer_midi"]!=2){
+    if(common.admin_permission["foyer_repas"]!=2){
         search.classList.add("cache")
         demande.classList.add("cache")
         inscrit.classList.add("cache")

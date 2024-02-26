@@ -49,12 +49,6 @@ h1{
     color: white !important;
   }
   
-  .case.default{
-    background-image: url("https://media.tenor.com/s3XRC53jcCsAAAAC/chicken-funny.gif");
-    background-size: cover;
-    background-position: center;
-  }
-  
   .case.red{
     background-image: url("https://media.tenor.com/AxrRSmCOI3oAAAAC/dead-chicken.gif");
     background-size: cover;
@@ -67,12 +61,6 @@ h1{
   
   .case.green{
     background-image: url("https://media.tenor.com/VlesaJV17SkAAAAC/brent-rambo-not-bad.gif");
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .case.blue{
-    background-image: url("https://media.tenor.com/EXzxIwrld0YAAAAC/chicken-bro-chicken.gif");
     background-size: cover;
     background-position: center;
   }

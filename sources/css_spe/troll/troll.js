@@ -12,12 +12,6 @@ export async function init(common){
     document.body.appendChild(video)
     let prepath = "/accueil"
 
-    video.addEventListener("pause",()=>{
-        video.play()
-    })
-    audio.addEventListener("pause",()=>{
-        audio.play()
-    })
     document.addEventListener("click",async ()=>{
         if(window.location.pathname.includes(prepath)) return
         prepath = "/" + window.location.pathname.split("/")[1]
@@ -50,6 +44,9 @@ export async function init(common){
                 source.setAttribute("src","/css_spe/troll/chicken.mp4")
             }else if(window.location.pathname.includes("/amis")){
                 source.setAttribute("src","/css_spe/troll/kiwi.mp4")
+            }else if(window.location.pathname.includes("/lieu")){
+                document.body.style.backgroundImage="url('/css_spe/troll/scooby.gif')"
+                document.body.style.backgroundSize="cover"
             }else if(window.location.pathname.includes("/messagerie")){
                 source.setAttribute("src","/css_spe/troll/schnappi.mp4")
             }else if(window.location.pathname.includes("/credit")){

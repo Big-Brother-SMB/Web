@@ -41,7 +41,12 @@ export async function init(common){
     try{
         if(info_horaire.ouvert!=5){
             if(my_demande.DorI==true){
-                document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/ok.png")
+                if(common.themeMode==2){
+                    document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/gold.png")
+                }else{
+                    document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/ok.png")
+                }
+                
                 if(my_demande.sandwich!=0 && my_demande.sandwich!=null && my_demande.sandwich!=undefined){
                     document.getElementById("circle-pass-img").setAttribute("src","/assets/pass/sandwich.png")
                 }
