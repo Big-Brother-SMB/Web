@@ -30,36 +30,6 @@ export class common{
   static get actualWeek(){
     return actualWeek
   }
-  /*static get day(){
-    return ["Lundi", "Mardi","Jeudi","Vendredi"];
-  }
-  static get dayMer(){
-    return ["Lundi", "Mardi","Mercredi","Jeudi","Vendredi"];
-  }
-  static get allDay(){
-    return ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
-  }
-  
-  static get dayWithMer(){
-    return [0,1,"err",2,3]
-  }
-  static get dayNum(){
-    return [0,1,2,3]
-  }
-  static get dayNumMer(){
-    return [0,1,2,3,5];
-  }
-
-  static get dayLowerCase(){
-    return ["lundi", "mardi","jeudi","vendredi"];
-  }
-  static get month(){
-    return ["janvier","fevrier","mars","avril","mai","juin","juillet","aout","septembre","octobre","novembre","decembre"];
-  }
-  static get nomNiveau(){
-    return ["secondes","premières","terminales","adultes"]
-  }*/
-
   //---------------------charge corps de la page------------------
 
   static async loadpage(url,notSaveHistory){
@@ -444,7 +414,7 @@ export class common{
           +"<p style='margin-right:7%;padding-top:25px;font-size: 1.5rem;'>Les notifications vous permettront de rester informé·e des <b>demandes de repas déposées</b>, des <b>sondages</b>, ainsi que de <b>l'acceptation</b> ou du <b>refus</b> de votre demande.</p></div>"
           +"<p style='text-align:center;font-size: 2.2rem;'><b>Recevez les notifications du site</b></p>"
           ,(btn)=>{
-            let bloquerBoucle = 5
+            let bloquerBoucle = 0
             btn.style.background ="red"
             const bloquerBoucleFunc = function(){
               btn.innerHTML="Bloquer(" + bloquerBoucle + ")"
@@ -634,6 +604,7 @@ export class common{
       }
     }
     if(this.admin == 2){
+      common.setThemeMode(common.themeMode)
       let btns = document.getElementsByClassName("obj_user")
       for (var i=0; i<btns.length; i++) {
         btns[i].classList.add("cache")
@@ -916,7 +887,11 @@ export class common{
           name = "/css_spe/birthday/birthday.css"
           break;
         case 4:
+          if(document.location.pathname.includes("admin") || (document.location.pathname.includes("options") && common.admin)) break;
           name = "/css_spe/troll/troll.css"
+          import("/css_spe/troll/troll.js").then(async (module) => {
+            await module.init(common)
+          })
           break;
         case 6:
           const objCacheZ = document.createElement("div")
@@ -948,7 +923,7 @@ export class common{
           name = "/css_spe/carnaval/carnaval.css"
           break;
       }
-      if(common.readCookie("troll")==null) document.getElementById("css").href = name;//troll
+      document.getElementById("css").href = name;
     }catch(Exception){
       console.error(Exception)
     }
@@ -1180,7 +1155,6 @@ export class common{
 //démarre le script qui correspond à la page
 import(document.location.pathname+'/'+document.location.pathname.split('/').pop()+".js").then(async (module) => {
   await common.startUp()
-  if(common.readCookie("troll")!=null) import('/troll/troll.js') //troll
   await module.init(common)
   return
 })

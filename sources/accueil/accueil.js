@@ -20,44 +20,30 @@ export async function init(common){
 
     const section = document.getElementById('cookies')
 
-    //troll
-    if(common.readCookie("troll")!=null){
+    if(common.themeMode==4){
             let div = document.createElement("div")
             div.className="divPostAccueil abo"
             div.style.backgroundColor = "#AAAA00"
 
 
-            let time = document.createElement("p")
-            time.className="titre"
-            time.style.color="#0000FF"
-            div.appendChild(time)
+            let texte = document.createElement("p")
+            texte.className="titre"
+            texte.style.color="#0000FF"
+            div.appendChild(texte)
 
-            const loop = ()=>{
-                if(window.location.pathname=="/accueil"){
-                    let sec = Math.floor((common.readIntCookie("troll")-Date.now())/1000)
-                    let min = Math.floor(sec/60)
-                    sec-=min*60
-                    let hour = Math.floor(min/60)
-                    min-=hour*60
-                    time.innerHTML = 'Se finit dans: ' + hour +
-                    ":" + (String(min).length == 1?"0":"") + min +
-                    ":" + (String(sec).length == 1?"0":"") + sec
-                    setTimeout(loop,500)
-                }
-            }
-            loop()
+            texte.innerHTML = "Poisson d'Avril"
 
             let rick = document.createElement("button")
             rick.className="btn"
-            rick.innerHTML="supprimer troll"
+            rick.innerHTML="--->click<---"
             rick.setAttribute("id","rick_roll")
+            rick.style.marginBottom="20px"
 
             div.appendChild(rick)
 
             rick.addEventListener("click",async ()=>{
-                document.getElementById("background-video-src").setAttribute("src","/troll/rick.mp4")
-                document.getElementById("background-video").load();
-                new Promise((res)=>setTimeout(res,200))
+                document.getElementById("background-video-src").setAttribute("src","/css_spe/troll/rick.mp4")
+                await document.getElementById("background-video").load();
                 document.getElementById("background-video").play()
             })
 
@@ -86,7 +72,7 @@ export async function init(common){
 
     {   
         let div = document.createElement("div")
-        div.className="divPostAccueil ban"
+        div.className="divPostAccueil group"
 
         let titre = document.createElement("p")
         titre.className="titre"

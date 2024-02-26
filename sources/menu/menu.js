@@ -120,38 +120,18 @@ export async function init(common){
 
 function remplace_img(){			// on ajoute un écouteur sur l'evenement d'erreur des images
     if(this!=undefined)  this.removeEventListener("error",remplace_img);			// /!\ important: on annule l'écouteur sur l'erreur dans le cas ou l'image de remplacement n'existe pas non plus, sinon on aura un boucle infinie, ce qui plantera compltement la page.
-    switch (Math.floor(Math.random() * 10)) {
+    switch (Math.floor(Math.random() * 3)) {
         case 0:
-            document.getElementById("menu_self").setAttribute("src", "https://media.tenor.com/2roX3uxz_68AAAAM/cat-space.gif");
+            document.getElementById("menu_self").setAttribute("src", "/assets/banane.gif");
             break;
         case 1:
-            document.getElementById("menu_self").setAttribute("src", "https://media.tenor.com/_4YgA77ExHEAAAAd/rick-roll.gif");
+            document.getElementById("menu_self").setAttribute("src", "/assets/goose.gif");
             break;
         case 2:
-            document.getElementById("menu_self").setAttribute("src", "https://media.tenor.com/lb5IqGp_7EMAAAAM/trollfacelmaaaao.gif");
-            break;
-        case 3:
-            document.getElementById("menu_self").setAttribute("src", "https://media.tenor.com/a3XdWRycefwAAAAC/obelix-faim.gif");
-            break;
-        case 4:
-            document.getElementById("menu_self").setAttribute("src", "https://media.discordapp.net/attachments/1030198323455479880/1146418932610256976/image2.gif");
-            break;
-        case 5:
-            document.getElementById("menu_self").setAttribute("src", "https://media.discordapp.net/attachments/1030198323455479880/1146418852549378128/image4.gif?width=561&height=561");
-            break;
-        case 6:
-            document.getElementById("menu_self").setAttribute("src", "https://media.discordapp.net/attachments/1030198323455479880/1146418768201916416/image0.gif?width=561&height=561");
-            break;
-        case 7:
-            document.getElementById("menu_self").setAttribute("src", "https://media.tenor.com/d3BEY2_2-NQAAAAC/patrick-star-spongebob.gif");
-            break;
-        case 8:
-            document.getElementById("menu_self").setAttribute("src", "https://www.gifservice.fr/img/gif-vignette-large/e681285368c9753932e7a85a2424b733/364519-les-poules-ete-france-3-chaines-tv-france-multi-media.gif");
-            break;
-        case 9:
-            document.getElementById("menu_self").setAttribute("src", "https://i.pinimg.com/originals/b7/1a/05/b71a05b0eda23af5d181baaa4671016a.gif");
+            document.getElementById("menu_self").setAttribute("src", "/assets/sheep.gif");
             break;
         default:
-            document.getElementById("menu_self").setAttribute("src", "https://media.tenor.com/_4YgA77ExHEAAAAd/rick-roll.gif"); 
+            document.getElementById("menu_self").setAttribute("src", "/assets/not_found.png");
+            break
     }      
 }

@@ -16,11 +16,12 @@ header{
 }
 
 #mySidenav.user{
-  background-image: url("https://media.tenor.com/zq0HbB84i6UAAAAC/stars-glitch.gif");
-  background-size: 200px;
+  background-image: url("/css_spe/troll/poisson.png") ;
+  background-size: contain;
 }
 #mySidenav.user a{
   color: #000000;
+  text-shadow: -2px 0 rgb(255, 255, 255), 0 2px rgb(255, 255, 255), 2px 0 rgb(255, 255, 255), 0 -2px rgb(255, 255, 255);
 }
 
 

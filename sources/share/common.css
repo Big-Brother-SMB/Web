@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'source-sans-pro';
+  src: url('/share/source-sans-pro.regular.ttf');
+}
+
 :root{
   /* sidebar min-height: hauteur de la page moins header et banderole*/
   --screenH : calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px);
@@ -15,7 +20,7 @@ html {
 }
 
 body{
-  font-family: 'Ubuntu';
+  font-family: 'source-sans-pro';
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -49,7 +54,7 @@ h1 {
   color: white;
   margin-top: 0.2em;
   margin-bottom: auto;
-  font-family: 'Ubuntu';
+  font-family: 'source-sans-pro';
   text-align:left;
 }
 
@@ -148,7 +153,7 @@ input,select,textarea{
 }
 
 #mySidenav.user{
-  background: linear-gradient(#42804e 50%,#76a17f);
+  background: linear-gradient(#019ccd 50%,#1ec1f3);
 }
 #mySidenav.admin{
   background: linear-gradient(#750c0c 50%,#cc3737);
@@ -695,7 +700,7 @@ vert{
 
 label{
   font-size: 1.7rem;
-  font-family: 'Ubuntu';
+  font-family: 'source-sans-pro';
 }
 
 input[type="radio"]{
@@ -1155,7 +1160,7 @@ textarea{
 }
 
 div.divPostAccueil{
-  border: 10px ridge #32a1ce;
+  border: 5px solid #000000;
   border-radius: 50px;
   width: 90%;
   margin: 15px auto;
@@ -1166,35 +1171,46 @@ div.divPostAccueil{
   text-overflow: ellipsis;
 }
 
+div.divPostAccueil.group{
+  background-color: #EC0967;
+}
 div.divPostAccueil.ban{
-  background-color: rgb(226, 167, 177);
+  background-color: #c20f26;
 }
 div.divPostAccueil.anniv{
-  background-color: rgb(245, 89, 219);
+  background: linear-gradient(90deg,#FF66C4 20%,#FFDE59);
 }
 div.divPostAccueil.abo{
-  background-color: rgb(245, 209, 89);
+  background-color: #FFF42F;
 }
 div.divPostAccueil.ticket{
-  background-color: rgb(128, 195, 240);
+  background-color: #0EAEEF;
 }
+
+
+.divPostAccueil .titre{
+  font-weight: bold;
+}
+.divPostAccueil.group .titre, .divPostAccueil.ban .titre{
+  color: black!important;
+}
+div.divPostAccueil.anniv .titre, .divPostAccueil.abo .titre, .divPostAccueil.ticket .titre{
+  color: rgb(206, 0, 0)!important;
+}
+
 
 .divPostAccueil .date, .divPostAccueil .quantity, .divPostAccueil .justificatif, .divPostAccueil .period{
   text-align: left !important;
   margin-left: 30px;
 }
-.divPostAccueil .titre{
-  color: rgb(206, 0, 0)!important;
-  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
-  font-weight: bold;
-}
+
 .divPostAccueil .date, .divPostAccueil .quantity, .divPostAccueil .justificatif{
   color: #000000 !important;
-  font-size: 0.7rem !important;
+  font-size: 1.3rem !important;
 }
 .divPostAccueil .period{
   color: #000000 !important;
-  font-size: 0.5rem !important;
+  font-size: 0.8rem !important;
   font-style: oblique;
 }
 @media screen and (min-width: 1001px) {

@@ -1,6 +1,6 @@
   @font-face {
-    font-family: 'Kate';
-    src: url('/css_spe/gold/SpartanMB-Black.otf');
+    font-family: 'OS';
+    src: url('/css_spe/gold/OleoScript-Regular.ttf');
   }
 
   @font-face {
@@ -8,23 +8,19 @@
     src: url('/css_spe/gold/valkyrie.bold-extended-italic.ttf');
   }
 
-  h1,h2,.nav_btn p{
+  h1,h2,.nav_btn p,#popup-header{
     text-transform: uppercase;
-    font-family: 'Kate';
+    font-family: 'OS';
   }
   @media screen and (min-width: 1001px) {
     .nav_btn p{
-      font-size: 17px !important;
+      font-size: 20px !important;
     }
   }
 
-  p,.btn,#main p, #semaine, label, .loading-text, .case{
+  p,.btn,#main p, #semaine, label, .loading-text, .case, #popup-option button{
     font-family: 'valkyrie';
     color: rgb(0, 0, 0);
-  }
-
-  .divPostAccueil .titre{
-    text-shadow: initial !important;
   }
 
   .case.heure{
@@ -110,6 +106,25 @@
     background-color: rgb(224, 224, 162);
   }
 
-  .ami,input,select,.autocomplete-list div,.btn{
+  .ami,input,select,.autocomplete-list div,.btn, #popup-option button{
     background: radial-gradient(gold,rgb(129, 123, 86));
   }
+
+
+
+
+
+
+
+
+  #popup-header {
+    background: linear-gradient(130deg,#550751 10%,#960d8a) !important;;
+  }
+
+  #popup{
+    background-image: url('/css_spe/gold/gold_background.jpg');
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  
