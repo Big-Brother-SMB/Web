@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html><head>
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"></script><script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script><link rel="icon" href="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/../docs/images/pyxel_icon_64x64.ico"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.css">
-</head>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script>
+  </head>
 
-<body>
-  <pyxel-run root="./jeu" name="jeu.py" gamepad="enabled"></pyxel-run>
-  <div id="pyxel-screen" class="default-pyxel-screen">
-    <canvas id="canvas"></canvas>
-    <img id="pyxel-prompt" src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/../docs/images/click_to_start_114x14.png" style="min-width: 315px;">
-  </div>
-</body></html>
+  <body>
+    <pyxel-play
+      root="."
+      name="jeu.pyxapp"
+      gamepad="enabled"
+    ></pyxel-play>
+  </body>
+</html>
