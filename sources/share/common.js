@@ -316,14 +316,15 @@ export class common{
             common.popUp_Active("1e Avril"
             ,"Tu veux un super cadeau?"
             ,(btn)=>{
+              common.writeCookie("testTroll",false,86400*2)
               btn.innerHTML="OUI"
               btn.addEventListener("click",()=>{
-                common.writeCookie("testTroll","true",86400*2)
+                common.writeCookie("testTroll",true,3600)
                 common.setThemeMode(4)
-                common.writeCookie("theme mode",4)
-                location.reload()
               },{once:true})
             },true)
+          }else if(common.readBoolCookie("testTroll")){
+            common.setThemeMode(4)
           }
         }
 
