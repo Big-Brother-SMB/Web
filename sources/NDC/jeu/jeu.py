@@ -95,16 +95,16 @@ class player:
         x = self.x
         y = self.y
         v=(1/100)*self.vitesse
-        if pyxel.btn(pyxel.KEY_S) and tilemap.pget(x,pyxel.ceil(y+v))==(1,1):
+        if (pyxel.btn(pyxel.KEY_S) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN)) and tilemap.pget(x,pyxel.ceil(y+v))==(1,1):
             self.y+=v
             self.sprit=3
-        if pyxel.btn(pyxel.KEY_Z) and tilemap.pget(x,pyxel.floor(y-v))==(1,1):
+        if (pyxel.btn(pyxel.KEY_Z) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_UP)) and tilemap.pget(x,pyxel.floor(y-v))==(1,1):
             self.y-=v
             self.sprit=2
-        if pyxel.btn(pyxel.KEY_Q) and tilemap.pget(pyxel.floor(x-v),y)==(1,1):
+        if (pyxel.btn(pyxel.KEY_Q) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT)) and tilemap.pget(pyxel.floor(x-v),y)==(1,1):
             self.x-=v
             self.sprit=1
-        if pyxel.btn(pyxel.KEY_D) and tilemap.pget(pyxel.ceil(x+v),y)==(1,1):
+        if (pyxel.btn(pyxel.KEY_D) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT)) and tilemap.pget(pyxel.ceil(x+v),y)==(1,1):
             self.x+=v
             self.sprit=0
     
@@ -129,6 +129,8 @@ class Jeu:
     def __init__(self):
         pyxel.init(320, 320, title="Jeu", capture_scale=4)
         pyxel.load("images.pyxres")
+        pyxel.playm(0,tick=0,loop=True)
+        pyxel.playm(0,tick=0,loop=True)
         pyxel.mouse(True)
         self.list_use_item=[]
         self.list_item_sol=[]
@@ -142,12 +144,12 @@ class Jeu:
         pyxel.run(self.update, self.draw)
 
     def use_item(self):
-        if pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) and self.player.pierre>0:
+        if (pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_B)) and self.player.pierre>0:
             self.player.pierre-=1
             mouse_x = (pyxel.mouse_x/2552)*320/8
             mouse_y = (pyxel.mouse_y/2552)*320/8
             self.list_use_item.append(use_item(0,self.player.x,self.player.y,mouse_x*8-self.player.x,mouse_y*8-self.player.y))
-        if pyxel.btn(pyxel.KEY_SPACE) and self.player.tnt>0:
+        if (pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_A)) and self.player.tnt>0:
             self.player.tnt-=1
             self.list_use_item.append(use_item(1,self.player.x,self.player.y,0,0))
 
@@ -208,7 +210,7 @@ class Jeu:
         self.player.pathFinding=pathFinding
 
     def update(self):
-        if pyxel.btnp(pyxel.KEY_ESCAPE):
+        if pyxel.btn(pyxel.KEY_ESCAPE):
             quit()
         if not self.player.is_dead():
             time = pyxel.frame_count/30
@@ -233,6 +235,7 @@ class Jeu:
                     self.player.vie-=mob.attack
             for item in self.list_item_sol:
                 if abs(item.x-self.player.x)<1 and abs(item.y-self.player.y)<1:
+                    pyxel.play(2,6)
                     if item.type==0:
                         self.player.pierre+=30
                         self.score+=10
@@ -254,7 +257,8 @@ class Jeu:
                                 break
                 else:
                     if item.countdown<=0:
-                        pyxel.circb(item.x+4, item.y+4, 8, 6)
+                        pyxel.play(2,4)
+                        pyxel.play(3,5)
                         for mob in self.list_mob:
                             distance=pyxel.sqrt((item.x-mob.x)**2+(item.y-mob.y)**2)
                             if distance<10:            
@@ -262,6 +266,9 @@ class Jeu:
                         del self.list_use_item[self.list_use_item.index(item)]
                     else:
                         item.countdown-=1
+        else:
+            pyxel.stop(0)
+            pyxel.stop(1)
     
     def draw(self):
         pyxel.cls(9)
