@@ -149,7 +149,7 @@ class Jeu:
             mouse_x = (pyxel.mouse_x/2552)*320/8
             mouse_y = (pyxel.mouse_y/2552)*320/8
             self.list_use_item.append(use_item(0,self.player.x,self.player.y,mouse_x*8-self.player.x,mouse_y*8-self.player.y))
-        if (pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_A)) and self.player.tnt>0:
+        if (pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_A)) and self.player.tnt>0:
             self.player.tnt-=1
             self.list_use_item.append(use_item(1,self.player.x,self.player.y,0,0))
 
@@ -296,7 +296,7 @@ class Jeu:
         pyxel.text(0, 40, "mob:"+str(len(self.list_mob)), 0)
         pyxel.text(0, 48, "kill:"+str(self.kill), 0)
         if self.player.is_dead():
-            pyxel.text(320/2-8*4-4, 320/2-4, "game over", 0)
+            pyxel.text(320/2-18, 320/2-3, "game over", 0)
         
 
 Jeu()
