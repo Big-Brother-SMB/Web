@@ -45,8 +45,7 @@ export async function init(common){
             }else if(window.location.pathname.includes("/amis")){
                 source.setAttribute("src","/css_spe/troll/kiwi.mp4")
             }else if(window.location.pathname.includes("/lieu")){
-                document.body.style.backgroundImage="url('/css_spe/troll/scooby.gif')"
-                document.body.style.backgroundSize="cover"
+                
             }else if(window.location.pathname.includes("/messagerie")){
                 source.setAttribute("src","/css_spe/troll/schnappi.mp4")
             }else if(window.location.pathname.includes("/credit")){

@@ -74,6 +74,12 @@ export async function init(common){
         case "Tutorat":
           info.places = 10
           break;
+        case "City stade":
+            defaultPlaces = 20
+            break;
+        case "Bien-être":
+            defaultPlaces = 30
+            break;
     }
     await common.socketAdminAsync('setLieuInfo',info)
   }
@@ -85,6 +91,8 @@ export async function init(common){
       case "Aumônerie":
       case "Tutorat":
       case "CDI":
+      case "City stade":
+      case "Bien-être":
           listModePerm = ["horaire non planifié","Ouvert","Réservé","Fermé","Vacances"]
           break;
       case "DOC":
