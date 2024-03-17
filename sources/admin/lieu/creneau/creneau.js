@@ -75,11 +75,11 @@ export async function init(common){
           info.places = 10
           break;
         case "City stade":
-            defaultPlaces = 20
-            break;
+          info.places = 20
+          break;
         case "Bien-être":
-            defaultPlaces = 30
-            break;
+          info.places = 30
+          break;
     }
     await common.socketAdminAsync('setLieuInfo',info)
   }
