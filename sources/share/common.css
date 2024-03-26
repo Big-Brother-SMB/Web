@@ -237,7 +237,6 @@ input,select,textarea{
   }
 
   #mySidenav{
-    align-content: center;
     height: 0;
     width: 100vw;
     max-height: calc(var(--screenH));

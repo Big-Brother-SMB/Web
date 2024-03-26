@@ -13,6 +13,14 @@ export async function init(common){
     let prepath = "/accueil"
 
     document.addEventListener("click",async ()=>{
+        if(common.readBoolCookie("son") || window.location.pathname.includes("/accueil")){
+            audio.muted = false
+            video.muted = false
+        }else{
+            audio.muted = true
+            video.muted = true
+        }
+
         if(window.location.pathname.includes(prepath)) return
         prepath = "/" + window.location.pathname.split("/")[1]
 
@@ -44,8 +52,6 @@ export async function init(common){
                 source.setAttribute("src","/css_spe/troll/chicken.mp4")
             }else if(window.location.pathname.includes("/amis")){
                 source.setAttribute("src","/css_spe/troll/kiwi.mp4")
-            }else if(window.location.pathname.includes("/lieu")){
-                
             }else if(window.location.pathname.includes("/messagerie")){
                 source.setAttribute("src","/css_spe/troll/schnappi.mp4")
             }else if(window.location.pathname.includes("/credit")){
@@ -57,6 +63,8 @@ export async function init(common){
                 document.body.style.backgroundImage="url('/css_spe/troll/toothless-dragon.gif')"
                 document.body.style.backgroundSize="cover"
                 loopDragon()
+            }else if(window.location.pathname.includes("/lieu?lieu=DOC")){
+                source.setAttribute("src","/css_spe/troll/culte_pol.mp4")
             }
         }
         try{

@@ -43,6 +43,16 @@ export async function init(common){
         }
     }
 
+
+    let son = document.getElementById("son")
+    if(1 == common.achievement["troll"]){
+        son.parentElement.parentElement.classList.remove("cache")
+    }
+    son.checked = common.readBoolCookie("son")
+    son.addEventListener("change", function () {
+        common.writeCookie("son", this.checked)
+    })
+
     document.getElementById("voirToken").addEventListener("click", async function () {
         common.popUp_Active("Token",common.key,(btn)=>{
             btn.addEventListener("click",()=>{

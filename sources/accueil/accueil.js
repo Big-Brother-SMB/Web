@@ -35,13 +35,14 @@ export async function init(common){
 
             let rick = document.createElement("button")
             rick.className="btn"
-            rick.innerHTML="--->click<---"
+            rick.innerHTML="--->clic<---"
             rick.setAttribute("id","rick_roll")
             rick.style.marginBottom="20px"
 
             div.appendChild(rick)
 
             rick.addEventListener("click",async ()=>{
+                document.getElementById("background-video-src").muted = false
                 document.getElementById("background-video-src").setAttribute("src","/css_spe/troll/rick.mp4")
                 await document.getElementById("background-video").load();
                 document.getElementById("background-video").play()

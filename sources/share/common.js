@@ -316,12 +316,21 @@ export class common{
             common.popUp_Active("1e Avril"
             ,"Tu veux un super cadeau?"
             ,(btn)=>{
-              common.writeCookie("testTroll",false,86400*2)
-              btn.innerHTML="OUI"
+              btn.innerHTML="NON"
               btn.addEventListener("click",()=>{
+                common.writeCookie("testTroll",false,86400*2)
+                common.popUp_Stop()
+              },{once:true})
+
+              let btn2 = document.createElement("button")
+              btn2.innerHTML="OUI"
+              btn2.style.background ="green"
+              btn2.addEventListener("click",()=>{
                 common.writeCookie("testTroll",true,3600)
                 common.setThemeMode(4)
+                common.popUp_Stop()
               },{once:true})
+              btn.parentNode.appendChild(btn2)
             },true)
           }else if(common.readBoolCookie("testTroll")){
             common.setThemeMode(4)
