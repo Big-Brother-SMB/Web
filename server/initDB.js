@@ -22,7 +22,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='achievement'", (err, data) => {
       if(data==undefined)
-        db.run('CREATE TABLE achievement(uuid UUID,gold bool,anniversaire bool,troll bool,poule bool,zelda bool,apple bool,carnaval bool)')
+        db.run('CREATE TABLE achievement(uuid UUID,gold bool,anniversaire bool,troll bool,zelda bool,carnaval bool)')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='admin_permission'", (err, data) => {
       if(data==undefined)
