@@ -31,7 +31,7 @@ export async function init(common){
             texte.style.color="#0000FF"
             div.appendChild(texte)
 
-            texte.innerHTML = "Poisson d'Avril"
+            texte.innerHTML = "Un petit cadeau"
 
             let rick = document.createElement("button")
             rick.className="btn"

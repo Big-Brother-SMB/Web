@@ -15,6 +15,7 @@ const { generateKey } = require('crypto');
 const { table } = require('console');
 const { promisify } = require('util');
 const formidable = require('formidable');
+const { exec } = require('child_process');
 const parseString = require('xml2js').parseString;
 
 const User = require('./server/User.js')
@@ -349,6 +350,19 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   io.of("/achievement").on("connection", async (socket) => {})
   
   async function loop(){
+    let now = new Date()
+    if(now.getDate()==1 && now.getHours()==0 && now.getMinutes()==0){
+      exec('sh ./ssl_renew.sh', (err, stdout, stderr) => {
+        if (err) {
+          console.error("ERROR")
+          console.error(err)
+          return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+      });
+    }
+
     //Subscription Cookie
     const weekMS = 604800000
     let listCookie = await funcDB.getSubscriptionCookie()
@@ -376,7 +390,6 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
     }
 
     //auto algo
-    let now = new Date()
     let w = funcDate.actualWeek
     let j = now.getDay()
     if(j==1 || j==2)
