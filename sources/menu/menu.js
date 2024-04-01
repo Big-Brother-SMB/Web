@@ -88,7 +88,7 @@ export async function init(common){
                 const index = i
                 listElem.push(elem)
                 elem.addEventListener("click",async function(){
-                    common.writeCookie("sondageMenuVu",true)
+                    common.writeCookie("sondageMenuVu",true,43200)
                     let btn = document.getElementById("nav_btn_menu")
                     if(btn!=null) btn.classList.remove('notif')
                     if(!listSondage[menu][0].classList.contains("opacity")){

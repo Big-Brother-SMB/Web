@@ -267,11 +267,7 @@ export class common{
     //---------------------------theme function---------------------------
 
     this.themeMode = this.readIntCookie("theme mode")
-    if(new Date(2024,1,10).getTime()<Date.now() && new Date(2024,1,14).getTime()>Date.now()){
-      this.setThemeMode(8)
-    }else{
-      this.setThemeMode(this.themeMode)
-    }
+    this.setThemeMode(this.themeMode)
 
     //---------------------------pass offline-------------------------------
     try {
@@ -311,7 +307,26 @@ export class common{
         //période spécial
         if(new Date(2024,1,10).getTime()<Date.now() && new Date(2024,1,14).getTime()>Date.now()){
           socket.emit("setAchievement",{event:"carnaval",value:1})
+          this.setThemeMode(8)
         }
+
+        if(new Date(2024,3,1).getTime()<Date.now() && new Date(2024,3,3).getTime()>Date.now()){
+          socket.emit("setAchievement",{event:"troll",value:1})
+          if(!common.existCookie("testTroll")){
+            common.popUp_Active("1e Avril"
+            ,"Tu veux un super cadeau?"
+            ,(btn)=>{
+              btn.innerHTML="OUI"
+              btn.addEventListener("click",()=>{
+                common.writeCookie("testTroll","true",86400*2)
+                common.setThemeMode(4)
+                common.writeCookie("theme mode",4)
+                location.reload()
+              },{once:true})
+            },true)
+          }
+        }
+
         resolve(null)
       });
     })
@@ -614,9 +629,12 @@ export class common{
 
 
   //cookie
-  static writeCookie(key, value){
-    if(key=="week" || key=="sondageMenuVu"){
-      document.cookie = key + "=" + value + "; max-age=43200; path=/";
+  static writeCookie(key, value, time){
+    if(key=="week"){
+      time=43200
+    }
+    if(time!=undefined){
+      document.cookie = key + "=" + value + "; max-age=" + time + "; path=/";
     }else{
       document.cookie = key + "=" + value + "; expires=Mon, 06 Oct 2100 00:00:00 GMT; path=/";
     }

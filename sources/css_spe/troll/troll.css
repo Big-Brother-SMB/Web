@@ -49,24 +49,18 @@ h1{
     color: white !important;
   }
   
-  .case.red{
-    background-image: url("https://media.tenor.com/AxrRSmCOI3oAAAAC/dead-chicken.gif");
-    background-size: cover;
-    background-position: center;
-  }
-  
   .case.yellow{
     background: linear-gradient(135deg,#fffc3c 20%,#818020);
   }
   
   .case.green{
-    background-image: url("https://media.tenor.com/VlesaJV17SkAAAAC/brent-rambo-not-bad.gif");
+    background-image: url("/css_spe/troll/ok.gif");
     background-size: cover;
     background-position: center;
   }
   
   .case.demande{
-    background-image: url("https://media.tenor.com/4kVtSIKi46YAAAAC/chicken-starbucks.gif");
+    background-image: url("/css_spe/troll/poule.gif");
     background-size: cover;
     background-position: center;
   }
