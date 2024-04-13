@@ -17,6 +17,7 @@ const { promisify } = require('util');
 const formidable = require('formidable');
 const { exec } = require('child_process');
 const parseString = require('xml2js').parseString;
+const fetch = require("node-fetch");
 
 const User = require('./server/User.js')
 const funcDB = require('./server/functionsDB.js')
@@ -377,52 +378,25 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         
         const fileName = user.uuid + ".jpg";
 
-        const fetch = require("node-fetch");
 
         // Create the directory if it does not exist
         if (!fs.existsSync(dirPath)) {
           fs.mkdirSync(dirPath);
         }
 
-        // Use fetch to get the image data as a buffer
-        fetch(imageURL)
+        fetch(imageURL,{agent: new https.Agent({rejectUnauthorized: false,})})
           .then((response) => response.buffer())
           .then((buffer) => {
             // Write the buffer to a file
             fs.writeFile(path.join(dirPath, fileName), buffer, (err) => {
               if (err) {
                 console.error(err);
-              } else {
-                console.log("Image downloaded successfully");
               }
             });
           })
           .catch((error) => {
             console.error(error);
           });
-
-
-
-        /*
-        const axios = require('axios');
-
-        let response
-        try {
-
-          response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-        } catch (error) {
-          console.error(error)
-          console.error(imageUrl)
-          console.error(imageName)
-        }
-        fs.writeFile(imageName, response.data, (err) => {
-          if (err) {
-            throw err;
-          }
-          
-          console.log('Image downloaded successfully!');
-        });*/
-
       })
     }
 
