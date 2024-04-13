@@ -1,6 +1,17 @@
-        <div class="autocomplete">
-          <input autocomplete="off" id="search" type="text" placeholder="Rechercher un utilisateur">
+        <section id="sectionVerify" class="cache">
+          <p>
+            À compléter : (appuyez pour ouvrir)
+          </p>
+          <div id="listVerify" class="listDemandes"></div>
+        </section>
+        <div>
+          <div class="autocomplete">
+            <input autocomplete="off" id="search" type="text" placeholder="Rechercher un utilisateur">
+          </div>
+          <img id="icon" src="https://lh3.googleusercontent.com/a/default-user=s96-c" style="height: 10vw;margin-top: 15px;border: 2px solid rgb(0, 0, 0);border-radius: 5px;">
         </div>
+
+        
 
         <br>
 
@@ -10,11 +21,16 @@
           <p>Nom : <input autocomplete="off" id="name_prenom" type="text" placeholder="Prénom" style="width: 300px;"> <input autocomplete="off" id="name_nom" type="text" placeholder="Nom" style="width: 300px;"></p>
           <p>Anniversaire : <input autocomplete="off" id="birthday" type="number" placeholder="Jour" style="width: 230px;"> <input autocomplete="off" id="birthmonth" type="number" placeholder="Mois" style="width: 230px;"></p>
           <p>Classe : <select id="classe"></select></p>
-          <p>Code carte : <input autocomplete="off" id="code carte" type="number" placeholder="XXXXX">
+          <p>
+            Verify: <input id="verify" type="checkbox">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Code carte : <input autocomplete="off" id="code carte" type="number" placeholder="XXXXX">
+          </p>
+          <p>
             Admin: <input id="admin" type="checkbox">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button id="admin_perm" class="btn">Permission</button>
+          </p>
           <p id="info code barre" style="color: red;"></p>
         </section>
 

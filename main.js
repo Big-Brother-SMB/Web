@@ -156,7 +156,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
               }else{
                 const srcs = {"Club info":"Club_Info","Matches Heads":"Matches_Heads","La pieuvre":"La_pieuvre","BDL":"BDL","Lycéens humanitaires":"humanitaire"}
                 let src = srcs[group]
-                User.sendNotifAll(title,"image","/asso/"+src+"/Images/logo.jpg","asso/"+src)// ,'/asso/post_image/'+ id+extname
+                User.sendNotifAll(title,null,'/asso/post_image/'+ id+extname,"asso/"+src)// "/asso/"+src+"/Images/logo.jpg"
                 funcDB.setPost(id,user.uuid,group,title,'<img src="/asso/post_image/'+ id+extname +'" class="image_post">',new Date(date))
                 res.write('<script>history.back()</script>');
                 res.end();
@@ -191,7 +191,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
             res.end();
           }
         } catch (e) {
-          console.error(e);console.log('1');;
+          console.error(e);
+          console.error("error:main 1");
           res.writeHead(301, { "Location" : address+"index.html?err=Erreur inconnue"});
           res.end();
         }
@@ -216,7 +217,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           res.writeHead(200, {'Content-Type': mimeTypesFunc(extName)});
           res.end(file);
         }
-      }catch(e){console.error(e);console.log('2');}
+      }catch(e){console.error(e);console.error("error:main 2");}
     }
   }).listen(3000);
   
@@ -344,24 +345,87 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.getScoreAmi(socket,user)
         funcSocket.setAchievement(socket,user)
       }
-    } catch (e) {console.error(e);console.log('34');}
+    } catch (e) {console.error(e);console.error("error:main 3");}
   });
   
   io.of("/achievement").on("connection", async (socket) => {})
   
   async function loop(){
+    //renouveler certif ssl
     let now = new Date()
     if(now.getDate()==1 && now.getHours()==0 && now.getMinutes()==0){
       exec('sh ./ssl_renew.sh', (err, stdout, stderr) => {
         if (err) {
-          console.error("ERROR")
           console.error(err)
+          console.error("error:main 4");
           return;
         }
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
       });
     }
+
+    //download images de profil
+    if(now.getHours()==2 && now.getMinutes()==0){
+      let users_list = await User.listUserComplete()
+      const dirPath = path.join(__dirname,"sources","profile_picture")
+      if(!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
+      users_list.forEach(async (user)=>{
+        const fs = require('fs');
+
+        const imageURL = user.picture!=null && user.picture!="" ? user.picture : "https://lh3.googleusercontent.com/a/default-user=s96-c";
+        
+        const fileName = user.uuid + ".jpg";
+
+        const fetch = require("node-fetch");
+
+        // Create the directory if it does not exist
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath);
+        }
+
+        // Use fetch to get the image data as a buffer
+        fetch(imageURL)
+          .then((response) => response.buffer())
+          .then((buffer) => {
+            // Write the buffer to a file
+            fs.writeFile(path.join(dirPath, fileName), buffer, (err) => {
+              if (err) {
+                console.error(err);
+              } else {
+                console.log("Image downloaded successfully");
+              }
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+
+
+        /*
+        const axios = require('axios');
+
+        let response
+        try {
+
+          response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        } catch (error) {
+          console.error(error)
+          console.error(imageUrl)
+          console.error(imageName)
+        }
+        fs.writeFile(imageName, response.data, (err) => {
+          if (err) {
+            throw err;
+          }
+          
+          console.log('Image downloaded successfully!');
+        });*/
+
+      })
+    }
+
 
     //Subscription Cookie
     const weekMS = 604800000
@@ -438,7 +502,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
             }
           })
         }
-      }catch(e){console.error(e);console.log('d6');;resolve(null)}
+      }catch(e){console.error("error:main 6");resolve(null)}
     })
 
     setTimeout(loop, 60000);

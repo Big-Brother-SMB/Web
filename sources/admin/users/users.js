@@ -13,6 +13,10 @@ export async function init(common){
 
     await new Promise(r => setTimeout(r, 1000));
 
+    let divVerify = document.getElementById("listVerify")
+    let sectionVerify = document.getElementById("sectionVerify")
+
+    let profile_picture = document.getElementById("icon")
     let divClasse = document.getElementById("classe")
     let dName_prenom = document.getElementById("name_prenom")
     let dName_nom = document.getElementById("name_nom")
@@ -27,6 +31,7 @@ export async function init(common){
     let valScore = document.getElementById("score value")
     let nameScore = document.getElementById("score name")
     let infoCodeCarte = document.getElementById("info code barre")
+    let verifyBox = document.getElementById("verify")
     let codeCarte = document.getElementById("code carte")
     let adminBox = document.getElementById("admin")
 
@@ -61,6 +66,7 @@ export async function init(common){
         addPrio.removeEventListener("click",fu5)
         connect.removeEventListener("click",fu6)
         admin_perm.removeEventListener("click",fu7)
+        verifyBox.removeEventListener("change",fu8)
     }
 
     let fuNameAndBirthday=function(){return}
@@ -71,15 +77,48 @@ export async function init(common){
     let fu5=function(){return}
     let fu6=function(){return}
     let fu7=function(){return}
+    let fu8=function(){return}
 
     let utilisateursNames = []
-    let listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
+    let listUsers = []
 
-    listUsers.forEach(function(child) {
-        utilisateursNames.push(common.name(child.first_name,child.last_name))
-    })
-    console.log(utilisateursNames)
-    common.autocomplete(document.getElementById("search"), utilisateursNames,async function(){
+    async function refreshListUsers() {
+        listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
+        utilisateursNames = []
+        let usersVerify = []
+        listUsers.forEach(function(child) {
+            utilisateursNames.push(common.name(child.first_name,child.last_name))
+            if(child.verify != 1) usersVerify.push(child)
+        })
+        console.log(utilisateursNames)
+
+        
+        if(usersVerify.length == 0){
+            sectionVerify.classList.add("cache")
+        }else{
+            sectionVerify.classList.remove("cache")
+            divVerify.innerHTML = ""
+            usersVerify.forEach((child)=>{
+                let btn = document.createElement("button")
+                const name = common.name(child.first_name,child.last_name)
+                btn.innerHTML = name
+                btn.className = "ami"
+                btn.addEventListener("click", function() {
+                    document.getElementById("search").value = name
+                    search()
+                });
+                divVerify.appendChild(btn);
+            })
+        }
+        common.autocomplete(document.getElementById("search"), utilisateursNames, search ,true);
+    }
+
+    refreshListUsers()
+    
+    
+
+
+    async function search(){
         stop()
         let utilisateur = listUsers[utilisateursNames.indexOf(document.getElementById("search").value)]
         let codeBar = utilisateur.code_barre
@@ -90,6 +129,8 @@ export async function init(common){
         let birthday = utilisateur.birthday
         let birthmonth = utilisateur.birthmonth
         let admin_permission = utilisateur.admin_permission
+
+        profile_picture.setAttribute("src","/profile_picture/" + utilisateur.uuid + ".jpg")
 
         if(utilisateursNames.indexOf(common.name(utilisateur.first_name,utilisateur.last_name)) == -1){
             document.getElementById("info").innerHTML = "cet utilisateur n'existe pas"
@@ -261,13 +302,22 @@ export async function init(common){
 
             
 
-            if(utilisateur.admin==1 || utilisateur.admin==2){
+            if(utilisateur.admin==1){
                 adminBox.checked=true
             } else {
                 adminBox.checked=false
             }
             adminBox.addEventListener("change", fu3=function() {
                 setUser()
+            })
+            if(utilisateur.verify==1){
+                verifyBox.checked=true
+            } else {
+                verifyBox.checked=false
+            }
+            verifyBox.addEventListener("change", fu8= async function() {
+                await setUser()
+                refreshListUsers()
             })
 
             codeCarte.value = codeBar
@@ -395,16 +445,11 @@ export async function init(common){
                 })
             })
 
-            function setUser(){
+            async function setUser(){
                 console.log(admin_permission)
-                common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission,birthday:birthday,birthmonth:birthmonth})
+                await common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,verify:verifyBox.checked,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission,birthday:birthday,birthmonth:birthmonth})
             }
         }
-        listUsers = common.nameOrder(await common.socketAdminAsync('getListUserComplete',null))
-        utilisateursNames=[]
-        listUsers.forEach(function(child) {
-            utilisateursNames.push(common.name(child.first_name,child.last_name))
-        })
-    },true);
-
+        refreshListUsers()
+    }
 }

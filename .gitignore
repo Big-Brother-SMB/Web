@@ -1,4 +1,5 @@
 sources/asso/post_image
+sources/profile_picture
 *.xlsx
 key.json
 code.json
