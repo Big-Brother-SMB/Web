@@ -16,6 +16,8 @@ export async function init(common){
     
     let listUsers = await common.socketAsync('getListUserName',null)
 
+    let liste_export = []
+
 
     
 
@@ -96,9 +98,28 @@ export async function init(common){
         })
         if(child.date){
             ami.innerHTML+=" ("+ common.getDateHour(new Date(child.date)) +")"
+            liste_export.push([child.last_name,child.first_name,common.getDateHour(new Date(child.date)),child.justificatif])
             TO.appendChild(ami);
         } else{
             TA.appendChild(ami);
         }
+    })
+
+    document.getElementById("export").addEventListener("click",function download_csv_file() {
+        let csv = 'Nom,Prénom,Date,Justificatif\n';
+        liste_export.forEach(function(row) {
+                for(let i=0;i<row.length;i++){
+                    row[i] = row[i].replaceAll(",", ".");
+                }
+                csv += row.join(',');  
+                csv += "\n";  
+        });
+
+        var hiddenElement = document.createElement('a');  
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.download = 'Historique_des_cookies.csv';
+        hiddenElement.target = '_blank';
+        hiddenElement.click();
+        //a class="obj_admin cache" href="/database.db?" download="save.db" id="download"
     })
 }

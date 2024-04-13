@@ -388,12 +388,24 @@ export async function init(common){
             admin_perm.addEventListener("click",fu7=async function(event){
                 common.popUp_Active("Permission:","",btn=>{
                     let popup = document.getElementById("popup-body")
+                    let popup_div = document.createElement("div")
+                    popup_div.classList.add("grid")
+
+                    let attention = document.createElement("p")
+                    attention.innerHTML = 'Si "groupe_permission" n\'est pas sur "Non défini" alors les autres permissions ne seront pas modifiable.'
+                    attention.style.color="red"
+                    popup.appendChild(attention)
+
+                    popup.appendChild(popup_div)
+
+
+
                     let list_select = []
                     let list_perm = {groupe_permission:0,pass:1,foyer_repas:2,foyer_perm:2,banderole:1,user_editor:1,messagerie:1,cookie:2,admin_only:1,localisation:2,CDI:2,Aumônerie:2,DOC:2,Audio:2,Tutorat:2,City_stade:2,"Bien_être":2}
                     for(const [key, value] of Object.entries(list_perm)){
                         let div = document.createElement("div")
                         div.className = "div_popup_admin_perm"
-                        popup.appendChild(div)
+                        popup_div.appendChild(div)
                         let p = document.createElement("p")
                         p.innerHTML = key + ": "
                         let select = document.createElement("select")
