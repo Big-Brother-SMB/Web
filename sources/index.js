@@ -114,7 +114,7 @@ list_id_data.forEach(id_data=>{
     if(id_data.picture==null || id_data.picture==""){
       img.setAttribute("src","https://lh3.googleusercontent.com/a/default-user=s96-c")
     }else{
-      img.setAttribute("src",id_data.picture)
+      img.setAttribute("src","/profile_picture/" + id_data.uuid + ".jpg")
     }
     div.appendChild(img)
 

@@ -47,6 +47,10 @@ export async function init(common){
                 let p = document.createElement('p')
                 p.innerHTML= common.name(child.first_name,child.last_name)
                 ami.append(p)
+                let profile_picture = document.createElement("img")
+                profile_picture.src="/profile_picture/" + child.uuid + ".jpg"
+                profile_picture.className="profile_picture_ami"
+                ami.append(profile_picture)
             }
             ami.addEventListener("click", async function() {
                 listAmisUUID.splice(listAmisUUID.indexOf(child.uuid),1)
