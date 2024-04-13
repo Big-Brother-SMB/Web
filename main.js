@@ -202,7 +202,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       let [file,extName,err404] = await generatePage(req.url)
       
       try{
-        if(!req.url.startsWith('/asso/post_image/') && (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.ttf' || extName == '.svg' || extName == '.gif' || extName == '.mp4')){
+        if(!req.url.startsWith('/asso/post_image/') && !req.url.startsWith('/profile_picture/') && (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.ttf' || extName == '.svg' || extName == '.gif' || extName == '.mp4')){
           res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=604800'});//604800sec = 7jours | 604800
           res.write(file, 'binary');
           res.end();
