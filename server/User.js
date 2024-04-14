@@ -929,6 +929,26 @@ module.exports = class User{
     db.run("DELETE FROM lieu_list WHERE uuid=? and semaine=? and day=? and creneau=?",[this.uuid,semaine,day,creneau])
   }
 
+  removeUser(){
+    db.run("DELETE FROM achievement WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM admin_permission WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM amis WHERE uuid=? or ami=?",[this.uuid,this.uuid])
+    db.run("DELETE FROM ban WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM emprunt WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM lieu_list WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM midi_amis WHERE uuid=? or amis=?",[this.uuid,this.uuid])
+    db.run("DELETE FROM midi_list WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM perm_list WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM point_perso WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM post_lu WHERE user=?",[this.uuid])
+    db.run("DELETE FROM sondage_menu WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM token WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM user_groups WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM users WHERE uuid=?",[this.uuid])
+    db.run("DELETE FROM users_notification_subscription WHERE uuid=?",[this.uuid])
+    // post / cookie(ticket/abo)
+  }
+
   //messagerie
   getAllMessages(){
     let uuid=this.uuid

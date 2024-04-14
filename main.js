@@ -248,6 +248,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.delPersonalPoint(socket,user)
       funcSocketAdmin.delGlobalPoint(socket,user)
       funcSocketAdmin.copyKey(socket,user)
+      funcSocketAdmin.removeUser(socket,user)
       funcSocketAdmin.addPret(socket,user)
       funcSocketAdmin.finPret(socket,user)
       funcSocketAdmin.commentairePret(socket,user)

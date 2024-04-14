@@ -378,11 +378,18 @@ module.exports = class funcSocket{
                 let list_demandes = [[undefined,undefined],[undefined,undefined],[undefined,undefined],[undefined,undefined]]
                 for (let j = 0; j < 4; j++) {
                     for (let h = 0; h < 2; h++) {
-                        let info = await funcDB.getMidiInfo(req.w,j*2+h)
+                        info_horaire[j][h] = funcDB.getMidiInfo(req.w,j*2+h)
+                        my_demande[j][h] = user.getMidiDemande(req.w,j*2+h)
+                        list_demandes[j][h] = funcDB.listMidiDemandes(req.w,j*2+h)
+                    }
+                }
+                for (let j = 0; j < 4; j++) {
+                    for (let h = 0; h < 2; h++) {
+                        let info = await info_horaire[j][h]
                         if(info==undefined) info={prio:[]}
                         info_horaire[j][h] = info
-                        my_demande[j][h] = await user.getMidiDemande(req.w,j*2+h)
-                        list_demandes[j][h] = await funcDB.listMidiDemandes(req.w,j*2+h)
+                        my_demande[j][h] = await my_demande[j][h]
+                        list_demandes[j][h] = await list_demandes[j][h]
                     }
                 }
                 socket.emit('allHoraireMidi',{info_horaire:info_horaire,my_demande:my_demande,list_demandes:list_demandes})
@@ -573,7 +580,6 @@ module.exports = class funcSocket{
             }catch(e){console.error("fs47");}
         });
     }
-    //
 
 
 

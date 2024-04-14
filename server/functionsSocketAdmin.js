@@ -208,6 +208,17 @@ module.exports = class funcSocket{
         })
     }
 
+    static removeUser(socket,user){
+        socket.on('removeUser',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                let user = new User(req)
+                user.removeUser()
+                socket.emit('removeUser','ok')
+            }catch(e){console.error("fsA50");}
+        })
+    }
+
     static getScoreList(socket,user){
         socket.on('getScoreList',async req => {
             if(await user.admin == 0 || await user.admin == null) return

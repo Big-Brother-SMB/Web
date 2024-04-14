@@ -23,6 +23,7 @@ export async function init(common){
     let dBirthDay = document.getElementById("birthday")
     let dBirthMonth = document.getElementById("birthmonth")
     let connect = document.getElementById('key button')
+    let removeUser = document.getElementById('supp account button')
     let admin_perm = document.getElementById('admin_perm')
 
     let pScore = document.getElementById("score")
@@ -67,6 +68,7 @@ export async function init(common){
         connect.removeEventListener("click",fu6)
         admin_perm.removeEventListener("click",fu7)
         verifyBox.removeEventListener("change",fu8)
+        removeUser.removeEventListener("click",fu9)
     }
 
     let fuNameAndBirthday=function(){return}
@@ -78,6 +80,7 @@ export async function init(common){
     let fu6=function(){return}
     let fu7=function(){return}
     let fu8=function(){return}
+    let fu9=function(){return}
 
     let utilisateursNames = []
     let listUsers = []
@@ -383,6 +386,17 @@ export async function init(common){
                     common.writeCookie("key",key)
                     window.location.reload()
                 }
+            })
+            removeUser.addEventListener("click",fu9=async function(event){
+                common.popUp_Active("Supprimer?","Etes-vous sûr de supprimer "+common.name(utilisateur.first_name,utilisateur.last_name)+" ?",btn=>{
+                    btn.innerHTML="Je confirme"
+                    btn.addEventListener("click",async ()=>{
+                        await common.socketAdminAsync('removeUser',utilisateur.uuid)
+                        refreshListUsers()
+                        search()
+                        common.popUp_Stop()
+                    })
+                })
             })
 
             admin_perm.addEventListener("click",fu7=async function(event){
