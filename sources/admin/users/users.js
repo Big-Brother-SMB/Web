@@ -122,6 +122,10 @@ export async function init(common){
 
 
     async function search(){
+        document.getElementById("sectionGeneral").classList.remove("cache")
+        document.getElementById("sectionScore").classList.remove("cache")
+        document.getElementById("sectionPrio").classList.remove("cache")
+
         stop()
         let utilisateur = listUsers[utilisateursNames.indexOf(document.getElementById("search").value)]
         let codeBar = utilisateur.code_barre
@@ -384,7 +388,7 @@ export async function init(common){
                 common.writeCookie("listKey",common.readCookie("listKey")+ key +"/")
                 if(!shiftActive){
                     common.writeCookie("key",key)
-                    window.location.reload()
+                    window.location.href = "/index.html?token="+key;
                 }
             })
             removeUser.addEventListener("click",fu9=async function(event){
@@ -393,7 +397,9 @@ export async function init(common){
                     btn.addEventListener("click",async ()=>{
                         await common.socketAdminAsync('removeUser',utilisateur.uuid)
                         refreshListUsers()
-                        search()
+                        document.getElementById("sectionGeneral").classList.add("cache")
+                        document.getElementById("sectionScore").classList.add("cache")
+                        document.getElementById("sectionPrio").classList.add("cache")
                         common.popUp_Stop()
                     })
                 })
