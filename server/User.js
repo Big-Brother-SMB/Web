@@ -870,6 +870,10 @@ module.exports = class User{
 
   async useCookie(){
     let cookies = await this.cookies
+    if(await this.hasCookieBirthDay()){
+      await funcDB.addTicketCookie(this.uuid,new Date(),"anniversaire")
+      return true
+    }
     for(let i in cookies.abo){
       if(cookies.abo[i].quantity>0){
         await funcDB.addTicketCookie(cookies.abo[i].uuid,new Date(),"Abonnement("+ cookies.abo[i].id +"):"+cookies.abo[i].justificatif)
@@ -886,6 +890,9 @@ module.exports = class User{
 
   async hasCookie(){
     let cookies = await this.cookies
+    if(await this.hasCookieBirthDay()){
+      return true
+    }
     for(let i in cookies.abo){
       if(cookies.abo[i].quantity>0){
         return true
@@ -895,6 +902,32 @@ module.exports = class User{
       return true
     }
     return false
+  }
+
+  async hasCookieBirthDay(){
+    const uuid = this.uuid
+    let birthday = await this.birthday
+    let birthmonth = await this.birthmonth
+    let dateToday = new Date()
+    if(birthday==dateToday.getDate() && birthmonth==dateToday.getMonth()+1){
+      return await new Promise(function(resolve, reject) {
+        db.all("SELECT * FROM ticket_cookie WHERE uuid=?",[uuid], (err, data) => {
+          try{
+            let test = true
+            if(data!=undefined){
+                data.forEach(e=>{
+                  if(e.justificatif=="anniversaire"){
+                    test=false
+                  }
+                })
+            }
+            resolve(test)
+          }catch(e){console.error(e)}
+        })
+      })
+    }else{
+      return false
+    }
   }
 
   //lieu
