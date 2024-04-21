@@ -310,6 +310,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
         funcSocket.delMyDemande(socket,user)
         funcSocket.setAmiDemande(socket,user)
         funcSocket.delAmiDemande(socket,user)
+        funcSocket.removeMeFromMyFriendRequest(socket,user)
         funcSocket.listDemandes(socket,user)
         funcSocket.listDemandesPerm(socket,user)
         funcSocket.getOuvertPerm(socket,user)

@@ -150,6 +150,8 @@ export async function init(common){
                         for (const checkBox of checkBoxs) {
                             if (checkBox.checked) {
                                 await common.socketAsync('delAmiDemande',{uuidAmi:checkBox.value,w:w,j:j,h:h})
+                            }else{
+                                await common.socketAsync('removeMeFromMyFriendRequest',{uuidAmi:checkBox.value,w:w,j:j,h:h})
                             }
                         }
                         await common.socketAsync('delMyDemande',{w:w,j:j,h:h})
@@ -323,7 +325,6 @@ export async function init(common){
 
         //on récupère les scores des amis
         let scoreAmis = await common.socketAsync("getScoreAmi",listAmis.map(e=>{return e.uuid}))
-        console.log("ss",scoreAmis)
         scoreAmis.forEach(score=>{
             listAmis.forEach(ami=>{
                 if(score.uuid == ami.uuid){

@@ -209,6 +209,34 @@ module.exports = class funcSocket{
         });
     }
 
+    static removeMeFromMyFriendRequest(socket,user){
+        socket.on('removeMeFromMyFriendRequest', async req => {
+            try{
+                let listAmisBrut = await user.amis
+                let hasPermission=false
+                listAmisBrut.forEach(child=>{
+                    if(req.uuidAmi==child.uuid && child.HeGiveMeProc==1){
+                        hasPermission=true
+                    }
+                })
+                let ami = await new User(req.uuidAmi)
+                if(hasPermission && (await ami.getMidiDemande(req.w,req.j*2+req.h)).DorI!=true){
+                    ami.sendNotif("Dépôt d'une demande",
+                        "Votre demande a été modifié par " + await user.first_name + " " + await user.last_name,
+                        '/assets/nav_bar/midi.png',
+                        'midi')
+                    const demande_ami = await ami.getMidiDemande(req.w,req.j*2+req.h)
+                    if(demande_ami.amis!=undefined){
+                        let index = demande_ami.amis.indexOf(user.uuid)
+                        if(index!=-1) demande_ami.amis.splice(index)
+                        await ami.setMidiDemande(req.w,req.j*2+req.h,demande_ami.amis,false,false,null)
+                    }
+                    socket.emit('removeMeFromMyFriendRequest',"ok")
+                }
+            }catch(e){console.error("fs52");}
+        });
+    }
+
     static listDemandes(socket,user){
         socket.on('listDemandes', async req => {
             try{

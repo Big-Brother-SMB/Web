@@ -120,6 +120,5 @@ export async function init(common){
         hiddenElement.download = 'Historique_des_cookies.csv';
         hiddenElement.target = '_blank';
         hiddenElement.click();
-        //a class="obj_admin cache" href="/database.db?" download="save.db" id="download"
     })
 }
