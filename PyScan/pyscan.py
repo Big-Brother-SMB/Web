@@ -139,7 +139,7 @@ if version_serveur!=version and version!="dev":
   version=version_serveur #changer numéro de version
   maj(version) #faire la mise à jour
   save_data() # enregistre les données de connection et de version
-  print('>>> Relencer le programme')
+  print('>>> Lancer le programme:/nupdate.bat')
   time.sleep(3)
   os._exit(1) # arret le programme
 
