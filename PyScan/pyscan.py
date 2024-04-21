@@ -147,7 +147,7 @@ if version_serveur!=version and version!="dev":
 #télécharger profile_picture
 def downloadProfilesPictures():
   url = 'https://foyerlycee.stemariebeaucamps.fr/profile_picture/all'
-  url = "http://localhost:3000/profile_picture/all"
+  #url = "http://localhost:3000/profile_picture/all"
   r = requests.get(url, allow_redirects=True,verify=False)
   open('profile_picture.zip', 'wb').write(r.content)
   if not os.path.exists("./profile_picture"):
