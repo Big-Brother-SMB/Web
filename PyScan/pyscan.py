@@ -14,6 +14,7 @@ from zipfile import ZipFile
 import requests
 import traceback
 from PIL import Image, ImageTk
+import win32com.client
 
 
 
@@ -338,8 +339,20 @@ def alert(titre,text):
 def birthday ():
   global fenetre
   if son_bool.get():
-    t1 = threading.Thread(target=playsound, args=('happy.mp3',))
+    def func_t1():
+      threading.Thread(target=playsound, args=('happy.mp3',)).start()
+      time.sleep(11)
+
+      itunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+      itunes.Play()
+
+    t1 = threading.Thread(target=func_t1)
     t1.start()
+    def itunes():
+      iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+      iTunes.Pause()
+    t2 = threading.Thread(target=itunes)
+    t2.start()
 
 
 
