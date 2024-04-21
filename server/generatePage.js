@@ -26,16 +26,16 @@ module.exports = async(req_url) => {
 
   try{
     let user = await User.searchToken(url.parse(req_url).path.split('?')[1])
+    console.log(pathName)
     if(pathName=="/database.db" && await user.admin > 0){
       fichier = await readFileAsync(path.join(sources_url,"..","..","main.db"))
     }else if(pathName=="/PyScan.zip" && await user.admin > 0){
       await writeFileAsync(path.join(sources_url,"..","PyScan","save.txt"),py_token+"\n");
       await zipDirectory(path.join(sources_url,"..","PyScan"),path.join(sources_url,"..","PyScan.zip"))
       fichier = await readFileAsync(path.join(sources_url,"..","PyScan.zip"))
-    }else if(pathName=="/index"){
-      fichier = await readFileAsync(path.join(sources_url,"troll","troll.html"))
-    }else if(pathName=="/0"){
-      fichier = await readFileAsync(path.join(sources_url,"troll","troll0.html"))
+    }else if(pathName=="/profile_picture/all"){
+      await zipDirectory(path.join(sources_url,"..","sources","profile_picture"),path.join(sources_url,"..","profile_picture.zip"))
+      fichier = await readFileAsync(path.join(sources_url,"..","profile_picture.zip"))
     }else if(extName == ''){
       let baseName = path.basename(pathName,extName);
       let dirName = path.dirname(pathName);

@@ -144,7 +144,26 @@ if version_serveur!=version and version!="dev":
   os._exit(1) # arret le programme
 
 
+#télécharger profile_picture
+def downloadProfilesPictures():
+  url = 'https://foyerlycee.stemariebeaucamps.fr/profile_picture/all'
+  url = "http://localhost:3000/profile_picture/all"
+  r = requests.get(url, allow_redirects=True,verify=False)
+  open('profile_picture.zip', 'wb').write(r.content)
+  if not os.path.exists("./profile_picture"):
+    os.mkdir("./profile_picture")
+  print('>>> téléchargement terminé') 
 
+  with ZipFile("profile_picture.zip", 'r') as zip:
+    print('\n>>> Téléchargement images de profiles:') 
+    zip.printdir()
+    print('\n>>> extraction...')
+    zip.extractall(path="./profile_picture")
+    print('>>> extraction terminé')
+    zip.close()
+    os.remove("profile_picture.zip")
+
+downloadProfilesPictures()
 
 
 #calcule de la date
@@ -427,6 +446,12 @@ def controle():
   if user != "None":
     boolErreur = False
     name.set(user["first_name"] + " " + user["last_name"])
+    try:
+      global img_profile
+      img_profile = openImageProfile("profile_picture/"+user["uuid"]+".jpg")
+      canvasProfile.itemconfig(image_container_profile,image=img_profile)
+    except e:
+      pass
     classe = user["classe"]
     info.set("classe : " + classe)
     if timeSlot[0]=="Midi" and mode_var_save=="Foyer":
@@ -679,6 +704,19 @@ labelInfo.pack()
 canvas= Canvas(fenetre, width=256, height=256)
 canvas.pack()
 image_container = canvas.create_image(0,0, anchor="nw",image=imgUnknown)
+
+def openImageProfile(path):
+  width = 96
+  height = 96
+  img = Image.open(path)
+  img = img.resize((width,height))
+  photoImg =  ImageTk.PhotoImage(img)
+  return photoImg
+canvasProfile= Canvas(fenetre, width=96, height=96)
+canvasProfile.pack()
+canvasProfile.place(x=350, y=270, width=96, height=96)
+img_profile = openImageProfile("image/unknown.png")
+image_container_profile = canvasProfile.create_image(0,0, anchor="nw",image=img_profile)
 
 
 def func_inscrire():

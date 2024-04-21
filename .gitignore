@@ -1,5 +1,6 @@
 sources/asso/post_image
 sources/profile_picture
+PyScan/profile_picture
 *.xlsx
 key.json
 code.json

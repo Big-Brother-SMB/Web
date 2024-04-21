@@ -143,6 +143,9 @@ export async function init(common){
             document.getElementById("info").innerHTML = "cet utilisateur n'existe pas"
         }else{
             document.getElementById("info").innerHTML = "Email: " + utilisateur.email + "<br>UUID: " + utilisateur.uuid
+            if(!utilisateur.tuto){
+                document.getElementById("info").innerHTML += "<br><rouge>Tuto non fait!</rouge>"
+            }
             divClasse.selectedIndex=-1
             for(let c in g_c[1]){
                 if(g_c[1][c].classe==utilisateur.classe){
