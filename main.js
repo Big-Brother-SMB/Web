@@ -17,7 +17,7 @@ const { promisify } = require('util');
 const formidable = require('formidable');
 const { exec } = require('child_process');
 const parseString = require('xml2js').parseString;
-const fetch = require("node-fetch");
+const fetch = import("node-fetch");
 
 const User = require('./server/User.js')
 const funcDB = require('./server/functionsDB.js')
