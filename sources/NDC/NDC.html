@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Nuit du code</title>
     <script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script>
+    <script>
+      function jeuNathan() {
+          var codejeu= '<pyxel-play root="." name="jeu.pyxapp" gamepad="enable"></pyxel-play>';
+          document.getElementById('conteneur').innerHTML = codejeu;
+      }
+      </script>
   </head>
 
   <body>
-    <pyxel-play
-      root="."
-      name="jeu.pyxapp"
-      gamepad="enabled"
-    ></pyxel-play>
+    <h1 id="title">jeux crée durant la nuit du code</h1>
+    <div id="conteneur"></div>
+    <button onclick="jeuNathan()">1er jeu</button>
+    <p>plus de jeux a venir</p>
+
   </body>
 </html>
