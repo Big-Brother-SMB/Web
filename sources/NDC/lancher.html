@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nuit du code</title><!-- titre qui change selon le jeu-->
+    <script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script>
+
+  </head>
+  <body id="body">
+
+  </body>
+  <!-- il faut mettre script après body sinon il ne le reconnait pas-->
+  <script>
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });//permet de récupérer les truc après "?" dans l'url
+    jeu = params.jeu // http://localhost:3000/NDC/lancher.html?jeu=µ  avec µ la valeur de params.jeu
+
+    var codejeu= '<pyxel-play root="." name="jeu.pyxapp" gamepad="enable"></pyxel-play>';
+    document.body.innerHTML = codejeu;
+    document.title = "le titre"
+  </script>
+</html>
