@@ -14,8 +14,14 @@ from zipfile import ZipFile
 import requests
 import traceback
 from PIL import Image, ImageTk
-import win32com.client
-
+import vlc
+import random
+winImport = False
+try:
+  import win32com.client
+  winImport = True
+except ImportError:
+  pass
 
 
 #vérification répertoire
@@ -336,25 +342,73 @@ def alert(titre,text):
     t1.start()
     msgErr.set(titre + ":\n" + text)
 
+
+
 def birthday ():
   global fenetre
   if son_bool.get():
-    def func_t1():
-      threading.Thread(target=playsound, args=('happy.mp3',)).start()
-      time.sleep(11)
+    playMusic("patrick.mp3")
 
-      itunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
-      itunes.Play()
 
-    t1 = threading.Thread(target=func_t1)
-    t1.start()
+
+
+class MusicThreadObject(threading.Thread):
+    def __init__(self, sleep_interval=1):
+        super().__init__()
+        self._kill = threading.Event()
+        self._interval = sleep_interval
+
+    def start(self,source):
+        global media
+
+        # start playing video
+        media.set_media(vlc.Media(source))
+        media.play()
+
+        buttonStopMusic.pack()
+
+
+        is_killed = False
+        while str(media.get_state())!="State.Stopped" and str(media.get_state())!="State.Ended":
+          time.sleep(0.1)
+          is_killed = self._kill.wait(self._interval)
+          if is_killed:
+            break
+
+
+        if not is_killed:
+          buttonStopMusic.pack_forget()
+
+          if winImport:
+            itunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+            itunes.Play()
+
+    def kill(self):
+        self._kill.set()
+
+
+
+media = vlc.MediaPlayer()
+musicThread = MusicThreadObject()
+
+
+def playMusic(source):
+  global fenetre
+  if son_bool.get():
+    def play():
+      global musicThread
+      musicThread.kill()
+      musicThread = MusicThreadObject()
+      musicThread.start(source=source)
+
+    threading.Thread(target=play).start()
+
     def itunes():
-      iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
-      iTunes.Pause()
-    t2 = threading.Thread(target=itunes)
-    t2.start()
+      if winImport:
+        iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+        iTunes.Pause()
 
-
+    threading.Thread(target=itunes).start()
 
 
 
@@ -465,7 +519,7 @@ def controle():
       canvasProfile.itemconfig(image_container_profile,image=img_profile)
     except e:
       pass
-    classe = user["classe"]
+    classe = user.get("classe")
     info.set("classe : " + classe)
     if timeSlot[0]=="Midi" and mode_var_save=="Foyer":
       #midi
@@ -873,6 +927,12 @@ def appel():
 
 
 buttonAppel = Button(fenetre, text="Faire l'appel", command=appel, font=("Arial", 15))
+
+def stopMusic():
+    media.stop()
+    buttonStopMusic.pack_forget()
+
+buttonStopMusic = Button(fenetre, text="Stop Musique", command=stopMusic, font=("Arial", 15))
 
 def refreshOptions():
   refreshPassages()
