@@ -11,6 +11,7 @@ save.txt
 *.db
 *.zip
 *.pdf
+*.pyc
 
 # Logs
 logs

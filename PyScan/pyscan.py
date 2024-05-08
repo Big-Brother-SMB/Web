@@ -15,7 +15,9 @@ import requests
 import traceback
 from PIL import Image, ImageTk
 import vlc
-import random
+
+import mediaplayer
+
 winImport = False
 try:
   import win32com.client
@@ -66,6 +68,11 @@ def catch_all(event, data):
 def catch_all_admin(event, data):
   global msg
   msg.append((event,data))
+
+@sio.on('*',namespace="/music")
+def catch_music(event, data):
+  mediaplayer.openMediaPlayer(fenetre,data,"audio")
+
 
 #fonction pour faire une req de donnée
 def socketReq(event,data,admin):
@@ -500,6 +507,9 @@ def controle():
   global number
   global user
   global timeSlot
+
+  if number=="22222":
+    catch_music("","https://music.youtube.com/watch?v=8PGppDW8kD0")
   
   canvas.itemconfig(image_container,image=imgLoading)
   global listUsers
