@@ -1,0 +1,21 @@
+<img src="/assets/nav_bar/NDC.png"> <!-- j'ai ajouté une image de la nuit du code si tu veux l'utilisé pour la sidebar-->
+    <div id="conteneur"></div>
+    
+<p>plus de jeux a venir</p>
+<script> 
+        // Enregistrez l'ID de l'image dans le stockage local
+        localStorage.setItem("jeu_select", select.value);
+    </script>
+<select id="jeuSelect" onchange="changeImage()">
+        <option value="">Sélectionnez un jeu:</option>
+        <option value="jeu.pyxapp">jeu1</option>
+        <option value="2">jeu2</option>
+        <option value="3">jeu3</option>
+</select>
+<script> 
+    // Enregistrez l'ID de l'image dans le stockage local
+    localStorage.setItem("jeu_select", select.value);
+</script>
+<img id="displayImage" src="" style="display:none;">
+<br><br>
+<a href="NDC/launcher.html"><button>Lancer le jeu</button></a>

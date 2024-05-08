@@ -15,8 +15,10 @@
     });//permet de récupérer les truc après "?" dans l'url
     jeu = params.jeu // http://localhost:3000/NDC/lancher.html?jeu=µ  avec µ la valeur de params.jeu
 
-    var codejeu= '<pyxel-play root="." name="jeu.pyxapp" gamepad="enable"></pyxel-play>';
+    var codejeu= '<pyxel-play root="." name=jeu gamepad="enable"></pyxel-play>';
     document.body.innerHTML = codejeu;
     document.title = "le titre"
+    var jeu=localStorage.getItem("jeu_select")
   </script>
+  
 </html>
