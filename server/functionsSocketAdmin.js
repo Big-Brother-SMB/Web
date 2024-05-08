@@ -462,6 +462,16 @@ module.exports = class funcSocket{
         });
     }
 
+    static sendMusic(socket,user){
+        socket.on("sendMusic", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                io.of("/music").emit("play",req);
+                socket.emit("sendMusic","ok")
+            }catch(e){console.error("fsA51");}
+        });
+    }
+
     static getAllResultsMenu(socket,user){
         socket.on('getAllResultsMenu', async req => {
             if(await user.admin == 0 || await user.admin == null) return

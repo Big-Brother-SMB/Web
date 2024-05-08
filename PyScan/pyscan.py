@@ -71,6 +71,7 @@ def catch_all_admin(event, data):
 
 @sio.on('*',namespace="/music")
 def catch_music(event, data):
+  print(data)
   mediaplayer.openMediaPlayer(fenetre,data,"audio")
 
 
@@ -100,8 +101,8 @@ def socketReq(event,data,admin):
     return []
 
 #initialisation du socket
-#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin"])
-sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin"])
+#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
+sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
 print("\n\n\n")
 print(">>> Start")
 id_data =socketReq('id_data', None,False)
@@ -507,9 +508,6 @@ def controle():
   global number
   global user
   global timeSlot
-
-  if number=="22222":
-    catch_music("","https://music.youtube.com/watch?v=8PGppDW8kD0")
   
   canvas.itemconfig(image_container,image=imgLoading)
   global listUsers

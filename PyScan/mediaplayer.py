@@ -178,6 +178,9 @@ class VideoProgressBar(tk.Scale):
 
 app = None
 def openMediaPlayer(fenetre,url,type):
+    threading.Thread(target=openMediaPlayerTread,args=(fenetre,url,type)).start()
+
+def openMediaPlayerTread(fenetre,url,type):
     try:
         # object creation using YouTube 
         yt = YouTube(url) 
@@ -193,10 +196,12 @@ def openMediaPlayer(fenetre,url,type):
         d_video.download(filename="music.mp4",output_path="./")
         print('Video downloaded successfully!')
 
+        def itunes():
+            if winImport:
+                iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+                iTunes.Pause()
 
-        if winImport:
-            itunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
-            itunes.Play()
+        threading.Thread(target=itunes).start()
         global app
         if app==None:
             app = MediaPlayerApp(fenetre)
