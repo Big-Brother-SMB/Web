@@ -1,13 +1,12 @@
-<img src="/assets/nav_bar/NDC.png"> <!-- j'ai ajouté une image de la nuit du code si tu veux l'utilisé pour la sidebar-->
-    <div id="conteneur"></div>
+<img src="/NDC/NDC.png" style="width: 500px;">
     
 <p>plus de jeux a venir</p>
-<select id="jeuSelect" onchange="changeImage()">
-        <option value="">Sélectionnez un jeu:</option>
+<select id="jeuSelect">
+        <option style="display:none;" value="rien">Sélectionnez un jeu:</option>
         <option value="jeu.pyxapp">jeu1</option>
         <option value="jeu2.pyxapp">jeu2</option>
         <option value="3">jeu3</option>
 </select>
 <img id="displayImage" src="" style="display:none;">
 <br><br>
-<a id="jeu" href="NDC/launcher.html?jeu="><button>Lancer le jeu</button></a>
+<a id="jeu"><button>Lancer le jeu</button></a>
