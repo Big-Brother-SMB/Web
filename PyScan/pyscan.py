@@ -105,13 +105,19 @@ def catch_music(event, data):
   elif event=="progress":
     mediaplayer.progress(data["progress"])
   elif event=="itunes":
-    
     def itunes():
         if winImport:
             iTunes = dispatch("iTunes.Application")
             iTunes.Pause()
 
     threading.Thread(target=itunes).start()
+  elif event=="play itunes":
+    def play_itunes():
+      if winImport:
+          iTunes = dispatch("iTunes.Application")
+          iTunes.Play()
+
+    threading.Thread(target=play_itunes).start()
   if cacher!=None:
     mediaplayer.cacher(cacher)
 

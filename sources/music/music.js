@@ -17,6 +17,10 @@ export async function init(common){
         await common.socketAdminAsync('sendMusic',{event:"stop",cacher:cacher.checked})
     });
 
+    document.getElementById("play itunes").addEventListener("click",async function(e) {
+        await common.socketAdminAsync('sendMusic',{event:"play itunes",cacher:cacher.checked})
+    });
+
     document.getElementById("itunes").addEventListener("click",async function(e) {
         await common.socketAdminAsync('sendMusic',{event:"itunes",cacher:cacher.checked})
     });
