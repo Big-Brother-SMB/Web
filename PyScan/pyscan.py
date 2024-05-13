@@ -25,6 +25,25 @@ try:
 except ImportError:
   pass
 
+def dispatch(app_name:str):
+    try:
+        from win32com import client
+        app = client.gencache.EnsureDispatch(app_name)
+    except AttributeError:
+        # Corner case dependencies.
+        import os
+        import re
+        import sys
+        import shutil
+        # Remove cache and try again.
+        MODULE_LIST = [m.__name__ for m in sys.modules.values()]
+        for module in MODULE_LIST:
+            if re.match(r'win32com\.gen_py\..+', module):
+                del sys.modules[module]
+        shutil.rmtree(os.path.join(os.environ.get('LOCALAPPDATA'), 'Temp', 'gen_py'))
+        from win32com import client
+        app = client.gencache.EnsureDispatch(app_name)
+    return app
 
 #vérification répertoire
 if os.path.basename(os.getcwd()) != "PyScan" and os.path.basename(os.getcwd()) != "pyscan":
@@ -86,7 +105,13 @@ def catch_music(event, data):
   elif event=="progress":
     mediaplayer.progress(data["progress"])
   elif event=="itunes":
-    mediaplayer.stop_itunes()
+    
+    def itunes():
+        if winImport:
+            iTunes = dispatch("iTunes.Application")
+            iTunes.Pause()
+
+    threading.Thread(target=itunes).start()
   if cacher!=None:
     mediaplayer.cacher(cacher)
 
@@ -403,7 +428,7 @@ class MusicThreadObject(threading.Thread):
           buttonStopMusic.pack_forget()
 
           if winImport:
-            itunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+            itunes = dispatch("iTunes.Application")
             itunes.Play()
 
     def kill(self):
@@ -428,7 +453,7 @@ def playMusic(source):
 
     def itunes():
       if winImport:
-        iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+        iTunes = dispatch("iTunes.Application")
         iTunes.Pause()
 
     threading.Thread(target=itunes).start()

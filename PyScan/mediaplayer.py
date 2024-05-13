@@ -118,6 +118,7 @@ class MediaPlayerApp(tk.Toplevel):
             media = self.instance.media_new(self.current_file)
             self.media_player.set_media(media)
             self.media_player.set_xwindow(self.media_canvas.winfo_id())
+            self.media_player.set_hwnd(self.media_canvas.winfo_id())
             self.media_player.play()
             self.playing_video = True
 
@@ -225,16 +226,6 @@ def progress(pourcent):
     global app
     if app!=None:
         app.set_video_position(pourcent)
-
-def stop_itunes():
-    global app
-    if app!=None:
-        def itunes():
-            if winImport:
-                iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
-                iTunes.Pause()
-
-        threading.Thread(target=itunes).start()
 
 def openMediaPlayerTread(fenetre,url,type,cache):
     try:
