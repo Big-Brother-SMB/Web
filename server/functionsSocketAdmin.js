@@ -466,7 +466,7 @@ module.exports = class funcSocket{
         socket.on("sendMusic", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                io.of("/music").emit("play",req);
+                io.of("/music").emit(req.event,req);
                 socket.emit("sendMusic","ok")
             }catch(e){console.error("fsA51");}
         });

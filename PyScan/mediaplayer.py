@@ -153,6 +153,7 @@ class MediaPlayerApp(tk.Toplevel):
             current_time_str = str(timedelta(milliseconds=current_time))[:-3]
             total_duration_str = str(timedelta(milliseconds=total_duration))[:-3]
             self.time_label.config(text=f"{current_time_str}/{total_duration_str}")
+            info_to_web(progress_percentage)
         self.after(500, self.update_video_progress)
 
 class VideoProgressBar(tk.Scale):
@@ -176,11 +177,66 @@ class VideoProgressBar(tk.Scale):
             self.set(value)
             self.app.set_video_position(value)
 
-app = None
-def openMediaPlayer(fenetre,url,type):
-    threading.Thread(target=openMediaPlayerTread,args=(fenetre,url,type)).start()
+def info_to_web(progress):
+    global vol
+    sio.emit("info",{"progress":progress,"volume":vol},namespace='/music')
 
-def openMediaPlayerTread(fenetre,url,type):
+sio = None
+app = None
+vol = 100
+
+def set_sio(sio2):
+    global sio
+    sio=sio2
+def openMediaPlayer(fenetre,url,type,cache):
+    threading.Thread(target=openMediaPlayerTread,args=(fenetre,url,type,cache)).start()
+
+def cacher(bool):
+    global app
+    if app!=None:
+        if bool:
+            app.withdraw()
+        else:
+            app.deiconify()
+
+def play():
+    global app
+    if app!=None:
+        app.play_video()
+
+def pause():
+    global app
+    if app!=None:
+        app.pause_video()
+
+def stop():
+    global app
+    if app!=None:
+        app.stop()
+
+def volume(vol2):
+    global app
+    global vol
+    vol = vol2
+    if app!=None:
+        app.media_player.audio_set_volume(vol2)
+
+def progress(pourcent):
+    global app
+    if app!=None:
+        app.set_video_position(pourcent)
+
+def stop_itunes():
+    global app
+    if app!=None:
+        def itunes():
+            if winImport:
+                iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
+                iTunes.Pause()
+
+        threading.Thread(target=itunes).start()
+
+def openMediaPlayerTread(fenetre,url,type,cache):
     try:
         # object creation using YouTube 
         yt = YouTube(url) 
@@ -191,21 +247,20 @@ def openMediaPlayerTread(fenetre,url,type):
             print(e)
         # get the video with the highest resolution
         d_video = mp4_streams[0]
+        if type=="video":
+            d_video = mp4_streams[-1]
 
         # downloading the video 
         d_video.download(filename="music.mp4",output_path="./")
         print('Video downloaded successfully!')
 
-        def itunes():
-            if winImport:
-                iTunes = win32com.client.gencache.EnsureDispatch("iTunes.Application")
-                iTunes.Pause()
-
-        threading.Thread(target=itunes).start()
         global app
         if app==None:
             app = MediaPlayerApp(fenetre)
             app.update_video_progress()
         app.set_file("music.mp4")
+        cacher(cache)
+        global vol
+        volume(vol)
     except Exception as error: 
         print(error)

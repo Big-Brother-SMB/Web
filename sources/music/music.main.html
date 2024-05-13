@@ -1,2 +1,18 @@
-<input autocomplete="off" id="link_yt" type="text" style="width: 85vw;"><br><br>
-<button id="send" class="btn select">Envoyer</button>
+<input autocomplete="off" id="link_yt" type="text" style="width: 85vw;">
+<br><br>
+<p> Cacher:
+    <label class="switch">
+      <input type="checkbox" id="cache-media" checked>
+      <span class="slider round"></span>
+    </label>
+<button id="send" class="btn select">Envoyer</button></p>
+<button id="itunes" class="btn select">Stop iTunes</button></p>
+<br><br>
+<button id="play" class="btn select">play</button><button id="pause" class="btn select">pause/resume</button><button id="stop" class="btn select">stop</button>
+<br><br><br><br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<progress id="media-progress" value="0" max="100" class="media-progress"></progress>
+<div id="progress-value" class="progress-value">0</div>
+
+<progress id="media-progress_vol" value="0" max="300" class="media-progress"></progress>
+<div id="progress-value_vol" class="progress-value">audio</div>

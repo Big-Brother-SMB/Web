@@ -1,0 +1,40 @@
+.media-progress {
+    /*BG*/
+    position: relative;
+    width: 75%;
+    display: inline-block;
+    cursor: pointer;
+    height: 14px;
+    background: gray;
+    border: none;
+    vertical-align: middle;
+  }
+  
+  .media-progress::-webkit-progress-bar {
+    /*Chrome-Safari BG*/
+    background: gray;
+    border: none
+  }
+  
+  .media-progress::-webkit-progress-value {
+    /*Chrome-Safari value*/
+    background: black;
+    border: white;
+  }
+  
+  .media-progress::-moz-progress-bar {
+    /*Firefox value*/
+    background: #17BAB3;
+    border: none
+  }
+  
+  .media-progress::-ms-fill {
+    /*IE-MS value*/
+    background: #17BAB3;
+    border: none
+  }
+
+  .progress-value{
+
+    font-size: 3rem !important;
+  }

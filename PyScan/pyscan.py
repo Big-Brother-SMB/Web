@@ -71,9 +71,24 @@ def catch_all_admin(event, data):
 
 @sio.on('*',namespace="/music")
 def catch_music(event, data):
-  print(data)
-  mediaplayer.openMediaPlayer(fenetre,data,"audio")
-
+  mediaplayer.set_sio(sio)
+  cacher = data.get("cacher")
+  if event=="download":
+    mediaplayer.openMediaPlayer(fenetre,data.get("url"),data.get("type"),cacher)
+  elif event=="play":
+    mediaplayer.play()
+  elif event=="pause":
+    mediaplayer.pause()
+  elif event=="stop":
+    mediaplayer.stop()
+  elif event=="volume":
+    mediaplayer.volume(data["volume"])
+  elif event=="progress":
+    mediaplayer.progress(data["progress"])
+  elif event=="itunes":
+    mediaplayer.stop_itunes()
+  if cacher!=None:
+    mediaplayer.cacher(cacher)
 
 #fonction pour faire une req de donnée
 def socketReq(event,data,admin):
@@ -101,8 +116,8 @@ def socketReq(event,data,admin):
     return []
 
 #initialisation du socket
-#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
-sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
+sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
+#sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
 print("\n\n\n")
 print(">>> Start")
 id_data =socketReq('id_data', None,False)

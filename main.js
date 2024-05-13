@@ -354,7 +354,13 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   });
   
   io.of("/interruption").on("connection", async (socket) => {})
-  io.of("/music").on("connection", async (socket) => {})
+  io.of("/music").on("connection", async (socket) => {
+    socket.on("info", async req => {
+      try{
+          io.of("/music").emit("info",req);
+      }catch(e){console.error("music");}
+    });
+  })
   
   async function loop(){
     //renouveler certif ssl
