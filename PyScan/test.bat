@@ -1,0 +1,2 @@
+python pyscan.py
+pause

@@ -7,14 +7,6 @@ from tkinter import ttk
 from tkinter import filedialog
 from datetime import timedelta
 from pytube.__main__ import YouTube
-import time
-
-winImport = False
-try:
-  import win32com.client
-  winImport = True
-except ImportError:
-  pass
 
 class MediaPlayerApp(tk.Toplevel):
     def __init__(self,fenetre):
@@ -23,17 +15,19 @@ class MediaPlayerApp(tk.Toplevel):
         self.geometry("800x600")
         self.configure(bg="#f0f0f0")
         self.initialize_player()
-        def close():
-            self.media_player.stop()
-            global app
-            app = None
-            self.destroy()
-            self.update()
-        self.protocol("WM_DELETE_WINDOW", close)
+        self.protocol("WM_DELETE_WINDOW", self.close)
 
+    def close(self):
+        self.media_player.audio_set_volume(100)
+        self.media_player.stop()
+        global app
+        app = None
+        self.destroy()
+        self.update()
+    
     def initialize_player(self):
-        self.instance = vlc.Instance(['--no-xlib'])
-        self.media_player = self.instance.media_player_new()
+        global vlc_instance
+        self.media_player = vlc_instance.media_player_new()
         self.current_file = None
         self.playing_video = False
         self.video_paused = False
@@ -115,9 +109,9 @@ class MediaPlayerApp(tk.Toplevel):
 
     def play_video(self):
         if not self.playing_video:
-            media = self.instance.media_new(self.current_file)
+            media = vlc_instance.media_new(self.current_file)
             self.media_player.set_media(media)
-            self.media_player.set_xwindow(self.media_canvas.winfo_id())
+            #self.media_player.set_xwindow(self.media_canvas.winfo_id())
             self.media_player.set_hwnd(self.media_canvas.winfo_id())
             self.media_player.play()
             self.playing_video = True
@@ -146,7 +140,14 @@ class MediaPlayerApp(tk.Toplevel):
             self.media_player.set_time(position)
 
     def update_video_progress(self):
+        global app
+        if app==None:
+            self.close()
+            return
         if self.playing_video:
+            global vol
+            if self.media_player.audio_get_volume()!=vol:
+                self.media_player.audio_set_volume(vol)
             total_duration = self.media_player.get_length()
             current_time = self.media_player.get_time()
             progress_percentage = (current_time / total_duration) * 100
@@ -154,7 +155,7 @@ class MediaPlayerApp(tk.Toplevel):
             current_time_str = str(timedelta(milliseconds=current_time))[:-3]
             total_duration_str = str(timedelta(milliseconds=total_duration))[:-3]
             self.time_label.config(text=f"{current_time_str}/{total_duration_str}")
-            info_to_web(progress_percentage)
+            info_to_web(progress_percentage,current_time,total_duration)
         self.after(500, self.update_video_progress)
 
 class VideoProgressBar(tk.Scale):
@@ -178,17 +179,19 @@ class VideoProgressBar(tk.Scale):
             self.set(value)
             self.app.set_video_position(value)
 
-def info_to_web(progress):
+def info_to_web(progress_percentage,current_time,total_durations):
     global vol
-    sio.emit("info",{"progress":progress,"volume":vol},namespace='/music')
+    sio.emit("info",{"progress":progress_percentage,"volume":vol,"time":current_time,"total":total_durations},namespace='/music')
 
 sio = None
 app = None
 vol = 100
+vlc_instance = vlc.Instance(['--no-xlib'])
 
 def set_sio(sio2):
     global sio
     sio=sio2
+
 def openMediaPlayer(fenetre,url,type,cache):
     threading.Thread(target=openMediaPlayerTread,args=(fenetre,url,type,cache)).start()
 
@@ -227,6 +230,10 @@ def progress(pourcent):
     if app!=None:
         app.set_video_position(pourcent)
 
+def close_media():
+    global app
+    app=None
+
 def openMediaPlayerTread(fenetre,url,type,cache):
     try:
         # object creation using YouTube 
@@ -251,7 +258,5 @@ def openMediaPlayerTread(fenetre,url,type,cache):
             app.update_video_progress()
         app.set_file("music.mp4")
         cacher(cache)
-        global vol
-        volume(vol)
     except Exception as error: 
         print(error)

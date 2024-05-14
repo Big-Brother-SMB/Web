@@ -1,6 +1,11 @@
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 export async function init(common){
     const cacher = document.getElementById("cache-media")
+
+    let time = 0
+    let total = 0
+
+
     document.getElementById("send").addEventListener("click",async function(){
         await common.socketAdminAsync('sendMusic',{event:"download" ,url:document.getElementById("link_yt").value,cacher:cacher.checked,type:"video"})
     })
@@ -21,10 +26,13 @@ export async function init(common){
         await common.socketAdminAsync('sendMusic',{event:"play itunes",cacher:cacher.checked})
     });
 
-    document.getElementById("itunes").addEventListener("click",async function(e) {
-        await common.socketAdminAsync('sendMusic',{event:"itunes",cacher:cacher.checked})
+    document.getElementById("pause itunes").addEventListener("click",async function(e) {
+        await common.socketAdminAsync('sendMusic',{event:"pause itunes",cacher:cacher.checked})
     });
     
+    document.getElementById("close player").addEventListener("click",async function(e) {
+        await common.socketAdminAsync('sendMusic',{event:"close",cacher:cacher.checked})
+    });
 
 
     document.getElementById("media-progress").addEventListener("click", async function(e) {
@@ -39,7 +47,8 @@ export async function init(common){
         }
     
         $(this).val(dual);
-        document.getElementById("progress-value").innerHTML = dual + " %";
+        
+        document.getElementById("progress-value").innerHTML = time_code(time) + " / " + time_code(total)
 
         await common.socketAdminAsync('sendMusic',{event:"progress",progress:dual})
     });
@@ -67,11 +76,21 @@ export async function init(common){
         }
     });
 
+    function time_code(time){
+        time = Math.floor(time/1000)
+        let h = Math.floor(time/3600)
+        let m = Math.floor((time - h*3600)/60) 
+        let s = Math.floor(time - h*3600 - m*60)
+        return h + ":" + (String(m).length == 1?"0":"") + m + ":" + (String(s).length == 1?"0":"") + s
+    }
+
     socket.on("connect", () => {
         socket.on("info",msg => {
-            console.log(msg)
+            time = msg.time
+            total = msg.total
+            
             document.getElementById("media-progress").value = msg.progress
-            document.getElementById("progress-value").innerHTML = parseInt(msg.progress) + " %";
+            document.getElementById("progress-value").innerHTML = time_code(time) + " / " + time_code(total)
             document.getElementById("media-progress_vol").value = msg.volume
             document.getElementById("progress-value_vol").innerHTML = "audio: " + msg.volume + " %";
         });

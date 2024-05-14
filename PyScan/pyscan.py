@@ -18,32 +18,28 @@ import vlc
 
 import mediaplayer
 
-winImport = False
-try:
-  import win32com.client
-  winImport = True
-except ImportError:
-  pass
-
 def dispatch(app_name:str):
     try:
-        from win32com import client
-        app = client.gencache.EnsureDispatch(app_name)
-    except AttributeError:
-        # Corner case dependencies.
-        import os
-        import re
-        import sys
-        import shutil
-        # Remove cache and try again.
-        MODULE_LIST = [m.__name__ for m in sys.modules.values()]
-        for module in MODULE_LIST:
-            if re.match(r'win32com\.gen_py\..+', module):
-                del sys.modules[module]
-        shutil.rmtree(os.path.join(os.environ.get('LOCALAPPDATA'), 'Temp', 'gen_py'))
-        from win32com import client
-        app = client.gencache.EnsureDispatch(app_name)
-    return app
+      try:
+          from win32com import client
+          app = client.gencache.EnsureDispatch(app_name)
+      except AttributeError:
+          # Corner case dependencies.
+          import os
+          import re
+          import sys
+          import shutil
+          # Remove cache and try again.
+          MODULE_LIST = [m.__name__ for m in sys.modules.values()]
+          for module in MODULE_LIST:
+              if re.match(r'win32com\.gen_py\..+', module):
+                  del sys.modules[module]
+          shutil.rmtree(os.path.join(os.environ.get('LOCALAPPDATA'), 'Temp', 'gen_py'))
+          from win32com import client
+          app = client.gencache.EnsureDispatch(app_name)
+      return app
+    except AttributeError as err:
+      print(err)
 
 #vérification répertoire
 if os.path.basename(os.getcwd()) != "PyScan" and os.path.basename(os.getcwd()) != "pyscan":
@@ -90,36 +86,42 @@ def catch_all_admin(event, data):
 
 @sio.on('*',namespace="/music")
 def catch_music(event, data):
-  mediaplayer.set_sio(sio)
-  cacher = data.get("cacher")
-  if event=="download":
-    mediaplayer.openMediaPlayer(fenetre,data.get("url"),data.get("type"),cacher)
-  elif event=="play":
-    mediaplayer.play()
-  elif event=="pause":
-    mediaplayer.pause()
-  elif event=="stop":
-    mediaplayer.stop()
-  elif event=="volume":
-    mediaplayer.volume(data["volume"])
-  elif event=="progress":
-    mediaplayer.progress(data["progress"])
-  elif event=="itunes":
-    def itunes():
-        if winImport:
-            iTunes = dispatch("iTunes.Application")
-            iTunes.Pause()
+  try:
+    global media
+    mediaplayer.set_sio(sio)
+    cacher = data.get("cacher")
+    if event=="download":
+      mediaplayer.openMediaPlayer(fenetre,data.get("url"),data.get("type"),cacher)
+    elif event=="play":
+      mediaplayer.play()
+    elif event=="pause":
+      mediaplayer.pause()
+    elif event=="stop":
+      mediaplayer.stop()
+    elif event=="volume":
+      mediaplayer.volume(data["volume"])
+    elif event=="progress":
+      mediaplayer.progress(data["progress"])
+    elif event=="close":
+      mediaplayer.close_media()
+    elif event=="pause itunes":
+      def stop_itunes():
+        iTunes = dispatch("iTunes.Application")
+        iTunes.Pause()
 
-    threading.Thread(target=itunes).start()
-  elif event=="play itunes":
-    def play_itunes():
-      if winImport:
-          iTunes = dispatch("iTunes.Application")
-          iTunes.Play()
+      threading.Thread(target=stop_itunes).start()
+    elif event=="play itunes":
+      def play_itunes():
+        iTunes = dispatch("iTunes.Application")
+        iTunes.Play()
 
-    threading.Thread(target=play_itunes).start()
-  if cacher!=None:
-    mediaplayer.cacher(cacher)
+      threading.Thread(target=play_itunes).start()
+    if cacher!=None:
+      mediaplayer.cacher(cacher)    
+      media.stop()
+  except Exception as err:
+    print(err)
+
 
 #fonction pour faire une req de donnée
 def socketReq(event,data,admin):
@@ -142,13 +144,13 @@ def socketReq(event,data,admin):
       if timeOut<=0:
         x=[event,socketReq(event,data,admin)]
     return x[1]
-  except Exception as e:
+  except Exception:
     traceback.print_exc()
     return []
 
 #initialisation du socket
-#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
-sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
+sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
+#sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
 print("\n\n\n")
 print(">>> Start")
 id_data =socketReq('id_data', None,False)
@@ -413,10 +415,15 @@ class MusicThreadObject(threading.Thread):
         self._interval = sleep_interval
 
     def start(self,source):
+        global media_instance
         global media
 
         # start playing video
-        media.set_media(vlc.Media(source))
+        try:
+          mediaplayer.close_media()
+        except Exception as e:
+          print(e)
+        media.set_media(media_instance.media_new(source))
         media.play()
 
         buttonStopMusic.pack()
@@ -432,17 +439,16 @@ class MusicThreadObject(threading.Thread):
 
         if not is_killed:
           buttonStopMusic.pack_forget()
-
-          if winImport:
-            itunes = dispatch("iTunes.Application")
-            itunes.Play()
+          itunes = dispatch("iTunes.Application")
+          itunes.Play()
 
     def kill(self):
         self._kill.set()
 
 
 
-media = vlc.MediaPlayer()
+media_instance = vlc.Instance(['--no-xlib'])
+media = media_instance.media_player_new()
 musicThread = MusicThreadObject()
 
 
@@ -458,9 +464,8 @@ def playMusic(source):
     threading.Thread(target=play).start()
 
     def itunes():
-      if winImport:
-        iTunes = dispatch("iTunes.Application")
-        iTunes.Pause()
+      iTunes = dispatch("iTunes.Application")
+      iTunes.Pause()
 
     threading.Thread(target=itunes).start()
 
@@ -532,7 +537,10 @@ def scanKey(key):
 
       if len(number)==5:
         print(">>> Search: " + number)
-        controle()
+        try:
+          controle()
+        except Exception as err:
+          print(err)
       else:
         buttonInscrire.pack_forget()
         buttonPass.pack_forget()
@@ -571,10 +579,10 @@ def controle():
       global img_profile
       img_profile = openImageProfile("profile_picture/"+user["uuid"]+".jpg")
       canvasProfile.itemconfig(image_container_profile,image=img_profile)
-    except e:
-      pass
+    except Exception as err:
+      print(err)
     classe = user.get("classe")
-    info.set("classe : " + classe)
+    info.set("classe : " + str(classe))
     if timeSlot[0]=="Midi" and mode_var_save=="Foyer":
       #midi
       listCreneau = []
