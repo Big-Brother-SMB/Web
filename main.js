@@ -285,6 +285,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.getListUserComplete(socket,user)
       funcSocketAdmin.getListUser(socket,user)
       funcSocketAdmin.setAchievement(socket,user)
+
+      funcSocketAdmin.sendMusic(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -351,7 +353,14 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
     } catch (e) {console.error(e);console.error("error:main 3");}
   });
   
-  io.of("/achievement").on("connection", async (socket) => {})
+  io.of("/interruption").on("connection", async (socket) => {})
+  io.of("/music").on("connection", async (socket) => {
+    socket.on("info", async req => {
+      try{
+          io.of("/music").emit("info",req);
+      }catch(e){console.error("music");}
+    });
+  })
   
   async function loop(){
     //renouveler certif ssl

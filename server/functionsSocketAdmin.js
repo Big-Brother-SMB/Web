@@ -457,8 +457,18 @@ module.exports = class funcSocket{
         socket.on("pyScanVersion", async req => {
             if(await user.admin == 0 || await user.admin == null) return
             try{
-                socket.emit("pyScanVersion","v34")
+                socket.emit("pyScanVersion","v40")
             }catch(e){console.error("fsA43");}
+        });
+    }
+
+    static sendMusic(socket,user){
+        socket.on("sendMusic", async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                io.of("/music").emit(req.event,req);
+                socket.emit("sendMusic","ok")
+            }catch(e){console.error("fsA51");}
         });
     }
 
