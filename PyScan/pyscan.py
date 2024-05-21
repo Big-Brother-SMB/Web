@@ -394,7 +394,7 @@ user="None"
 def alert(titre,text):
   global fenetre
   if son_bool.get():
-    t1 = threading.Thread(target=playsound, args=('alert.mp3',))
+    t1 = threading.Thread(target=playsound, args=('alert2.mp3',))
     t1.start()
     msgErr.set(titre + ":\n" + text)
 
@@ -402,8 +402,7 @@ def alert(titre,text):
 
 def birthday ():
   global fenetre
-  if son_bool.get():
-    playMusic("patrick.mp3")
+  playMusic("patrick.mp3")
 
 
 
@@ -454,20 +453,19 @@ musicThread = MusicThreadObject()
 
 def playMusic(source):
   global fenetre
-  if son_bool.get():
-    def play():
-      global musicThread
-      musicThread.kill()
-      musicThread = MusicThreadObject()
-      musicThread.start(source=source)
+  def play():
+    global musicThread
+    musicThread.kill()
+    musicThread = MusicThreadObject()
+    musicThread.start(source=source)
 
-    threading.Thread(target=play).start()
+  threading.Thread(target=play).start()
 
-    def itunes():
-      iTunes = dispatch("iTunes.Application")
-      iTunes.Pause()
+  def itunes():
+    iTunes = dispatch("iTunes.Application")
+    iTunes.Pause()
 
-    threading.Thread(target=itunes).start()
+  threading.Thread(target=itunes).start()
 
 
 
