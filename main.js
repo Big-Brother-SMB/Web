@@ -365,10 +365,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
   async function loop(){
     //renouveler certif ssl
     let now = new Date()
-    if(now.getDate()==1 && now.getHours()==0 && now.getMinutes()==0){
-      console.log("test1");
-      exec('sh ./ssl_renew.sh', (err, stdout, stderr) => {
-        console.log("test2");
+    if(now.getHours()==1 && now.getMinutes()==0){
+      exec('sh /home/site/source/ssl_renew.sh', (err, stdout, stderr) => {
         if (err) {
           console.error(err)
           console.error("error:main 4");
