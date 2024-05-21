@@ -17,7 +17,7 @@ const { promisify } = require('util');
 const formidable = require('formidable');
 const { exec } = require('child_process');
 const parseString = require('xml2js').parseString;
-const fetch = require("node-fetch");
+const request = require('request');
 
 const User = require('./server/User.js')
 const funcDB = require('./server/functionsDB.js')
@@ -397,19 +397,25 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           fs.mkdirSync(dirPath);
         }
 
-        fetch(imageURL,{agent: new https.Agent({rejectUnauthorized: false,})})
-          .then((response) => response.buffer())
-          .then((buffer) => {
-            // Write the buffer to a file
-            fs.writeFile(path.join(dirPath, fileName), buffer, (err) => {
-              if (err) {
-                console.error(err);
-              }
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+
+        var agent = new https.Agent({
+          port: '443',
+          path: '/',
+          rejectUnauthorized: false
+        });
+        
+        var options = {
+          url: imageURL,
+          agent: agent
+        };
+
+        request.head(options, function(error, response, body) {
+          if (error) {
+            console.log(error);
+          }else{
+            request(options).pipe(fs.createWriteStream(path.join(dirPath, fileName)))
+          }
+        });
       })
     }
 
