@@ -17,7 +17,7 @@ const { promisify } = require('util');
 const formidable = require('formidable');
 const { exec } = require('child_process');
 const parseString = require('xml2js').parseString;
-const fetch = import("node-fetch");
+const fetch = require("node-fetch");
 
 const User = require('./server/User.js')
 const funcDB = require('./server/functionsDB.js')
@@ -366,7 +366,9 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
     //renouveler certif ssl
     let now = new Date()
     if(now.getDate()==1 && now.getHours()==0 && now.getMinutes()==0){
+      console.log("test1");
       exec('sh ./ssl_renew.sh', (err, stdout, stderr) => {
+        console.log("test2");
         if (err) {
           console.error(err)
           console.error("error:main 4");
