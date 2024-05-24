@@ -1,0 +1,13 @@
+select {
+    border-color: #3d536a;
+    border-width: 5px;
+    border-style: solid;
+    padding: 10px;
+    border-radius: 5px;
+    height : 75px
+}
+.imgjeu {
+    width: 450px; 
+    height: auto; 
+    border-radius: 15px;  
+}
