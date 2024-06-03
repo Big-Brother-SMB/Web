@@ -87,51 +87,47 @@ class Utile():
         return True
 
     def getObj(x,y,obj):
-        tile1 = app.tilemap.pget(pyxel.floor(x/8), pyxel.floor(y/8))
-        a1 = tile1 == obj
-        tile2 = app.tilemap.pget(pyxel.floor((x+7)/8), pyxel.floor(y/8))
-        a2 = tile2 == obj
+        a1 = app.tilemap.pget(pyxel.floor(x/8), pyxel.floor(y/8)) == obj
+        a2 = app.tilemap.pget(pyxel.floor((x+7)/8), pyxel.floor(y/8)) == obj
         return (a1 and a2)
 
     def isOnTop(x,y,momentum):
         tile1 = app.tilemap.pget(pyxel.floor(x/8), pyxel.floor((y-momentum)/8))
-        a1 = tile1 == tile_type.get('vide')
-        b1 = tile1 == tile_type.get('lave1')
-        g1 = tile1 == tile_type.get('lave2')
-        c1 = tile1 == tile_type.get('spawner')
-        e1 = tile1 == tile_type.get('bar1')
-        f1 = tile1 == tile_type.get('bar2')
         tile2 = app.tilemap.pget(pyxel.floor((x+7)/8), pyxel.floor((y-momentum)/8))
-        a2 = tile2 == tile_type.get('vide')
-        b2 = tile2 == tile_type.get('lave1')
-        g2 = tile2 == tile_type.get('lave2')
-        c2 = tile2 == tile_type.get('spawner')
-        e2 = tile2 == tile_type.get('bar1')
-        f2 = tile2 == tile_type.get('bar2')
-        return not ((a1 or b1 or c1 or e1 or f1 or g1) and (a2 or b2 or c2 or e2 or f2 or g2))
+        return Utile.isTop(tile1) or Utile.isTop(tile2)
     
     def isOnFloor(x,y,momentum):
         tile1 = app.tilemap.pget(pyxel.floor(x/8), pyxel.floor((y-momentum)/8)+1)
-        a1 = tile1 == tile_type.get('vide')
-        b1 = tile1 == tile_type.get('lave1')
-        c1 = tile1 == tile_type.get('spawner')
-        d1 = tile1 == tile_type.get('lave2')
         tile2 = app.tilemap.pget(pyxel.floor((x+7)/8), pyxel.floor((y-momentum)/8)+1)
-        a2 = tile2 == tile_type.get('vide')
-        b2 = tile2 == tile_type.get('lave1')
-        c2 = tile2 == tile_type.get('spawner')
-        d2 = tile2 == tile_type.get('lave2')
-        return not ((a1 or b1 or c1 or d1) and (a2 or b2 or c2 or d2))
+        return Utile.isFloor(tile1) or Utile.isFloor(tile2)
 
     def isLeftMur(x,y,vitesse,momentum):
         v8 = vitesse/8
-        tile = app.tilemap.pget(pyxel.floor(x/8-v8), pyxel.floor(y-momentum)/8)
-        return Utile.isMur(tile)
+        tile1 = app.tilemap.pget(pyxel.floor(x/8-v8), pyxel.floor(y-momentum)/8)
+        tile2 = app.tilemap.pget(pyxel.floor(x/8-v8), pyxel.floor((y-momentum+7)/8))
+        return Utile.isMur(tile1) or Utile.isMur(tile2)
     
     def isRightMur(x,y,vitesse,momentum):
         v8 = vitesse/8
-        tile = app.tilemap.pget(pyxel.floor((x+7)/8+v8), pyxel.floor(y-momentum)/8)
-        return Utile.isMur(tile)
+        tile1 = app.tilemap.pget(pyxel.floor((x+7)/8+v8), pyxel.floor(y-momentum)/8)
+        tile2 = app.tilemap.pget(pyxel.floor((x+7)/8+v8), pyxel.floor((y-momentum+7)/8))
+        return Utile.isMur(tile1) or Utile.isMur(tile2)
+    
+    def isTop(tile):
+        a = tile == tile_type.get('vide')
+        b = tile == tile_type.get('lave1')
+        g = tile == tile_type.get('lave2')
+        c = tile == tile_type.get('spawner')
+        e = tile == tile_type.get('bar1')
+        f = tile == tile_type.get('bar2')
+        return not (a or b or c or e or f or g)
+    
+    def isFloor(tile):
+        a = tile == tile_type.get('vide')
+        b = tile == tile_type.get('lave1')
+        c = tile == tile_type.get('spawner')
+        d = tile == tile_type.get('lave2')
+        return not (a or b or c or d)
     
     def isMur(tile):
         a = tile == tile_type.get('vide')

@@ -411,7 +411,17 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
           if (error) {
             console.log(error);
           }else{
-            request(options).pipe(fs.createWriteStream(path.join(dirPath, fileName)))
+            const p =path.join(dirPath, fileName)
+            try {
+              if(fs.existsSync(p)){
+                fs.rmSync(p) 
+              }
+            } catch (error) {}
+            try {
+              request(options).pipe(fs.createWriteStream(p)).error((e)=>{
+                console.error(e)
+              })
+            } catch (error) {}
           }
         });
       })
