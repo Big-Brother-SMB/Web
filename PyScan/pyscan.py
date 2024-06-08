@@ -394,7 +394,7 @@ user="None"
 def alert(titre,text):
   global fenetre
   if son_bool.get():
-    t1 = threading.Thread(target=playsound, args=('alert2.mp3',))
+    t1 = threading.Thread(target=playsound, args=('alert.mp3',))
     t1.start()
     msgErr.set(titre + ":\n" + text)
 
@@ -653,15 +653,6 @@ def controle():
         birthday()
         canvas.itemconfig(image_container,image=imgHappyBirth)
       socketReq("setAchievement",{"uuid":user["uuid"],"event":"anniversaire","value":0},True)
-    #connerie:
-    if user["code_barre"]=="12112":
-      playMusic("connerie/nathan d.mp3")
-    elif user["code_barre"]=="41211":
-      playMusic("connerie/nathan w.mp3")
-    elif user["code_barre"]=="44671":
-      playMusic("connerie/florentin.mp3")
-    elif user["code_barre"]=="64310":
-      playMusic("connerie/thomas.mp3")
   else:
     canvas.itemconfig(image_container,image=imgUnknown)
     name.set("")
