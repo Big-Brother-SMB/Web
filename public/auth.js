@@ -36,8 +36,10 @@ const firebaseApp = initializeApp({
   projectId: "big-brother-ac39c",
   storageBucket: "big-brother-ac39c.appspot.com",
   messagingSenderId: "498546882155",
-  appId: "1:498546882155:web:722a18432bf108e0c1632e",
-  measurementId: "G-J5N38BGN7R"
+  appId: "1:498546882155:web:420b6775a361768cc1632e",
+
+  measurementId: "G-DMERWBKKH1"
+
 })
 
 const provider = new GoogleAuthProvider();
@@ -63,7 +65,10 @@ auth.onAuthStateChanged(function(user) {
 
 document.getElementById("change").onclick = () => {
   if (document.getElementById("checkbox").checked) {
+    console.log("az")
     signInWithPopup(auth, provider).then((result) => {
+
+      console.log("a")
 
       const credential = GoogleAuthProvider.credentialFromResult(result)
       console.log("ok1")

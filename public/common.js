@@ -1,21 +1,19 @@
 const firebaseConfig = {
+    apiKey: "AIzaSyAPJ-33mJESHMcvEtaPX7JwIajUawblSuY",
 
-    apiKey: "AIzaSyBaviw7XsruniyFgQQ5cwGvWVWA6DI8lsU",
+    authDomain: "big-brother-ac39c.firebaseapp.com",
   
-    authDomain: "smb-384c5.firebaseapp.com",
+    databaseURL: "https://big-brother-ac39c-default-rtdb.europe-west1.firebasedatabase.app",
   
-    databaseURL: "https://smb-384c5-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "big-brother-ac39c",
   
-    projectId: "smb-384c5",
+    storageBucket: "big-brother-ac39c.appspot.com",
   
-    storageBucket: "smb-384c5.appspot.com",
+    messagingSenderId: "498546882155",
   
-    messagingSenderId: "959816118012",
+    appId: "1:498546882155:web:420b6775a361768cc1632e",
   
-    appId: "1:959816118012:web:b598df1b6d9712efd13179",
-  
-    measurementId: "G-6V1FSH3NXE"
-  
+    measurementId: "G-DMERWBKKH1"
   };
   
 
@@ -28,7 +26,6 @@ var database = firebase.database()
 function FindMyName (tempemail){
     try {
         let userT = tempemail.split("@")[0].split("µ");
-        console.log("t",userT, tempemail)
         userT[0]=userT[0][0].toUpperCase()+userT[0].slice(1)
         Fname=userT[0]
         Pname=""

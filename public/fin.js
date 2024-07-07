@@ -75,6 +75,6 @@ firebase.auth().onAuthStateChanged(function(userX) {
     userT[1]=userT[1].toUpperCase();
     userName = userT[0]+" "+userT[1]
     writeCookie("name",userName)
-    window.location.href = window.location.origin + "/menu/menu.html";
+    window.location.href = window.location.origin + "/vote/vote.html";
   }
 })

@@ -5,9 +5,8 @@
   "targets": {
     "big-brother-ac39c": {
       "hosting": {
-        "public": [
-          "foyer-smb"
-        ]
+        "site": "vote-smb",
+        "public": "public"
       }
     }
   }

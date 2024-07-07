@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Vote</title>
+    <link rel = "icon" href= "../Images/logo.png">
+    <link rel="stylesheet" href="../common.css">
+  </head>
+  <body>
+
+    <header>
+      <h1 style=" margin: 30px; font-size:larger;">À voter: </h1>
+    </header>
+
+  <Article style="text-align: center;">
+    <br>
+    <form autocomplete="off" action="/action_page.php">
+    <div class="autocomplete" style="width: 70%;margin-top: 10px;">
+      <input id="addAmi" type="text" name="myCountry" placeholder="Nom Prénom" style="text-align: center; border-radius:10px;">
+    </div>
+    </form>
+    <br>
+    <button id="roi" class="envoyer">Roi: ---</button><br>
+    <button id="reine" class="envoyer">Reine: ---</button>
+  </Article>
+  <br><br><br>
+  <button id="disconnect"><span>Déconnexion</span></button>
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+    <script src="../common.js"></script>
+    <script src="vote.js"></script>
+
+  </body>
+
+</html>

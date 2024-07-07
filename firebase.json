@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site":"foyer-smb",
+    "site":"vote-smb",
     "public": "public",
     "ignore": [
       "firebase.json",
