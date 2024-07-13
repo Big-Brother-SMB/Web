@@ -28,3 +28,11 @@ systemctl restart apache2
 
 #get date d'expiration:
 openssl x509 -dates -noout < /etc/apache2/certs/file.crt
+
+current_hour=$(date +"%H")
+
+if [ "$current_hour" -ge 0 ] && [ "$current_hour" -lt 4 ]; then
+    reboot
+else
+    echo "pas reboot"
+fi
