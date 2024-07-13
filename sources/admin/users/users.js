@@ -91,7 +91,9 @@ export async function init(common){
         let usersVerify = []
         listUsers.forEach(function(child) {
             utilisateursNames.push(common.name(child.first_name,child.last_name))
-            if(child.verify != 1) usersVerify.push(child)
+            if(child.verify != 1 || child.groups.includes("VIP")){
+                usersVerify.push(child)
+            }
         })
         console.log(utilisateursNames)
 
@@ -105,6 +107,7 @@ export async function init(common){
                 let btn = document.createElement("button")
                 const name = common.name(child.first_name,child.last_name)
                 btn.innerHTML = name
+                if(child.groups.includes("VIP")) btn.innerHTML += " (VIP)"
                 btn.className = "ami"
                 btn.addEventListener("click", function() {
                     document.getElementById("search").value = name
@@ -366,6 +369,7 @@ export async function init(common){
                 if(index != -1 && !listGroups.includes(g_c[0][index])){
                     listGroups.push(g_c[0][index].group2)
                     setUser()
+                    refreshListUsers()
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = ""
                     }
@@ -379,6 +383,7 @@ export async function init(common){
                 prio.addEventListener("click", function() {
                     listGroups = listGroups.filter(o => o != name);
                     setUser()
+                    refreshListUsers()
                     prio.parentNode.removeChild(prio);
                     if(divPrio.childElementCount == 0){
                         divPrio.innerHTML = "aucune priorités"
