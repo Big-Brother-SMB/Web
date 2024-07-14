@@ -1,0 +1,4 @@
+Dans “The Deep Cavern”, vous incarnez un militaire dans une grotte peuplée de différents mutants.
+Votre but est de vous frayer un chemin parmi les monstres tout en récupérant des flammes trouvables dans des barils. Les barils contiennent aussi des power-ups tels que des vies ou des munitions. Une quantité de 10 flammes sera nécessaire pour faire apparaître l’artefact secret pour purifier la grotte des envahisseurs.
+
+Les flèches directionnelles vous permettent d’avancer et la barre d’espace d’ouvrir le feu et de terrasser vos ennemis.

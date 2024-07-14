@@ -1,0 +1,14 @@
+Bienvenue sur BobAventure !
+Dans ce jeu, vous interprétez le rôle de Bob, un jeune mineure venant de la France.
+Il y a bien longtemps, une vieille légende racontait qu'un trésor se cachait dans les terres du Guatemala...
+Bob, persuadait que cette légende dit vrai, est parti en quête de fortune en trouvant ce trésor.
+La légende dit aussi que pour ouvrir ce coffre, il vous faudra réunir un total de 3 pièces d'or qui sont uniques.
+Mais alors, va-t-il y arriver ?
+
+Thème 2: "Chasse au trésor sous terre ou sous l'eau"
+
+Contrôle :
+-flèche de gauche et de droite : se déplacer à gauche ou à droite
+-flèche du haut : sauter
+-barre d'espace : monter l'échelle
+-flèche du bas : descendre l'échelle

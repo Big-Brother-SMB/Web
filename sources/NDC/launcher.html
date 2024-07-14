@@ -2,10 +2,25 @@
 <html>
   <head>
     <title>Nuit du code</title><!-- titre qui change selon le jeu-->
-
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"></script>
+    <script async="" src="//www.awame.net/matomo/matomo.js"></script>
+    <script>
+      var _paq = window._paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+          var u="//www.awame.net/matomo/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '10']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script>
   </head>
-  <body id="body">
-
+  <body>
   </body>
   <!-- il faut mettre script après body sinon il ne le reconnait pas-->
    
@@ -15,8 +30,13 @@
     });//permet de récupérer les truc après "?" dans l'url
     jeu = params.jeu // http://localhost:3000/NDC/lancher.html?jeu=µ  avec µ la valeur de params.jeu
 
-    document.body.innerHTML = '<pyxel-play root="." name='+jeu+' gamepad="enabled"></pyxel-play>';
-    document.title = "Jeu Nuit du Code"
+    launchPyxel({
+          root: "/NDC/jeux/" + jeu,
+          command: "play",
+          name: "jeu.pyxapp",
+          packages: null,
+          gamepad: "enabled",
+          editor: null,
+        });
   </script>
-  <script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script>
 </html>

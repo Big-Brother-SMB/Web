@@ -1,0 +1,7 @@
+Vous incarnez un héros dont le but est de découvrir le trésors caché dans une grotte à première vue accueillante. Cependant, les âmes des précédents aventuriers résident toujours dans leurs squelettes et sont déterminées à protéger le trésors. A vous de vous en débarrasser pour avoir accès au coffre.
+
+vous pourrez vous déplacer avec les flèches et utiliser votre épée avec la barre espace.
+Votre santé diminue lorsque vous entrez en contact avec un squelette. Ces squelettes apparaissent au fur et à mesure.
+
+
+il était prévu que le coffre soit dévoilé lorsque vous auriez tué un nombre suffisant de squelettes.

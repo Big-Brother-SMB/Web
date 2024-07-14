@@ -1,4 +1,5 @@
 select {
+    margin-bottom: 30px;
     border-color: #3d536a;
     border-width: 5px;
     border-style: solid;
@@ -10,4 +11,10 @@ select {
     width: 450px; 
     height: auto; 
     border-radius: 15px;  
+}
+
+p.desc{
+    font-size: 1rem !important;
+    text-align: justify !important;
+    margin: 80px 80px !important;
 }

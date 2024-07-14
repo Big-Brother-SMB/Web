@@ -1,0 +1,4 @@
+Dans le sauts de haies des JO vous devais sauter au dessus des haies sans vous faire percuter par l'une d'entre elles. Attention a ne pas vous faire percuter sinon la partie est fini.
+
+touche :
+- flèche du haut : sauter

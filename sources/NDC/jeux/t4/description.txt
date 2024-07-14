@@ -1,0 +1,10 @@
+Thème 2: "Chasse au trésor sous terre ou sous l'eau"
+UNIVERS 3
+Un plongeur participe à une chasse au trésor sous l'eau et rencontre des monstres sur son passage.
+Il peut aussi récupérer des bonus qui lui permettent de dash en avant ou de gagner une vie.
+Il peut se délacer de tous les sens (haut, bas, gauche, droite). Lorsqu'il ,est dans l'eau la gravité le ramène doucement vers les fond. Il peut tirer avec son blaster.
+Il a un nombre de munitions limité mais il peut récupérer les munitions posés sur le sol.
+Il dois atteindre le coffre pour gagner.
+
+Déplacement avec les flèches diréctionneles.
+Tirer avec la bar espace.

@@ -1,0 +1,3 @@
+Treasure Miners est un jeu de Survie où le but est de trouver le plus de trésors
+utilise zqsd pour te déplacer et a ou e pour taper avec ta pioche et caser les blocs
+les blocs peuvent contenir des trésors ! Mais faites attention aux chauves-souris !

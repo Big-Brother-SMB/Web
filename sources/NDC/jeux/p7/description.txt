@@ -1,0 +1,3 @@
+Platform-Code est un jeu de platforme utilisant les flèches et la barre espace pour se déplacer et sauter.
+Ce jeu à été réalisé avec l'univers n°4.
+Au début on dispose de 3 vies qui peuvent être perdues avec les cactus présents sur la carte et en tombant dans le vide, le but est de réussir les sauts pour arriver au drapeau tout en récupérant le plus de pièces possible.

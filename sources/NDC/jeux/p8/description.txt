@@ -1,0 +1,1 @@
+Ce jeu est un jeu de survie. L'objectif est d'avoir le score le plus élevé en collectant des pièces, tout en évitant les monstres qui arrivent de toute part. Un seul contact avec les monstres, et c'est fini. Pour bouger, il faut se servir des flèches directionnelles. De plus, plus votre score est élevé, plus les monstres iront vite.

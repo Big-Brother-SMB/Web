@@ -1,0 +1,9 @@
+Bienvenue dans notre chasse aux pièces sous-marin !
+Votre but ? Ramassez les 10 pièces.
+Mais attention aux requins et aux poissons ! Le poisson vous retire une vie et le requin signe votre arrêt de mort !
+Alors arriverez-vous à ramassez toutes vos pièces ?
+A vous de jouer !!!
+
+Comment jouer :
+à l'aide des flèches du haut et du bas déplacer votre plongeur (il peut se déplacer que de haut en bas). Vous ne pouvez déplacer ni les pièces, ni les poissons ni les requins qui arrivent de façon aléatoire.
+Malgré tout le plaisir que vous aurez à jouer à notre jeu, si vous voulez tout de même arrêter, appuyez sur la lettre Q et le jeu s'arrêtera (pour notre plus grand désespoir tout de même).
