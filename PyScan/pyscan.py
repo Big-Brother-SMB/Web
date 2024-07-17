@@ -6,6 +6,7 @@ import os
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+from tkinter import filedialog
 from datetime import datetime,timedelta
 import socketio
 import time
@@ -15,6 +16,7 @@ import requests
 import traceback
 from PIL import Image, ImageTk
 import vlc
+import csv
 
 import mediaplayer
 
@@ -152,9 +154,9 @@ def socketReq(event,data,admin):
 #sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
 sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
 print("\n\n\n")
-print(">>> Start")
 id_data =socketReq('id_data', None,False)
-print(">>> id_data: " + id_data['email'])
+if id_data!="err":
+  print(">>> id_data: " + id_data['email'])
 if id_data=="err" or id_data["admin"]<1:
   print(">>> Erreur: token non admin")
   print(">>> Il faut modifier le token sur la première ligne du fichier save.txt")
@@ -739,6 +741,36 @@ def export():
 
 
 
+
+
+
+def import_csv():
+  file_path = filedialog.askopenfilename(
+    filetypes=[("CSV Files", "*.csv")]
+  )
+  if file_path:
+    with open(file_path) as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if "stemariebeaucamps.fr" in row[4]:
+              liste = []
+              for i in range(7,len(row)):
+                liste.append(row[i])
+              socketReq('setUser',{
+                "first_name":row[0],
+                "last_name":row[1],
+                "code_barre":row[2],
+                "classe":row[3],
+                "email":row[4],
+                "birthday":row[5],
+                "birthmonth":row[6],
+                "listGroups":liste,
+                "admin_permission":None,
+                "verify":True,
+                "admin":0,
+              },True)
+  pass
+
 #gestion des éléments graphiques(fenetre,label,bouton,image)
 class App(threading.Thread):
     def __init__(self, tk_root, label,name):
@@ -1053,6 +1085,7 @@ menubar = Menu(fenetre)
 
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
+filemenu.add_command(label="Import csv", command=import_csv)
 filemenu.add_command(label="Date", command=windowDate)
 filemenu.add_command(label="Refresh", command=lambda: refresh(False))
 menubar.add_cascade(label="File", menu=filemenu)
@@ -1080,3 +1113,5 @@ APP = App(fenetre,text,name)
 
 refresh(True)
 fenetre.mainloop()
+
+print(id_data)
