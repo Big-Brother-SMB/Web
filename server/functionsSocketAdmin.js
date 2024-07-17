@@ -202,6 +202,9 @@ module.exports = class funcSocket{
             if(await user.admin == 0 || await user.admin == null) return
             try{
                 let user = new User(req.uuid)
+                if(req.email){
+                    user = User.createUser(req.email,user.picture)
+                }
                 user.all = req
                 socket.emit('setUser','ok')
             }catch(e){console.error("fsA18");}
