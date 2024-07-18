@@ -204,6 +204,7 @@ module.exports = class funcSocket{
                 let user = new User(req.uuid)
                 if(req.email){
                     user = await User.createUser(req.email,user.picture)
+                    req.uuid = user.uuid
                 }
                 user.all = req
                 socket.emit('setUser','ok')
