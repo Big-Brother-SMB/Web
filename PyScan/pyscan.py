@@ -749,27 +749,31 @@ def import_csv():
     filetypes=[("CSV Files", "*.csv")]
   )
   if file_path:
-    with open(file_path) as file:
-        reader = csv.reader(file)
-        for row in reader:
-            if "stemariebeaucamps.fr" in row[4]:
-              liste = []
-              for i in range(7,len(row)):
-                liste.append(row[i])
-              socketReq('setUser',{
-                "first_name":row[0],
-                "last_name":row[1],
-                "code_barre":row[2],
-                "classe":row[3],
-                "email":row[4],
-                "birthday":row[5],
-                "birthmonth":row[6],
-                "listGroups":liste,
-                "admin_permission":None,
-                "verify":True,
-                "admin":0,
-              },True)
-  pass
+    canvas.itemconfig(image_container,image=imgLoading)
+    def lecture():
+      with open(file_path) as file:
+          reader = csv.reader(file)
+          for row in reader:
+              if "stemariebeaucamps.fr" in row[4]:
+                print(row)
+                liste = []
+                for i in range(7,len(row)):
+                  liste.append(row[i])
+                socketReq('setUser',{
+                  "first_name":row[0],
+                  "last_name":row[1],
+                  "code_barre":row[2],
+                  "classe":row[3],
+                  "email":row[4],
+                  "birthday":row[5],
+                  "birthmonth":row[6],
+                  "listGroups":liste,
+                  "admin_permission":None,
+                  "verify":True,
+                  "admin":0,
+                },True)
+      canvas.itemconfig(image_container,image=imgOk)
+    threading.Thread(target=lecture).start()
 
 #gestion des éléments graphiques(fenetre,label,bouton,image)
 class App(threading.Thread):
