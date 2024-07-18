@@ -315,6 +315,7 @@ module.exports = class User{
                         let iUser = 0
                         console.log(list)
                         for(let i in data){
+                          console.log(list[iUser],data[i])
                           if(list[iUser].uuid != data[i].uuid){
                             iUser++
                           }
