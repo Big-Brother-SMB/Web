@@ -313,7 +313,7 @@ module.exports = class User{
                   try{
                       if(data!=undefined){
                         let iUser = 0
-                        console.log(list,data)
+                        console.log(list)
                         for(let i in data){
                           if(list[iUser].uuid != data[i].uuid){
                             iUser++
