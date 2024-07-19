@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('node:path');
 const funcDB = require('./functionsDB.js');
 const { subscribe } = require('diagnostics_channel');
+const https = require('https');
+const request = require('request');
 
 const jsonObj = JSON.parse(fs.readFileSync(path.join(__dirname,"..","..","code.json")));
 const py_token = jsonObj.admin
@@ -143,6 +145,54 @@ module.exports = class User{
       })
       setTimeout(reject,10000)
     })
+  }
+
+  static async download_profile_picture(){
+    try {
+      let users_list = await User.listUserComplete();
+      const dirPath = path.join(__dirname, "..", "sources", "profile_picture");
+  
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+  
+      for (const user of users_list) {
+        const imageURL = user.picture && user.picture !== "" ? user.picture : "https://lh3.googleusercontent.com/a/default-user=s96-c";
+        const fileName = user.uuid + ".jpg";
+        const filePath = path.join(dirPath, fileName);
+  
+        var agent = new https.Agent({
+          port: '443',
+          path: '/',
+          rejectUnauthorized: false
+        });
+  
+        var options = {
+          url: imageURL,
+          agent: agent
+        };
+  
+        try {
+          // Check if file exists and remove it asynchronously
+          if (fs.existsSync(filePath)) {
+            await fs.promises.rm(filePath);
+          }
+  
+          await new Promise((resolve, reject) => {
+            request(options)
+              .pipe(fs.createWriteStream(filePath))
+              .on('finish', resolve)
+              .on('error', reject);
+          });
+  
+          console.log(`Image saved for user ${user.uuid}`);
+        } catch (error) {
+          console.error(`Error processing user ${user.uuid}:`, error);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user list:', error);
+    }
   }
 
   async sendNotif(title,body,icon,url){
@@ -306,6 +356,7 @@ module.exports = class User{
                     utilisateur.groups.push(data[i].group2)
                   }
                 }
+                list.push(utilisateur)
                 for(let i in list){
                   delete list[i].real_uuid
                 }
@@ -313,9 +364,7 @@ module.exports = class User{
                   try{
                       if(data!=undefined){
                         let iUser = 0
-                        console.log(list)
                         for(let i in data){
-                          console.log(list[iUser],data[i])
                           if(list[iUser].uuid != data[i].uuid){
                             iUser++
                           }
@@ -391,9 +440,13 @@ module.exports = class User{
   }
 
   set all(args){
-    db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?, admin=?, birthday=?, birthmonth=?, verify=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.admin,args.birthday,args.birthmonth,args.verify,this.uuid])
+    if(args.mode_addCSV){
+      db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?, birthday=?, birthmonth=?, verify=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.birthday,args.birthmonth,args.verify,this.uuid])
+    }else{
+      db.run("UPDATE users SET first_name=?, last_name=?, code_barre=?, classe=?, admin=?, birthday=?, birthmonth=?, verify=? WHERE uuid=?",[args.first_name,args.last_name,args.code_barre,args.classe,args.admin,args.birthday,args.birthmonth,args.verify,this.uuid])
+      this.admin_permission = args.admin_permission
+    }
     this.groups = args.listGroups
-    this.admin_permission = args.admin_permission
   }
 
   get first_name()   {

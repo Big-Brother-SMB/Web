@@ -287,6 +287,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.setAchievement(socket,user)
 
       funcSocketAdmin.sendMusic(socket,user)
+      funcSocketAdmin.setGroupAndClasse(socket,user)
+      funcSocketAdmin.resetDB(socket,user)
     }
   })
   io.on("connection", async (socket) => {
@@ -379,56 +381,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
 
     //download images de profil
     if(now.getHours()==2 && now.getMinutes()==0){
-
-      (async function() {
-        try {
-          let users_list = await User.listUserComplete();
-          const dirPath = path.join(__dirname, "sources", "profile_picture");
-      
-          if (!fs.existsSync(dirPath)) {
-            fs.mkdirSync(dirPath, { recursive: true });
-          }
-      
-          for (const user of users_list) {
-            const imageURL = user.picture && user.picture !== "" ? user.picture : "https://lh3.googleusercontent.com/a/default-user=s96-c";
-            const fileName = user.uuid + ".jpg";
-            const filePath = path.join(dirPath, fileName);
-      
-            var agent = new https.Agent({
-              port: '443',
-              path: '/',
-              rejectUnauthorized: false
-            });
-      
-            var options = {
-              url: imageURL,
-              agent: agent
-            };
-      
-            try {
-              // Check if file exists and remove it asynchronously
-              if (fs.existsSync(filePath)) {
-                await fs.promises.rm(filePath);
-              }
-      
-              await new Promise((resolve, reject) => {
-                request(options)
-                  .pipe(fs.createWriteStream(filePath))
-                  .on('finish', resolve)
-                  .on('error', reject);
-              });
-      
-              console.log(`Image saved for user ${user.uuid}`);
-            } catch (error) {
-              console.error(`Error processing user ${user.uuid}:`, error);
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching user list:', error);
-        }
-      })();
+      User.download_profile_picture()
     }
-
 
     //Subscription Cookie
     const weekMS = 604800000

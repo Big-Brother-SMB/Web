@@ -5,25 +5,67 @@ let db
 module.exports = class funcDB{
   static setDB(newdb){
     db=newdb;
-    
-    /*let t0 =["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
-    let t1 =["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K"]
-    let t2 =["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK"]
-    let t3=["PCSI","PC","professeurs-personnel"]
+  }
+
+  static async reset_db(){
+    let t0 = ["2A","2B","2C","2D","2E","2F","2G","2H","2I","2J","2K","2L"]
+    let t1 = ["1A","1B","1C","1D","1E","1F","1G","1H","1I","1J","1K","1L"]
+    let t2 = ["TA","TB","TC","TD","TE","TF","TG","TH","TI","TJ","TK","TL"]
+    let t3 = ["professeurs-personnel"]
     let tab = []
     t0.forEach(e=>{
-      tab.push([e,0])
+      tab.push({classe:e,niveau:0})
     })
     t1.forEach(e=>{
-      tab.push([e,1])
+      tab.push({classe:e,niveau:1})
     })
     t2.forEach(e=>{
-      tab.push([e,2])
+      tab.push({classe:e,niveau:2})
     })
     t3.forEach(e=>{
-      tab.push([e,3])
+      tab.push({classe:e,niveau:3})
     })
-    this.setClasse(tab)*/
+    this.setClasse(tab)
+    this.setGroup(["VIP","La pieuvre","BDL","Lycéens humanitaires"])
+
+
+    db.run('delete from users where admin=0')
+    db.run('DELETE FROM admin_permission WHERE NOT (uuid IN (SELECT uuid FROM users))');
+
+
+
+    db.run('delete from var')
+    db.run('delete from emprunt')
+
+    db.run('delete from achievement')
+    db.run('delete from amis')
+    db.run('delete from user_groups')
+    db.run('delete from token')
+    db.run('delete from users_notification_subscription')
+
+    db.run('delete from perm_info')
+    db.run('delete from perm_list')
+
+    db.run('delete from midi_info')
+    db.run('delete from midi_menu')
+    db.run('delete from midi_list')
+    db.run('delete from midi_prio')
+    db.run('delete from midi_amis')
+
+    db.run('delete from sondage_menu')
+
+    db.run('delete from point_global')
+    db.run('delete from point_perso')
+
+    db.run('delete from ticket_cookie')
+    db.run('delete from subscription_cookie')
+    db.run('delete from ban')
+
+    db.run('delete from post')
+    db.run('delete from post_lu')
+    
+    db.run('delete from lieu_info')
+    db.run('delete from lieu_list')
   }
 
   //var
@@ -249,7 +291,7 @@ module.exports = class funcDB{
     db.serialize(()=>{
       db.run("delete from classe_list")
       list.forEach(e=>{
-        db.run("INSERT INTO classe_list(classe,niveau) VALUES (?,?)",[e[0],e[1]])
+        db.run("INSERT INTO classe_list(classe,niveau) VALUES (?,?)",[e.classe,e.niveau])
       })
     })
   }

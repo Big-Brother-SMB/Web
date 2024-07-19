@@ -7,6 +7,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import filedialog
+from tkinter.messagebox import askyesno
 from datetime import datetime,timedelta
 import socketio
 import time
@@ -151,8 +152,8 @@ def socketReq(event,data,admin):
     return []
 
 #initialisation du socket
-#sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
-sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
+sio.connect("http://localhost:3000/", auth={"token":token},namespaces=["/","/admin","/music"])
+#sio.connect("https://foyerlycee.stemariebeaucamps.fr/", auth={"token":token},namespaces=["/","/admin","/music"])
 print("\n\n\n")
 id_data =socketReq('id_data', None,False)
 if id_data!="err":
@@ -211,8 +212,8 @@ if version_serveur!=version and version!="dev":
 
 #télécharger profile_picture
 def downloadProfilesPictures():
-  url = 'https://foyerlycee.stemariebeaucamps.fr/profile_picture/all'
-  #url = "http://localhost:3000/profile_picture/all"
+  #url = 'https://foyerlycee.stemariebeaucamps.fr/profile_picture/all'
+  url = "http://localhost:3000/profile_picture/all"
   r = requests.get(url, allow_redirects=True,verify=False)
   open('profile_picture.zip', 'wb').write(r.content)
   if not os.path.exists("./profile_picture"):
@@ -742,23 +743,33 @@ def export():
 
 
 
-
+def reset_DB():
+  answer = askyesno("Reset DB","Voulez vous réinitialiser la base de donnnée?")
+  if answer:
+    socketReq('resetDB',None,True)
+    print("reset DB")
 
 def import_csv():
   file_path = filedialog.askopenfilename(
-    filetypes=[("CSV Files", "*.csv")]
+    filetypes=[("CSV(Nom,Prénom,code,classe,email,birthday,birthmonth,Groupes...)", "*.csv")]
   )
   if file_path:
     canvas.itemconfig(image_container,image=imgLoading)
     def lecture():
+      (list_all_groups,list_all_classes) = socketReq('getGroupAndClasse',None,True)
+      list_all_groups = [list_all_groups[i]["group2"] for i in range(len(list_all_groups))]
+      time.sleep(4)
       with open(file_path) as file:
           reader = csv.reader(file)
           for row in reader:
-              if "stemariebeaucamps.fr" in row[4]:
+              if "@stemariebeaucamps.fr" in row[4]:
                 print(row)
                 liste = []
                 for i in range(7,len(row)):
-                  liste.append(row[i])
+                  if row[i]!='':
+                    liste.append(row[i])
+                name.set(row[0]+" "+row[1])
+                list_all_groups = list(set(list_all_groups+liste))
                 socketReq('setUser',{
                   "first_name":row[0],
                   "last_name":row[1],
@@ -768,11 +779,12 @@ def import_csv():
                   "birthday":row[5],
                   "birthmonth":row[6],
                   "listGroups":liste,
-                  "admin_permission":None,
                   "verify":True,
-                  "admin":0,
+                  "mode_addCSV":1
                 },True)
+      socketReq('setGroupAndClasse',{"groups":list_all_groups,"classes":list_all_classes},True)
       canvas.itemconfig(image_container,image=imgOk)
+      name.set("Terminé")
     threading.Thread(target=lecture).start()
 
 #gestion des éléments graphiques(fenetre,label,bouton,image)
@@ -1090,6 +1102,7 @@ menubar = Menu(fenetre)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Export list", command=export)
 filemenu.add_command(label="Import csv", command=import_csv)
+filemenu.add_command(label="Réinitialiser", command=reset_DB)
 filemenu.add_command(label="Date", command=windowDate)
 filemenu.add_command(label="Refresh", command=lambda: refresh(False))
 menubar.add_cascade(label="File", menu=filemenu)

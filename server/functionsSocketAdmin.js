@@ -212,6 +212,21 @@ module.exports = class funcSocket{
         })
     }
 
+    static setUser(socket,user){
+        socket.on('setUser',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                let user = new User(req.uuid)
+                if(req.email){
+                    user = await User.createUser(req.email,user.picture)
+                    req.uuid = user.uuid
+                }
+                user.all = req
+                socket.emit('setUser','ok')
+            }catch(e){console.error("fsA18");}
+        })
+    }
+
     static removeUser(socket,user){
         socket.on('removeUser',async req => {
             if(await user.admin == 0 || await user.admin == null) return
@@ -534,6 +549,27 @@ module.exports = class funcSocket{
                 socket.emit("setAchievement","ok")
             }catch(e){console.error("fsA49");}
         });
+    }
+
+    static setGroupAndClasse(socket,user){
+        socket.on('setGroupAndClasse',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await funcDB.setGroup(req.groups)
+                await funcDB.setClasse(req.classes)
+                socket.emit('setGroupAndClasse',"ok")
+            }catch(e){console.error("fsA52");}
+        })
+    }
+
+    static resetDB(socket,user){
+        socket.on('resetDB',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await funcDB.reset_db()
+                socket.emit('resetDB',"ok")
+            }catch(e){console.error("fsA53");}
+        })
     }
 
         /*
