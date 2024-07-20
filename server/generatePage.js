@@ -72,6 +72,11 @@ module.exports = async(req_url) => {
   if(extName==''){
     extName='.html'
   }
+
+  if(pathName.includes("/profile_picture/") && err404){
+    err404=false
+    fichier = await readFileAsync(path.join(sources_url,"assets","default-user.png"))
+  }
   return [fichier,extName,err404]
 }
 

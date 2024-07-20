@@ -77,38 +77,73 @@ export class common{
           
           if(url.substring(0,2)=="f:"){
             if(url=="f:banderole"){
-              let banderole = await common.socketAsync("getBanderole",null)
-              banderole=window.prompt("Message de la banderole:",banderole);
-              console.log("msg:",banderole)
-              if (banderole!=null){
-                  await new Promise(r => setTimeout(r, 1000));
-                  await common.socketAdminAsync("setBanderole",banderole)
-                  document.getElementById("banderole").innerHTML = banderole
-      
-                  if (banderole != null && banderole != '') {
-                      document.getElementById("banderole").innerHTML = banderole
-                      document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
-                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px - 3.8em + 1px)")
-                  }else{
-                      document.getElementsByClassName("marquee-rtl")[0].classList.add("cache")
-                      document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px)")
+              common.popUp_Active("Message de la banderole","",async function(btn) {
+                btn.innerHTML="Confirmer"
+                const popup = document.getElementById("popup-body")
+                const name = document.createElement("input")
+                name.setAttribute("autocomplete","off")
+                name.setAttribute("type","text")
+                name.style.width="100%"
+                let banderole = await common.socketAsync("getBanderole",null)
+                name.value = banderole
+                popup.appendChild(name)
+
+                btn.addEventListener("click",async ()=>{
+                  banderole = name.value
+                  if (banderole!=null){
+                    await common.socketAdminAsync("setBanderole",banderole)
+                    document.getElementById("banderole").innerHTML = banderole
+
+                    if (banderole != null && banderole != '') {
+                        document.getElementsByClassName("marquee-rtl")[0].classList.remove("cache")
+                        document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px - 3.8em + 1px)")
+                    }else{
+                        document.getElementsByClassName("marquee-rtl")[0].classList.add("cache")
+                        document.querySelector(':root').style.setProperty("--screenH","calc(calc(var(--vh, 1vh) * 100) - 8em - 30px - 3px)")
+                    }
+
+                    common.popUp_Stop()
                   }
-              }
+                })
+              },true)
             }else if(url=="f:addpoint"){
-              var nbpts=prompt("Nombre de point(s) à ajouter :","1")
-              nbpts = parseFloat(nbpts.replaceAll(",","."))
-              let nomgain
-              if (nbpts!==null && !isNaN(nbpts)){
-                  nomgain=prompt("Nom du gain :", "gain de la semaine " + common.actualWeek)
-                  if (nomgain!==null){
-                      await common.socketAdminAsync("addGlobalPoint",[new Date(),nomgain,nbpts])
-                      if(nomgain=="gain de la semaine " + common.actualWeek){
-                        let btn = document.getElementById("nav_btn_add_point")
-                        if(btn!=null) btn.classList.remove('notif')
+              common.popUp_Active("Ajouter des points","",async function(btn) {
+                btn.innerHTML="Confirmer"
+                const popup = document.getElementById("popup-body")
+
+                const name = document.createElement("input")
+                name.setAttribute("autocomplete","off")
+                name.setAttribute("type","text")
+                name.value = "gain de la semaine " + common.actualWeek
+                const point = document.createElement("input")
+                point.setAttribute("autocomplete","off")
+                point.setAttribute("type","number")
+                point.value = "1"
+                
+                const p1 = document.createElement("p")
+                p1.innerHTML="Nom du gain :"
+                popup.appendChild(p1)
+                popup.appendChild(name)
+                const p2 = document.createElement("p")
+                p2.innerHTML="Nombre de point(s) à ajouter :"
+                popup.appendChild(p2)
+                popup.appendChild(point)
+
+                btn.addEventListener("click",async ()=>{
+                  const nomgain = name.value
+                  const nbpts = parseFloat(point.value.replaceAll(",","."))
+                  if (nbpts!==null && !isNaN(nbpts)){
+                      if (nomgain!==null){
+                          await common.socketAdminAsync("addGlobalPoint",[new Date(),nomgain,nbpts])
+                          if(nomgain=="gain de la semaine " + common.actualWeek){
+                            let btn = document.getElementById("nav_btn_add_point")
+                            if(btn!=null) btn.classList.remove('notif')
+                          }
+                          common.popUp_Stop()
                       }
-                      alert("Ajout de points effectué")
                   }
-              }
+                })
+              },true)
             }
           }else{
             this.loadpage(url)
