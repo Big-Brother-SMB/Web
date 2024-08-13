@@ -6,7 +6,7 @@ module.exports = {
   deploy : {
     production : {
       user : 'root',
-      host : '91.121.41.208',
+      host : '151.80.78.83 ',
       ref  : 'origin/main',
       ssh_options: "StrictHostKeyChecking=no",
       repo : 'git@github.com:Big-Brother-SMB/Web.git',
