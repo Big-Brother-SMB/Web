@@ -10,7 +10,7 @@ module.exports = {
       ref  : 'origin/main',
       ssh_options: "StrictHostKeyChecking=no",
       repo : 'git@github.com:Big-Brother-SMB/Web.git',
-      path : '/home/site',
+      path : '/../home/site',
       'pre-deploy-local': '',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
       'pre-setup': ''
