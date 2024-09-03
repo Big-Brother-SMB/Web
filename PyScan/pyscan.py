@@ -765,7 +765,7 @@ def import_csv():
               if "@stemariebeaucamps.fr" in row[4]:
                 print(row)
                 liste = []
-                for i in range(7,len(row)):
+                for i in range(5,len(row)):
                   if row[i]!='':
                     liste.append(row[i])
                 name.set(row[0]+" "+row[1])
@@ -776,8 +776,6 @@ def import_csv():
                   "code_barre":row[2],
                   "classe":row[3],
                   "email":row[4],
-                  "birthday":row[5],
-                  "birthmonth":row[6],
                   "listGroups":liste,
                   "verify":True,
                   "mode_addCSV":1
