@@ -325,55 +325,69 @@ module.exports = class UserSelect{
     }
   
   
-    static boucleInscription(inscrits,places){
-      bloc1 : {
-        //vérifie qu'il reste des places
-        while(inscrits<places){
-          //teste les utilisateurs dans l'ordre de la liste
-          bloc2 : {
-            for(let i in this.usersList){
-              //on va testé l'utilisateur s'il n'est pas refusé ou n'est pas accepté
-              if(this.usersList[i].pass==0){
-                let amisAccepte=true
-                //test si les amis ont tous une meilleur places dans la liste que l'utilisateur ou si les amis sont déja inscrit
-                //cela permet d'inscrire tout le monde en même temps et de ne pas couper le groupe
-                this.usersList[i].amisEloigner.forEach(a=>{
-                  if(UserSelect.usersList[i].NumPlace<UserSelect.searchAmi(a).NumPlace && UserSelect.searchAmi(a).pass<1){
-                    amisAccepte=false
+    static boucleInscription(inscrits, places) {
+      bloc1: {
+          // vérifie qu'il reste des places
+          while (inscrits < places) {
+              // teste les utilisateurs dans l'ordre de la liste
+              bloc2: {
+                  for (let i in this.usersList) {
+                      // on va testé l'utilisateur s'il n'est pas refusé ou n'est pas accepté
+                      if (this.usersList[i].pass === 0) {
+                          let amisAccepte = true;
+  
+                          // Si l'utilisateur est VIP, il et ses amis peuvent s'inscrire sans affecter le nombre de places
+                          if (this.usersList[i].vipActif) {
+                              inscrits++; // Compte l'utilisateur VIP
+                              this.usersList[i].pass = 1; // Accepte le VIP
+  
+                              
+                                      
+                                  
+                              
+                              // Continuer à la prochaine itération
+                              break bloc2;
+                          }
+  
+                          // Test si les amis ont tous une meilleur places dans la liste que l'utilisateur ou si les amis sont déja inscrit
+                          this.usersList[i].amisEloigner.forEach(a => {
+                              if (UserSelect.usersList[i].NumPlace < UserSelect.searchAmi(a).NumPlace && UserSelect.searchAmi(a).pass < 1) {
+                                  amisAccepte = false;
+                              }
+                          });
+  
+                          // Test si il y a assez de places pour inscrire l'utilisateur et ses amis éloignés
+                          let nbAmisNonInscrit = this.usersList[i].amisEloigner.length + 1; // on récupére le nombre d'amis +1 pour l'utilisateur
+                          this.usersList[i].amisEloigner.forEach(a => {
+                              // Si un ami est inscrit alors le ne prendra pas une nouvelle place, donc on le supprime du compte
+                              if (UserSelect.searchAmi(a).pass >= 1) {
+                                  nbAmisNonInscrit--;
+                              }
+                          });
+  
+                          // Si les 2 conditions sont respectées, on inscrit le groupe
+                          if (amisAccepte && nbAmisNonInscrit + inscrits <= places) {
+                              // Inscrit l'utilisateur et ses amis
+                              inscrits += nbAmisNonInscrit;
+                              this.usersList[i].pass = 1;
+                              this.usersList[i].amisEloigner.forEach(a => {
+                                  let ami = UserSelect.searchAmi(a);
+                                  if (ami.pass < 1) {
+                                      ami.pass = 1;
+                                  }
+                              });
+                              // Recommence à tester depuis le début de la liste quand des inscriptions ont eu lieu
+                              break bloc2;
+                          }
+                      }
                   }
-                })
-                //test si il y a assez de places pour inscrire l'utilisateur et ses amis éloignier
-                let nbAmisNonInscrit = this.usersList[i].amisEloigner.length+1 // on récupére le nombre d'amis +1 pour l'utilisateur
-                this.usersList[i].amisEloigner.forEach(a=>{
-                  //si un ami est inscrit alors le ne prendra pas une nouvelle place, donc on le supprime du compte
-                  if(UserSelect.searchAmi(a).pass>=1){
-                    nbAmisNonInscrit--
-                  }
-                })
-                
-                //si les 2 conditions sont respecté, on inscrit le groupe
-                if(amisAccepte && nbAmisNonInscrit+inscrits<=places){
-                  //inscrit l'utilisateur et ses amis
-                  inscrits += nbAmisNonInscrit
-                  this.usersList[i].pass=1
-                  this.usersList[i].amisEloigner.forEach(a=>{
-                    let ami = UserSelect.searchAmi(a)
-                    if(ami.pass<1){
-                      ami.pass=1
-                    }
-                  })
-                  //recommence à tester depuis le début de la liste quand des inscriptions ont eu lieu
-                  break bloc2;
-                }
+                  // Si la boucle for se termine sans avoir sélectionné personne alors stopper l'algo car on est au maximum de remplissage possible
+                  break bloc1;
               }
-            }
-            //si la boucle for se termine sans avoir sélétionné personne alors stopper l'algo car on est au maximum de remplisage possible
-            break bloc1;
           }
-        }
       }
-      return inscrits
-    }
+      return inscrits;
+  }
   
     amisComplete(moi){
       //fonction récursive qui récupére les amis éloigné
