@@ -68,6 +68,7 @@ export async function init(common){
         +"<br>En plus, vous avez, pour la journée, le statut VIP pour le repas."
         +"<br>Cela signifie que vous et 4 de vos amis seront prioritaires, quelles que soient vos quantités de points (même en points négatifs)"
         +"<br>*Si la demande possède plus de 4 amis, seuls les 4 amis avec le moins de points auront le statut VIP"
+        +"<br>*Pensez a faire votre demande avant la récréation du matin sinon vous ne serez pas pris "
         div.appendChild(justificatif)
 
 
