@@ -490,6 +490,100 @@ export async function init(common){
                 await common.socketAdminAsync('setUser',{uuid:utilisateur.uuid,first_name:first_name,last_name:last_name,code_barre:codeBar,classe:classe,verify:verifyBox.checked,admin:adminBox.checked,listGroups:listGroups,admin_permission:admin_permission,birthday:birthday,birthmonth:birthmonth})
             }
         }
-        refreshListUsers()
     }
+    
+    let groupSelect = document.getElementById("groupSelect");
+    let classSelect = document.getElementById("classSelect");
+    let userList = document.getElementById("userList");
+
+    // Remplir les listes déroulantes avec les groupes et les classes
+    g_c[0].forEach((group) => {
+        let option = document.createElement("option");
+        option.value = group.group2;
+        option.textContent = group.group2;
+        groupSelect.appendChild(option);
+    });
+
+    g_c[1].forEach((classe) => {
+        let option = document.createElement("option");
+        option.value = classe.classe;
+        option.textContent = classe.classe;
+        classSelect.appendChild(option);
+    });
+
+    // Écouter les changements de sélection pour le groupe et la classe
+    groupSelect.addEventListener("change", filterUsers);
+    classSelect.addEventListener("change", filterUsers);
+
+    function filterUsers() {
+        let selectedGroup = groupSelect.value;
+        let selectedClass = classSelect.value;
+
+        // Filtrer les utilisateurs en fonction du groupe et de la classe sélectionnés
+        let filteredUsers = listUsers.filter(user => {
+            let inGroup = selectedGroup ? user.groups.includes(selectedGroup) : true;
+            let inClass = selectedClass ? user.classe === selectedClass : true;
+            return inGroup && inClass;
+        });
+
+        // Afficher les utilisateurs filtrés
+        displayUsers(filteredUsers);
+    }
+
+    function displayUsers(users) {
+        userList.innerHTML = ""; // Vider la liste précédente
+        if (users.length === 0) {
+            userList.innerHTML = "<p>Aucun utilisateur trouvé.</p>";
+            return;
+        }
+    
+        users.forEach(user => {
+            let userCard = document.createElement("div");
+            userCard.className = "user-card";
+    
+            let userName = document.createElement("h4");
+            userName.textContent = common.name(user.first_name, user.last_name);
+    
+            let userEmail = document.createElement("p");
+            userEmail.textContent = user.email;
+    
+            let userClass = document.createElement("p");
+            userClass.textContent = `Classe: ${user.classe}`;
+    
+            userCard.appendChild(userName);
+            userCard.appendChild(userEmail);
+            userCard.appendChild(userClass);
+    
+            userList.appendChild(userCard);
+        });
+    
+
+        users.forEach(user => {
+            let userItem = document.createElement("p");
+            userItem.textContent = common.name(user.first_name, user.last_name);
+            userList.appendChild(userItem);
+        });
+    }
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
