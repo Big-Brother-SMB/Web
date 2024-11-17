@@ -655,7 +655,7 @@ module.exports = class User{
       }catch(e){console.error("U");;console.log('d17');}
     })
   }
-
+//
   //demandes
   getMidiDemande(semaine,creneau){
     let uuid = this.uuid
