@@ -1,4 +1,25 @@
 export async function init(common){
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+    if(params.easterEgg!=null){
+
+        var radios = document.querySelectorAll('input[name="theme"]');
+
+        await common.socketAsync("setAchievement",{event:params.easterEgg,value:1})
+        for(let rad of radios) {
+            const i = parseInt(rad.value)
+            
+            if(rad.getAttribute("achievement") == params.easterEgg){
+                common.writeCookie("theme mode",i)
+            }
+        }
+        
+        setTimeout(() => {
+            window.location.href = window.location.href.split("?")[0]
+        }, 1000);
+    }
+
     document.getElementById("download").href = "/database.db?"+common.key
     document.getElementById("download2").href = "/PyScan.zip?"+common.key
 
