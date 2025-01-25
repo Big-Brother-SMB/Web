@@ -538,27 +538,6 @@ export async function init(common){
         }
     
         users.forEach(user => {
-            let userCard = document.createElement("div");
-            userCard.className = "user-card";
-    
-            let userName = document.createElement("h4");
-            userName.textContent = common.name(user.first_name, user.last_name);
-    
-            let userEmail = document.createElement("p");
-            userEmail.textContent = user.email;
-    
-            let userClass = document.createElement("p");
-            userClass.textContent = `Classe: ${user.classe}`;
-    
-            userCard.appendChild(userName);
-            userCard.appendChild(userEmail);
-            userCard.appendChild(userClass);
-    
-            userList.appendChild(userCard);
-        });
-    
-
-        users.forEach(user => {
             let userItem = document.createElement("p");
             userItem.textContent = common.name(user.first_name, user.last_name);
             userList.appendChild(userItem);
