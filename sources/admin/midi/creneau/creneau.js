@@ -61,36 +61,38 @@ export async function init(common){
     }
 
     async function reloadInfoHoraire(){
-        listDemandes = await common.socketAsync('listDemandes',{w:w,j:j,h:h})
-        inscrits=0
-        demandes=0
-        let sandwich_tab = [0,0,0,0]
-        let sandwich_tab_inscrit = [0,0,0,0]
+        listDemandes = await common.socketAsync('listDemandes', {w: w, j: j, h: h});
+        inscrits = 0;
+        demandes = 0;
+        let countNull = 0;
+        let countNon = 0;
+        let countOui = 0;
+        
         listDemandes.forEach(function (child) {
-            if(child.DorI==1){
-                inscrits++
-                if(child.sandwich>=0 && child.sandwich<=2){
-                    sandwich_tab_inscrit[child.sandwich+1]++
-                }
-            }else{
-                demandes++
+            // Comptage des demandes inscrites/non inscrites
+            if(child.DorI == 1){
+                inscrits++;
+            } else {
+                demandes++;
             }
-            if(child.sandwich===null){
-                sandwich_tab[0]++
-            }else if(child.sandwich>=0 && child.sandwich<=2){
-                sandwich_tab[child.sandwich+1]++
+            
+            // Comptage des sandwichs selon trois cas
+            if(child.sandwich === null){
+                countNull++;
+            } else if(child.sandwich === 0){
+                countNon++;
+            } else if(child.sandwich > 0){
+                // Au lieu d'incrémenter le compteur, additionner la valeur de sandwich.
+                countOui += child.sandwich;
             }
         });
-        document.getElementById("demandes").innerHTML = "demandes (" + demandes + ")"
-        document.getElementById("inscrits").innerHTML = "inscrits (" + inscrits + ")"
-
-
-        document.getElementById("p sandwich").innerHTML = "null: " + sandwich_tab[0]
-                                                        + "<br>NON: "  + sandwich_tab[1]
-                                                        + "<br>OUI: "  + sandwich_tab[2]
-                                                        + "<br>Inscrit: "
-                                                        + "<br>Sandwich: "  + sandwich_tab_inscrit[2]
-                                                        /*+ "<br>ABSOLUMENT: "  + sandwich_tab[3]*/
+        
+        document.getElementById("demandes").innerHTML = "demandes (" + demandes + ")";
+        document.getElementById("inscrits").innerHTML = "inscrits (" + inscrits + ")";
+        
+        document.getElementById("p sandwich").innerHTML = "null: " + countNull
+                                                        + "<br>NON: "  + countNon
+                                                        + "<br>OUI: "  + countOui;
     }
     await reloadInfoHoraire()
 
