@@ -163,7 +163,7 @@ export async function init(common) {
         }
     function updateFriendSandwichSelector() {
     const container = document.getElementById("amisSandwichSelection");
-    container.innerHTML = "<h3>Sandwich pour vos amis sélectionnés</h3>";
+    container.innerHTML = "<p>Sandwich pour vos amis sélectionnés<p>";
     listAmis.forEach(ami => {
         if (ami.pris == 1) {
             const div = document.createElement("div");
@@ -171,14 +171,14 @@ export async function init(common) {
 
             // Affiche le nom de l'ami
             const span = document.createElement("span");
-            span.innerHTML = common.name(ami.first_name, ami.last_name) + ": ";
+            span.innerHTML = "<b>" + common.name(ami.first_name, ami.last_name) +"</b>" + ": ";
             div.appendChild(span);
 
             // Crée un checkbox, la valeur est toujours 1
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.setAttribute("data-uuid", ami.uuid);
-            checkbox.value = "1";  // valeur fixe 1
+            checkbox.value = "1";  
             div.appendChild(checkbox);
 
             container.appendChild(div);

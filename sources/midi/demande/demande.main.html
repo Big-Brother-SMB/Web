@@ -18,16 +18,12 @@
         <form id="sandwich" class="cache">
             <p>Sandwich?</p>
             <p style="font-size: 1em;">Si possible (dans la limite des stocks disponibles)</p>
-            <input type="checkbox" name="sandwich" value="0"/><label for="sandwich">Je ne veux pas de sandwich</label><br>
-            <input type="checkbox" name="sandwich" value="1"/><label for="sandwich">J'aimerais un sandwich</label><br>
-            <input type="checkbox" name="sandwich" value="2" class="cache"/><label for="sandwich" class="cache">J'aimerais ABSOLUMENT un sandwich</label>
             <p style="font-size: 1em;">(Votre demande <b>ne</b> garantie <b>pas</b> d'avoir un sandwich)</p>
+            <input type="checkbox" name="sandwich" value="1"/><label for="sandwich">J'aimerais un sandwich</label><br>
         </form>
         <div id="amisSandwichSelection" class="sandwich-section">
-          <h3>Sandwich pour vos amis sélectionnés</h3>
-          <!-- La liste des amis et leur select de sandwich sera générée ici par le script -->
         </div>
-
+        <br>
         <div id="DIVdepot" class="cache">
             <p>Déposer la demande?</p>
             <div>
@@ -36,6 +32,7 @@
             </div>
         </div>
 
+        
         <div id="DIVmodif" class="cache">
             <div>
                 <button id="modif" class="btn envoyer">Enregistrer les modifications</button>
