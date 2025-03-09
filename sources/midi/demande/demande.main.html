@@ -1,52 +1,51 @@
 <p id="info"></p>
 
-        <div class="doubleListe">
-            <div>
-                <p>Liste d'amis</p>
-                <button id="toutAjouter" class="btn list">Tout ajouter</button>
-                <div class="listAmis" id="listeAmis"></div>
-            </div>
-            <div>
-                <p>Je mange avec :</p>
-                <button id="toutRetirer" class="btn list">Tout retirer</button>
-                <div class="listAmis" id="listeMange" ></div>
-            </div>
-        </div>
+<div class="doubleListe">
+    <div>
+        <p>Liste d'amis</p>
+        <button id="toutAjouter" class="btn list">Tout ajouter</button>
+        <div class="listAmis" id="listeAmis"></div>
+    </div>
+    <div>
+        <p>Je mange avec :</p>
+        <button id="toutRetirer" class="btn list">Tout retirer</button>
+        <div class="listAmis" id="listeMange" ></div>
+    </div>
+</div>
 
-        <p id="attentionAmis"></p>
+<p id="attentionAmis"></p>
 
-        <form id="sandwich" class="cache">
-            <p>Sandwich?</p>
-            <p style="font-size: 1em;">Si possible (dans la limite des stocks disponibles)</p>
-            <p style="font-size: 1em;">(Votre demande <b>ne</b> garantie <b>pas</b> d'avoir un sandwich)</p>
-            <input type="checkbox" name="sandwich" value="1"/><label for="sandwich">J'aimerais un sandwich</label><br>
-        </form>
-        <div id="amisSandwichSelection" class="sandwich-section">
-        </div>
-        <br>
-        <div id="DIVdepot" class="cache">
-            <p>Déposer la demande?</p>
-            <div>
-                <button id="envoyer" class="btn envoyer">OUI</button>
-                <button id="annuler" class="btn envoyer">NON</button>
-            </div>
-        </div>
+<form id="sandwich" class="cache">
+    <p>Sandwich?</p>
+    <p style="font-size: 1em;">Si possible (dans la limite des stocks disponibles)</p>
+    <input type="radio" name="sandwich" value="0"/><label for="sandwich">Je ne veux pas de sandwich</label><br>
+    <input type="radio" name="sandwich" value="1"/><label for="sandwich">J'aimerais un sandwich</label><br>
+    <input type="radio" name="sandwich" value="2" class="cache"/><label for="sandwich" class="cache">J'aimerais ABSOLUMENT un sandwich</label>
+    <p style="font-size: 1em;">(Votre demande <b>ne</b> garantie <b>pas</b> d'avoir un sandwich)</p>
+</form>
 
-        
-        <div id="DIVmodif" class="cache">
-            <div>
-                <button id="modif" class="btn envoyer">Enregistrer les modifications</button>
-                <button id="PASmodif" class="btn envoyer">Retour sans enregistrer</button>
-            </div>
-            <p>Se désinscrire ?</p>
-            <div>
-                <button id="retirer" class="btn envoyer">Se désinscrire</button>
-            </div>
-        </div>
 
-        <div id="DIVinscrit" class="cache">
-            <div>
-                <button id="pass" class="btn envoyer">Pass</button>
-            </div>
-        </div>
+<div id="DIVdepot" class="cache">
+    <p>Déposer la demande?</p>
+    <div>
+        <button id="envoyer" class="btn envoyer">OUI</button>
+        <button id="annuler" class="btn envoyer">NON</button>
+    </div>
+</div>
 
+<div id="DIVmodif" class="cache">
+    <div>
+        <button id="modif" class="btn envoyer">Enregistrer les modifications</button>
+        <button id="PASmodif" class="btn envoyer">Retour sans enregistrer</button>
+    </div>
+    <p>Se désinscrire ?</p>
+    <div>
+        <button id="retirer" class="btn envoyer">Se désinscrire</button>
+    </div>
+</div>
+
+<div id="DIVinscrit" class="cache">
+    <div>
+        <button id="pass" class="btn envoyer">Pass</button>
+    </div>
+</div>
