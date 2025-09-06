@@ -759,7 +759,7 @@ def import_csv():
       (list_all_groups,list_all_classes) = socketReq('getGroupAndClasse',None,True)
       list_all_groups = [list_all_groups[i]["group2"] for i in range(len(list_all_groups))]
       time.sleep(4)
-      with open(file_path, encoding='utf-8', mode='r') as file:
+      with open(file_path, encoding='utf-8', mode='r', sep=";") as file:
           reader = csv.reader(file)
           for row in reader:
               if "@stemariebeaucamps.fr" in row[4]:
