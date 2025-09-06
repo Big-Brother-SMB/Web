@@ -750,42 +750,59 @@ def reset_DB():
     print("reset DB")
 
 def import_csv():
-  file_path = filedialog.askopenfilename(
-    filetypes=[("CSV(Nom,Prénom,code,classe,email,birthday,birthmonth,Groupes...)", "*.csv")]
-  )
-  if file_path:
-    canvas.itemconfig(image_container,image=imgLoading)
-    def lecture():
-      (list_all_groups,list_all_classes) = socketReq('getGroupAndClasse',None,True)
-      list_all_groups = [list_all_groups[i]["group2"] for i in range(len(list_all_groups))]
-      time.sleep(4)
-      with open(file_path, encoding='utf-8', mode='r', sep=";") as file:
-          reader = csv.reader(file)
-          for row in reader:
-              if "@stemariebeaucamps.fr" in row[4]:
-                print(row)
-                liste = []
-                for i in range(6,len(row)):
-                  if row[i]!='':
-                    liste.append(row[i])
-                name.set(row[0]+" "+row[1])
-                list_all_groups = list(set(list_all_groups+liste))
-                socketReq('setUser',{
-                  "first_name":row[0],
-                  "last_name":row[1],
-                  "code_barre":row[2],
-                  "classe":row[3],
-                  "email":row[4],
-                  "birthday":row[5].split("/")[0],
-                  "birthmonth":row[5].split("/")[1],
-                  "listGroups":liste,
-                  "verify":True,
-                  "mode_addCSV":1
-                },True)
-      socketReq('setGroupAndClasse',{"groups":list_all_groups,"classes":list_all_classes},True)
-      canvas.itemconfig(image_container,image=imgOk)
-      name.set("Terminé")
-    threading.Thread(target=lecture).start()
+    file_path = filedialog.askopenfilename(
+        filetypes=[("CSV (Nom,Prénom,code,classe,email,birthday,birthmonth,Groupes...)", "*.csv")]
+    )
+    if file_path:
+        canvas.itemconfig(image_container, image=imgLoading)
+
+        def lecture():
+            (list_all_groups, list_all_classes) = socketReq('getGroupAndClasse', None, True)
+            list_all_groups = [list_all_groups[i]["group2"] for i in range(len(list_all_groups))]
+            time.sleep(4)
+
+            encodings = ['utf-8', 'utf-8-sig', 'cp1252', 'latin-1']
+            reader_ok = False
+
+            for enc in encodings:
+                try:
+                    with open(file_path, mode='r', encoding=enc, newline='') as file:
+                        reader = csv.reader(file, delimiter=';', quotechar='"', skipinitialspace=True)
+                        for row in reader:
+                            if len(row) > 4 and "@stemariebeaucamps.fr" in row[4]:
+                                print(row)
+                                liste = []
+                                for i in range(6, len(row)):
+                                    if row[i] != '':
+                                        liste.append(row[i])
+                                name.set(row[0] + " " + row[1])
+                                list_all_groups = list(set(list_all_groups + liste))
+                                socketReq('setUser', {
+                                    "first_name": row[0],
+                                    "last_name": row[1],
+                                    "code_barre": row[2],
+                                    "classe": row[3],
+                                    "email": row[4],
+                                    "birthday": row[5].split("/")[0],
+                                    "birthmonth": row[5].split("/")[1],
+                                    "listGroups": liste,
+                                    "verify": True,
+                                    "mode_addCSV": 1
+                                }, True)
+                    reader_ok = True
+                    break  # On sort si ça marche
+                except UnicodeDecodeError:
+                    continue  # On essaie l'encodage suivant
+
+            if not reader_ok:
+                print(">>> Erreur : impossible de lire le CSV avec les encodages testés")
+
+            socketReq('setGroupAndClasse', {"groups": list_all_groups, "classes": list_all_classes}, True)
+            canvas.itemconfig(image_container, image=imgOk)
+            name.set("Terminé")
+
+        threading.Thread(target=lecture).start()
+
 
 #gestion des éléments graphiques(fenetre,label,bouton,image)
 class App(threading.Thread):
