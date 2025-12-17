@@ -1215,6 +1215,17 @@ export class common{
   }*/
 }
 
+/* ========== SIDEBAR : MENUS DEROUANTS ============= */
+document.addEventListener("click", (e) => {
+
+  const title = e.target.closest(".nav_accordion_title");
+  if (!title) return;
+  const accordion = title.closest(".nav_accordion");
+  if (!accordion) return;
+
+  accordion.classList.toggle("open");
+});
+
 //démarre le script qui correspond à la page
 import(document.location.pathname+'/'+document.location.pathname.split('/').pop()+".js").then(async (module) => {
   await common.startUp()

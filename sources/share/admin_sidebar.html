@@ -1,25 +1,157 @@
-        <a url="/admin/pass" permission="pass" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/pass.png"></img><p>Pass</p></a>
-        <hr class="nav_split" permission="pass">
-        <a url="/admin/midi" permission="foyer_repas" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/midi.png"></img><p>Repas Foyer</p></a>
-        <a url="/admin/menu" permission="foyer_repas" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/menu.png"></img><p>Menu</p></a>
-        <a url="f:addpoint" permission="foyer_repas+" id="nav_btn_add_point" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/plus.png"></img><p>Ajouter Point</p></a>
-        <hr class="nav_split" permission="foyer_repas">
-        <a url="/admin/perm" permission="foyer_perm" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/perm.png"></img><p>Perm Foyer</p></a>
-        <a url="/admin/pret" permission="foyer_perm+" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/emprunt.png"></img><p>Emprunt</p></a>
-        <a url="/admin/ban" permission="foyer_perm+" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/banni.png"></img><p>Bannir</p></a>
-        <hr class="nav_split" permission="foyer_perm">
-        <a url="/admin/localisation" permission="localisation" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/localisation.png"></img><p>Localisation</p></a>
-        <a url="/admin/lieu?lieu=DOC" permission="DOC" class="nav_btn"><img class="nav_img" src="/assets/localisation/DOC.png"><p>DOC</p></a>
-        <a url="/admin/lieu?lieu=CDI" permission="CDI" class="nav_btn"><img class="nav_img" src="/assets/localisation/CDI.png"><p>CDI</p></a>
-        <a url="/admin/lieu?lieu=Aumônerie" permission="Aumônerie" class="nav_btn"><img class="nav_img" src="/assets/localisation/aumonerie.png"><p>Aumônerie</p></a>
-        <a url="/admin/lieu?lieu=Audio" permission="Audio" class="nav_btn"><img class="nav_img" src="/assets/localisation/audio.png"><p>Audio</p></a>
-        <a url="/admin/lieu?lieu=Tutorat" permission="Tutorat" class="nav_btn"><img class="nav_img" src="/assets/localisation/tutorat.png"><p>Tutorat</p></a>
-        <a url="/admin/lieu?lieu=City%20stade" permission="City_stade" class="nav_btn"><img class="nav_img" src="/assets/localisation/basket.png"><p>City stade</p></a>
-        <a url="/admin/lieu?lieu=Bien-être" permission="Bien_être" class="nav_btn"><img class="nav_img" src="/assets/localisation/bien_etre.png"><p>Bien-être</p></a>
-        <hr class="nav_split" permission="localisation">
-        <a url="f:banderole" permission="banderole" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/banderole.png"></img><p>Banderole</p></a>
-        <a url="/admin/cookie" permission="cookie" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/cookies.png"></img><p>Cookie</p></a>
-        <a url="/admin/users" permission="user_editor" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/user_editor.png"></img><p>User Editor</p></a>
-        <!--<a url="/admin/messagerie" permission="messagerie" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/messagerie.png"></img><p>Messagerie</p></a>-->
-        <a url="/options" permission="" class="nav_btn"><img class="nav_img" src="/assets/nav_bar/options.png"></img><p>Options</p></a>
-        <a url="sidebar:user" permission="" class="obj_user nav_btn"><img class="nav_img" src="/assets/index/account.png"></img><p>User</p></a>
+<!-- ====== ESSENTIEL ======= -->
+<!-- (PAS de menu déroulant) -->
+
+<a url="/admin/midi" permission="foyer_repas" class="nav_btn">
+        <img class="nav_img" src="/assets/nav_bar/midi.png">
+        <p>Repas Foyer</p>
+</a>
+
+<a url="/admin/perm" permission="foyer_perm" class="nav_btn">
+        <img class="nav_img" src="/assets/nav_bar/perm.png">
+        <p>Perm Foyer</p>
+</a>
+
+<a url="/admin/pret" permission="foyer_perm+" class="nav_btn">
+        <img class="nav_img" src="/assets/nav_bar/emprunt.png">
+        <p>Emprunt</p>
+</a>
+
+<hr class="nav_split" permission="foyer_perm">
+
+
+<!-- ======== FOYER ========= -->
+<!-- ===== MENU DÉROULANT ==== -->
+
+<div class="nav_accordion" permission="foyer_repas">
+
+        <div class="nav_btn nav_accordion_title">
+                <span class="chevron">▶</span>
+                <p>Foyer</p>
+        </div>
+
+        <div class="nav_accordion_content">
+
+                <a url="/admin/menu" permission="foyer_repas" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/menu.png">
+                        <p>Menu</p>
+                </a>
+
+                <a url="f:addpoint" permission="foyer_repas+" id="nav_btn_add_point" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/plus.png">
+                        <p>Ajouter Point</p>
+                </a>
+
+                <a url="/admin/ban" permission="foyer_perm+" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/banni.png">
+                        <p>Bannir</p>
+                </a>
+
+        </div>
+</div>
+
+<hr class="nav_split" permission="foyer_perm">
+
+
+<!-- ===== LOCALISATION ===== -->
+<!-- ===== MENU DÉROULANT ==== -->
+
+<div class="nav_accordion" permission="localisation">
+
+        <div class="nav_btn nav_accordion_title">
+                <span class="chevron">▶</span>
+                <p>Localisation</p>
+        </div>
+
+        <div class="nav_accordion_content">
+
+                <a url="/admin/lieu?lieu=DOC" permission="DOC" class="nav_btn">
+                        <img class="nav_img" src="/assets/localisation/DOC.png">
+                        <p>DOC</p>
+                </a>
+
+                <a url="/admin/lieu?lieu=CDI" permission="CDI" class="nav_btn">
+                        <img class="nav_img" src="/assets/localisation/CDI.png">
+                        <p>CDI</p>
+                </a>
+
+                <a url="/admin/lieu?lieu=Aumônerie" permission="Aumônerie" class="nav_btn">
+                        <img class="nav_img" src="/assets/localisation/aumonerie.png">
+                        <p>Aumônerie</p>
+                </a>
+
+                <a url="/admin/lieu?lieu=Audio" permission="Audio" class="nav_btn">
+                        <img class="nav_img" src="/assets/localisation/audio.png">
+                        <p>Audio</p>
+                </a>
+
+                <a url="/admin/lieu?lieu=Tutorat" permission="Tutorat" class="nav_btn">
+                        <img class="nav_img" src="/assets/localisation/tutorat.png">
+                        <p>Tutorat</p>
+                </a>
+
+                <a url="/admin/lieu?lieu=City%20stade" permission="City_stade" class="nav_btn">
+                        <img class="nav_img" src="/assets/localisation/basket.png">
+                        <p>City stade</p>
+                </a>
+
+                <a url="/admin/lieu?lieu=Bien-être" permission="Bien_être" class="nav_btn">
+                        <img class="nav_img" src="/assets/localisation/bien_etre.png">
+                        <p>Bien-être</p>
+                </a>
+
+        </div>
+</div>
+
+<hr class="nav_split" permission="localisation">
+
+
+<!-- ==== ADMINISTRATION ==== -->
+<!-- ===== MENU DÉROULANT ==== -->
+
+<div class="nav_accordion" permission="pass">
+
+        <div class="nav_btn nav_accordion_title">
+                <span class="chevron">▶</span>
+                <p>Administration</p>
+        </div>
+
+        <div class="nav_accordion_content">
+
+                <a url="/admin/pass" permission="pass" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/pass.png">
+                        <p>Pass Control</p>
+                </a>
+
+                <a url="f:banderole" permission="banderole" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/banderole.png">
+                        <p>Banderole</p>
+                </a>
+
+                <a url="/admin/cookie" permission="cookie" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/cookies.png">
+                        <p>Cookie</p>
+                </a>
+
+                <a url="/admin/users" permission="user_editor" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/user_editor.png">
+                        <p>User Editor</p>
+                </a>
+
+        </div>
+</div>
+
+<hr class="nav_split" permission="pass">
+
+
+<!-- ===== OPTIONS USER ===== -->
+<!-- (PAS de menu déroulant) -->
+
+<a url="/options" permission="" class="nav_btn">
+        <img class="nav_img" src="/assets/nav_bar/options.png">
+        <p>Options</p>
+</a>
+
+<a url="sidebar:user" permission="" class="obj_user nav_btn">
+        <img class="nav_img" src="/assets/index/account.png">
+        <p>User</p>
+</a>
