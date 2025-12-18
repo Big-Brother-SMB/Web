@@ -310,10 +310,13 @@ input,select,textarea{
   align-items: center;
   gap: 10px;
   user-select: none;
+  background: inherit;
   font-size: 25px;
   color: #FFFFFF;
-  background: inherit;
   padding-left: 18px;
+  max-height: 82px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /* Chevron ▶ */
