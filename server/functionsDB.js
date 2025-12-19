@@ -26,7 +26,7 @@ module.exports = class funcDB{
       tab.push({classe:e,niveau:3})
     })
     this.setClasse(tab)
-    this.setGroup(["VIP","La pieuvre","BDL","Lycéens humanitaires"])
+    this.setGroup(["VIP","La pieuvre","BDL","Lycéens humanitaires","Club Numérique"])
 
 
     db.run('delete from users where admin=0')

@@ -310,6 +310,8 @@ export async function init(common){
 
 
     let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
+    // test var
+    g_c = [[{ group2: "Groupe A", id: 1 }, { group2: "Club Numérique", id: 2 }], [{ niveau: "1", classe: "1A", id: 1 }, { niveau: "0", classe: "2B", id: 2}]]
     let divGroupes = document.getElementById("groupes")
 
     let cbGroupes = []
@@ -329,6 +331,11 @@ export async function init(common){
         let gr = document.createElement("p")
         cbGroupes[index] = document.createElement("input")
         cbGroupes[index].type = "checkbox"
+        //TO-DO : permettre de lié un groupe à un jour/horaire -> liste en DB prio_group = [groupe,[j,h]]
+        if (groupes[index] === "Club Numérique" && j === 1 ){
+            cbGroupes[index].checked = true
+        }
+
         cbGroupes[index].addEventListener("click", async function() {
             if(cbGroupes[index].checked){
                 if(!list_prio.includes(groupes[index])){
