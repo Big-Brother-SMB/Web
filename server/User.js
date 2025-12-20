@@ -787,7 +787,25 @@ module.exports = class User{
                                     }
                                   })
                                 }
-                                if(!data[i].scan && info.ouvert==4){
+                                  await new Promise((resolveDB, rejectDB) => {
+                                      db.all("SELECT * FROM midi_groups", async (err, data2) => {
+                                          try {
+                                              if (err) return rejectDB(err)
+
+                                              if (data2 !== undefined) {
+                                                  let groups = await moi.groups
+                                                  data2.forEach(e => {
+                                                      if (groups.includes(e.group2) && e.creneau === info.creneau) {
+                                                          info.cout = 0
+                                                      }
+                                                  })
+                                              }
+                                              resolveDB()
+                                          } catch (e) {console.error("U");;console.log("d19");;resolveDB()}
+                                      })
+                                  })
+
+                                  if(!data[i].scan && info.ouvert==4){
                                   info.penalite=true
                                   info.cout+=1
                                 }
@@ -848,6 +866,24 @@ module.exports = class User{
                                       }
                                     })
                                   }
+                                  await new Promise((resolveDB, rejectDB) => {
+                                      db.all("SELECT * FROM midi_groups", async (err, data2) => {
+                                          try {
+                                              if (err) return rejectDB(err)
+
+                                              if (data2 !== undefined) {
+                                                  let groups = await moi.groups
+                                                  data2.forEach(e => {
+                                                      if (groups.includes(e.group2) && e.creneau === info.creneau) {
+                                                          info.cout = 0
+                                                      }
+                                                  })
+                                              }
+                                              resolveDB()
+                                          } catch (e) {console.error("U");;console.log("d22");;resolveDB()}
+                                      })
+                                  })
+
                                   if(!data[i].scan && info.ouvert==4){
                                     info.cout+=1
                                   }
@@ -859,11 +895,11 @@ module.exports = class User{
                               }
                           }
                           resolve(score)
-                      }catch(e){console.error("U");;console.log('d22');;resolve(null)}
+                      }catch(e){console.error("U");;console.log('d23');;resolve(null)}
                     })
-                }catch(e){console.error("U");;console.log('d23');;resolve(null)}
+                }catch(e){console.error("U");;console.log('d24');;resolve(null)}
               })
-          }catch(e){console.error("U");;console.log('d24');;resolve(null)}
+          }catch(e){console.error("U");;console.log('d25');;resolve(null)}
       })
       setTimeout(reject,10000)
     })
@@ -895,11 +931,11 @@ module.exports = class User{
                             })
                           }
                           resolve(cookies)
-                      }catch(e){console.error("U");;console.log('d23-1');;resolve(null)}
+                      }catch(e){console.error("U");;console.log('d24-1');;resolve(null)}
                     })
-                }catch(e){console.error("U");;console.log('d23');;resolve(null)}
+                }catch(e){console.error("U");;console.log('d24');;resolve(null)}
               })
-          }catch(e){console.error("U");;console.log('d24');;resolve(null)}
+          }catch(e){console.error("U");;console.log('d25');;resolve(null)}
       })
       setTimeout(reject,10000)
     })

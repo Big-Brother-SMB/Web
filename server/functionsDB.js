@@ -50,6 +50,7 @@ module.exports = class funcDB{
     db.run('delete from midi_menu')
     db.run('delete from midi_list')
     db.run('delete from midi_prio')
+    db.run('delete from midi_groups')
     db.run('delete from midi_amis')
 
     db.run('delete from sondage_menu')

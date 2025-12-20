@@ -1,3 +1,5 @@
+import {biggerThanMaxFileSize} from "formidable/src/FormidableError";
+
 const nomNiveau = ["secondes","premières","terminales","adultes"]
 
 export async function init(common){
@@ -309,9 +311,7 @@ export async function init(common){
 
 
 
-    let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
-    // test var
-    g_c = [[{ group2: "Groupe A", id: 1 }, { group2: "Club Numérique", id: 2 }], [{ niveau: "1", classe: "1A", id: 1 }, { niveau: "0", classe: "2B", id: 2}]]
+    let g_c = await common.socketAdminAsync('getGroupAndClasses',null)
     let divGroupes = document.getElementById("groupes")
 
     let cbGroupes = []
