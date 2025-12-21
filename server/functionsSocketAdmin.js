@@ -90,6 +90,23 @@ module.exports = class funcSocket{
             }catch(e){console.error("fsA8");}
         })
     }
+    static getGroupsSlots(socket,user){
+        socket.on('getGroupSlots',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                socket.emit('getGroupSlots',await funcDB.getGroupsSlots())
+            }catch(e){console.error("fsA54");}
+        })
+    }
+    static setGroupSlots(socket,user){
+        socket.on('setGroupSlots',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await funcDB.setGroupSlots(req)
+                socket.emit('setGroupSlots',"ok")
+            }catch(e){console.error("fsA55");}
+        })
+    }
 
     static getListUserComplete(socket,user){
         socket.on('getListUserComplete',async req => {

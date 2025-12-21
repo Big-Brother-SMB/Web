@@ -224,6 +224,32 @@ module.exports = class funcDB{
       setTimeout(reject,5000)
     })
   }
+  static getGroupsSlots(){
+    return new Promise(function(resolve, reject) {
+      try{
+        db.all("SELECT * FROM midi_groups", (err, data) => {
+          if(data!=undefined){
+            let result = []
+            for(let i=0;i<data.length;i++){
+              result.push(data[i])
+            }
+            resolve(result)
+          }else{
+            resolve(null)
+          }
+        })
+      }catch(e){console.error("fDB");;console.log('a7');;resolve(null)}
+      setTimeout(reject,5000)
+    })
+  }
+  static setGroupsSlots(list){
+    db.serialize(()=>{
+      db.run("delete from midi_groups")
+      list.forEach(e=>{
+        db.run("INSERT INTO midi_groups(groups2, creneau) VALUES (?,?)",[e["group2"],e["creneau"]])
+      })
+    })
+  }
   
   
   //point
@@ -244,7 +270,7 @@ module.exports = class funcDB{
                 })
             }
             resolve(list)
-        }catch(e){console.error("fDB");;console.log('a7');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a8');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -261,7 +287,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error("fDB");;console.log('a8');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a9');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -283,7 +309,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error("fDB");;console.log('a9');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a10');;resolve(null)}
       })
       setTimeout(reject,5000)
     })

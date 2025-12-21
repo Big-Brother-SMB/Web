@@ -1,5 +1,3 @@
-import {biggerThanMaxFileSize} from "formidable/src/FormidableError";
-
 const nomNiveau = ["secondes","premières","terminales","adultes"]
 
 export async function init(common){
@@ -311,7 +309,8 @@ export async function init(common){
 
 
 
-    let g_c = await common.socketAdminAsync('getGroupAndClasses',null)
+    let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
+    let groups_slots = await common.socketAdminAsync('getGroupSlots', null)
     let divGroupes = document.getElementById("groupes")
 
     let cbGroupes = []
@@ -331,10 +330,12 @@ export async function init(common){
         let gr = document.createElement("p")
         cbGroupes[index] = document.createElement("input")
         cbGroupes[index].type = "checkbox"
-        //TO-DO : permettre de lié un groupe à un jour/horaire -> liste en DB prio_group = [groupe,[j,h]]
-        if (groupes[index] === "Club Numérique" && j === 1 ){
-            cbGroupes[index].checked = true
-        }
+
+        groups_slots.forEach((group) => {
+            if (groupes[index] === group["group2"] && 2*j+h === group["creneau"] ){
+                cbGroupes[index].checked = true
+            }
+        })
 
         cbGroupes[index].addEventListener("click", async function() {
             if(cbGroupes[index].checked){
