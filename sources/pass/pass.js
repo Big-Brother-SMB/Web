@@ -25,7 +25,7 @@ export async function init(common){
     if(j>1){
         j--
     }
-    document.getElementById("day").innerHTML = allDay[jBrut] + " (" + common.actualWeek + "w)"
+    document.getElementById("day").innerHTML = allDay[jBrut] + " (semaine " + {0:"A",1:"B"}[common.actualWeek%2] + ")"
     let h;
     if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
         h = 0;
