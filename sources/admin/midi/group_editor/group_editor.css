@@ -1,0 +1,55 @@
+.group-slot-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    cursor: pointer;
+    align-items: center;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+.group-slot-row:hover {
+    background-color: #81a9d3;
+}
+
+.group-name {
+    font-weight: bold;
+    border-right: 1px solid #000000;
+}
+
+.group-jour {
+    text-align: center;
+    border-right: 1px solid #000000;
+}
+
+.group-heure {
+    text-align: center;
+}
+
+#creneaux_groups {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.assignation {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.slot_selector {
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+}
+
+.assignation button {
+    height: auto;
+    padding: 5px 10px;
+    margin-left: 10px;
+    font-size: 25px;
+}
