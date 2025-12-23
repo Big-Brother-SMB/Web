@@ -310,7 +310,7 @@ export async function init(common){
 
 
     let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
-    let groups_slots = await common.socketAdminAsync('getGroupSlots', null)
+    let groups_slots = await common.socketAdminAsync('getGroupsSlots', null)
     let divGroupes = document.getElementById("groupes")
 
     let cbGroupes = []

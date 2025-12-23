@@ -237,7 +237,7 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.setMidiInfo(socket,user)
       funcSocketAdmin.getGroupAndClasse(socket,user)
       funcSocketAdmin.getGroupsSlots(socket,user)
-      funcSocketAdmin.setGroupSlots(socket,user)
+      funcSocketAdmin.setGroupsSlots(socket,user)
       funcSocketAdmin.scan(socket,user)
       funcSocketAdmin.setDorI(socket,user)
       funcSocketAdmin.delDorI(socket,user)
