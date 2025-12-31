@@ -14,6 +14,54 @@ export async function init(common){
 
     if(lieu=="CDI"){
         document.getElementById("esidoc").classList.remove("cache")
+        const moisFR = [
+            "janvier", "février", "mars", "avril", "mai", "juin",
+            "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+        ];
+
+        const pad = n => n.toString().padStart(2, "0");
+
+        // Lundi
+        function getMonday(date) {
+            const d = new Date(date);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            d.setDate(diff);
+            return d;
+        }
+
+        // Vendredi
+        function getFriday(monday) {
+            const d = new Date(monday);
+            d.setDate(d.getDate() + 4);
+            return d;
+        }
+
+        // Génération de l'URL
+        const today = new Date();
+        const monday = getMonday(today);
+        const friday = getFriday(monday);
+
+        const jourDebut = pad(monday.getDate());
+        const jourFin = pad(friday.getDate());
+        const mois = moisFR[friday.getMonth()];
+        const annee = friday.getFullYear();
+
+        const url =
+            `https://0592932s.esidoc.fr/site/tout-ce-qu-il-faut-savoir-sur-le-cdi/les-horaires-du-cdi/` +
+            `semaine-du-${jourDebut}-au-${jourFin}-${mois}-${annee}`;
+        const fail_url = "https://0592932s.esidoc.fr/"
+
+        // Vérifier si la page existe
+        fetch(url, { mode: "no-cors" })
+            .then(() => {
+                // Si la page existe
+                document.getElementById("lienHorairesCDI").href = url;
+            })
+            .catch(() => {
+                // En cas d’erreur
+                document.getElementById("lienHorairesCDI").href = fail_url;
+            });
     }
 
 
@@ -93,7 +141,7 @@ export async function init(common){
             for (let h = 0; h < 9; h++) {
                 bouton[j][h].className = "case perm default"
                 bouton[j][h].innerHTML = "...";
-            }
+            }""
         }
 
         let allHoraire = await common.socketAsync("allHoraireLieu",{lieu:lieu,w:week})
