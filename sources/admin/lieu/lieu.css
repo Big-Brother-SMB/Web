@@ -8,3 +8,11 @@
     visibility: visible;
     background-color: coral;
 }
+
+#message{
+    margin-block-start: 1rem;
+    margin-block-end: 1rem;
+    font-size: 2rem !important;
+    font-weight: bold;
+    color: #575757;
+}
