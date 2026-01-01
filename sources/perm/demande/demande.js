@@ -50,15 +50,23 @@ export async function init(common){
     })
     
     
-    document.getElementById("oui").addEventListener("click", async function() {
+    document.getElementById("validate").addEventListener("click", async function() {
         let nameOfGroup = document.getElementById("input").value
         let nb = document.getElementById("nb").value
+        let demande_already_exists = false
         if(nameOfGroup.lenght != 0 && nb != ""){
-            await common.socketAsync("setMyDemandePerm",{w:w,j:j,h:h,group:nameOfGroup,nb:nb})
-            common.loadpage("/perm")
+            listDemandes.forEach(demande => {
+                if (demande.group2 === nameOfGroup){
+                    demande_already_exists = true
+                }
+            })
+            if (!demande_already_exists){
+                await common.socketAsync("setMyDemandePerm",{w:w,j:j,h:h,group:nameOfGroup,nb:nb})
+                common.loadpage("/perm")
+            } else {
+                document.getElementById("validate").classList.add("wrong_input")
+                document.getElementById("validate").innerHTML = "Une demande a déjà était faite pour ce groupe. Cliquer pour réessayer"
+            }
         }
     })
-    document.getElementById("non").addEventListener("click", async function() {
-      common.loadpage("/perm")
-  })
 }
