@@ -14,6 +14,7 @@
 }
 
 .group-name {
+    text-align: center;
     font-weight: bold;
     border-right: 1px solid #000000;
 }
@@ -42,6 +43,7 @@
 }
 
 .slot_selector {
+    text-align: center;
     width: auto;
     height: auto;
     padding: 5px 10px;
