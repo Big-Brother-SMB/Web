@@ -169,7 +169,6 @@ input,select,textarea{
   font-size: 25px;
   color: #FFF;
   display: flex;
-  transition: 0.3s;
 }
 
 #mySidenav a p{
@@ -248,6 +247,16 @@ input,select,textarea{
     font-size: 3em;
   }
 
+  #mySidenav .chevron{
+    height: auto;
+    font-size: 50px;
+  }
+
+  #mySidenav .nav_accordion_title{
+    height: 1.7em;
+    font-size: 3em;
+  }
+
   .nav_img{
     height: 2em;
   }
@@ -262,6 +271,15 @@ input,select,textarea{
 
   .container{
     min-height: calc(var(--screenH));
+  }
+
+  .nav_accordion_title{
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-right: 140px;
+  }
+  .nav_accordion_title{
+    align-content: center;
   }
 }
 
@@ -291,6 +309,20 @@ input,select,textarea{
   .container{
     min-height: max(calc(50px * 21 + 18px * 5),var(--screenH));/*50px par image et 18 px par barre de séparation*/
   }
+
+  .nav_accordion_title{
+    font-size: 25px;
+  }
+  .menu_title_open{
+    transition-duration: 0.6s;
+    transition-timing-function: ease;
+    transform: translateX(-80px);
+  }
+  .menu_title_close {
+    transition-duration: 0.6s;
+    transition-timing-function: ease;
+    transform: translateX(0px);
+  }
 }
 
 .container{
@@ -305,23 +337,19 @@ input,select,textarea{
 
 /* Titre cliquable */
 .nav_accordion_title {
+  height: 50px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
   user-select: none;
   background: inherit;
-  font-size: 25px;
   color: #FFFFFF;
-  padding-left: 18px;
-  max-height: 82px;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 /* Chevron ▶ */
 .chevron {
-  font-size: 25px;
   transition: transform 0.25s ease;
 }
 
@@ -349,8 +377,7 @@ input,select,textarea{
 
 /* Hover léger sur le titre */
 .nav_accordion_title:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+  color: #c0c0c0;
 }
 
 /* Chevron */
