@@ -246,7 +246,7 @@ module.exports = class funcDB{
     db.serialize(()=>{
       db.run("delete from midi_groups")
       list.forEach(e=>{
-        db.run("INSERT INTO midi_groups(group2, creneau) VALUES (?,?)",[e["group2"],e["creneau"]])
+        db.run("INSERT INTO midi_groups(group2, creneau, date_debut, date_fin) VALUES (?,?,?,?)",[e["group2"],e["creneau"],e["date_debut"],e["date_fin"]])
       })
     })
   }

@@ -74,7 +74,7 @@ module.exports = (db)=>{
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_groups'", (err, data) => {
         if(data==undefined)
-            db.run('CREATE TABLE midi_groups(group2 text, creneau int2)')
+            db.run('CREATE TABLE midi_groups(group2 text, creneau int2, date_debut text, date_fin text DEFAULT (NULL))')
     })
     db.get("SELECT * FROM sqlite_master where type='table' AND name='midi_amis'", (err, data) => {
       if(data==undefined)

@@ -867,10 +867,10 @@ module.exports = class User{
                                     })
                                   }
                                   await new Promise((resolveDB, rejectDB) => {
-                                      db.all("SELECT * FROM midi_groups", async (err, data2) => {
+                                      let dateRepas = data[i].date
+                                      db.all("SELECT * FROM midi_groups WHERE (date_debut IS NULL OR date_debut <= ?) AND (date_fin IS NULL OR date_fin > ?)",[dateRepas, dateRepas] , async (err, data2) => {
                                           try {
                                               if (err) return rejectDB(err)
-
                                               if (data2 !== undefined) {
                                                   let groups = await moi.groups
                                                   data2.forEach(e => {
