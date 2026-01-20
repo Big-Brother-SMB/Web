@@ -10,7 +10,6 @@ export async function init(common){
         let groups_slots = await common.socketAdminAsync('getGroupsSlots', null)
         let current_groups_slots = groups_slots.filter(slot => slot.date_fin == null);
         div_creneaux_groups.innerHTML = "";
-        console.log("current_slots : ",current_groups_slots)
 
         const jours = ["Lundi", "Mardi", "Jeudi", "Vendredi"];
         const heures = ["11h", "12h"];
@@ -24,6 +23,7 @@ export async function init(common){
             btn.className = "ami group-slot-row";
             btn.setAttribute('data-creneau', creneau);
             btn.setAttribute('data-nom', group_slot["group2"]);
+            btn.setAttribute('date_debut', group_slot["date_debut"].toString());
 
             btn.innerHTML = `
             <span class="group-name">${group_slot["group2"]}</span>
@@ -34,19 +34,17 @@ export async function init(common){
             btn.addEventListener("click", async function () {
                 let nom = btn.getAttribute('data-nom');
                 let creneau_value = parseInt(btn.getAttribute('data-creneau'));
+                let date_debut = btn.getAttribute('date_debut');
 
 
                 // Trouve l'index de l'élément correspondant
                 let indexToUpdate = groups_slots.findIndex(function (slot) {
-                    return slot["group2"] === nom && slot["creneau"] === creneau_value;
+                    return slot["group2"] === nom && slot["creneau"] === creneau_value && slot["date_debut"].toString() === date_debut;
                 });
 
                 // Supprime l'élément si trouvé
                 if (indexToUpdate !== -1) {
-                    console.log(groups_slots[indexToUpdate]);
-                    groups_slots[indexToUpdate]["date_fin"] = new Date().toISOString();
-                    console.log(groups_slots[indexToUpdate]);
-
+                    groups_slots[indexToUpdate]["date_fin"] = new Date().getTime();
                     await common.socketAdminAsync('setGroupsSlots', groups_slots);
                     await RefreshListGroupSlots();
                 } else {
@@ -57,7 +55,6 @@ export async function init(common){
             div_creneaux_groups.appendChild(btn);
         })
     }
-    console.log("refreshListGroupSlots")
     await RefreshListGroupSlots()
 
     // Validate Assign
@@ -78,16 +75,11 @@ export async function init(common){
         }
         jour = parseInt(jour);
         heure = parseInt(heure);
-
-        const new_slot = {group2: groupe, creneau: jour * 2 + heure, date_debut: new Date().toISOString(), date_fin: null};
-        // dans ce log la date est affiché
-        console.log(new_slot);
+        const new_slot = {group2: groupe, creneau: jour * 2 + heure, date_debut: new Date().getTime(), date_fin: null};
 
         let groups_slots = await common.socketAdminAsync('getGroupsSlots', null)
         groups_slots.push(new_slot);
         await common.socketAdminAsync('setGroupsSlots', groups_slots)
-        //ici la date n'est pas affiché
-        console.log(await common.socketAdminAsync('getGroupsSlots', null))
         await RefreshListGroupSlots()
     });
 }
