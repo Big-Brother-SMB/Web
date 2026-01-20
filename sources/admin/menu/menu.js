@@ -38,11 +38,11 @@ export async function init(common){
         }
         document.getElementById("menuSemaine").innerHTML = val
 
-        document.getElementById("menu_self").addEventListener("error", remplace_img);
-        document.getElementById("menu_self").setAttribute("src","/Images_menu/page-" + week + ".jpg")
+        // document.getElementById("menu_self").addEventListener("error", remplace_img);
+        // document.getElementById("menu_self").setAttribute("src","/Images_menu/page-" + week + ".jpg")
 
         let listNote = []
-        for(let i=0;i<5;i++){
+        for(let i=0;i<6;i++){
             let list = [0,0,0,0]
             let note_brut = await common.socketAdminAsync('getAllResultsMenu',{w:week,j:i})
             note_brut.forEach((child)=> {
@@ -59,7 +59,7 @@ export async function init(common){
         new Chart(cvs, {
             type: 'bar',
             data: {
-                labels: ["Foyer","Lundi","Mardi","Jeudi","Vendredi"],
+                labels: ["Foyer","Lundi","Mardi","Mercredi","Jeudi","Vendredi"],
                 datasets: [{
                     label: '😰',
                     data: listNote.map(row => (row[0])),
