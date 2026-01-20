@@ -331,6 +331,7 @@ export async function init(common){
         cbGroupes[index] = document.createElement("input")
         cbGroupes[index].type = "checkbox"
 
+        // on coche automatiquement les groupes dans group_slots
         groups_slots.forEach((group) => {
             if (groupes[index] === group["group2"] && 2*j+h === group["creneau"] ){
                 cbGroupes[index].checked = true

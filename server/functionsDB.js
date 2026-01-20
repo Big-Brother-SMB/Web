@@ -244,6 +244,7 @@ module.exports = class funcDB{
   }
   static setGroupsSlots(list){
     db.serialize(()=>{
+      // on écrase la table avec les nouvelles infos
       db.run("delete from midi_groups")
       list.forEach(e=>{
         db.run("INSERT INTO midi_groups(group2, creneau, date_debut, date_fin) VALUES (?,?,?,?)",[e["group2"],e["creneau"],e["date_debut"],e["date_fin"]])
