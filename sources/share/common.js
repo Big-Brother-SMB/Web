@@ -380,17 +380,16 @@ export class common{
     
     let side = document.getElementById("mySidenav")
     let nav_btns = document.getElementsByClassName("nav_btn")
-
     if(side!=null){
       side.addEventListener("mouseenter",function() {
         if(window.innerWidth>=1000){
             side.classList.add("open");
             document.body.classList.remove("stop");
-            if(nav_btns!=null){
-              for(let nav_btn in nav_btns){
-                nav_btns[nav_btn].classList.remove("menu_title_close");
-                nav_btns[nav_btn].classList.add("menu_title_open");
-              }
+            if(nav_btns!=null && side.classList.contains("admin")){
+              Array.from(nav_btns).forEach(nav_btn => {
+                nav_btn.classList.add("menu_title_open");
+                nav_btn.classList.remove("menu_title_close");
+              });
             }
         }
       });
@@ -399,11 +398,11 @@ export class common{
         if(window.innerWidth>=1000){
           side.classList.remove("open");
           document.body.classList.remove("stop");
-          if(nav_btns!=null){
-            for(let nav_btn in nav_btns){
-              nav_btns[nav_btn].classList.remove("menu_title_open");
-              nav_btns[nav_btn].classList.add("menu_title_close");
-            }
+          if(nav_btns!=null && side.classList.contains("admin")){
+            Array.from(nav_btns).forEach(nav_btn => {
+              nav_btn.classList.add("menu_title_close");
+              nav_btn.classList.remove("menu_title_open");
+            });
           }
         }
       });

@@ -25,7 +25,7 @@
 <div class="nav_accordion" permission="foyer_repas">
 
         <div class="nav_btn nav_accordion_title">
-                <img class="nav_img" src="/assets/nav_bar/emprunt.png">
+                <img class="nav_img" src="/assets/nav_bar/foyer.png">
                 <span class="chevron">▶</span>
                 <p>Foyer</p>
         </div>
@@ -41,25 +41,19 @@
                         <img class="nav_img" src="/assets/nav_bar/plus.png">
                         <p>Ajouter Point</p>
                 </a>
-
-                <a url="/admin/ban" permission="foyer_perm+" class="nav_btn">
-                        <img class="nav_img" src="/assets/nav_bar/banni.png">
-                        <p>Bannir</p>
-                </a>
-
         </div>
 </div>
 
 <hr class="nav_split" permission="foyer_perm">
 
 
-<!-- ===== LOCALISATION ===== -->
+<!-- ===== T'AS PAS COURS ===== -->
 <!-- ===== MENU DÉROULANT ==== -->
 
 <div class="nav_accordion" permission="t_as_pas_cours_?">
 
         <div class="nav_btn nav_accordion_title">
-                <img class="nav_img" src="/assets/nav_bar/emprunt.png">
+                <img class="nav_img" src="/assets/nav_bar/t_as_pas_cours.png">
                 <span class="chevron">▶</span>
                 <p>T'as pas cours ?</p>
         </div>
@@ -118,16 +112,16 @@
 <div class="nav_accordion" permission="pass">
 
         <div class="nav_btn nav_accordion_title">
-                <img class="nav_img" src="/assets/nav_bar/emprunt.png">
+                <img class="nav_img" src="/assets/nav_bar/administration.png">
                 <span class="chevron">▶</span>
                 <p>Administration</p>
         </div>
 
         <div class="nav_accordion_content">
 
-                <a url="/admin/pass" permission="pass" class="nav_btn">
-                        <img class="nav_img" src="/assets/nav_bar/pass.png">
-                        <p>Pass Control</p>
+                <a url="/admin/users" permission="user_editor" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/user_editor.png">
+                        <p>User Editor</p>
                 </a>
 
                 <a url="f:banderole" permission="banderole" class="nav_btn">
@@ -140,9 +134,14 @@
                         <p>Cookie</p>
                 </a>
 
-                <a url="/admin/users" permission="user_editor" class="nav_btn">
-                        <img class="nav_img" src="/assets/nav_bar/user_editor.png">
-                        <p>User Editor</p>
+                <a url="/admin/pass" permission="pass" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/pass.png">
+                        <p>Pass Control</p>
+                </a>
+
+                <a url="/admin/ban" permission="foyer_perm+" class="nav_btn">
+                        <img class="nav_img" src="/assets/nav_bar/banni.png">
+                        <p>Bannir</p>
                 </a>
 
         </div>
