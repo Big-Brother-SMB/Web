@@ -1,4 +1,4 @@
-const day = ["Lundi", "Mardi","Jeudi","Vendredi"]
+const day = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"]
 
 export async function init(common){
     let week = common.week
