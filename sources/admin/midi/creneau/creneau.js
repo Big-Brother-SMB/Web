@@ -180,6 +180,50 @@ export async function init(common){
     });
 
 
+    //------- Dropdowns et boutons pour appliquer à plusieurs créneaux -------
+    
+    let divModeDay = document.getElementById("mode_day")
+    for(let i in listMode){
+        let opt = document.createElement("option")
+        opt.innerHTML = listMode[i]
+        divModeDay.appendChild(opt);
+    }
+    divModeDay.selectedIndex = 3 // Par défaut "fermé"
+
+    let divModeWeek = document.getElementById("mode_week")
+    for(let i in listMode){
+        let opt = document.createElement("option")
+        opt.innerHTML = listMode[i]
+        divModeWeek.appendChild(opt);
+    }
+    divModeWeek.selectedIndex = 3 // Par défaut "fermé"
+
+
+    document.getElementById("btn_apply_day").addEventListener("click", async function() {
+        let selectedMode = divModeDay.selectedIndex
+        if(confirm("Appliquer le mode '" + listMode[selectedMode] + "' à tous les créneaux du jour?")) {
+            // Appliquer le mode aux 2 créneaux du jour
+            await common.socketAdminAsync('setMidiInfo',{w:w,j:j,h:0,cout:cout,gratuit_prio:gratuit_prio,ouvert:selectedMode,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,nbSandwich_vege:nbSandwich_vege,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,msg:message,list_prio:list_prio})
+            await common.socketAdminAsync('setMidiInfo',{w:w,j:j,h:1,cout:cout,gratuit_prio:gratuit_prio,ouvert:selectedMode,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,nbSandwich_vege:nbSandwich_vege,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,msg:message,list_prio:list_prio})
+            alert("Le jour a été mis à jour!")
+            location.reload()
+        }
+    });
+
+    document.getElementById("btn_apply_week").addEventListener("click", async function() {
+        let selectedMode = divModeWeek.selectedIndex
+        if(confirm("Appliquer le mode '" + listMode[selectedMode] + "' à TOUTE la semaine (8 créneaux)?")) {
+            // Appliquer le mode aux 8 créneaux de la semaine
+            for(let jour = 0; jour < 4; jour++) {
+                for(let heure = 0; heure < 2; heure++) {
+                    await common.socketAdminAsync('setMidiInfo',{w:w,j:jour,h:heure,cout:cout,gratuit_prio:gratuit_prio,ouvert:selectedMode,perMin:perMin,places:places,prio_mode:prio_mode,nbSandwich:nbSandwich,nbSandwich_vege:nbSandwich_vege,mode_sandwich:mode_sandwich,bonus_avance:bonus_avance,algo_auto:algo_auto,msg:message,list_prio:list_prio})
+                }
+            }
+            alert("La semaine a été mise à jour!")
+            location.reload()
+        }
+    });
+
     let inPlaces = document.getElementById("places")
     inPlaces.value = places
     inPlaces.addEventListener("input", async function() {
