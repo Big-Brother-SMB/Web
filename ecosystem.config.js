@@ -1,7 +1,8 @@
 module.exports = {
   apps : [{
     script: 'main.js',
-    watch: '.'
+    //watch: '.'
+    watch: false // tente d'éviter les redémarrages en boucle
   }],
   deploy : {
     production : {
