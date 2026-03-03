@@ -24,11 +24,12 @@ export async function init(common){
 
 
     async function refreshDatabase() {
-        let text = "Semaine n°" + week + " du " + common.intervalSemaine(week)
+        let week_to_letter = {0:"A",1:"B"}
         if (week == common.actualWeek) {
-            text = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
+            document.getElementById("semaine").innerHTML = "Semaine actuelle (semaine " + String(week) + week_to_letter[week%2] + " du " + common.intervalSemaine(week) + ")"
+        } else {
+            document.getElementById("semaine").innerHTML = "Semaine " + String(week) + week_to_letter[week%2] + " du " + common.intervalSemaine(week)
         }
-        document.getElementById("semaine").innerHTML = text
 
         let info_menu = await common.socketAsync("getMenuThisWeek",week)
         console.log(info_menu)
