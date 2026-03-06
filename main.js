@@ -38,6 +38,11 @@ const oauth2Client = new google.auth.OAuth2(
   jsonObj.code_secret,
   address+"connexion/oauth2callback"
 );
+const pkgPath = path.join(__dirname, "/package.json");
+let appVersion = "?.?.?";
+if (fs.existsSync(pkgPath)) {
+  appVersion = JSON.parse(fs.readFileSync(pkgPath, 'utf8')).version;
+}
 
 let mimeTypes = {
   '.html': 'text/html',
@@ -200,7 +205,10 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       }
     } else {
       let [file,extName,err404] = await generatePage(req.url)
-      
+
+      if (extName === '.html' && typeof file === 'string') {
+        file = file.replace('{{VERSION}}', appVersion);
+      }
       try{
         if(!req.url.startsWith('/asso/post_image/') && !req.url.startsWith('/profile_picture/') && (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.ttf' || extName == '.svg' || extName == '.gif' || extName == '.mp4')){
           res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=604800'});//604800sec = 7jours | 604800
