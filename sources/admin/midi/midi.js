@@ -65,9 +65,7 @@ export async function init(common){
             }
             common.popUp_Active('Appliquer un mode', bodyText, async (bnt)=>{
                 let select = document.createElement('select')
-                select.style.width="100%"
-                select.style.padding="10px"
-                select.style.marginBottom="10px"
+                select.classList.add('ss_select')
                 document.getElementById('popup-body').innerHTML=''
                 document.getElementById('popup-body').appendChild(select)
                 
@@ -84,9 +82,7 @@ export async function init(common){
                     inputPlaces = document.createElement('input')
                     inputPlaces.type = 'number'
                     inputPlaces.placeholder = 'Nombre de places (optionnel)'
-                    inputPlaces.style.width = "100%"
-                    inputPlaces.style.padding = "10px"
-                    inputPlaces.style.marginBottom = "10px"
+                    inputPlaces.classList.add('ss_input')
                     document.getElementById('popup-body').appendChild(inputPlaces)
                 }
                 

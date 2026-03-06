@@ -1,0 +1,14 @@
+.case.info.heure.jour{
+    visibility: visible;
+    background-color: coral;
+}
+.ss_input{ /* superSelection input */
+    width: 100% !important;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.ss_select{ /* superSelection select */
+    width: 100% !important;
+    padding: 10px;
+    margin-bottom: 10px;
+}
