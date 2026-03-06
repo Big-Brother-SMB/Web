@@ -1,6 +1,6 @@
 {
   "name": "Foyer Site on NodeJS",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "date-and-time": "^2.4.3",
     "formidable": "^3.5.0",
     "generate-key": "^0.0.6",
-    "googleapis": "^108.0.1",
+    "googleapis": "^150.0.1",
     "node-fetch": "^3.3.2",
     "npm": "^8.19.4",
     "path": "^0.12.7",
