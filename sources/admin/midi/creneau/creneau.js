@@ -354,6 +354,7 @@ export async function init(common){
 
 
     let g_c = await common.socketAdminAsync('getGroupAndClasse',null)
+    let groups_slots = await common.socketAdminAsync('getGroupsSlots', null)
     let divGroupes = document.getElementById("groupes")
 
     let cbGroupes = []
@@ -373,6 +374,14 @@ export async function init(common){
         let gr = document.createElement("p")
         cbGroupes[index] = document.createElement("input")
         cbGroupes[index].type = "checkbox"
+
+        // on coche automatiquement les groupes dans group_slots
+        groups_slots.forEach((group) => {
+            if (groupes[index] === group["group2"] && 2*j+h === group["creneau"] ){
+                cbGroupes[index].checked = true
+            }
+        })
+
         cbGroupes[index].addEventListener("click", async function() {
             if(cbGroupes[index].checked){
                 if(!list_prio.includes(groupes[index])){
