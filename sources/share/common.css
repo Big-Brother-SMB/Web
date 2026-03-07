@@ -169,7 +169,6 @@ input,select,textarea{
   font-size: 25px;
   color: #FFF;
   display: flex;
-  transition: 0.3s;
 }
 
 #mySidenav a p{
@@ -248,6 +247,16 @@ input,select,textarea{
     font-size: 3em;
   }
 
+  #mySidenav .chevron{
+    height: auto;
+    font-size: 50px;
+  }
+
+  #mySidenav .nav_accordion_title{
+    height: 1.7em;
+    font-size: 3em;
+  }
+
   .nav_img{
     height: 2em;
   }
@@ -262,6 +271,15 @@ input,select,textarea{
 
   .container{
     min-height: calc(var(--screenH));
+  }
+
+  .nav_accordion_title{
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-right: 140px;
+  }
+  .nav_accordion_title{
+    align-content: center;
   }
 }
 
@@ -291,11 +309,83 @@ input,select,textarea{
   .container{
     min-height: max(calc(50px * 21 + 18px * 5),var(--screenH));/*50px par image et 18 px par barre de séparation*/
   }
+
+  .nav_accordion_title{
+    font-size: 25px;
+  }
+  .menu_title_open{
+    transition-duration: 0.6s;
+    transition-timing-function: ease;
+    transform: translateX(-80px);
+  }
+  .menu_title_close {
+    transition-duration: 0.6s;
+    transition-timing-function: ease;
+    transform: translateX(0px);
+  }
 }
 
 .container{
   position: relative;
   width: 100%;
+}
+
+/* ========== SIDEBAR – MENUS DÉROULANTS =========== */
+.nav_accordion {
+  width: 100%;
+}
+
+/* Titre cliquable */
+.nav_accordion_title {
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  background: inherit;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+/* Chevron ▶ */
+.chevron {
+  transition: transform 0.25s ease;
+}
+
+/* Contenu caché */
+.nav_accordion_content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease;
+}
+
+/* Accordéon ouvert */
+.nav_accordion.open .nav_accordion_content {
+  max-height: 1000px; /* volontairement large */
+}
+
+/* Rotation du chevron */
+.nav_accordion.open .chevron {
+  transform: rotate(90deg);
+}
+
+/* Indentation des boutons internes */
+.nav_accordion_content .nav_btn {
+  padding-left: 22px;
+}
+
+/* Hover léger sur le titre */
+.nav_accordion_title:hover {
+  color: #c0c0c0;
+}
+
+/* Chevron */
+.nav_accordion_title .chevron {
+  color: white;
+  margin-right: 10px;   /* espace entre chevron et texte */
+  margin-left: 4px;    /* décollage du bord gauche */
+  transition: transform 0.25s ease;
 }
 
 
