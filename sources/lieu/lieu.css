@@ -7,3 +7,11 @@
 .pasOuvert{
     filter: opacity(0.7) grayscale(0.5)
 }
+
+#message{
+    margin-block-start: 1rem;
+    margin-block-end: 1rem;
+    font-size: 2rem !important;
+    font-weight: bold;
+    color: #575757;
+}
