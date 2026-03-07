@@ -39,6 +39,13 @@ const oauth2Client = new google.auth.OAuth2(
   address+"connexion/oauth2callback"
 );
 
+// show the version in the html files
+const pkgPath = path.join(__dirname, "/package.json");
+let appVersion = "?.?.?";
+if (fs.existsSync(pkgPath)) {
+  appVersion = JSON.parse(fs.readFileSync(pkgPath, 'utf8')).version;
+}
+
 let mimeTypes = {
   '.html': 'text/html',
   '.css': 'text/css',
@@ -201,6 +208,11 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
     } else {
       let [file,extName,err404] = await generatePage(req.url)
       
+      // show the version in the html files
+      if (extName === '.html' && typeof file === 'string') {
+        file = file.replace('{{VERSION}}', appVersion);
+      }
+
       try{
         if(!req.url.startsWith('/asso/post_image/') && !req.url.startsWith('/profile_picture/') && (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.ttf' || extName == '.svg' || extName == '.gif' || extName == '.mp4')){
           res.writeHead(200, {'Content-Type': mimeTypesFunc(extName),'Cache-Control':'public, max-age=604800'});//604800sec = 7jours | 604800
@@ -236,6 +248,8 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.setMenu(socket,user)
       funcSocketAdmin.setMidiInfo(socket,user)
       funcSocketAdmin.getGroupAndClasse(socket,user)
+      funcSocketAdmin.getGroupsSlots(socket,user)
+      funcSocketAdmin.setGroupsSlots(socket,user)
       funcSocketAdmin.scan(socket,user)
       funcSocketAdmin.setDorI(socket,user)
       funcSocketAdmin.delDorI(socket,user)

@@ -18,3 +18,31 @@
     margin-bottom: 10px;
 }
 
+.group_editor_btn {
+    cursor: pointer;
+    width: 250px;
+    border-radius: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    overflow: hidden;
+    color: #eeeeee;
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding: 15px;
+    background-color: #6e9cce;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 50px;
+    margin-left: 30px;
+}
+.group_editor_btn:hover {
+    background-color: #6492c4;
+}
+
+.group_editor_img {
+    height: 50px;
+    display: block;
+}

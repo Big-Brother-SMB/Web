@@ -19,6 +19,9 @@ export async function init(common){
         common.writeCookie("week", week)
         refreshDatabase()
     });
+    document.getElementById("group_editor_btn").addEventListener("click", function () {
+        common.loadpage("/admin/midi/group_editor")
+    });
 
     const creneaudiv = document.getElementById("creneaudiv");
 
