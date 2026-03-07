@@ -1,4 +1,4 @@
-const cacheName = "PWA-v25";
+const cacheName = "PWA-v26";
 const appShellFiles = [
             '/share/manifest.json',
             '/assets/logo.png',
@@ -22,7 +22,7 @@ let notifAccept = true
 let user = ""
 
 self.addEventListener('install',(event)=>{
-    //self.skipWaiting()
+    self.skipWaiting()
     event.waitUntil(
         (async () => {
             const cache = await caches.open(cacheName);
