@@ -1,7 +1,6 @@
 const http = require('http');
 const https = require('https');
 const url = require('url');
-const uuidG = require('uuid');
 const sqlite3 = require('sqlite3')
 const { google, chat_v1 } = require('googleapis');
 const { Server } = require("socket.io");
