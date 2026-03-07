@@ -76,20 +76,16 @@ export async function init(common){
                 }
                 select.selectedIndex = 3; // Par défaut "fermé"
                 
-                // Afficher l'input places seulement pour les jours et la semaine, pas pour les horaires
-                let inputPlaces = null
-                if(type != "h") {
-                    inputPlaces = document.createElement('input')
-                    inputPlaces.type = 'number'
-                    inputPlaces.placeholder = 'Nombre de places (optionnel)'
-                    inputPlaces.classList.add('ss_input')
-                    document.getElementById('popup-body').appendChild(inputPlaces)
-                }
+                let inputPlaces = document.createElement('input')
+                inputPlaces.type = 'number'
+                inputPlaces.placeholder = 'Nombre de places (optionnel)'
+                inputPlaces.classList.add('ss_input')
+                document.getElementById('popup-body').appendChild(inputPlaces)
                 
                 bnt.innerHTML = 'Confirmer'
                 bnt.addEventListener('click', async function(){
                     let selectedMode = select.selectedIndex
-                    let newPlaces = inputPlaces ? inputPlaces.value || null : null
+                    let newPlaces = inputPlaces.value || null
                     const modeName = listMode[selectedMode]
                     
                     let creneaux = []
