@@ -10,9 +10,6 @@ export async function init(common){
         lieu = params.lieu
         document.getElementById('title').innerHTML=lieu
     }
-    if(document.getElementById('message').innerHTML !== ""){
-        document.getElementById('message').classList.remove('cache')
-    }
 
     if(lieu=="CDI"){
         document.getElementById("esidoc").classList.remove("cache")
