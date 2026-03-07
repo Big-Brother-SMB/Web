@@ -47,6 +47,22 @@ export class common{
       document.getElementById("mySidenav").classList.add(typeSideBar)
       await this.readFileHTMLPath('mySidenav','/share/'+ typeSideBar +'_sidebar.html')
 
+      // Allow to admin-sidebar animations to detect nav_btns on the changement
+      const side = document.getElementById("mySidenav");
+      if (side && side.matches(':hover') && window.innerWidth >= 1000) {
+        // Force l'état ouvert si la souris est déjà dessus au chargement
+        side.classList.add("open");
+
+        // Recalcule les boutons pour appliquer le décalage immédiatement
+        let current_btns = side.getElementsByClassName("nav_btn");
+        if (side.classList.contains("admin")) {
+          Array.from(current_btns).forEach(btn => {
+            btn.classList.add("menu_title_open");
+            btn.classList.remove("menu_title_close");
+          });
+        }
+      }
+
       if(this.admin > 0){
         let btns = document.getElementsByClassName("obj_admin")
         for (var i=0; i<btns.length; i++) {
@@ -379,14 +395,15 @@ export class common{
     //-------------------system de navbar-----------------------
     
     let side = document.getElementById("mySidenav")
-    let nav_btns = document.getElementsByClassName("nav_btn")
     if(side!=null){
       side.addEventListener("mouseenter",function() {
         if(window.innerWidth>=1000){
             side.classList.add("open");
             document.body.classList.remove("stop");
-            if(nav_btns!=null && side.classList.contains("admin")){
-              Array.from(nav_btns).forEach(nav_btn => {
+
+          let current_btns = side.getElementsByClassName("nav_btn");
+            if(current_btns!=null && side.classList.contains("admin")){
+              Array.from(current_btns).forEach(nav_btn => {
                 nav_btn.classList.add("menu_title_open");
                 nav_btn.classList.remove("menu_title_close");
               });
@@ -398,8 +415,10 @@ export class common{
         if(window.innerWidth>=1000){
           side.classList.remove("open");
           document.body.classList.remove("stop");
-          if(nav_btns!=null && side.classList.contains("admin")){
-            Array.from(nav_btns).forEach(nav_btn => {
+
+          let current_btns = side.getElementsByClassName("nav_btn");
+          if(current_btns!=null && side.classList.contains("admin")){
+            Array.from(current_btns).forEach(nav_btn => {
               nav_btn.classList.add("menu_title_close");
               nav_btn.classList.remove("menu_title_open");
             });
