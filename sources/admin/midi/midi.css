@@ -1,3 +1,23 @@
+/* Super selection button for entire week */
+.case.info.heure.jour{
+    font-weight: bold;
+    cursor: pointer;
+    visibility: visible;
+    background-color: #ff6b6b;
+}
+
+.ss_input{ /* superSelection input */
+    width: 100% !important;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.ss_select{ /* superSelection select */
+    width: 100% !important;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
 .group_editor_btn {
     cursor: pointer;
     width: 250px;

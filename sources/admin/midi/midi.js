@@ -55,6 +55,69 @@ export async function init(common){
         bouton[j][2] = document.getElementById(j + "2")
     }
 
+    // Fonction pour appliquer un mode/places à plusieurs créneaux
+    const listMode = ["horaire non planifié","ouvert à tous","ouvert aux inscrits","fermé","fini","vacances"]
+    
+    function superSelection(type, x){
+        // type = "j" (jour), "h" (heure/horaire), "w" (semaine)
+        // x = numéro du jour (0-3) ou numéro de l'horaire (0-1)
+        return async function(){
+            let bodyText = 'attente'
+            if(type == "h") {
+                bodyText = 'Appliquer à cet horaire sur toute la semaine'
+            }
+            common.popUp_Active('Appliquer un mode', bodyText, async (bnt)=>{
+                let select = document.createElement('select')
+                select.classList.add('ss_select')
+                document.getElementById('popup-body').innerHTML=''
+                document.getElementById('popup-body').appendChild(select)
+                
+                for(const i in listMode){
+                    let opt = document.createElement("option")
+                    opt.innerHTML = listMode[i]
+                    select.appendChild(opt);
+                }
+                select.selectedIndex = 3; // Par défaut "fermé"
+                
+                let inputPlaces = document.createElement('input')
+                inputPlaces.type = 'number'
+                inputPlaces.placeholder = 'Nombre de places (optionnel)'
+                inputPlaces.classList.add('ss_input')
+                document.getElementById('popup-body').appendChild(inputPlaces)
+                
+                bnt.innerHTML = 'Confirmer'
+                bnt.addEventListener('click', async function(){
+                    let selectedMode = select.selectedIndex
+                    let newPlaces = inputPlaces.value || null
+                    const modeName = listMode[selectedMode]
+                    
+                    let creneaux = []
+                    
+                    if(type == "j"){ // Appliquer au jour entier
+                        creneaux = [[x, 0], [x, 1]]
+                    }else if(type == "h"){ // Appliquer à cet horaire sur toute la semaine
+                        creneaux = [[0, x], [1, x], [2, x], [3, x]]
+                    }else if(type == "w"){ // Appliquer à toute la semaine
+                        for(let j = 0; j < 4; j++) {
+                            for(let h = 0; h < 2; h++) {
+                                creneaux.push([j, h])
+                            }
+                        }
+                    }
+                    
+                    common.popUp_Stop()
+                    for(let creneau of creneaux) {
+                        let j = creneau[0]
+                        let h = creneau[1]
+                        let placesVal = newPlaces !== null ? newPlaces : placesTotal[j][h]
+                        await common.socketAdminAsync('setMidiInfo',{w:week,j:j,h:h,cout:cout[j][h],gratuit_prio:0,ouvert:selectedMode,perMin:75,places:placesVal,prio_mode:0,nbSandwich:0,nbSandwich_vege:0,mode_sandwich:1,bonus_avance:1.1,algo_auto:0,msg:msg[j][h],list_prio:[]})
+                    }
+                    refreshDatabase()
+                });
+            });
+        }
+    }
+
 
     async function refreshDatabase() {
         if (week == common.actualWeek) {
@@ -181,6 +244,19 @@ export async function init(common){
         text+= "<br>" + msg[j][h];
         bouton[j][h].innerHTML = text;
     }
+
+    // Attacher les listeners aux jours existants du tableau
+    document.getElementById("jour_0").addEventListener("click", superSelection("j", 0)) // Lundi (j=0)
+    document.getElementById("jour_1").addEventListener("click", superSelection("j", 1)) // Mardi (j=1)
+    document.getElementById("jour_2").addEventListener("click", superSelection("j", 2)) // Jeudi (j=2)
+    document.getElementById("jour_3").addEventListener("click", superSelection("j", 3)) // Vendredi (j=3)
+
+    // Bouton "Tout" pour la semaine entière
+    document.getElementById("tout_btn").addEventListener("click", superSelection("w", 0))
+
+    // Modifier les boutons d'horaires pour appliquer à tous les jours
+    document.getElementById("11h").addEventListener("click", superSelection("h", 0))
+    document.getElementById("12h").addEventListener("click", superSelection("h", 1))
 
     function select(j, h) {
         if(common.admin_permission["foyer_repas"]==2){
