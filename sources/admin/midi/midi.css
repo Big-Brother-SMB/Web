@@ -1,16 +1,9 @@
 /* Super selection button for entire week */
-#tout_btn {
-  background-color: #ff6b6b !important;
-  color: white !important;
-  font-weight: bold !important;
-  padding: 10px !important;
-  border: none !important;
-  cursor: pointer !important;
-}
-
 .case.info.heure.jour{
+    font-weight: bold;
+    cursor: pointer;
     visibility: visible;
-    background-color: coral;
+    background-color: #ff6b6b;
 }
 
 .ss_input{ /* superSelection input */
