@@ -33,6 +33,11 @@ export class common{
   //---------------------charge corps de la page------------------
 
   static async loadpage(url,notSaveHistory){
+    let loaderTimeout = null
+    let loaderShownAt = null
+    const loaderDelay = 150   // ms avant affichage
+    const loaderMinTime = 300 // ms affiché minimum
+
     if(url.substring(0,8)=="sidebar:"){
       let typeSideBar = url.substring(8,url.length)
       if(typeSideBar!="admin" && typeSideBar!="asso" && typeSideBar!="user"){
@@ -167,7 +172,11 @@ export class common{
         });
       }
     }else{
-      document.getElementById("container").classList.add('loading')
+      loaderTimeout = setTimeout(() => {
+        document.getElementById("container").classList.add('loading')
+        loaderShownAt = Date.now()
+      }, loaderDelay)
+
       if(!notSaveHistory){
         window.history.pushState({url:url},"", url);
       }
@@ -176,14 +185,44 @@ export class common{
       await this.readFileHTML(url,'tete','EN-TETE')
       await this.readFileHTML(url,'titre','TITRE')
       await this.readFileHTML(url,'main','main')
-      import(url+'/'+url.split('/').pop()+".js").then(async (module) => {
-        await common.reloadCommon()
-        await module.init(common)
-        document.getElementById("container").classList.remove('loading')
-        return
-      }).catch(async (err) => {
-        document.getElementById("container").classList.remove('loading')
-      })
+
+      function hideLoader() {
+        clearTimeout(loaderTimeout)
+
+        if (!loaderShownAt) {
+          document.getElementById("container").classList.remove('loading')
+          return
+        }
+
+        const elapsed = Date.now() - loaderShownAt
+        const remaining = loaderMinTime - elapsed
+
+        if (remaining > 0) {
+          setTimeout(() => {
+            document.getElementById("container").classList.remove('loading')
+          }, remaining)
+        } else {
+          document.getElementById("container").classList.remove('loading')
+        }
+      }
+
+      import(url+'/'+url.split('/').pop()+".js")
+          .then(async (module) => {
+            await common.reloadCommon()
+
+            // on enlève le loader dès que le HTML est prêt
+            hideLoader()
+
+            try {
+              await module.init(common)
+            } catch (e) {
+              console.error("Erreur init page", e)
+            }
+          })
+          .catch((err) => {
+            console.error("Erreur import JS", err)
+            hideLoader()
+          })
     }
   }
 

@@ -26,7 +26,7 @@ module.exports = class funcDB{
       tab.push({classe:e,niveau:3})
     })
     this.setClasse(tab)
-    this.setGroup(["VIP","La pieuvre","BDL","Lycéens humanitaires"])
+    this.setGroup(["VIP","La pieuvre","BDL","Lycéens humanitaires","Club Numérique"])
 
 
     db.run('delete from users where admin=0')
@@ -50,6 +50,7 @@ module.exports = class funcDB{
     db.run('delete from midi_menu')
     db.run('delete from midi_list')
     db.run('delete from midi_prio')
+    db.run('delete from midi_groups')
     db.run('delete from midi_amis')
 
     db.run('delete from sondage_menu')
@@ -223,6 +224,33 @@ module.exports = class funcDB{
       setTimeout(reject,5000)
     })
   }
+  static getGroupsSlots(){
+    return new Promise(function(resolve, reject) {
+      try{
+        db.all("SELECT * FROM midi_groups", (err, data) => {
+          if(data!=undefined){
+            let result = []
+            for(let i=0;i<data.length;i++){
+              result.push(data[i])
+            }
+            resolve(result)
+          }else{
+            resolve([])
+          }
+        })
+      }catch(e){console.error("fDB");;console.log('a7');;resolve(null)}
+      setTimeout(reject,5000)
+    })
+  }
+  static setGroupsSlots(list){
+    db.serialize(()=>{
+      // on écrase la table avec les nouvelles infos
+      db.run("delete from midi_groups")
+      list.forEach(e=>{
+        db.run("INSERT INTO midi_groups(group2, creneau, date_debut, date_fin) VALUES (?,?,?,?)",[e["group2"],e["creneau"],e["date_debut"],e["date_fin"]])
+      })
+    })
+  }
   
   
   //point
@@ -243,7 +271,7 @@ module.exports = class funcDB{
                 })
             }
             resolve(list)
-        }catch(e){console.error("fDB");;console.log('a7');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a8');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -260,7 +288,7 @@ module.exports = class funcDB{
           }else{
             resolve([])
           }
-        }catch(e){console.error("fDB");;console.log('a8');;resolve([])}
+        }catch(e){console.error("fDB");;console.log('a9');;resolve([])}
       })
       setTimeout(reject,5000)
     })
@@ -282,7 +310,7 @@ module.exports = class funcDB{
           }else{
             resolve(null)
           }
-        }catch(e){console.error("fDB");;console.log('a9');;resolve(null)}
+        }catch(e){console.error("fDB");;console.log('a10');;resolve(null)}
       })
       setTimeout(reject,5000)
     })

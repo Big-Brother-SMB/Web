@@ -84,10 +84,33 @@ module.exports = class funcSocket{
 
     static getGroupAndClasse(socket,user){
         socket.on('getGroupAndClasse',async req => {
-            if(await user.admin == 0 || await user.admin == null) return
+            if(await user.admin == 0 || await user.admin == null) {
+                socket.emit('getGroupAndClasse', []);
+                return
+            }
             try{
                 socket.emit('getGroupAndClasse',[await funcDB.getGroup(),await funcDB.getClasse()])
             }catch(e){console.error("fsA8");}
+        })
+    }
+    static getGroupsSlots(socket,user){
+        socket.on('getGroupsSlots',async req => {
+            if(await user.admin == 0 || await user.admin == null) {
+                socket.emit('getGroupsSlots', []);
+                return;
+            }
+            try{
+                socket.emit('getGroupsSlots',await funcDB.getGroupsSlots())
+            }catch(e){console.error("fsA54");}
+        })
+    }
+    static setGroupsSlots(socket,user){
+        socket.on('setGroupsSlots',async req => {
+            if(await user.admin == 0 || await user.admin == null) return
+            try{
+                await funcDB.setGroupsSlots(req)
+                socket.emit('setGroupsSlots',"ok")
+            }catch(e){console.error("fsA55");}
         })
     }
 
