@@ -337,20 +337,29 @@ input,select,textarea{
 
 /* Titre cliquable */
 .nav_accordion_title {
+  display: flex !important; /* Force le flexbox */
+  flex-direction: row;      /* Aligne horizontalement */
+  align-items: center;      /* Centre verticalement le chevron et le texte */
   height: 50px;
+  width: 100%;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  user-select: none;
-  background: inherit;
-  color: #FFFFFF;
   white-space: nowrap;
+}
+
+.nav_accordion_title p {
+  margin: 0 !important;
+  padding: 0 10px !important;
+  height: auto !important;
+  color: white;
 }
 
 /* Chevron ▶ */
 .chevron {
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
   transition: transform 0.25s ease;
+  font-family: monospace; /* Pour un rendu plus net du triangle */
 }
 
 /* Contenu caché */
