@@ -911,32 +911,15 @@ export class common{
     return text
   }
 
-  //renvoie sous forme (4 au 11 juin), soit la date du lundi et du vendredi
-  static intervalSemaine(semaine){ //semaine = semaine de l'intervalle à afficher
-    let jour = new Date().getDay()-1;
-    if(jour==-1) jour=6
-    let dateBeg=(Date.now()+604800000*(semaine - actualWeek))-jour*86400000; //86400000ms=1 jour et 604800000ms= 1semaine
-    let dateEnd=dateBeg+4*86400000;
-    dateBeg=new Date(dateBeg);
-    dateEnd=new Date(dateEnd);
-    dateBeg = dateBeg.toLocaleString();
-    dateEnd = dateEnd.toLocaleString();
-    let mBeg = parseInt(dateBeg[3]+dateBeg[4] - 1)
-    let mEnd = parseInt(dateEnd[3]+dateEnd[4] - 1)
-    let text = ""
-    if(dateBeg[0] != "0"){
-      text += dateBeg[0]
-    }
-    text += dateBeg[1] + " "
-    if(mBeg != mEnd){
-      text += mois[mBeg] + " "
-    }
-    text += "au "
-    if(dateEnd[0] != "0"){
-      text += dateEnd[0]
-    }
-    text += dateEnd[1]+" " + mois[mEnd]
-    return text
+  // returns school week start + end dates in the format (4 au 11 juin)
+  static intervalSemaine(week){ // week = week of the interval to display
+    // 1st date of school week 
+    let date1 = this.generedDate(week,1,0,0,0)
+
+    // last date of school week
+    let date2 = this.generedDate(week,5,0,0,0)
+
+    return date1.getDate() + " au " + date2.getDate() + " " + mois[date2.getMonth()]
   }
 
   //renvoie sous forme (07:00:00)
