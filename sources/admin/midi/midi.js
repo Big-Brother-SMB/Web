@@ -120,10 +120,11 @@ export async function init(common){
 
 
     async function refreshDatabase() {
+        let week_to_letter = {0:"A",1:"B"}
         if (week == common.actualWeek) {
-            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
+            document.getElementById("semaine").innerHTML = "Semaine actuelle (semaine " + String(week) + week_to_letter[week%2] + " du " + common.intervalSemaine(week) + ")"
         } else {
-            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
+            document.getElementById("semaine").innerHTML = "Semaine " + String(week) + week_to_letter[week%2] + " du " + common.intervalSemaine(week)
         }
 
         for (let j = 0; j < 4; j++) {
