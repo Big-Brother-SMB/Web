@@ -912,14 +912,21 @@ export class common{
   }
 
   // returns school week start + end dates in the format (4 au 11 juin)
-  static intervalSemaine(week){ // week = week of the interval to display
+  static intervalWeek(week){ // week = week of the interval to display
     // 1st date of school week 
     let date1 = this.generedDate(week,1,0,0,0)
 
     // last date of school week
     let date2 = this.generedDate(week,5,0,0,0)
 
-    return date1.getDate() + " au " + date2.getDate() + " " + mois[date2.getMonth()]
+    // check if same months
+    if (date1.getMonth() == date2.getMonth()){
+      // if same month, return (x au y monthEnd)
+      return date1.getDate() + " au " + date2.getDate() + " " + mois[date2.getMonth()]
+    } else {
+      // if different months, return (x monthStart au y monthEnd)
+      return date1.getDate() + " " + mois[date1.getMonth()] + " au " + date2.getDate() + " " + mois[date2.getMonth()]
+    }
   }
 
   //renvoie sous forme (07:00:00)

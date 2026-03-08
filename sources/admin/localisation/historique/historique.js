@@ -79,9 +79,9 @@ export async function init(common){
 
     async function refreshDatabase() {
         if (week == common.actualWeek) {
-            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
+            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalWeek(week) + ")"
         } else {
-            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
+            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalWeek(week)
         }
     }
     refreshDatabase();

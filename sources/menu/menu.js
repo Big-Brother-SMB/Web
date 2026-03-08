@@ -23,9 +23,9 @@ export async function init(common){
     async function refreshDatabase() {
         let info_menu = await common.socketAsync("getMenuThisWeek",week)
         if (week == common.actualWeek) {
-            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
+            document.getElementById("semaine").innerHTML = "Cette semaine (n°" + week + " du " + common.intervalWeek(week) + ")"
         } else {
-            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalSemaine(week)
+            document.getElementById("semaine").innerHTML = "Semaine n°" + week + " du " + common.intervalWeek(week)
         }
         let menu
         try{

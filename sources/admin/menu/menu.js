@@ -24,9 +24,9 @@ export async function init(common){
 
 
     async function refreshDatabase() {
-        let text = "Semaine n°" + week + " du " + common.intervalSemaine(week)
+        let text = "Semaine n°" + week + " du " + common.intervalWeek(week)
         if (week == common.actualWeek) {
-            text = "Cette semaine (n°" + week + " du " + common.intervalSemaine(week) + ")"
+            text = "Cette semaine (n°" + week + " du " + common.intervalWeek(week) + ")"
         }
         document.getElementById("semaine").innerHTML = text
 
