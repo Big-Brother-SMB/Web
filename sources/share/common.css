@@ -276,10 +276,17 @@ input,select,textarea{
   .nav_accordion_title{
     padding-top: 25px;
     padding-bottom: 25px;
-    padding-right: 140px;
-  }
-  .nav_accordion_title{
+    position: relative;
+    justify-content: center;
+    padding-right: 0;
     align-content: center;
+
+  }
+
+  .nav_accordion_title .nav_img {
+    position: absolute;
+    left: 100px;
+    margin: 0;
   }
 }
 
