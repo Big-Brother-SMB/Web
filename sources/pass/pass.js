@@ -1,8 +1,8 @@
 const allDay = ["Dimanche","Lundi", "Mardi","Mercredi","Jeudi","Vendredi","Samedi"]
 
 export async function init(common){
+    // barcode
     const containerElement = document.getElementById('single');
-
     const bcid = 'bc'+common.codeBar;
     // create the image element
     const bcimg = document.createElement('img');
@@ -12,9 +12,8 @@ export async function init(common){
     containerElement.appendChild(bcimg);
     JsBarcode('#'+bcid, common.codeBar, {format: 'code39'});
 
-
+    // date
     let d = new Date();
-
     let jBrut = d.getDay();
     if(jBrut==3){
         jBrut=2
@@ -26,13 +25,19 @@ export async function init(common){
         j--
     }
     document.getElementById("day").innerHTML = allDay[jBrut] + " (" + common.actualWeek + "w)"
+
+    // show download shortcut button if on iphone
+    const isIPhone = (navigator.userAgent.match(/iPhone/i)) ||(navigator.userAgent.match(/iPod/i))
+    if (!isIPhone) {
+        document.getElementById("button_shortcut").style.display = "none";
+    }
+
     let h;
     if(d.getHours() < 11 || ((d.getHours() == 11 && d.getMinutes() < 54))){
         h = 0;
     }else{
         h = 1;
     }
-
 
     let info_horaire = await common.socketAsync("getDataThisCreneau",{w:common.actualWeek,j:j,h:h})
     if(info_horaire==undefined)info_horaire={prio:[]}
@@ -82,6 +87,7 @@ export async function init(common){
     document.getElementById("user").innerHTML = common.name(common.first_name,common.last_name)+ " " + common.classe
 
 
+    // time loop
     function loop(){
         try{
             let d2 = new Date();
