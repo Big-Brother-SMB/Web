@@ -1,3 +1,53 @@
-.name{
+th {
+    text-align: center;
+}
+
+.name {
     background-color: cadetblue;
+}
+
+.modal-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.modal-table td {
+    text-align: center;
+}
+
+.col-code-details { width: 20%; }
+.col-nom-details { width: 40%; }
+.col-statut-details { width: 40%; }
+
+.col-code-action { width: 15%; }
+.col-nom-action { width: 35%; }
+.col-statut-action { width: 35%; word-break: break-word; }
+.col-btn-action { width: 15%; padding: 4px; }
+
+.status-free {
+    color: green;
+}
+
+.btn-modal-action {
+    width: 100%;
+    font-size: 14px;
+}
+
+.btn-return {
+    background-color: #e74c3c;
+}
+
+.btn-borrow {
+    background-color: #2ecc71;
+}
+
+.cell-link {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #2980b9;
+}
+
+.btn-gestion {
+    margin-left: 10px;
 }

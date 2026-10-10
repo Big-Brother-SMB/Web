@@ -36,6 +36,7 @@ module.exports = class funcDB{
 
     db.run('delete from var')
     db.run('delete from emprunt')
+    db.run('delete from catalogue')
 
     db.run('delete from achievement')
     db.run('delete from amis')
@@ -367,6 +368,42 @@ module.exports = class funcDB{
         }catch(e){console.error("fDB");;console.log('a-2');resolve(null)}
       })
       setTimeout(reject,5000)
+    })
+  }
+
+  static getObjetsCatalog() {
+    return new Promise(function(resolve, reject) {
+      db.all("SELECT * FROM catalogue ORDER BY nom ASC", (err, data) => {
+        try {
+          if (data != undefined) {
+            resolve(data)
+          } else {
+            resolve([])
+          }
+        } catch (e) {
+          console.error("fDB");
+          resolve([])
+        }
+      })
+      setTimeout(reject, 5000)
+    })
+  }
+
+  static saveObjetCatalog(code, nom) {
+    return new Promise(function(resolve, reject) {
+      db.run("INSERT INTO catalogue(code, nom) VALUES (?, ?) ON CONFLICT(code) DO UPDATE SET nom=excluded.nom", [code, nom], (err) => {
+        if (err) resolve(false)
+        else resolve(true)
+      })
+    })
+  }
+
+  static removeObjetCatalog(code) {
+    return new Promise(function(resolve, reject) {
+      db.run("DELETE FROM catalogue WHERE code=?", [code], (err) => {
+        if (err) resolve(false)
+        else resolve(true)
+      })
     })
   }
 
