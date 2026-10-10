@@ -1,0 +1,28 @@
+<h2>Gestion des Objets / Code-barres</h2>
+
+<div class="add-container">
+  <h3>Ajouter un nouvel objet</h3>
+  <div class="add-line">
+    <select id="select_cat">
+      <option value="" disabled selected>Catégorie...</option>
+      <option value="00">Jeux de Société</option>
+      <option value="01">Manuels</option>
+    </select>
+
+    <input type="text" id="add_nom" placeholder="Nom de l'objet" autocomplete="off">
+
+    <button id="btn_ajouter" class="btn btn-add">+ Ajouter</button>
+  </div>
+</div>
+
+<table class="catalogue-table">
+  <thead>
+  <tr>
+    <th class="col-code">Code-barres</th>
+    <th class="col-nom">Nom de l'objet</th>
+    <th class="col-actions">Actions</th>
+  </tr>
+  </thead>
+  <tbody id="tbody_catalogue">
+  </tbody>
+</table>

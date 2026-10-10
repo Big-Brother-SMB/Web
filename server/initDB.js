@@ -14,6 +14,10 @@ module.exports = (db)=>{
       if(data==undefined)
         db.run('CREATE TABLE emprunt(objet text,uuid UUID,debut DATE,fin DATE,commentaire text)')
     })
+    db.get("SELECT * FROM sqlite_master where type='table' AND name='catalogue'", (err, data) => {
+        if (data == undefined)
+            db.run('CREATE TABLE catalogue(code CHAR(5) PRIMARY KEY, nom text)')
+    })
 
     //users / amis / user-group / token
     db.get("SELECT * FROM sqlite_master where type='table' AND name='users'", (err, data) => {

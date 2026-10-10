@@ -1,64 +1,57 @@
-        <table>
-          <thead>
-            <tr>
-              <th colspan="4">Emprunts en cours :</th>
-            </tr>
-          </thead>
-          <tr>
-            <td class="name">Arcade</td>
-            <td class="name">Baby Foot 1</td>
-            <td class="name">Baby Foot 2</td>
-            <td class="name">Billard</td>
-          </tr>
-          <tr>
-            <td id="Arcade-Name">Libre</td>
-            <td id="Baby Foot 1-Name">Libre</td>
-            <td id="Baby Foot 2-Name">Libre</td>
-            <td id="Billard-Name">Libre</td>
-          </tr>
-          <tr>
-            <td class="name">Piano</td>
-            <td class="name">Guitare</td>
-            <td class="name">Batterie</td>
-            <td class="name">Jeu de cartes</td>
-          </tr>
-          <tr>
-            <td id="Piano-Name">Libre</td>
-            <td id="Guitare-Name">Libre</td>
-            <td id="Batterie-Name">Libre</td>
-            <td id="Jeu de cartes-Name">Libre</td>
-          </tr>
-          <tr>
-            <td class="name">Poker</td>
-            <td class="name">Jeu d'échecs</td>
-            <td class="name">Jungle Speed</td>
-            <td class="name">Focus</td>
-          </tr>
-          <tr>
-            <td id="Poker-Name">Libre</td>
-            <td id="Jeu d'échecs-Name">Libre</td>
-            <td id="Jungle Speed-Name">Libre</td>
-            <td id="Focus-Name">Libre</td>
-          </tr>
-        </table>
-        <br><br>
-        
-        <div class="autocomplete" style="width:500px;margin-top: 10px;">
-          <input autocomplete="off" id="name" type="text" placeholder="Rechercher un utilisateur">
-        </div>
-        <p style="font-size: 50px;">Code carte : <input autocomplete="off" id="code_bar" type="text" maxlength="5"></input></p>
-        <div id="activity">
-          <img class="imgAct" src="/assets/emprunt/arcade.png" id="Arcade">
-          <img class="imgAct" src="/assets/emprunt/baby_foot1.png" id="Baby Foot 1">
-          <img class="imgAct" src="/assets/emprunt/baby_foot2.png" id="Baby Foot 2">
-          <img class="imgAct" src="/assets/emprunt/billard.png" id="Billard"><br>
-          <img class="imgAct" src="/assets/emprunt/piano.png" id="Piano">
-          <img class="imgAct" src="/assets/emprunt/guitare.png" id="Guitare">
-          <img class="imgAct" src="/assets/emprunt/batterie.png" id="Batterie">
-          <img class="imgAct" src="/assets/emprunt/cartes.png" id="Jeu de cartes"><br>
-          <img class="imgAct" src="/assets/emprunt/poker.png" id="Poker">
-          <img class="imgAct" src="/assets/emprunt/echec.png" id="Jeu d'échecs">
-          <img class="imgAct" src="/assets/emprunt/jungle.png" id="Jungle Speed">
-          <img class="imgAct" src="/assets/emprunt/focus.png" id="Focus">
-        </div>
-        <button id="historique" class="btn">Historique</button>
+<table id="table-emprunts">
+  <thead>
+  <tr>
+    <th colspan="20">Emprunts en cours :</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td class="name" colspan="5">Arcade</td>
+    <td class="name" colspan="5">Baby Foot 1</td>
+    <td class="name" colspan="5">Baby Foot 2</td>
+    <td class="name" colspan="5">Billard</td>
+  </tr>
+  <tr>
+    <td id="Arcade-Name" colspan="5">Libre</td>
+    <td id="Baby Foot 1-Name" colspan="5">Libre</td>
+    <td id="Baby Foot 2-Name" colspan="5">Libre</td>
+    <td id="Billard-Name" colspan="5">Libre</td>
+  </tr>
+  <tr>
+    <td class="name" colspan="4">Piano</td>
+    <td class="name" colspan="4">Guitare</td>
+    <td class="name" colspan="4">Batterie</td>
+    <td class="name" colspan="4" id="td-header-jeux">Jeux de société</td>
+    <td class="name" colspan="4" id="td-header-manuels">Manuels</td>
+  </tr>
+  <tr>
+    <td id="Piano-Name" colspan="4">Libre</td>
+    <td id="Guitare-Name" colspan="4">Libre</td>
+    <td id="Batterie-Name" colspan="4">Libre</td>
+    <td id="Jeux de société-Name" colspan="4" class="cell-link">Détails...</td>
+    <td id="Manuels-Name" colspan="4" class="cell-link">Détails...</td>
+  </tr>
+  </tbody>
+</table>
+<br><br>
+
+<div class="autocomplete">
+  <input autocomplete="off" id="name" type="text" placeholder="Rechercher un utilisateur">
+</div>
+<p class="code-label">Code carte : <input autocomplete="off" id="code_bar" type="text" maxlength="5"></p>
+<p class="code-label">Code objet : <input autocomplete="off" id="code_objet" type="text" maxlength="5" placeholder="Ex: 00123"></p>
+
+<div id="activity">
+  <img class="imgAct" src="/assets/emprunt/arcade.png" id="Arcade">
+  <img class="imgAct" src="/assets/emprunt/baby_foot1.png" id="Baby Foot 1">
+  <img class="imgAct" src="/assets/emprunt/baby_foot2.png" id="Baby Foot 2">
+  <img class="imgAct" src="/assets/emprunt/billard.png" id="Billard"><br>
+  <img class="imgAct" src="/assets/emprunt/piano.png" id="Piano">
+  <img class="imgAct" src="/assets/emprunt/guitare.png" id="Guitare">
+  <img class="imgAct" src="/assets/emprunt/batterie.png" id="Batterie">
+  <img class="imgAct" src="/assets/emprunt/cartes.png" id="Jeux de société"><br>
+  <img class="imgAct" src="/assets/emprunt/livre.png" id="Manuels">
+</div>
+<br>
+<button id="historique" class="btn">Historique</button>
+<button id="btn_gestion_objets" class="btn btn-gestion">Gérer le Catalogue</button>

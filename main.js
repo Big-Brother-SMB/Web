@@ -268,6 +268,9 @@ let db = new sqlite3.Database(path.join(__dirname,"..","main.db"), err => {
       funcSocketAdmin.commentairePret(socket,user)
       funcSocketAdmin.getPretsActuel(socket,user)
       funcSocketAdmin.getAllPrets(socket,user)
+      funcSocketAdmin.getObjetsCatalog(socket, user)
+      funcSocketAdmin.saveObjetCatalog(socket, user)
+      funcSocketAdmin.removeObjetCatalog(socket, user)
 
       funcSocketAdmin.newCookieSubscription(socket,user)
       funcSocketAdmin.modifCookieSubscription(socket,user)

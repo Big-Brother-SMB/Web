@@ -349,6 +349,35 @@ module.exports = class funcSocket{
         });
     }
 
+    static getObjetsCatalog(socket, user) {
+        socket.on("getObjetsCatalog", async req => {
+            if (await user.admin == 0 || await user.admin == null) return
+            try {
+                socket.emit("getObjetsCatalog", await funcDB.getObjetsCatalog())
+            } catch (e) { console.error("fsA_Catalog1"); }
+        });
+    }
+
+    static saveObjetCatalog(socket, user) {
+        socket.on("saveObjetCatalog", async req => {
+            if (await user.admin == 0 || await user.admin == null) return
+            try {
+                await funcDB.saveObjetCatalog(req.code, req.nom)
+                socket.emit("saveObjetCatalog", "ok")
+            } catch (e) { console.error("fsA_Catalog2"); }
+        });
+    }
+
+    static removeObjetCatalog(socket, user) {
+        socket.on("removeObjetCatalog", async req => {
+            if (await user.admin == 0 || await user.admin == null) return
+            try {
+                await funcDB.removeObjetCatalog(req.code)
+                socket.emit("removeObjetCatalog", "ok")
+            } catch (e) { console.error("fsA_Catalog3"); }
+        });
+    }
+
     //-----------------cookie ban-------------------------------------
 
     static newCookieSubscription(socket,user){
